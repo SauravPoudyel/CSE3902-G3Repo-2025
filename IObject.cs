@@ -11,8 +11,12 @@ interface IObject{
     public Vector2 Position {get;}
     public Rectangle CollisionBox {get;}
 
-    public void Move(Vector2 displacement);
+    public ISprite sprite{get;}
+
+    public void Update(GameTime gameTime);
 
     public void Draw(SpriteBatch spriteBatch);
+
+    public void Destroy();
 
 }
