@@ -1,0 +1,4 @@
+
+interface IObstacle : IObject {
+
+}
