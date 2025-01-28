@@ -7,10 +7,10 @@
 class ShellProjectile : IProjectile{
     public Vector2 Position{ get;}
     public Vector2 Velocity{ get;}
-    public float speed{ get;}
+    public float Speed{ get;}
     public Rectangle CollisionBox{ get;}
 
-    public ISprite sprite{ get;}
+    public ISprite Sprite{ get;}
 
     /*
         Initiates the projectile.

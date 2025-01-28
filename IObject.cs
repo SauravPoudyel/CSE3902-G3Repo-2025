@@ -11,7 +11,7 @@ interface IObject{
     public Vector2 Position {get;}
     public Rectangle CollisionBox {get;}
 
-    public ISprite sprite{get;}
+    public ISprite Sprite{get;}
 
     public void Update(GameTime gameTime);
 
