@@ -1,14 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
-/**
- * Author: Saurav Poudyel
- * Date: 1/22/2025 
- * Class: CSE 3902
-*/
 
 namespace Sprint0
 {
@@ -35,6 +27,7 @@ namespace Sprint0
 
         protected override void Initialize()
         {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
             GameManager = new GameManager(this);
             keyboardController = new KeyboardController();
             mouseController = new MouseController();
@@ -43,10 +36,9 @@ namespace Sprint0
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
             GameManager.LoadContent(Content);
         }
-
+        
         protected override void Update(GameTime gameTime)
         {
             keyboardController.Update(this);

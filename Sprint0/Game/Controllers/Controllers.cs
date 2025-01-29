@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace Sprint0
 {
@@ -17,22 +18,56 @@ namespace Sprint0
             keyMappings = new Dictionary<Keys, string>
             {
                 {Keys.Escape, "Quit"},
-                {Keys.D1, "Static"},
-                {Keys.D2, "Animated"},
-                {Keys.D3, "Moving"},
-                {Keys.D4, "MovingAnimated"}
+                {Keys.R, "Reset"},
+
+                {Keys.D1, "UseItem1"},
+                {Keys.D2, "UseItem2"},
+
+                {Keys.W, "MoveUp"},
+                {Keys.A, "MoveLeft"},
+                {Keys.S, "MoveDown"},
+                {Keys.D, "MoveRight"},
+                {Keys.Up, "MoveUp"},
+                {Keys.Left, "MoveLeft"},
+                {Keys.Down, "MoveDown"},
+                {Keys.Right, "MoveRight"},
+
+                {Keys.Z, "Attack"},
+                {Keys.E, "Damage"},
+
+                {Keys.T, "CycleBlockPrev"},
+                {Keys.Y, "CycleBlockNext"},
+                {Keys.U, "CycleItemPrev"},
+                {Keys.I, "CycleItemNext"},
+                {Keys.O, "CycleEnemyPrev"},
+                {Keys.P, "CycleEnemyNext"}
             };
         }
 
         public void Update(Game1 game)
         {
             KeyboardState state = Keyboard.GetState();
+
             foreach (var key in keyMappings.Keys)
             {
                 if (state.IsKeyDown(key))
                 {
-                    game.GameManager.ExecuteCommand(keyMappings[key]);
+                    Dictionary<string, object> parameters = new Dictionary<string, object>
+                    {
+                        { "gameManager", game.GameManager },
+                        { "content", game.GameManager.GetContent() },
+                        { "entity", game.GameManager.GetEntity(0) } // Player is always entity(0)
+                    };
+                    game.GameManager.ExecuteCommand(keyMappings[key], parameters);
+
+                    if (!(key == Keys.W || key == Keys.A || key == Keys.S || key == Keys.D ||
+                        key == Keys.Up || key == Keys.Left || key == Keys.Down || key == Keys.Right))
+                    {
+                        System.Console.WriteLine("Stopping player");
+                        game.GameManager.GetEntity(0).SetVelocity(Vector2.Zero);
+                    }
                 }
+
             }
         }
     }
@@ -45,14 +80,28 @@ namespace Sprint0
 
             if (state.LeftButton == ButtonState.Pressed)
             {
-                if (state.X < 400 && state.Y < 300) game.GameManager.ExecuteCommand("Static");
-                else if (state.X >= 400 && state.Y < 300) game.GameManager.ExecuteCommand("Animated");
-                else if (state.X < 400 && state.Y >= 300) game.GameManager.ExecuteCommand("Moving");
-                else if (state.X >= 400 && state.Y >= 300) game.GameManager.ExecuteCommand("MovingAnimated");
+                var parameters = new Dictionary<string, object>
+                {
+                    { "gameManager", game.GameManager },
+                    { "content", game.GameManager.GetContent() },
+                    { "entity", game.GameManager.GetEntity(0) }
+                };
+
+                if (state.X < 400 && state.Y < 300) game.GameManager.ExecuteCommand("Static", parameters);
+                else if (state.X >= 400 && state.Y < 300) game.GameManager.ExecuteCommand("Animated", parameters);
+                else if (state.X < 400 && state.Y >= 300) game.GameManager.ExecuteCommand("Moving", parameters);
+                else if (state.X >= 400 && state.Y >= 300) game.GameManager.ExecuteCommand("MovingAnimated", parameters);
             }
             else if (state.RightButton == ButtonState.Pressed)
             {
-                game.GameManager.ExecuteCommand("Quit");
+                var parameters = new Dictionary<string, object>
+                {
+                    { "gameManager", game.GameManager },
+                    { "content", game.GameManager.GetContent() },
+                    { "entity", game.GameManager.GetEntity(0) }
+                };
+
+                game.GameManager.ExecuteCommand("Quit", parameters);
             }
         }
     }

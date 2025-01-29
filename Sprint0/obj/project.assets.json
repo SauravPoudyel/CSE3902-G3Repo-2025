@@ -243,11 +243,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\saura\\OneDrive - The Ohio State University\\Documents\\OHIO STATE DOCS\\SP 2025\\CSE3902-G3Repo-SPR2025\\Sprint0\\Sprint0.csproj",
+      "projectUniqueName": "C:\\Users\\saura\\OneDrive - The Ohio State University\\Documents\\OHIO STATE DOCS\\SP 2025\\CSE3902-G3Repo-2025\\Sprint0\\Sprint0.csproj",
       "projectName": "Sprint0",
-      "projectPath": "C:\\Users\\saura\\OneDrive - The Ohio State University\\Documents\\OHIO STATE DOCS\\SP 2025\\CSE3902-G3Repo-SPR2025\\Sprint0\\Sprint0.csproj",
+      "projectPath": "C:\\Users\\saura\\OneDrive - The Ohio State University\\Documents\\OHIO STATE DOCS\\SP 2025\\CSE3902-G3Repo-2025\\Sprint0\\Sprint0.csproj",
       "packagesPath": "C:\\Users\\saura\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\saura\\OneDrive - The Ohio State University\\Documents\\OHIO STATE DOCS\\SP 2025\\CSE3902-G3Repo-SPR2025\\Sprint0\\obj\\",
+      "outputPath": "C:\\Users\\saura\\OneDrive - The Ohio State University\\Documents\\OHIO STATE DOCS\\SP 2025\\CSE3902-G3Repo-2025\\Sprint0\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\saura\\AppData\\Roaming\\NuGet\\NuGet.Config"
