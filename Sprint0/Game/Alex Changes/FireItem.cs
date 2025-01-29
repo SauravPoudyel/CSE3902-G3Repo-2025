@@ -1,0 +1,4 @@
+
+class FireItem : IPickupItem{
+    
+}

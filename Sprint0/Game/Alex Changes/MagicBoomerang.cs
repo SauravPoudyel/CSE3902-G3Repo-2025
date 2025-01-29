@@ -1,0 +1,4 @@
+
+class MagicBoomerang : Boomerang{
+    
+}
