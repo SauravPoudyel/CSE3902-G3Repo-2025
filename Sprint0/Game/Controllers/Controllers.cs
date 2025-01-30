@@ -56,7 +56,7 @@ namespace Sprint0
                     {
                         { "gameManager", game.GameManager },
                         { "content", game.GameManager.GetContent() },
-                        { "entity", game.GameManager.GetEntity(0) } // Player is always entity(0)
+                        { "player", game.GameManager.GetEntity(0) } // Player is always entity(0)
                     };
                     game.GameManager.ExecuteCommand(keyMappings[key], parameters);
 
@@ -64,7 +64,7 @@ namespace Sprint0
                         key == Keys.Up || key == Keys.Left || key == Keys.Down || key == Keys.Right))
                     {
                         System.Console.WriteLine("Stopping player");
-                        game.GameManager.GetEntity(0).SetVelocity(Vector2.Zero);
+                        game.GameManager.ExecuteCommand("StopMoveCommand", parameters);
                     }
                 }
 
@@ -84,7 +84,7 @@ namespace Sprint0
                 {
                     { "gameManager", game.GameManager },
                     { "content", game.GameManager.GetContent() },
-                    { "entity", game.GameManager.GetEntity(0) }
+                    { "player", game.GameManager.GetEntity(0) }
                 };
 
                 if (state.X < 400 && state.Y < 300) game.GameManager.ExecuteCommand("Static", parameters);
@@ -98,7 +98,7 @@ namespace Sprint0
                 {
                     { "gameManager", game.GameManager },
                     { "content", game.GameManager.GetContent() },
-                    { "entity", game.GameManager.GetEntity(0) }
+                    { "player", game.GameManager.GetEntity(0) }
                 };
 
                 game.GameManager.ExecuteCommand("Quit", parameters);

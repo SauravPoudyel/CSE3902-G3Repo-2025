@@ -9,7 +9,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("entity") && parameters["entity"] is Entity entity)
+                if (parameters.ContainsKey("player") && parameters["player"] is Entity entity)
                 {
                     entity.SetVelocity(0, 0);
                 }
@@ -19,9 +19,9 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("entity") && parameters["entity"] is Entity entity)
+                if (parameters.ContainsKey("player") && parameters["player"] is Entity entity)
                 {
-                    entity.SetVelocity(0, -40);
+                    entity.SetVelocity(0, -80);
                 }
             }
         }
@@ -30,9 +30,9 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("entity") && parameters["entity"] is Entity entity)
+                if (parameters.ContainsKey("player") && parameters["player"] is Entity entity)
                 {
-                    entity.SetVelocity(0, 40);
+                    entity.SetVelocity(0, 80);
                 }
             }
         }
@@ -41,9 +41,9 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("entity") && parameters["entity"] is Entity entity)
+                if (parameters.ContainsKey("player") && parameters["player"] is Entity entity)
                 {
-                    entity.SetVelocity(-40, 0);
+                    entity.SetVelocity(-80, 0);
                 }
             }
         }
@@ -52,9 +52,9 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("entity") && parameters["entity"] is Entity entity)
+                if (parameters.ContainsKey("player") && parameters["player"] is Entity entity)
                 {
-                    entity.SetVelocity(40, 0);
+                    entity.SetVelocity(80, 0);
                 }
             }
         }
