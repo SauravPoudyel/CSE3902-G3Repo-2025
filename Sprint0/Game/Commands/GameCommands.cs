@@ -3,11 +3,6 @@ using System.Collections.Generic;
 
 namespace Sprint0
 {
-    public interface ICommand
-    {
-        void Execute(Dictionary<string, object> parameters);
-    }
-
     public static class GameCommands
     {
         public class QuitCommand : ICommand
