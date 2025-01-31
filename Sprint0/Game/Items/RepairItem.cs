@@ -1,24 +1,16 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Sprint0;
 using System;
 using System.Collections.Generic;
 
-namespace Sprint0
-{
-    public class Player: Entity
-    {
+public class RepairItem : Item {
         public override void LoadContent(ContentManager content) {
             if (sprite == null)
             {
                 throw new NullReferenceException("Sprite is not initialized. Call SetSprite before LoadContent.");
             }
-            sprite.LoadContent(content, "LinkSpriteSheet", 0, 0, 64, 64, 1);
+            sprite.LoadContent(content, "2DTanksSprites", 464, 651, 110, 100, 1);
         }
-        public override void Update(GameTime gameTime)
-        {
-            sprite.Update(gameTime);
-            position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-        }
-    }
 }

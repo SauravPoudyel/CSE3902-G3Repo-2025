@@ -6,25 +6,12 @@ using System.Collections.Generic;
 
 namespace Sprint0
 {
-    public interface IEntity
-    {
-        Vector2 GetPosition();
-        void SetPosition(Vector2 position);
-        Vector2 GetVelocity();
-        void SetVelocity(Vector2 velocity);
-        Rectangle GetBounds();
-        void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount);
-        void Update(GameTime gameTime);
-        void Draw(SpriteBatch spriteBatch);
-    }
-    
-    public class Entity : IEntity
+    public abstract class Entity : IEntity
     {
         protected Vector2 position; // protected so that subclasses can access it
         protected Vector2 velocity;
         protected  ISprite sprite;
-        protected  int boundsWidth;
-        protected  int boundsheight;
+        protected  Rectangle bounds;
 
         public Vector2 GetPosition()
         {
@@ -36,17 +23,17 @@ namespace Sprint0
             this.position = position;
         }
 
-        public Vector2 GetVelocity()
+        public virtual Vector2 GetVelocity()
         {
             return position;
         }
 
-        public void SetVelocity(Vector2 velocity)
+        public virtual void SetVelocity(Vector2 velocity)
         {
             this.velocity = velocity; 
         }
 
-        public void SetVelocity(float x, float y)
+        public virtual void SetVelocity(float x, float y)
         {
             this.velocity = new Vector2(x, y);
         }
@@ -63,7 +50,7 @@ namespace Sprint0
 
         public Rectangle GetBounds()
         {
-            return new Rectangle((int)position.X, (int)position.Y, boundsWidth, boundsheight);
+            return bounds;
         }
 
         public virtual void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
@@ -74,6 +61,8 @@ namespace Sprint0
             }
             sprite.LoadContent(content, assetName, startX, startY, frameWidth, frameHeight, frameCount);
         }
+
+        public abstract void LoadContent(ContentManager content);
 
         public virtual void Update(GameTime gameTime)
         {

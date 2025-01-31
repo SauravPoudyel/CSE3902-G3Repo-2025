@@ -72,7 +72,25 @@ namespace Sprint0
             player.SetPosition(new Vector2(Globals.SCREENWIDTH/2, 300)); 
             player.SetSprite(new AnimatedSprite(10f));
             player.LoadContent(content, "LinkSpriteSheet", 0, 0, 64, 64, 1); 
-            entities.Add(player);
+            entities.Add(player); 
+
+            Item itemTest = new ShieldItem();
+            itemTest.SetPosition(new Vector2(Globals.SCREENWIDTH/2, 300));
+            itemTest.SetSprite(new AnimatedSprite(10f));
+            itemTest.LoadContent(content);
+            entities.Add(itemTest);
+
+            Item itemTest2 = new RepairItem();
+            itemTest2.SetPosition(new Vector2(Globals.SCREENWIDTH/3, 300));
+            itemTest2.SetSprite(new AnimatedSprite(10f));
+            itemTest2.LoadContent(content);
+            entities.Add(itemTest2);
+
+            Item itemTest3 = new AmmoItem();
+            itemTest3.SetPosition(new Vector2(Globals.SCREENWIDTH/4, 300));
+            itemTest3.SetSprite(new AnimatedSprite(10f));
+            itemTest3.LoadContent(content);
+            entities.Add(itemTest3);
         }
 
         public void Update(GameTime gameTime)
