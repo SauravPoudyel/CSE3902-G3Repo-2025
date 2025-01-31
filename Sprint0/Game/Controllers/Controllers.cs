@@ -102,6 +102,7 @@ namespace Sprint0
                 };
 
                 game.GameManager.ExecuteCommand("Quit", parameters);
+                game.GameManager.ExecuteCommand("Static", parameters);
             }
         }
     }
