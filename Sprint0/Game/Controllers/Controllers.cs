@@ -1,108 +1,60 @@
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
+using Sprint0.Interfaces;
 using System.Collections.Generic;
-using System.Numerics;
+using Sprint0.Sprites;
+using Sprint0.Commands;
 
-namespace Sprint0
+namespace Sprint0.Controllers
 {
-    public interface IController
-    {
-        void Update(Game1 game);
-    }
-
     public class KeyboardController : IController
     {
-        private Dictionary<Keys, string> keyMappings;
+        private readonly Dictionary<Keys, ICommand> keyBindings = new();
+        private readonly Link player;
 
-        public KeyboardController()
+        public KeyboardController(Link player)
         {
-            keyMappings = new Dictionary<Keys, string>
-            {
-                {Keys.Escape, "Quit"},
-                {Keys.R, "Reset"},
-
-                {Keys.D1, "UseItem1"},
-                {Keys.D2, "UseItem2"},
-
-                {Keys.W, "MoveUp"},
-                {Keys.A, "MoveLeft"},
-                {Keys.S, "MoveDown"},
-                {Keys.D, "MoveRight"},
-                {Keys.Up, "MoveUp"},
-                {Keys.Left, "MoveLeft"},
-                {Keys.Down, "MoveDown"},
-                {Keys.Right, "MoveRight"},
-
-                {Keys.Z, "Attack"},
-                {Keys.E, "Damage"},
-
-                {Keys.T, "CycleBlockPrev"},
-                {Keys.Y, "CycleBlockNext"},
-                {Keys.U, "CycleItemPrev"},
-                {Keys.I, "CycleItemNext"},
-                {Keys.O, "CycleEnemyPrev"},
-                {Keys.P, "CycleEnemyNext"}
-            };
+            this.player = player;
+            InitializeCommands();
         }
 
-        public void Update(Game1 game)
+        private void InitializeCommands()
         {
-            KeyboardState state = Keyboard.GetState();
+            // Move command
+            keyBindings.Add(Keys.Up, new MoveCommand(player, Direction.Up));
+            keyBindings.Add(Keys.W, new MoveCommand(player, Direction.Up));
+            keyBindings.Add(Keys.Down, new MoveCommand(player, Direction.Down));
+            keyBindings.Add(Keys.S, new MoveCommand(player, Direction.Down));
+            keyBindings.Add(Keys.Left, new MoveCommand(player, Direction.Left));
+            keyBindings.Add(Keys.A, new MoveCommand(player, Direction.Left));
+            keyBindings.Add(Keys.Right, new MoveCommand(player, Direction.Right));
+            keyBindings.Add(Keys.D, new MoveCommand(player, Direction.Right));
 
-            foreach (var key in keyMappings.Keys)
+            // Attack command
+            keyBindings.Add(Keys.Z, new AttackCommand(player));
+            keyBindings.Add(Keys.N, new AttackCommand(player));
+
+            // Use item command
+            for (Keys key = Keys.D1; key <= Keys.D9; key++)
             {
-                if (state.IsKeyDown(key))
-                {
-                    Dictionary<string, object> parameters = new Dictionary<string, object>
-                    {
-                        { "gameManager", game.GameManager },
-                        { "content", game.GameManager.GetContent() },
-                        { "player", game.GameManager.GetEntity(0) } // Player is always entity(0)
-                    };
-                    game.GameManager.ExecuteCommand(keyMappings[key], parameters);
+                int itemIndex = key - Keys.D1;
+                keyBindings.Add(key, new UseItemCommand(player, itemIndex));
+            }
 
-                    if (!(key == Keys.W || key == Keys.A || key == Keys.S || key == Keys.D ||
-                        key == Keys.Up || key == Keys.Left || key == Keys.Down || key == Keys.Right))
-                    {
-                        System.Console.WriteLine("Stopping player");
-                        game.GameManager.ExecuteCommand("StopMoveCommand", parameters);
-                    }
+            // Damaged command
+            keyBindings.Add(Keys.E, new DamageCommand(player));
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            var keyboardState = Keyboard.GetState();
+
+            foreach (var binding in keyBindings)
+            {
+                if (keyboardState.IsKeyDown(binding.Key))
+                {
+                    binding.Value.Execute();
                 }
-
-            }
-        }
-    }
-
-    public class MouseController : IController
-    {
-        public void Update(Game1 game)
-        {
-            MouseState state = Mouse.GetState();
-
-            if (state.LeftButton == ButtonState.Pressed)
-            {
-                var parameters = new Dictionary<string, object>
-                {
-                    { "gameManager", game.GameManager },
-                    { "content", game.GameManager.GetContent() },
-                    { "player", game.GameManager.GetEntity(0) }
-                };
-
-                if (state.X < 400 && state.Y < 300) game.GameManager.ExecuteCommand("Static", parameters);
-                else if (state.X >= 400 && state.Y < 300) game.GameManager.ExecuteCommand("Animated", parameters);
-                else if (state.X < 400 && state.Y >= 300) game.GameManager.ExecuteCommand("Moving", parameters);
-                else if (state.X >= 400 && state.Y >= 300) game.GameManager.ExecuteCommand("MovingAnimated", parameters);
-            }
-            else if (state.RightButton == ButtonState.Pressed)
-            {
-                var parameters = new Dictionary<string, object>
-                {
-                    { "gameManager", game.GameManager },
-                    { "content", game.GameManager.GetContent() },
-                    { "player", game.GameManager.GetEntity(0) }
-                };
-
-                game.GameManager.ExecuteCommand("Quit", parameters);
-                game.GameManager.ExecuteCommand("Static", parameters);
             }
         }
     }

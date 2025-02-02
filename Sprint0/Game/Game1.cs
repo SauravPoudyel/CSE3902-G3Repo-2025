@@ -1,58 +1,63 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Microsoft.Xna.Framework.Input;
+using Sprint0.Commands;
+using Sprint0.Controllers;
+using Sprint0.Interfaces;
+using Sprint0.Sprites;
 
 namespace Sprint0
 {
-
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+
         private Color Background;
-        public GameManager GameManager;
-        private IController keyboardController;
-        private IController mouseController;
+        private Link player;
+        private IController controller;
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             Background = new Color(116, 116, 116);
-            _graphics.PreferredBackBufferWidth = Globals.SCREENWIDTH;
-            _graphics.PreferredBackBufferHeight = Globals.SCREENHEIGHT;
-            _graphics.ApplyChanges();
         }
 
         protected override void Initialize()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            GameManager = new GameManager(this);
-            keyboardController = new KeyboardController();
-            mouseController = new MouseController();
+            player = new Link();
+            controller = new KeyboardController(player);
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            GameManager.LoadContent(Content);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            Texture2D linkTexture = Content.Load<Texture2D>("Link Modified");
+            player.LoadContent(linkTexture);
         }
-        
+
         protected override void Update(GameTime gameTime)
         {
-            keyboardController.Update(this);
-            mouseController.Update(this);
-            GameManager.Update(gameTime);
+            controller.Update(gameTime);
+            player.Update(gameTime);
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Background);
-            _spriteBatch.Begin();
-            GameManager.Draw(_spriteBatch);
-            _spriteBatch.End();
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+            player.Draw(spriteBatch);
+            spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }
