@@ -13,6 +13,7 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("player") && parameters["player"] is Entity entity)
                 {
+
                     entity.SetVelocity(new Vector2(0,0));
                 }
             }

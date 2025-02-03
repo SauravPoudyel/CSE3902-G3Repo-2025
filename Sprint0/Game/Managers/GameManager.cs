@@ -33,6 +33,12 @@ namespace Sprint0
                 {"Move", new MovementCommands.MoveCommand()},
 <<<<<<< Updated upstream
                 {"StopMove", new MovementCommands.MoveCommand()},
+=======
+                {"MoveUp", new MovementCommands.MoveUpCommand()},
+                {"MoveDown", new MovementCommands.MoveDownCommand()},
+                {"MoveLeft", new MovementCommands.MoveLeftCommand()},
+                {"MoveRight", new MovementCommands.MoveRightCommand()},
+>>>>>>> Stashed changes
 
                 {"Attack", new ActionCommands.AttackCommand()},
                 {"UseItem1", new ActionCommands.UseItemCommand(1)},

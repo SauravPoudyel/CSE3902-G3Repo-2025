@@ -3,7 +3,11 @@
   <SourceFile>C:/Users/saura/OneDrive - The Ohio State University/Documents/OHIO STATE DOCS/SP 2025/CSE3902-G3Repo-2025/Sprint0/Content/Arial.spritefont</SourceFile>
   <SourceTime>2025-01-30T19:17:03.4763505-05:00</SourceTime>
   <DestFile>C:/Users/saura/OneDrive - The Ohio State University/Documents/OHIO STATE DOCS/SP 2025/CSE3902-G3Repo-2025/Sprint0/Content/bin/DesktopGL/Content/Arial.xnb</DestFile>
+<<<<<<< Updated upstream
   <DestTime>2025-02-03T13:51:40.8062624-05:00</DestTime>
+=======
+  <DestTime>2025-02-03T13:08:50.4774195-05:00</DestTime>
+>>>>>>> Stashed changes
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2024-08-16T13:05:56-04:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

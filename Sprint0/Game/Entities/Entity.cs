@@ -50,7 +50,6 @@ namespace Sprint0
         {
             this.velocity = velocity; 
         }
-
         public ISprite GetSprite()
         {
             return sprite;
