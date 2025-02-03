@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace Sprint0.Managers
+namespace Sprint0
 {
     public class PhysicsManager
     {

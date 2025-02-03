@@ -23,9 +23,14 @@ namespace Sprint0
         protected Vector2 position; // protected so that subclasses can access it
         protected Vector2 velocity;
         protected  ISprite sprite;
+        protected Dictionary<string, ISprite> sprites;
         protected  int boundsWidth;
         protected  int boundsheight;
 
+        public Entity()
+        {
+            sprites = new Dictionary<string, ISprite>(); 
+        }
         public Vector2 GetPosition()
         {
             return position;
@@ -38,17 +43,12 @@ namespace Sprint0
 
         public Vector2 GetVelocity()
         {
-            return position;
+            return velocity;
         }
 
         public void SetVelocity(Vector2 velocity)
         {
             this.velocity = velocity; 
-        }
-
-        public void SetVelocity(float x, float y)
-        {
-            this.velocity = new Vector2(x, y);
         }
 
         public ISprite GetSprite()
@@ -61,6 +61,19 @@ namespace Sprint0
             this.sprite = sprite;
         }
 
+        public void AddSprite(string key, ISprite sprite)
+        {
+            sprites[key] = sprite;
+        }
+
+        public void SetSprite(string key)
+        {
+            if (sprites.ContainsKey(key))
+            {
+                sprite = sprites[key];
+            }
+        }
+        
         public Rectangle GetBounds()
         {
             return new Rectangle((int)position.X, (int)position.Y, boundsWidth, boundsheight);

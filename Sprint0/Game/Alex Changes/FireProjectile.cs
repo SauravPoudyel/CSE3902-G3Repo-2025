@@ -1,4 +1,0 @@
-
-class FireProjectile : IProjectile{
-    
-}

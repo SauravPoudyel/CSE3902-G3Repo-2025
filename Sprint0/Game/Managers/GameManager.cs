@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Sprint0.Managers;
 using System.Collections.Generic;
 
 namespace Sprint0
@@ -23,6 +22,7 @@ namespace Sprint0
 
                 {"Static", new GraphicCommands.DisplayStaticGameCommand()},
                 {"Animated", new GraphicCommands.DisplayAnimatedGameCommand()},
+                {"SetSprite", new GraphicCommands.SetSpriteCommand()},
                 {"CycleBlockPrev", new GraphicCommands.CycleBlockPrevCommand()},
                 {"CycleBlockNext", new GraphicCommands.CycleBlockNextCommand()},
                 {"CycleItemPrev", new GraphicCommands.CycleItemPrevCommand()},
@@ -30,10 +30,8 @@ namespace Sprint0
                 {"CycleEnemyPrev", new GraphicCommands.CycleEnemyPrevCommand()},
                 {"CycleEnemyNext", new GraphicCommands.CycleEnemyNextCommand()},
 
-                {"MoveUp", new MovementCommands.MoveUpCommand()},
-                {"MoveDown", new MovementCommands.MoveDownCommand()},
-                {"MoveLeft", new MovementCommands.MoveLeftCommand()},
-                {"MoveRight", new MovementCommands.MoveRightCommand()},
+                {"Move", new MovementCommands.MoveCommand()},
+                {"StopMove", new MovementCommands.MoveCommand()},
 
                 {"Attack", new ActionCommands.AttackCommand()},
                 {"UseItem1", new ActionCommands.UseItemCommand(1)},
@@ -68,10 +66,8 @@ namespace Sprint0
         }
         private void InitializeEntities()
         {
-            Entity player = new Player();
+            Entity player = new Player(content);
             player.SetPosition(new Vector2(Globals.SCREENWIDTH/2, 300)); 
-            player.SetSprite(new AnimatedSprite(10f));
-            player.LoadContent(content, "LinkSpriteSheet", 0, 0, 64, 64, 1); 
             entities.Add(player);
         }
 

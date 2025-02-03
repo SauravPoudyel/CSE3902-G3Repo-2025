@@ -8,17 +8,40 @@ namespace Sprint0
     public class Player: Entity
     {
 
-        public void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
+        public Player(ContentManager content) 
         {
+            AddSprite("Idle", new AnimatedSprite(0.3f));
+            sprites["Idle"].LoadContent(content, "LinkSpritesheet", 5, 2, 66, 64, 1);
 
+            AddSprite("Up", new AnimatedSprite(0.3f));
+            sprites["Up"].LoadContent(content, "LinkSpritesheet", 280, 2, 62, 64, 2);
+
+            AddSprite("Down", new AnimatedSprite(0.3f));
+            sprites["Down"].LoadContent(content, "LinkSpritesheet", 5, 2, 66, 64, 2);
+
+            AddSprite("Left", new AnimatedSprite(0.3f));
+            sprites["Left"].LoadContent(content, "LinkSpritesheet", 140, 2, 62, 66, 2); 
+
+            AddSprite("Right", new AnimatedSprite(0.3f));
+            sprites["Right"].LoadContent(content, "LinkSpritesheet", 140, 2, 62, 66, 2);    
+
+            SetSprite(sprites["Idle"]);
         }
         public override void Update(GameTime gameTime)
         {
             sprite.Update(gameTime);
             position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
-        public void Draw(SpriteBatch spriteBatch){
+        public override void Draw(SpriteBatch spriteBatch){
+            SpriteEffects effects = SpriteEffects.None;
 
+            // Flip the sprite if it is facing left -- since sprite sheet does not have left sprites
+            if (sprite == sprites["Left"])
+            {
+                effects = SpriteEffects.FlipHorizontally;
+            }
+
+            sprite.Draw(spriteBatch, position, effects);
         }
     }
 }
