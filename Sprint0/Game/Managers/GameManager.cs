@@ -31,6 +31,7 @@ namespace Sprint0
                 {"CycleEnemyNext", new GraphicCommands.CycleEnemyNextCommand()},
 
                 {"Move", new MovementCommands.MoveCommand()},
+<<<<<<< Updated upstream
                 {"StopMove", new MovementCommands.MoveCommand()},
 
                 {"Attack", new ActionCommands.AttackCommand()},

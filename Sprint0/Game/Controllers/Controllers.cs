@@ -49,6 +49,7 @@ namespace Sprint0
             KeyboardState state = Keyboard.GetState();
             Vector2 playerVelocity = Vector2.Zero;
             bool playerMoving = false;
+<<<<<<< Updated upstream
 
             if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up)) playerVelocity.Y -= 40;
             if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down)) playerVelocity.Y += 40;
@@ -70,8 +71,9 @@ namespace Sprint0
             {
                 if (state.IsKeyDown(key))
                 {
-                    Dictionary<string, object> parameters = new Dictionary<string, object>
+                    switch (key)
                     {
+<<<<<<< Updated upstream
                         { "gameManager", game.GameManager },
                         { "content", game.GameManager.GetContent() },
                         { "player", game.GameManager.GetEntity(0) }, // Player is always entity(0)
