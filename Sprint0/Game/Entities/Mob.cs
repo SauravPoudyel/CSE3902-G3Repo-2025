@@ -2,14 +2,21 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Sprint0
 {
-    public class Player: Entity
+    public class Mob : Entity
     {
-        
-        public Player(ContentManager content) 
+        private static int projectileCounter = 0;
+        private ContentManager content;
+        private float timer;
+
+        public Mob(ContentManager content) 
         {
+            this.content = content;
+            this.velocity = new Vector2(50, 0);
+
             AddSprite("Idle", new AnimatedSprite(0.3f));
             sprites["Idle"].LoadContent(content, "LinkSpritesheet", 5, 2, 66, 64, 1);
 
@@ -30,7 +37,32 @@ namespace Sprint0
         public override void Update(GameTime gameTime)
         {
             sprite.Update(gameTime);
+
             position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            
+            if (position.X > 700)
+            {
+                velocity = new Vector2(-50, 0);
+            } else if( position.X < 600)
+            {
+                velocity = new Vector2(50, 0);
+            }
+
+            /* Every 4 seconds create 3 projectiles */
+            if(timer > 4) {
+                for(int i = 1; i <= 3; i++){
+                    Dictionary<string, object> parameters = new Dictionary<string, object>
+                    {
+                        { "create", new Projectile(content) },
+                        { "entityName", "MobProjectile_" + projectileCounter++}, // THIS IS A TEMPRORARY FIX SO THAT EACH PROJECTILE HAS A UNIQUE NAME
+                        { "position", new Vector2(position.X, position.Y + -100) },
+                        { "velocity", new Vector2(-20, 0) }
+                    };
+                    commandQueue.Enqueue(new CommandRequest("CreateEntity", parameters));
+                }
+                timer = 0f;
+            }
         }
         public override void Draw(SpriteBatch spriteBatch){
             SpriteEffects effects = SpriteEffects.None;
@@ -43,6 +75,5 @@ namespace Sprint0
 
             sprite.Draw(spriteBatch, position, effects);
         }
-
     }
 }

@@ -49,7 +49,6 @@ namespace Sprint0
             KeyboardState state = Keyboard.GetState();
             Vector2 playerVelocity = Vector2.Zero;
             bool playerMoving = false;
-<<<<<<< Updated upstream
 
             if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up)) playerVelocity.Y -= 40;
             if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down)) playerVelocity.Y += 40;
@@ -60,79 +59,28 @@ namespace Sprint0
 
             if (playerMoving)
             {
-                game.GameManager.ExecuteCommand("Move", new Dictionary<string, object>{{"player", game.GameManager.GetEntity(0) }, {"velocity", playerVelocity}});
+                game.GameManager.ExecuteCommand("Move", new Dictionary<string, object>{{"player", game.GameManager.GetEntity("player") }, {"velocity", playerVelocity}});
             }
             else 
             {
-                game.GameManager.ExecuteCommand("StopeMove", new Dictionary<string, object>{{ "player", game.GameManager.GetEntity(0)}});
+                game.GameManager.ExecuteCommand("StopeMove", new Dictionary<string, object>{{ "player", game.GameManager.GetEntity("player")}});
             }
     
-=======
-        
->>>>>>> Stashed changes
             foreach (var key in keyMappings.Keys)
             {
                 if (state.IsKeyDown(key))
                 {
-                    switch (key)
+                    Dictionary<string, object> parameters = new Dictionary<string, object>
                     {
-<<<<<<< Updated upstream
                         { "gameManager", game.GameManager },
                         { "content", game.GameManager.GetContent() },
-                        { "player", game.GameManager.GetEntity(0) }, // Player is always entity(0)
+                        { "player", game.GameManager.GetEntity("player") }, // Player is always entity(0)
                         { "playerVelocity", playerVelocity }
                     };
-
+    
                     game.GameManager.ExecuteCommand(keyMappings[key], parameters);
+                
                 }
-=======
-                        case Keys.W:
-                        case Keys.Up:
-                            playerVelocity.Y -= 40;
-                            playerMoving = true;
-                            break;
-                        case Keys.A:
-                        case Keys.Left:
-                            playerVelocity.X -= 40;
-                            playerMoving = true;
-                            break;
-                        case Keys.S:
-                        case Keys.Down:
-                            playerVelocity.Y += 40;
-                            playerMoving = true;
-                            break;
-                        case Keys.D:
-                        case Keys.Right:
-                            playerVelocity.X += 40;
-                            playerMoving = true;
-                            break;
-                    }
-        
-                    if (keyMappings.ContainsKey(key))
-                    {
-                        Dictionary<string, object> parameters = new Dictionary<string, object>
-                        {
-                            { "gameManager", game.GameManager },
-                            { "content", game.GameManager.GetContent() },
-                            { "player", game.GameManager.GetEntity(0) }, // Player is always entity(0)
-                            { "playerVelocity", playerVelocity }
-                        };
-        
-                        game.GameManager.ExecuteCommand(keyMappings[key], parameters);
-                    }
-                }
-            }
-        
-            if (!playerMoving)
-            {
-                Dictionary<string, object> parameters = new Dictionary<string, object>
-                {
-                    { "gameManager", game.GameManager },
-                    { "content", game.GameManager.GetContent() },
-                    { "player", game.GameManager.GetEntity(0) }
-                };
-                game.GameManager.ExecuteCommand("StopMoveCommand", parameters);
->>>>>>> Stashed changes
             }
     
         }
@@ -150,7 +98,7 @@ namespace Sprint0
                 {
                     { "gameManager", game.GameManager },
                     { "content", game.GameManager.GetContent() },
-                    { "player", game.GameManager.GetEntity(0) }
+                    { "player", game.GameManager.GetEntity("player") }
                 };
 
                 if (state.X < 400 && state.Y < 300) game.GameManager.ExecuteCommand("Static", parameters);
@@ -164,7 +112,7 @@ namespace Sprint0
                 {
                     { "gameManager", game.GameManager },
                     { "content", game.GameManager.GetContent() },
-                    { "player", game.GameManager.GetEntity(0) }
+                    { "player", game.GameManager.GetEntity("player") }
                 };
 
                 game.GameManager.ExecuteCommand("Quit", parameters);
