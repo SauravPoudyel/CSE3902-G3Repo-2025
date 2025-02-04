@@ -1,4 +1,6 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
 namespace Sprint0
@@ -11,52 +13,33 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("player") && parameters["player"] is Entity entity)
                 {
-                    entity.SetVelocity(0, 0);
-                }
-            }
-        }
-        public class MoveUpCommand : ICommand
-        {
-            public void Execute(Dictionary<string, object> parameters)
-            {
-                if (parameters.ContainsKey("player") && parameters["player"] is Entity entity)
-                {
-                    entity.SetVelocity(0, -80);
+
+                    entity.SetVelocity(new Vector2(0,0));
                 }
             }
         }
 
-        public class MoveDownCommand : ICommand
+        public class MoveCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("player") && parameters["player"] is Entity entity)
+                if (parameters.ContainsKey("player") && parameters["player"] is Entity entity && 
+                    parameters.ContainsKey("velocity") && parameters["velocity"] is Vector2 velocity) 
                 {
-                    entity.SetVelocity(0, 80);
+                    entity.SetVelocity(velocity);
+                    entity.SetSprite(GetDirectionFromVelocity(velocity));
                 }
+                
             }
-        }
-
-        public class MoveLeftCommand : ICommand
-        {
-            public void Execute(Dictionary<string, object> parameters)
+            private string GetDirectionFromVelocity(Vector2 velocity)
             {
-                if (parameters.ContainsKey("player") && parameters["player"] is Entity entity)
-                {
-                    entity.SetVelocity(-80, 0);
-                }
-            }
-        }
-
-        public class MoveRightCommand : ICommand
-        {
-            public void Execute(Dictionary<string, object> parameters)
-            {
-                if (parameters.ContainsKey("player") && parameters["player"] is Entity entity)
-                {
-                    entity.SetVelocity(80, 0);
-                }
+                if (velocity.Y < 0) return "Up";
+                if (velocity.Y > 0) return "Down";
+                if (velocity.X < 0) return "Left";
+                if (velocity.X > 0) return "Right";
+                return "Idle";
             }
         }
     }
+
 }

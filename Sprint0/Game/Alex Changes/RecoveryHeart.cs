@@ -1,4 +1,0 @@
-
-class RecoveryHeart : IPickupItem{
-    
-}

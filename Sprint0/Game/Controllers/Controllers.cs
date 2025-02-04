@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using System.Numerics;
+using Microsoft.Xna.Framework;
 
 namespace Sprint0
 {
@@ -23,10 +23,10 @@ namespace Sprint0
                 {Keys.D1, "UseItem1"},
                 {Keys.D2, "UseItem2"},
 
-                {Keys.W, "MoveUp"},
-                {Keys.A, "MoveLeft"},
-                {Keys.S, "MoveDown"},
-                {Keys.D, "MoveRight"},
+                {Keys.W, "Move"},
+                {Keys.A, "Move"},
+                {Keys.S, "Move"},
+                {Keys.D, "Move"},
                 {Keys.Up, "MoveUp"},
                 {Keys.Left, "MoveLeft"},
                 {Keys.Down, "MoveDown"},
@@ -47,28 +47,94 @@ namespace Sprint0
         public void Update(Game1 game)
         {
             KeyboardState state = Keyboard.GetState();
+            Vector2 playerVelocity = Vector2.Zero;
+            bool playerMoving = false;
+<<<<<<< Updated upstream
 
+            if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up)) playerVelocity.Y -= 40;
+            if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down)) playerVelocity.Y += 40;
+            if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left)) playerVelocity.X -= 40;
+            if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right)) playerVelocity.X += 40;
+
+            playerMoving = (playerVelocity != Vector2.Zero);
+
+            if (playerMoving)
+            {
+                game.GameManager.ExecuteCommand("Move", new Dictionary<string, object>{{"player", game.GameManager.GetEntity(0) }, {"velocity", playerVelocity}});
+            }
+            else 
+            {
+                game.GameManager.ExecuteCommand("StopeMove", new Dictionary<string, object>{{ "player", game.GameManager.GetEntity(0)}});
+            }
+    
+=======
+        
+>>>>>>> Stashed changes
             foreach (var key in keyMappings.Keys)
             {
                 if (state.IsKeyDown(key))
                 {
-                    Dictionary<string, object> parameters = new Dictionary<string, object>
+                    switch (key)
                     {
+<<<<<<< Updated upstream
                         { "gameManager", game.GameManager },
                         { "content", game.GameManager.GetContent() },
-                        { "player", game.GameManager.GetEntity(0) } // Player is always entity(0)
+                        { "player", game.GameManager.GetEntity(0) }, // Player is always entity(0)
+                        { "playerVelocity", playerVelocity }
                     };
-                    game.GameManager.ExecuteCommand(keyMappings[key], parameters);
 
-                    if (!(key == Keys.W || key == Keys.A || key == Keys.S || key == Keys.D ||
-                        key == Keys.Up || key == Keys.Left || key == Keys.Down || key == Keys.Right))
+                    game.GameManager.ExecuteCommand(keyMappings[key], parameters);
+                }
+=======
+                        case Keys.W:
+                        case Keys.Up:
+                            playerVelocity.Y -= 40;
+                            playerMoving = true;
+                            break;
+                        case Keys.A:
+                        case Keys.Left:
+                            playerVelocity.X -= 40;
+                            playerMoving = true;
+                            break;
+                        case Keys.S:
+                        case Keys.Down:
+                            playerVelocity.Y += 40;
+                            playerMoving = true;
+                            break;
+                        case Keys.D:
+                        case Keys.Right:
+                            playerVelocity.X += 40;
+                            playerMoving = true;
+                            break;
+                    }
+        
+                    if (keyMappings.ContainsKey(key))
                     {
-                        System.Console.WriteLine("Stopping player");
-                        game.GameManager.ExecuteCommand("StopMoveCommand", parameters);
+                        Dictionary<string, object> parameters = new Dictionary<string, object>
+                        {
+                            { "gameManager", game.GameManager },
+                            { "content", game.GameManager.GetContent() },
+                            { "player", game.GameManager.GetEntity(0) }, // Player is always entity(0)
+                            { "playerVelocity", playerVelocity }
+                        };
+        
+                        game.GameManager.ExecuteCommand(keyMappings[key], parameters);
                     }
                 }
-
             }
+        
+            if (!playerMoving)
+            {
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    { "gameManager", game.GameManager },
+                    { "content", game.GameManager.GetContent() },
+                    { "player", game.GameManager.GetEntity(0) }
+                };
+                game.GameManager.ExecuteCommand("StopMoveCommand", parameters);
+>>>>>>> Stashed changes
+            }
+    
         }
     }
 

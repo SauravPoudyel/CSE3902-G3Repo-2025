@@ -30,7 +30,7 @@ namespace Sprint0
         }
         public static List<Rectangle> ExtractFrames(int startX, int startY, int frameWidth, int frameHeight, int frameCount)
         {
-            var frames = new List<Rectangle>();
+            List<Rectangle> frames = new List<Rectangle>();
             for (int i = 0; i < frameCount; i++)
             {
                 frames.Add(new Rectangle(startX + i * frameWidth, startY, frameWidth, frameHeight));
