@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace Sprint0
 {
-    public class Player: Entity
+    public class Projectile : Entity
     {
         
-        public Player(ContentManager content) 
+        public Projectile(ContentManager content) 
         {
             AddSprite("Idle", new AnimatedSprite(0.3f));
             sprites["Idle"].LoadContent(content, "LinkSpritesheet", 5, 2, 66, 64, 1);

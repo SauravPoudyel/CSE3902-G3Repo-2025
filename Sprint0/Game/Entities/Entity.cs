@@ -24,12 +24,13 @@ namespace Sprint0
         protected Vector2 velocity;
         protected  ISprite sprite;
         protected Dictionary<string, ISprite> sprites;
-        protected  int boundsWidth;
-        protected  int boundsheight;
+        protected  Rectangle bounds;
+        protected Queue<CommandRequest> commandQueue;
 
         public Entity()
         {
             sprites = new Dictionary<string, ISprite>(); 
+            commandQueue = new Queue<CommandRequest>();
         }
         public Vector2 GetPosition()
         {
@@ -49,6 +50,15 @@ namespace Sprint0
         public void SetVelocity(Vector2 velocity)
         {
             this.velocity = velocity; 
+        }
+        public Queue<CommandRequest> GetCommandQueue()
+        {
+            return commandQueue;
+        }
+
+        public void EnqueueCommand(string commandKey, Dictionary<string, object> parameters)
+        {
+            commandQueue.Enqueue(new CommandRequest(commandKey, parameters));
         }
         public ISprite GetSprite()
         {
@@ -75,7 +85,7 @@ namespace Sprint0
         
         public Rectangle GetBounds()
         {
-            return new Rectangle((int)position.X, (int)position.Y, boundsWidth, boundsheight);
+            return bounds; 
         }
 
         public virtual void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
