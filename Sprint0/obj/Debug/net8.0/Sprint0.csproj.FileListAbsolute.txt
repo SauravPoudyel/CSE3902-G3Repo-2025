@@ -104,3 +104,12 @@ C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP
 C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\Sprint0.pdb
 C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\Sprint0.genruntimeconfig.cache
 C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\ref\Sprint0.dll
+C:\Users\payto\Documents\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\Sprint0.csproj.AssemblyReference.cache
+C:\Users\payto\Documents\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\Sprint0.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\payto\Documents\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\Sprint0.AssemblyInfoInputs.cache
+C:\Users\payto\Documents\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\Sprint0.AssemblyInfo.cs
+C:\Users\payto\Documents\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\Sprint0.csproj.CoreCompileInputs.cache
+C:\Users\payto\Documents\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\Sprint0.sourcelink.json
+C:\Users\payto\Documents\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\Sprint0.dll
+C:\Users\payto\Documents\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\refint\Sprint0.dll
+C:\Users\payto\Documents\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\Sprint0.pdb

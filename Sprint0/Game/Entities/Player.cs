@@ -24,6 +24,10 @@ namespace Sprint0
 
             AddSprite("Right", new AnimatedSprite(0.3f));
             sprites["Right"].LoadContent(content, "LinkSpritesheet", 140, 2, 62, 66, 2);    
+            
+            //The sprite location is a guess as of now
+            AddSprite("Attack", new AnimatedSprite(0.3f));
+            sprites["Attack"].LoadContent(content, "LinkSpritesheet", 5, 8, 62, 64, 2);
 
             SetSprite(sprites["Idle"]);
         }
