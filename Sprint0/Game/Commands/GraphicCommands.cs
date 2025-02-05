@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
 namespace Sprint0
@@ -63,6 +64,10 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 // Implement the logic to cycle to the previous item
+                if (parameters.ContainsKey("pickupItem") && parameters["pickupItem"] is PickupItem pickupItem) 
+                {
+                    pickupItem.CycleItemPrev();
+                }
             }
         }
 
@@ -70,7 +75,10 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                // Implement the logic to cycle to the next item
+                if (parameters.ContainsKey("pickupItem") && parameters["pickupItem"] is PickupItem pickupItem) 
+                {
+                    pickupItem.CycleItemNext();
+                }
             }
         }
 
