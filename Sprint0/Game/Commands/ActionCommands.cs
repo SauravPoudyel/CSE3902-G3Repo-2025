@@ -12,8 +12,7 @@ namespace Sprint0
                 if (parameters.ContainsKey("entity") && parameters["entity"] is IEntity entity && 
                 parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    // Implement the logic for the entity to attack
-                    gameManager.GetEntity("player").SetSprite("attack");
+                    gameManager.GetEntity("player").SetSprite("Attack");
                 }
             }
         }
