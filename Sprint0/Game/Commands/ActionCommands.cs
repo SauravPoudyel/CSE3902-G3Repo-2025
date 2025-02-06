@@ -9,9 +9,10 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("entity") && parameters["entity"] is IEntity entity)
+                if (parameters.ContainsKey("entity") && parameters["entity"] is IEntity entity && 
+                parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    // Implement the logic for the entity to attack
+                    gameManager.GetEntity("player").SetSprite("Attack");
                 }
             }
         }
@@ -38,6 +39,23 @@ namespace Sprint0
                 if (parameters.ContainsKey("entity") && parameters["entity"] is IEntity entity)
                 {
                     // Implement the logic for the entity to take damage
+                }
+            }
+        }
+
+        public class CreateEntityCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("create") && parameters["create"] is Projectile entity &&
+                    parameters.ContainsKey("entityName") && parameters["entityName"] is string entityName &&
+                    parameters.ContainsKey("position") && parameters["position"] is Microsoft.Xna.Framework.Vector2 position &&
+                    parameters.ContainsKey("velocity") && parameters["velocity"] is Microsoft.Xna.Framework.Vector2 velocity)
+                {
+                    gameManager.GetEntities().Add(entityName, entity);
+                    gameManager.GetEntities()[entityName].SetPosition(position);
+                    gameManager.GetEntities()[entityName].SetVelocity(velocity);
                 }
             }
         }

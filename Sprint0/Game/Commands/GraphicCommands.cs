@@ -12,7 +12,7 @@ namespace Sprint0
                 {
                     var staticSprite = new StaticSprite();
                     staticSprite.LoadContent(gameManager.GetContent(), "LinkSpritesheet", 140, 2, 62, 62, 1);
-                    gameManager.GetEntity(0).SetSprite(staticSprite);
+                    gameManager.GetEntity("player").SetSprite(staticSprite);
                 }
             }
         }
@@ -25,33 +25,19 @@ namespace Sprint0
                 {
                     var animatedSprite = new AnimatedSprite(0.4f);
                     animatedSprite.LoadContent(gameManager.GetContent(), "LinkSpritesheet", 140, 2, 62, 62, 2);
-                    gameManager.GetEntity(0).SetSprite(animatedSprite);
+                    gameManager.GetEntity("player").SetSprite(animatedSprite);
                 }
             }
         }
 
-        public class DisplayMovingGameCommand : ICommand
+        public class SetSpriteCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("sprite") && parameters["sprite"] is ISprite sprite)
                 {
-                    var movingSprite = new AnimatedSprite(0.1f); // Assuming moving sprite is animated
-                    movingSprite.LoadContent(gameManager.GetContent(), "LinkSpritesheet", 140, 2, 62, 62, 1);
-                    gameManager.GetEntity(0).SetSprite(movingSprite);
-                }
-            }
-        }
-
-        public class DisplayMovingAnimatedGameCommand : ICommand
-        {
-            public void Execute(Dictionary<string, object> parameters)
-            {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
-                {
-                    var movingAnimatedSprite = new AnimatedSprite(0.1f); // Assuming moving animated sprite
-                    movingAnimatedSprite.LoadContent(gameManager.GetContent(), "LinkSpritesheet", 140, 2, 62, 62, 2);
-                    gameManager.GetEntity(0).SetSprite(movingAnimatedSprite);
+                    gameManager.GetEntity("player").SetSprite(sprite);
                 }
             }
         }

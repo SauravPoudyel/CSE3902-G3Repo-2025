@@ -1,18 +1,19 @@
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace Sprint0.Managers
+namespace Sprint0
 {
     public class PhysicsManager
     {
-        public void Update(GameTime gameTime, List<Entity> entities)
+        public void Update(GameTime gameTime, Dictionary<string, Entity> entities)
         {
-            foreach (var entity in entities)
+            foreach (var entity in entities.Values)
             {
                 // Implement physics updates for each entity
             }
 
-            CheckCollisions(entities); 
+            CheckCollisions(entities.Values.ToList()); 
             
         }
 

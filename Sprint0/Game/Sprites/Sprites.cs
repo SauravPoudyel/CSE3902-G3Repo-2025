@@ -9,7 +9,7 @@ namespace Sprint0
     {
         void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount);
         void Update(GameTime gameTime);
-        void Draw(SpriteBatch spriteBatch, Vector2 position);
+        void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None);
     }
 
     public class StaticSprite : ISprite
@@ -23,14 +23,11 @@ namespace Sprint0
             frame = new Rectangle(startX, startY, frameWidth, frameHeight);
         }
 
-        public void Update(GameTime gameTime)
-        {
-            // Static sprite does not need to update
-        }
+        public void Update(GameTime gameTime) { }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None)
         {
-            spriteBatch.Draw(spriteSheet, position, frame, Color.White);
+            spriteBatch.Draw(spriteSheet, position, frame, Color.White, 0f, Vector2.Zero, 1f, effects, 0f);
         }
     }
 
@@ -59,6 +56,7 @@ namespace Sprint0
         public void Update(GameTime gameTime)
         {
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (timer > frameTime)
             {
                 currentFrame = (currentFrame + 1) % frames.Count;
@@ -66,9 +64,9 @@ namespace Sprint0
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None)
         {
-            spriteBatch.Draw(spriteSheet, position, frames[currentFrame], Color.White);
+            spriteBatch.Draw(spriteSheet, position, frames[currentFrame], Color.White, 0f, Vector2.Zero, 1f, effects, 0f);
         }
     }
 
@@ -98,7 +96,7 @@ namespace Sprint0
 
         public void Update(GameTime gameTime) {}
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None)
         {
             if (font != null && !string.IsNullOrEmpty(text))
             {
@@ -106,5 +104,4 @@ namespace Sprint0
             }
         }
     }
-
 }

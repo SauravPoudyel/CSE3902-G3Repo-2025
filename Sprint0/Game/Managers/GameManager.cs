@@ -1,15 +1,16 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Sprint0.Managers;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sprint0
 {
     public class GameManager
     {
         private Dictionary<string, ICommand> commandMap;
-        private List<Entity> entities;
+        private Dictionary<string, Entity> entities;
+        private List<CommandRequest> commandRequests;
         private PhysicsManager physicsManager;
         private SpriteManager spriteManager;
         private ContentManager content;
@@ -23,6 +24,7 @@ namespace Sprint0
 
                 {"Static", new GraphicCommands.DisplayStaticGameCommand()},
                 {"Animated", new GraphicCommands.DisplayAnimatedGameCommand()},
+                {"SetSprite", new GraphicCommands.SetSpriteCommand()},
                 {"CycleBlockPrev", new GraphicCommands.CycleBlockPrevCommand()},
                 {"CycleBlockNext", new GraphicCommands.CycleBlockNextCommand()},
                 {"CycleItemPrev", new GraphicCommands.CycleItemPrevCommand()},
@@ -30,20 +32,20 @@ namespace Sprint0
                 {"CycleEnemyPrev", new GraphicCommands.CycleEnemyPrevCommand()},
                 {"CycleEnemyNext", new GraphicCommands.CycleEnemyNextCommand()},
 
-                {"MoveUp", new MovementCommands.MoveUpCommand()},
-                {"MoveDown", new MovementCommands.MoveDownCommand()},
-                {"MoveLeft", new MovementCommands.MoveLeftCommand()},
-                {"MoveRight", new MovementCommands.MoveRightCommand()},
+                {"Move", new MovementCommands.MoveCommand()},
+                {"StopMove", new MovementCommands.MoveCommand()},
 
                 {"Attack", new ActionCommands.AttackCommand()},
+                {"CreateEntity", new ActionCommands.CreateEntityCommand()}, 
                 {"UseItem1", new ActionCommands.UseItemCommand(1)},
                 {"UseItem2", new ActionCommands.UseItemCommand(2)},
                 {"Damage", new ActionCommands.DamageCommand()}
             };
 
-            entities = new List<Entity>();
+            entities = new Dictionary<string, Entity>(); 
             physicsManager = new PhysicsManager();
             spriteManager = new SpriteManager();
+            commandRequests = new List<CommandRequest>(); 
         }
 
         public ContentManager GetContent()
@@ -51,14 +53,14 @@ namespace Sprint0
             return content; 
         }
 
-        public List<Entity> GetEntities()
+        public Dictionary<string, Entity> GetEntities()
         {
             return entities; 
         }
 
-        public Entity GetEntity(int entityPos)
+        public Entity GetEntity(string entityKey)
         {
-            return entities[entityPos]; 
+            return entities[entityKey]; 
         }
 
         public void LoadContent(ContentManager contentManager)
@@ -68,32 +70,45 @@ namespace Sprint0
         }
         private void InitializeEntities()
         {
-            Entity player = new Player();
+            Entity player = new Player(content);
             player.SetPosition(new Vector2(Globals.SCREENWIDTH/2, 300)); 
-            player.SetSprite(new AnimatedSprite(10f));
-            player.LoadContent(content, "LinkSpriteSheet", 0, 0, 64, 64, 1); 
-            entities.Add(player);
+            entities.Add("player", player);
+
+            Entity mob = new Mob(content);
+            mob.SetPosition(new Vector2(Globals.SCREENWIDTH/2 + 100, 400)); 
+            entities.Add("mob", mob);
+
         }
 
         public void Update(GameTime gameTime)
         {
-            foreach (var entity in entities)
+            foreach (var entity in entities.Values)
             {
                 entity.Update(gameTime);
+                CollectCommandQueues(entity.GetCommandQueue());
             }
-
             physicsManager.Update(gameTime, entities);
             spriteManager.Update(gameTime);
+            ProcessCommandRequests();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        private void CollectCommandQueues(Queue<CommandRequest> commandQueue)
         {
-            foreach (var entity in entities)
+            while (commandQueue.Count > 0)
             {
-                entity.Draw(spriteBatch);
+                var commandRequest = commandQueue.Dequeue();
+                commandRequest.Parameters.Add("gameManager", this);
+                this.commandRequests.Add(commandRequest);
             }
+        }
 
-            spriteManager.Draw(spriteBatch);
+        private void ProcessCommandRequests()
+        {
+            foreach (var command in commandRequests)
+            {
+                ExecuteCommand(command.CommandKey, command.Parameters);
+            }
+            commandRequests.Clear();
         }
 
         public void ExecuteCommand(string commandKey, Dictionary<string, object> parameters)
@@ -102,6 +117,17 @@ namespace Sprint0
             {
                 commandMap[commandKey].Execute(parameters);
             }
+        }
+
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (var entity in entities.Values)
+            {
+                entity.Draw(spriteBatch);
+            }
+
+            spriteManager.Draw(spriteBatch);
         }
 
         public void SetSprite(ISprite sprite)

@@ -16,6 +16,7 @@ namespace Sprint0
         void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount);
         void Update(GameTime gameTime);
         void Draw(SpriteBatch spriteBatch);
+        void SetSprite(string key);
     }
     
     public class Entity : IEntity
@@ -23,9 +24,15 @@ namespace Sprint0
         protected Vector2 position; // protected so that subclasses can access it
         protected Vector2 velocity;
         protected  ISprite sprite;
-        protected  int boundsWidth;
-        protected  int boundsheight;
+        protected Dictionary<string, ISprite> sprites;
+        protected  Rectangle bounds;
+        protected Queue<CommandRequest> commandQueue;
 
+        public Entity()
+        {
+            sprites = new Dictionary<string, ISprite>(); 
+            commandQueue = new Queue<CommandRequest>();
+        }
         public Vector2 GetPosition()
         {
             return position;
@@ -38,19 +45,22 @@ namespace Sprint0
 
         public Vector2 GetVelocity()
         {
-            return position;
+            return velocity;
         }
 
         public void SetVelocity(Vector2 velocity)
         {
             this.velocity = velocity; 
         }
-
-        public void SetVelocity(float x, float y)
+        public Queue<CommandRequest> GetCommandQueue()
         {
-            this.velocity = new Vector2(x, y);
+            return commandQueue;
         }
 
+        public void EnqueueCommand(string commandKey, Dictionary<string, object> parameters)
+        {
+            commandQueue.Enqueue(new CommandRequest(commandKey, parameters));
+        }
         public ISprite GetSprite()
         {
             return sprite;
@@ -61,9 +71,22 @@ namespace Sprint0
             this.sprite = sprite;
         }
 
+        public void AddSprite(string key, ISprite sprite)
+        {
+            sprites[key] = sprite;
+        }
+
+        public void SetSprite(string key)
+        {
+            if (sprites.ContainsKey(key))
+            {
+                sprite = sprites[key];
+            }
+        }
+        
         public Rectangle GetBounds()
         {
-            return new Rectangle((int)position.X, (int)position.Y, boundsWidth, boundsheight);
+            return bounds; 
         }
 
         public virtual void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
