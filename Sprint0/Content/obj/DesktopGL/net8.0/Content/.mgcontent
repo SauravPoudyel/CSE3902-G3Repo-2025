@@ -4,15 +4,17 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/manzl/Documents/GitHub/CSE3902-G3Repo-2025/Sprint0/Content/2DTanksSprites.png</File>
-    <File>C:/Users/manzl/Documents/GitHub/CSE3902-G3Repo-2025/Sprint0/Content/Arial.spritefont</File>
-    <File>C:/Users/manzl/Documents/GitHub/CSE3902-G3Repo-2025/Sprint0/Content/NES - The Legend of Zelda - Link.png</File>
-    <File>C:/Users/manzl/Documents/GitHub/CSE3902-G3Repo-2025/Sprint0/Content/Test.png</File>
+    <File>D:/CSE 3902/CSE3902-G3Repo-2025/Sprint0/Content/2DTanksSprites.png</File>
+    <File>D:/CSE 3902/CSE3902-G3Repo-2025/Sprint0/Content/Arial.spritefont</File>
+    <File>D:/CSE 3902/CSE3902-G3Repo-2025/Sprint0/Content/NES - The Legend of Zelda - Link.png</File>
+    <File>D:/CSE 3902/CSE3902-G3Repo-2025/Sprint0/Content/TDTanksAllSprites.png</File>
+    <File>D:/CSE 3902/CSE3902-G3Repo-2025/Sprint0/Content/Test.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File>LinkSpritesheet.png</File>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
 </SourceFileCollection>

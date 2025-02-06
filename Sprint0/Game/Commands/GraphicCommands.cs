@@ -47,7 +47,10 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                // Implement the logic to cycle to the previous block
+                if (parameters.ContainsKey("blocks") && parameters["blocks"] is Blocks blocks)
+                {
+                    blocks.CycleBlockPrev();
+                }
             }
         }
 
@@ -55,7 +58,10 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                // Implement the logic to cycle to the next block
+                if (parameters.ContainsKey("blocks") && parameters["blocks"] is Blocks blocks)
+                {
+                    blocks.CycleBlockNext();
+                }
             }
         }
 
