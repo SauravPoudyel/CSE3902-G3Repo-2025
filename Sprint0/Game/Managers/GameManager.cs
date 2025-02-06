@@ -81,6 +81,10 @@ namespace Sprint0
             PickupItem pickupItem = new PickupItem(content);
             pickupItem.SetPosition(new Vector2(Globals.SCREENWIDTH/2 + 50, 400)); 
             entities.Add("pickupItem", pickupItem);
+
+            Blocks blocks = new Blocks(content);
+            blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 + 256, 400));
+            entities.Add("blocks", blocks);
         }
 
         public void Update(GameTime gameTime)

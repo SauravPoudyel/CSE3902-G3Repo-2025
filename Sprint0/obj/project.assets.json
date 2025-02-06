@@ -238,23 +238,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\manzl\\.nuget\\packages\\": {},
+    "C:\\Users\\Daoping Huang\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\manzl\\Documents\\GitHub\\CSE3902-G3Repo-2025\\Sprint0\\Sprint0.csproj",
+      "projectUniqueName": "D:\\CSE 3902\\CSE3902-G3Repo-2025\\Sprint0\\Sprint0.csproj",
       "projectName": "Sprint0",
-      "projectPath": "C:\\Users\\manzl\\Documents\\GitHub\\CSE3902-G3Repo-2025\\Sprint0\\Sprint0.csproj",
-      "packagesPath": "C:\\Users\\manzl\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\manzl\\Documents\\GitHub\\CSE3902-G3Repo-2025\\Sprint0\\obj\\",
+      "projectPath": "D:\\CSE 3902\\CSE3902-G3Repo-2025\\Sprint0\\Sprint0.csproj",
+      "packagesPath": "C:\\Users\\Daoping Huang\\.nuget\\packages\\",
+      "outputPath": "D:\\CSE 3902\\CSE3902-G3Repo-2025\\Sprint0\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\manzl\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Daoping Huang\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

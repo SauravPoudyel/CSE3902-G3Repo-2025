@@ -10,8 +10,9 @@ namespace Sprint0
         
         public Projectile(ContentManager content) 
         {
+            //need to rotate
             AddSprite("Idle", new AnimatedSprite(0.3f));
-            sprites["Idle"].LoadContent(content, "LinkSpritesheet", 5, 2, 66, 64, 1);
+            sprites["Idle"].LoadContent(content, "2DTanksSprites", 0, 750, 177, 53, 1);
 
             AddSprite("Up", new AnimatedSprite(0.3f));
             sprites["Up"].LoadContent(content, "LinkSpritesheet", 280, 2, 62, 64, 2);
@@ -36,7 +37,8 @@ namespace Sprint0
             SpriteEffects effects = SpriteEffects.None;
 
             // Flip the sprite if it is facing left -- since sprite sheet does not have left sprites
-            if (sprite == sprites["Left"])
+            //Changed to correct the new projectile(Payton)
+            if (sprite == sprites["Idle"])
             {
                 effects = SpriteEffects.FlipHorizontally;
             }
