@@ -141,3 +141,4 @@ C:\Users\manzl\Documents\GitHub\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\ref
 C:\Users\manzl\Documents\GitHub\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\Sprint0.pdb
 C:\Users\manzl\Documents\GitHub\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\Sprint0.genruntimeconfig.cache
 C:\Users\manzl\Documents\GitHub\CSE3902-G3Repo-2025\Sprint0\obj\Debug\net8.0\ref\Sprint0.dll
+C:\Users\manzl\Documents\GitHub\CSE3902-G3Repo-2025\Sprint0\bin\Debug\net8.0\Content\TDTanksAllSprites.xnb

@@ -12,9 +12,11 @@ namespace Sprint0
     public class KeyboardController : IController
     {
         private Dictionary<Keys, string> keyMappings;
+        private KeyboardState previousKeyboardState;
 
         public KeyboardController()
         {
+            previousKeyboardState = new KeyboardState();
             keyMappings = new Dictionary<Keys, string>
             {
                 {Keys.Escape, "Quit"},
@@ -46,14 +48,14 @@ namespace Sprint0
 
         public void Update(Game1 game)
         {
-            KeyboardState state = Keyboard.GetState();
+            KeyboardState currentKeyboardState = Keyboard.GetState();
             Vector2 playerVelocity = Vector2.Zero;
             bool playerMoving = false;
 
-            if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up)) playerVelocity.Y -= 40;
-            if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down)) playerVelocity.Y += 40;
-            if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left)) playerVelocity.X -= 40;
-            if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right)) playerVelocity.X += 40;
+            if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up)) playerVelocity.Y -= 40;
+            if (currentKeyboardState.IsKeyDown(Keys.S) || currentKeyboardState.IsKeyDown(Keys.Down)) playerVelocity.Y += 40;
+            if (currentKeyboardState.IsKeyDown(Keys.A) || currentKeyboardState.IsKeyDown(Keys.Left)) playerVelocity.X -= 40;
+            if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.Right)) playerVelocity.X += 40;
 
             playerMoving = (playerVelocity != Vector2.Zero);
 
@@ -68,7 +70,7 @@ namespace Sprint0
     
             foreach (var key in keyMappings.Keys)
             {
-                if (state.IsKeyDown(key))
+                if (currentKeyboardState.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key))
                 {
                     Dictionary<string, object> parameters = new Dictionary<string, object>
                     {
@@ -78,12 +80,10 @@ namespace Sprint0
                         { "playerVelocity", playerVelocity },
                         { "pickupItem", game.GameManager.GetEntity("pickupItem") }
                     };
-    
                     game.GameManager.ExecuteCommand(keyMappings[key], parameters);
-                
                 }
             }
-    
+            previousKeyboardState = currentKeyboardState;
         }
     }
 
