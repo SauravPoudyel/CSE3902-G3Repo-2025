@@ -16,6 +16,7 @@ namespace Sprint0
         void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount);
         void Update(GameTime gameTime);
         void Draw(SpriteBatch spriteBatch);
+        void SetSprite(string key);
     }
     
     public class Entity : IEntity
