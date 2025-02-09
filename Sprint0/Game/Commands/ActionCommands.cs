@@ -36,9 +36,13 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("entity") && parameters["entity"] is IEntity entity)
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
                     // Implement the logic for the entity to take damage
+                    if (gameManager.GetEntity("player").GetSprite() is AnimatedSprite player)
+                    {
+                        player.Damage();
+                    }
                 }
             }
         }
