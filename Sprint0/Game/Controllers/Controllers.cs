@@ -12,9 +12,10 @@ namespace Sprint0
     public class KeyboardController : IController
     {
         private Dictionary<Keys, string> keyMappings;
-
+        private KeyboardState previousKeyboardState;
         public KeyboardController()
         {
+            previousKeyboardState = new KeyboardState();
             keyMappings = new Dictionary<Keys, string>
             {
                 {Keys.Escape, "Quit"},
@@ -68,21 +69,23 @@ namespace Sprint0
     
             foreach (var key in keyMappings.Keys)
             {
-                if (state.IsKeyDown(key))
+                if (state.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key))
                 {
                     Dictionary<string, object> parameters = new Dictionary<string, object>
                     {
                         { "gameManager", game.GameManager },
                         { "content", game.GameManager.GetContent() },
                         { "player", game.GameManager.GetEntity("player") }, // Player is always entity(0)
-                        { "playerVelocity", playerVelocity }
+                        { "playerVelocity", playerVelocity },
+                        { "pickupItem", game.GameManager.GetEntity("pickupItem") },
+                        { "blocks", game.GameManager.GetEntity("blocks") }
                     };
     
                     game.GameManager.ExecuteCommand(keyMappings[key], parameters);
                 
                 }
             }
-    
+            previousKeyboardState = state;
         }
     }
 
