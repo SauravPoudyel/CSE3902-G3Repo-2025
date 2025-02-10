@@ -13,18 +13,7 @@ namespace Sprint0
             //need to rotate
             AddSprite("Idle", new AnimatedSprite(0.3f));
             sprites["Idle"].LoadContent(content, "2DTanksSprites", 0, 750, 177, 53, 1);
-
-            AddSprite("Up", new AnimatedSprite(0.3f));
-            sprites["Up"].LoadContent(content, "LinkSpritesheet", 280, 2, 62, 64, 2);
-
-            AddSprite("Down", new AnimatedSprite(0.3f));
-            sprites["Down"].LoadContent(content, "LinkSpritesheet", 5, 2, 66, 64, 2);
-
-            AddSprite("Left", new AnimatedSprite(0.3f));
-            sprites["Left"].LoadContent(content, "LinkSpritesheet", 140, 2, 62, 66, 2); 
-
-            AddSprite("Right", new AnimatedSprite(0.3f));
-            sprites["Right"].LoadContent(content, "LinkSpritesheet", 140, 2, 62, 66, 2);    
+  
 
             SetSprite(sprites["Idle"]);
         }
