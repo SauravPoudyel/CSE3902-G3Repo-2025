@@ -78,7 +78,8 @@ namespace Sprint0
                         { "player", game.GameManager.GetEntity("player") }, // Player is always entity(0)
                         { "playerVelocity", playerVelocity },
                         { "pickupItem", game.GameManager.GetEntity("pickupItem") },
-                        { "blocks", game.GameManager.GetEntity("blocks") }
+                        { "blocks", game.GameManager.GetEntity("blocks") },
+                        { "mob", game.GameManager.GetEntity("mob") }
                     };
     
                     game.GameManager.ExecuteCommand(keyMappings[key], parameters);

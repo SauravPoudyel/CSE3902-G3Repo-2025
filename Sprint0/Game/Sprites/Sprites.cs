@@ -7,10 +7,9 @@ namespace Sprint0
 {
     public interface ISprite
     {
-
         void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount);
         void Update(GameTime gameTime);
-        void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None);
+        void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, Color? color = null);
     }
 
     public class StaticSprite : ISprite
@@ -26,9 +25,9 @@ namespace Sprint0
 
         public void Update(GameTime gameTime) { }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, Color? color = null)
         {
-            spriteBatch.Draw(spriteSheet, position, frame, Color.White, 0f, Vector2.Zero, 1f, effects, 0f);
+            spriteBatch.Draw(spriteSheet, position, frame, color ?? Color.White, 0f, Vector2.Zero, 1f, effects, 0f);
         }
     }
 
@@ -40,10 +39,6 @@ namespace Sprint0
         private float frameTime;
         private float timer;
         private bool isDamaged;
-        public void Damage()
-        {
-            isDamaged = true;
-        }
 
         public AnimatedSprite(float frameTime)
         {
@@ -60,8 +55,15 @@ namespace Sprint0
             frames = SpriteManager.ExtractFrames(startX, startY, frameWidth, frameHeight, frameCount);
         }
 
+        public void Damage()
+        {
+            isDamaged = true;
+        }
+
         public void Update(GameTime gameTime)
         {
+            if (frames.Count == 0) return;
+
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (timer > frameTime)
             {
@@ -71,10 +73,12 @@ namespace Sprint0
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, Color? color = null)
         {
-            Color color = isDamaged ? Color.Red : Color.White;
-            spriteBatch.Draw(spriteSheet, position, frames[currentFrame], color, 0f, Vector2.Zero, 1f, effects, 0f);
+            if (frames.Count == 0) return;
+
+            Color drawColor = isDamaged ? Color.Red : color ?? Color.White;
+            spriteBatch.Draw(spriteSheet, position, frames[currentFrame], drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
         }
     }
 
@@ -104,11 +108,11 @@ namespace Sprint0
 
         public void Update(GameTime gameTime) {}
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, Color? color = null)
         {
             if (font != null && !string.IsNullOrEmpty(text))
             {
-                spriteBatch.DrawString(font, text, position, color);
+                spriteBatch.DrawString(font, text, position, color ?? this.color);
             }
         }
     }
