@@ -40,10 +40,11 @@ namespace Sprint0
         public override void Draw(SpriteBatch spriteBatch)
         {
             SpriteEffects effects = SpriteEffects.None;
-            Color flashColor = colors[colorIndex];
-
-            // Pass the color effect directly into sprite.Draw()
-            sprite.Draw(spriteBatch, position, effects, flashColor);
+            Color flashColor = colors[colorIndex]; // Selects the current flashing color
+            
+            sprite.Draw(spriteBatch, position, effects, 0f, null, flashColor);
         }
+
+
     }
 }

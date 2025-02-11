@@ -70,7 +70,8 @@ namespace Sprint0
         public override void Draw(SpriteBatch spriteBatch)
         {
             SpriteEffects effects = SpriteEffects.None;
-            sprite.Draw(spriteBatch, position, effects);
+
+            sprite.Draw(spriteBatch, position, effects, 0f);
         }
     }
 }

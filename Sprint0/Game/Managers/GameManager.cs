@@ -92,14 +92,14 @@ namespace Sprint0
             foreach (var entity in entities.Values)
             {
                 entity.Update(gameTime);
-                CollectCommandQueues(entity.GetCommandQueue());
+                CollectCommandRequests(entity.GetCommandQueue());
             }
             physicsManager.Update(gameTime, entities);
             spriteManager.Update(gameTime);
             ProcessCommandRequests();
         }
 
-        private void CollectCommandQueues(Queue<CommandRequest> commandQueue)
+        private void CollectCommandRequests(Queue<CommandRequest> commandQueue)
         {
             while (commandQueue.Count > 0)
             {
