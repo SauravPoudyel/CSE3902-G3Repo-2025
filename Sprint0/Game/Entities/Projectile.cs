@@ -1,39 +1,50 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
+using System;
 
 namespace Sprint0
 {
     public class Projectile : Entity
     {
-        
-        public Projectile(ContentManager content) 
-        {
-            //need to rotate
-            AddSprite("Idle", new AnimatedSprite(0.3f));
-            sprites["Idle"].LoadContent(content, "2DTanksSprites", 0, 750, 177, 53, 1);
-  
+        private float colorChangeTimer;
+        private readonly Color[] colors = { Color.Red, Color.Yellow, Color.Purple, Color.Orange };
+        private int colorIndex;
 
-            SetSprite(sprites["Idle"]);
+        public Projectile(ContentManager content)
+        {
+            // Use a static sprite from the sprite sheet
+            AddSprite("Default", new StaticSprite());
+            sprites["Default"].LoadContent(content, "TDTanksAllSprites", 0, 1028, 34, 32, 1); 
+            SetSprite("Default");
+
+            velocity = new Vector2(200, 0); // Projectile speed
+            colorIndex = 0;
+            colorChangeTimer = 0f;
         }
+
         public override void Update(GameTime gameTime)
         {
             sprite.Update(gameTime);
             position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-        }
-        public override void Draw(SpriteBatch spriteBatch){
-            SpriteEffects effects = SpriteEffects.None;
 
-            // Flip the sprite if it is facing left -- since sprite sheet does not have left sprites
-            //Changed to correct the new projectile(Payton)
-            if (sprite == sprites["Idle"])
+            // Flashing effect - switch colors periodically
+            colorChangeTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (colorChangeTimer > 0.1f)
             {
-                effects = SpriteEffects.FlipHorizontally;
+                colorIndex = (colorIndex + 1) % colors.Length;
+                colorChangeTimer = 0f;
             }
-
-            sprite.Draw(spriteBatch, position, effects);
         }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            SpriteEffects effects = SpriteEffects.None;
+            Color flashColor = colors[colorIndex]; // Selects the current flashing color
+            
+            sprite.Draw(spriteBatch, position, effects, 0f, null, flashColor);
+        }
+
 
     }
 }

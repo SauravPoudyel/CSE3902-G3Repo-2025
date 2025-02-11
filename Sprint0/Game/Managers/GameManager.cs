@@ -79,11 +79,11 @@ namespace Sprint0
             entities.Add("mob", mob);
 
             PickupItem pickupItem = new PickupItem(content);
-            pickupItem.SetPosition(new Vector2(Globals.SCREENWIDTH/2 + 50, 400)); 
+            pickupItem.SetPosition(new Vector2(Globals.SCREENWIDTH/2 + 170, 180)); 
             entities.Add("pickupItem", pickupItem);
 
             Blocks blocks = new Blocks(content);
-            blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 + 256, 400));
+            blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 - 300, 480));
             entities.Add("blocks", blocks);
         }
 
@@ -92,14 +92,14 @@ namespace Sprint0
             foreach (var entity in entities.Values)
             {
                 entity.Update(gameTime);
-                CollectCommandQueues(entity.GetCommandQueue());
+                CollectCommandRequests(entity.GetCommandQueue());
             }
             physicsManager.Update(gameTime, entities);
             spriteManager.Update(gameTime);
             ProcessCommandRequests();
         }
 
-        private void CollectCommandQueues(Queue<CommandRequest> commandQueue)
+        private void CollectCommandRequests(Queue<CommandRequest> commandQueue)
         {
             while (commandQueue.Count > 0)
             {

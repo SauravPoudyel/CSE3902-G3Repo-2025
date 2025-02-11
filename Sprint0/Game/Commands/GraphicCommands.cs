@@ -92,7 +92,11 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                // Implement the logic to cycle to the previous enemy/NPC
+                // Implement the logic to cycle to the next enemy/NPC
+                if (parameters.ContainsKey("mob") && parameters["mob"] is Mob mob) 
+                {
+                    mob.CycleEnemyPrev();
+                }
             }
         }
 
@@ -101,6 +105,10 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 // Implement the logic to cycle to the next enemy/NPC
+                if (parameters.ContainsKey("mob") && parameters["mob"] is Mob mob) 
+                {
+                    mob.CycleEnemyNext();
+                }
             }
         }
     }
