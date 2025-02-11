@@ -38,6 +38,13 @@ namespace Sprint0
         {
             GameManager.LoadContent(Content);
         }
+
+        public void ResetGame()
+        {
+            GameManager = new GameManager(this);
+
+            GameManager.LoadContent(Content);
+        }
         
         protected override void Update(GameTime gameTime)
         {
