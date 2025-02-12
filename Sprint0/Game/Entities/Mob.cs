@@ -22,10 +22,11 @@ namespace Sprint0
         private ISprite spriteSecondary;
         private MobType mobType;
         private int mobPhase; // Tracks phase of "L" movement for SmallEnemy
-        public List<Rectangle> explosionFrames = new List<Rectangle>();
         Boolean isExploding;
         private int explosionPhase = 0;
-        private float explosionTimer = 0f;
+        private float explodeTimer = 0f; //explodeTimer is when explosion starts
+        private float explosionTimer = 0f; //explosionTimer is once the explosion starts 
+
 
         public Mob(ContentManager content) 
         {
@@ -48,13 +49,13 @@ namespace Sprint0
 
 
             AddSprite("Explosion1", new AnimatedSprite(0.3f));
-            sprites["Explosion1"].LoadContent(content, "TDTanksAllSprites", 765, 508, 112, 112, 1);
+            sprites["Explosion1"].LoadContent(content, "TDTanksAllSprites", 765, 508, 114, 112, 1);
             
             AddSprite("Explosion2", new AnimatedSprite(0.3f));
-            sprites["Explosion2"].LoadContent(content, "TDTanksAllSprites", 640, 383, 112, 112, 1);
+            sprites["Explosion2"].LoadContent(content, "TDTanksAllSprites", 641, 383, 125, 125, 1);
 
             AddSprite("Explosion3", new AnimatedSprite(0.3f));
-            sprites["Explosion3"].LoadContent(content, "TDTanksAllSprites", 640, 258, 112, 112, 1);
+            sprites["Explosion3"].LoadContent(content, "TDTanksAllSprites", 641, 256, 125, 126, 1);
 
             SetSprite(sprites["ExplodingTank"]);
             SetSpriteSecondary(sprites["Cannon"]);
@@ -92,17 +93,19 @@ namespace Sprint0
             if (isExploding) 
             {
                 HandleExplosion(gameTime);
+                System.Console.WriteLine("Exploding"); 
             } 
-                if (mobType == MobType.BossTank)
-                {
-                    UpdateBossTank();
-                }
-                else if (mobType == MobType.SmallEnemy)
-                {
-                    UpdateSmallEnemy(gameTime);
-                } else if (mobType == MobType.ExplodingTank) 
-                {
-                    UpdateExplodingTank(gameTime);
+            if (mobType == MobType.BossTank)
+            {
+                UpdateBossTank();
+            }
+            else if (mobType == MobType.SmallEnemy)
+            {
+                UpdateSmallEnemy(gameTime);
+            } else if (mobType == MobType.ExplodingTank) 
+            {
+                System.Console.WriteLine("Exploding tank"); 
+                UpdateExplodingTank(gameTime);
             }
             
 
@@ -115,6 +118,7 @@ namespace Sprint0
                 SpawnProjectile();
                 shootTimer = 0f;
             }
+
         }
 
         public void UpdateSmallEnemy(GameTime gameTime)
@@ -153,11 +157,16 @@ namespace Sprint0
             else if (position.X < 600)
                 velocity = new Vector2(50, 0);
 
-            if(shootTimer > 4) {
+            explodeTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            
+            if(explodeTimer > 2) {
+                System.Console.WriteLine("Exploding 1"); 
                 isExploding = true;
-                explosionPhase = 0;
                 explosionTimer = 0f;
-                shootTimer = 0f;
+                explodeTimer = 0; 
+            }
+            if (explosionPhase > 2) {
+                isExploding = false;
             }
         }
 
