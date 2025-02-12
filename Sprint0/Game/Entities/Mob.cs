@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Threading;
 
 namespace Sprint0
@@ -11,7 +13,7 @@ namespace Sprint0
         enum MobType {
             BossTank,
             SmallEnemy,
-
+            ExplodingTank
         }
         private static int projectileCounter = 0;
         private ContentManager content;
@@ -20,6 +22,10 @@ namespace Sprint0
         private ISprite spriteSecondary;
         private MobType mobType;
         private int mobPhase; // Tracks phase of "L" movement for SmallEnemy
+        public List<Rectangle> explosionFrames = new List<Rectangle>();
+        Boolean isExploding;
+        private int explosionPhase = 0;
+        private float explosionTimer = 0f;
 
         public Mob(ContentManager content) 
         {
@@ -37,7 +43,20 @@ namespace Sprint0
             AddSprite("Cannon", new AnimatedSprite(0.3f));
             sprites["Cannon"].LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);  
 
-            SetSprite(sprites["BossTank"]);
+            AddSprite("ExplodingTank", new AnimatedSprite(0.3f));
+            sprites["ExplodingTank"].LoadContent(content, "TDTanksAllSprites", 768, 256, 95, 113, 1);  
+
+
+            AddSprite("Explosion1", new AnimatedSprite(0.3f));
+            sprites["Explosion1"].LoadContent(content, "TDTanksAllSprites", 765, 508, 112, 112, 1);
+            
+            AddSprite("Explosion2", new AnimatedSprite(0.3f));
+            sprites["Explosion2"].LoadContent(content, "TDTanksAllSprites", 640, 383, 112, 112, 1);
+
+            AddSprite("Explosion3", new AnimatedSprite(0.3f));
+            sprites["Explosion3"].LoadContent(content, "TDTanksAllSprites", 640, 258, 112, 112, 1);
+
+            SetSprite(sprites["ExplodingTank"]);
             SetSpriteSecondary(sprites["Cannon"]);
         }
         private void SetEnemyType(MobType mobType) {
@@ -52,28 +71,40 @@ namespace Sprint0
             if(mobType == MobType.BossTank) {
                 SetEnemyType(MobType.SmallEnemy);
             } else if (mobType == MobType.SmallEnemy) {
+                SetEnemyType(MobType.ExplodingTank);
+            } else if (mobType == MobType.ExplodingTank) {
                 SetEnemyType(MobType.BossTank);
-            }        
+            }
         }
         public void CycleEnemyPrev() {
             if(mobType == MobType.BossTank) {
                 SetEnemyType(MobType.SmallEnemy);
             } else if (mobType == MobType.SmallEnemy) {
+                SetEnemyType(MobType.ExplodingTank);
+            } else if (mobType == MobType.ExplodingTank) {
                 SetEnemyType(MobType.BossTank);
-            }            
+            }
         }
         public override void Update(GameTime gameTime)
         {
             sprite.Update(gameTime);
 
-            if (mobType == MobType.BossTank)
+            if (isExploding) 
             {
-                UpdateBossTank();
+                HandleExplosion(gameTime);
+            } 
+                if (mobType == MobType.BossTank)
+                {
+                    UpdateBossTank();
+                }
+                else if (mobType == MobType.SmallEnemy)
+                {
+                    UpdateSmallEnemy(gameTime);
+                } else if (mobType == MobType.ExplodingTank) 
+                {
+                    UpdateExplodingTank(gameTime);
             }
-            else if (mobType == MobType.SmallEnemy)
-            {
-                UpdateSmallEnemy(gameTime);
-            }
+            
 
             position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
             
@@ -115,6 +146,36 @@ namespace Sprint0
                 velocity = new Vector2(50, 0);
         }
 
+        public void UpdateExplodingTank(GameTime gameTime) {
+
+            if (position.X > 700)
+                velocity = new Vector2(-50, 0);
+            else if (position.X < 600)
+                velocity = new Vector2(50, 0);
+
+            if(shootTimer > 4) {
+                isExploding = true;
+                explosionPhase = 0;
+                explosionTimer = 0f;
+                shootTimer = 0f;
+            }
+        }
+
+        private void HandleExplosion(GameTime gameTime){
+            explosionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if(explosionTimer > 0.5f) {
+                switch (explosionPhase)
+            {
+                case 0: SetSprite("Explosion1"); break;
+                case 1: SetSprite("Explosion2"); break;
+                case 2: SetSprite("Explosion3"); break;
+            }
+            explosionPhase++;
+            explosionTimer = 0f;
+            }
+    
+        }
+
         public void SpawnProjectile()
         {
             float speed = 60f;
@@ -146,7 +207,7 @@ namespace Sprint0
             {
                 cannonPos.X = 47;
                 cannonPos.Y = 23;
-            } else if(mobType == MobType.SmallEnemy) 
+            } else if(mobType == MobType.SmallEnemy || mobType == MobType.ExplodingTank) 
             {
                 cannonPos.X = 34;
                 cannonPos.Y = 32;
