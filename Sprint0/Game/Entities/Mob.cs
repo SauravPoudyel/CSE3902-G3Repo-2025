@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Threading;
@@ -10,11 +11,13 @@ namespace Sprint0
 {
     public class Mob : Entity
     {
-        enum MobType {
+        enum MobType
+        {
             BossTank,
             SmallEnemy,
             ExplodingTank
         }
+
         private static int projectileCounter = 0;
         private ContentManager content;
         private float movementTimer;
@@ -26,15 +29,18 @@ namespace Sprint0
         private int explosionPhase = 0;
         private float explodeTimer = 0f; //explodeTimer is when explosion starts
         private float explosionTimer = 0f; //explosionTimer is once the explosion starts 
+        private float cannonRotation = MathHelper.ToRadians(200);
+        private float cannonAngularVelocity = MathHelper.ToRadians(20);
+        // Cannon oscillates between 90 (π/2) and 270 (3π/2)
+        private const float CannonLowerBound = MathHelper.PiOver2;
+        private const float CannonUpperBound = MathHelper.Pi + MathHelper.PiOver2;
 
-
-        public Mob(ContentManager content) 
+        public Mob(ContentManager content)
         {
             this.content = content;
-            this.velocity = new Vector2(50, 0);
+            this.velocity = new Vector2(80, 0);
             this.mobType = MobType.BossTank;
-            //Original boss tank params (641, 510, 123, 150)
-            
+
             AddSprite("BossTank", new AnimatedSprite(0.3f));
             sprites["BossTank"].LoadContent(content, "TDTanksAllSprites", 641, 661, 123, 144, 1);
 
@@ -42,7 +48,7 @@ namespace Sprint0
             sprites["SmallEnemy"].LoadContent(content, "TDTanksAllSprites", 768, 256, 95, 113, 1);
 
             AddSprite("Cannon", new AnimatedSprite(0.3f));
-            sprites["Cannon"].LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);  
+            sprites["Cannon"].LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);
 
             AddSprite("ExplodingTank", new AnimatedSprite(0.3f));
             sprites["ExplodingTank"].LoadContent(content, "TDTanksAllSprites", 768, 256, 95, 113, 1);  
@@ -60,16 +66,22 @@ namespace Sprint0
             SetSprite(sprites["ExplodingTank"]);
             SetSpriteSecondary(sprites["Cannon"]);
         }
-        private void SetEnemyType(MobType mobType) {
+
+        private void SetEnemyType(MobType mobType)
+        {
             this.mobType = mobType;
             this.SetSprite(this.mobType.ToString());
         }
 
-        public string GetEnemyType() {
+        public string GetEnemyType()
+        {
             return mobType.ToString();
         }
-        public void CycleEnemyNext() {
-            if(mobType == MobType.BossTank) {
+
+        public void CycleEnemyNext()
+        {
+            if (mobType == MobType.BossTank)
+            {
                 SetEnemyType(MobType.SmallEnemy);
             } else if (mobType == MobType.SmallEnemy) {
                 SetEnemyType(MobType.ExplodingTank);
@@ -88,6 +100,7 @@ namespace Sprint0
                 SetEnemyType(MobType.SmallEnemy);
             }
         }
+
         public override void Update(GameTime gameTime)
         {
             sprite.Update(gameTime);
@@ -101,7 +114,7 @@ namespace Sprint0
             {
                 UpdateBossTank();
             }
-            else if (mobType == MobType.SmallEnemy)
+            else
             {
                 UpdateSmallEnemy(gameTime);
             } else if (mobType == MobType.ExplodingTank) 
@@ -112,8 +125,19 @@ namespace Sprint0
             
 
             position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            
-            // Update separate shooting timer
+
+            cannonRotation += cannonAngularVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (cannonRotation > CannonUpperBound)
+            {
+                cannonRotation = CannonUpperBound;
+                cannonAngularVelocity = -System.Math.Abs(cannonAngularVelocity);
+            }
+            else if (cannonRotation < CannonLowerBound)
+            {
+                cannonRotation = CannonLowerBound;
+                cannonAngularVelocity = System.Math.Abs(cannonAngularVelocity);
+            }
+
             shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (shootTimer > 4)
             {
@@ -125,21 +149,26 @@ namespace Sprint0
 
         public void UpdateSmallEnemy(GameTime gameTime)
         {
-            float movementTime = 2.0f; // time before switching direction
-            float speed = 50f;
-
+            float speed = 200f;
             switch (mobPhase)
             {
-                case 0: velocity = new Vector2(speed, 0); break; // move Right
-                case 1: velocity = new Vector2(0, speed); break; // move Down
-                case 2: velocity = new Vector2(-speed, 0); break; // move Left
-                case 3: velocity = new Vector2(0, -speed); break; // move Up
+                case 0:
+                    velocity = new Vector2(speed, 0);
+                    break;
+                case 1:
+                    velocity = new Vector2(0, speed);
+                    break;
+                case 2:
+                    velocity = new Vector2(-speed, 0);
+                    break;
+                case 3:
+                    velocity = new Vector2(0, -speed);
+                    break;
             }
-
             movementTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (movementTimer > movementTime)
+            if (movementTimer > 0.6f)
             {
-                mobPhase = (mobPhase + 1) % 4; // cycle through movement phases
+                mobPhase = (mobPhase + 1) % 4;
                 movementTimer = 0f;
             }
         }
@@ -147,9 +176,13 @@ namespace Sprint0
         public void UpdateBossTank()
         {
             if (position.X > 700)
-                velocity = new Vector2(-50, 0);
+            {
+                velocity = new Vector2(-80, 0);
+            }
             else if (position.X < 600)
-                velocity = new Vector2(50, 0);
+            {
+                velocity = new Vector2(80, 0);
+            }
         }
 
         public void UpdateExplodingTank(GameTime gameTime) {
@@ -189,43 +222,58 @@ namespace Sprint0
 
         public void SpawnProjectile()
         {
-            float speed = 60f;
-            Vector2 offset = new Vector2(velocity.X, velocity.Y + 70); // offset pos spawn per tank velocity
-            Vector2[] velocities = { new Vector2(-speed, speed), new Vector2(0, speed), new Vector2(speed, speed) };
+            float speed = 280f;
+
+            Vector2 cannonTipOffset = new Vector2(0, 48); // so the bullets spwan from the cannon
+            Vector2 cannonTip = position + Vector2.Transform(cannonTipOffset, Matrix.CreateRotationZ(cannonRotation));
+
+            /* 
+             * The cannon has a base direction and two additional directions to create a spread effect. the cannon **points downward** so by default, we use (0, 1)
+             * The left and right directions are slightly rotated from the base direction.
+             * Matrix.CreateRotationZ(angle)` rotates a vector counterclockwise by the specified angle in radians, 
+             * got reference from: https://community.monogame.net/t/rotating-a-sprite-and-getting-the-new-point-and-rotation/20058
+             * If anybody feels a burning desire to work on collision and stuff, this is good to look at for the future
+             */
+             
+            Vector2 baseDirection = Vector2.Transform(new Vector2(0, 1), Matrix.CreateRotationZ(cannonRotation));
+            float spreadAngle = MathHelper.ToRadians(10);
+            Vector2 leftDirection = Vector2.Transform(baseDirection, Matrix.CreateRotationZ(-spreadAngle));
+            Vector2 rightDirection = Vector2.Transform(baseDirection, Matrix.CreateRotationZ(spreadAngle));
+
+            Vector2[] projectileVelocities =
+            {
+                leftDirection * speed + velocity,
+                baseDirection * speed + velocity,
+                rightDirection * speed + velocity
+            };
 
             for (int i = 0; i < 3; i++)
             {
-                var projectileParams = new Dictionary<string, object>
+                Dictionary<string, object> projectileParams = new Dictionary<string, object>
                 {
                     { "create", new Projectile(content) },
                     { "entityName", "MobProjectile_" + projectileCounter++ },
-                    { "position", position + offset },
-                    { "velocity", velocities[i] }
+                    { "position", cannonTip },
+                    { "velocity", projectileVelocities[i] }
                 };
 
                 commandQueue.Enqueue(new CommandRequest("CreateEntity", projectileParams));
             }
         }
+
         public void SetSpriteSecondary(ISprite sprite)
         {
-            this.spriteSecondary = sprite;
+            spriteSecondary = sprite;
         }
-        public override void Draw(SpriteBatch spriteBatch){
-            SpriteEffects effects = SpriteEffects.None;
-            //This is to adjust the cannon's position on the tank
-            Vector2 cannonPos = new Vector2(0, 0);
-            if(mobType == MobType.BossTank) 
-            {
-                cannonPos.X = 47;
-                cannonPos.Y = 23;
-            } else if(mobType == MobType.SmallEnemy || mobType == MobType.ExplodingTank) 
-            {
-                cannonPos.X = 34;
-                cannonPos.Y = 32;
-            }
 
-            sprite.Draw(spriteBatch, position, effects);
-            spriteSecondary.Draw(spriteBatch, position + cannonPos, effects);
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            SpriteEffects effects = SpriteEffects.None;
+            sprite.Draw(spriteBatch, position, effects, 0f);
+
+            // Draw the cannon using the tank's center (position) and the given pivot (14,10).
+            Vector2 cannonPivot = new Vector2(14, 10);
+            spriteSecondary.Draw(spriteBatch, position, effects, cannonRotation, cannonPivot);
         }
     }
 }

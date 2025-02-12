@@ -17,6 +17,7 @@ namespace Sprint0
         void Update(GameTime gameTime);
         void Draw(SpriteBatch spriteBatch);
         void SetSprite(string key);
+        ISprite GetSprite();
     }
     
     public class Entity : IEntity

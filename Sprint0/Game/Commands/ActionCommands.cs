@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace Sprint0
 {
@@ -9,10 +10,13 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("entity") && parameters["entity"] is IEntity entity && 
-                parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                if (parameters.ContainsKey("player") && parameters["player"] is Player player &&
+                parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                parameters.ContainsKey("content") && parameters["content"] is ContentManager content)
                 {
-                    gameManager.GetEntity("player").SetSprite("Attack");
+                    // this command tells the player to create a projectile which then eventually calls create entity command
+                    // it's all a bit tedious but it's the only way to get the player to create a projectile while storing it's own projectiles 
+                    player.CreateProjectile(content);
                 }
             }
         }
@@ -54,8 +58,8 @@ namespace Sprint0
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
                     parameters.ContainsKey("create") && parameters["create"] is Projectile entity &&
                     parameters.ContainsKey("entityName") && parameters["entityName"] is string entityName &&
-                    parameters.ContainsKey("position") && parameters["position"] is Microsoft.Xna.Framework.Vector2 position &&
-                    parameters.ContainsKey("velocity") && parameters["velocity"] is Microsoft.Xna.Framework.Vector2 velocity)
+                    parameters.ContainsKey("position") && parameters["position"] is Vector2 position &&
+                    parameters.ContainsKey("velocity") && parameters["velocity"] is Vector2 velocity)
                 {
                     gameManager.GetEntities().Add(entityName, entity);
                     gameManager.GetEntities()[entityName].SetPosition(position);

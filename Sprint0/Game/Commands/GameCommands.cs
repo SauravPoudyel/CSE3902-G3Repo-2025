@@ -36,7 +36,7 @@ namespace Sprint0
     
             public void Execute(Dictionary<string, object> parameters)
             {
-                // Implement the logic to reset the game
+                game.ResetGame(); 
             }
         }
     }

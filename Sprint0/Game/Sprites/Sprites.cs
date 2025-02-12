@@ -9,8 +9,7 @@ namespace Sprint0
     {
         void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount);
         void Update(GameTime gameTime);
-        void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, Color? color = null);
-
+        void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null);XZ
     }
 
     public class StaticSprite : ISprite
@@ -26,9 +25,21 @@ namespace Sprint0
 
         public void Update(GameTime gameTime) { }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, Color? color = null)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
         {
-            spriteBatch.Draw(spriteSheet, position, frame, color ?? Color.White, 0f, Vector2.Zero, 1f, effects, 0f);
+            Vector2 origin = pivot ?? new Vector2(14, 50); // Default to center if pivot is not provided
+
+            spriteBatch.Draw(
+                spriteSheet,
+                position,
+                frame,
+                color ?? Color.White,
+                rotation, 
+                origin, 
+                1f,
+                effects,
+                0f
+            );
         }
 
         }
@@ -78,12 +89,24 @@ namespace Sprint0
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, Color? color = null)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
         {
             if (frames.Count == 0) return;
 
             Color drawColor = isDamaged ? Color.Red : color ?? Color.White;
-            spriteBatch.Draw(spriteSheet, position, frames[currentFrame], drawColor, 0f, Vector2.Zero, 1f, effects, 0f);
+            Vector2 origin = pivot ?? new Vector2(frames[currentFrame].Width / 2, frames[currentFrame].Height / 2); // Default to center
+
+            spriteBatch.Draw(
+                spriteSheet,
+                position,
+                frames[currentFrame],
+                drawColor,
+                rotation, 
+                origin, 
+                1f,
+                effects,
+                0f
+            );
         }
     }
 
@@ -91,14 +114,14 @@ namespace Sprint0
     {
         private string text;
         private SpriteFont font;
-        private Vector2 position;
         private Color color;
+        private float scale;
 
-        public TextSprite(Vector2 position, string text, Color color)
+        public TextSprite(string text, Color color, float scale = 1f)
         {
-            this.position = position;
             this.text = text;
             this.color = color;
+            this.scale = scale;
         }
 
         public void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
@@ -111,13 +134,25 @@ namespace Sprint0
             this.text = text;
         }
 
-        public void Update(GameTime gameTime) {}
+        public void Update(GameTime gameTime) { }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, Color? color = null)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
         {
             if (font != null && !string.IsNullOrEmpty(text))
             {
-                spriteBatch.DrawString(font, text, position, color ?? this.color);
+                Vector2 origin = pivot ?? font.MeasureString(text) / 2; // Default to center of text
+
+                spriteBatch.DrawString(
+                    font,
+                    text,
+                    position,
+                    color ?? this.color,
+                    rotation,
+                    origin,
+                    scale,
+                    effects,
+                    0f
+                );
             }
         }
 
