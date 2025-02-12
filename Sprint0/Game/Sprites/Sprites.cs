@@ -9,7 +9,7 @@ namespace Sprint0
     {
         void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount);
         void Update(GameTime gameTime);
-        void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null);
+        void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null);XZ
     }
 
     public class StaticSprite : ISprite
@@ -41,7 +41,9 @@ namespace Sprint0
                 0f
             );
         }
-    }
+
+        }
+
 
     public class AnimatedSprite : ISprite
     {
@@ -61,11 +63,13 @@ namespace Sprint0
             isDamaged = false;
         }
 
+        
         public void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
         {
             spriteSheet = content.Load<Texture2D>(assetName);
             frames = SpriteManager.ExtractFrames(startX, startY, frameWidth, frameHeight, frameCount);
         }
+
 
         public void Damage()
         {
@@ -151,5 +155,7 @@ namespace Sprint0
                 );
             }
         }
+
     }
-}
+    }
+
