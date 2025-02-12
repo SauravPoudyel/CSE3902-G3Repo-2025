@@ -73,17 +73,19 @@ namespace Sprint0
                 SetEnemyType(MobType.SmallEnemy);
             } else if (mobType == MobType.SmallEnemy) {
                 SetEnemyType(MobType.ExplodingTank);
+                explosionPhase = 0;
             } else if (mobType == MobType.ExplodingTank) {
                 SetEnemyType(MobType.BossTank);
             }
         }
         public void CycleEnemyPrev() {
             if(mobType == MobType.BossTank) {
-                SetEnemyType(MobType.SmallEnemy);
-            } else if (mobType == MobType.SmallEnemy) {
                 SetEnemyType(MobType.ExplodingTank);
-            } else if (mobType == MobType.ExplodingTank) {
+                explosionPhase = 0;
+            } else if (mobType == MobType.SmallEnemy) {
                 SetEnemyType(MobType.BossTank);
+            } else if (mobType == MobType.ExplodingTank) {
+                SetEnemyType(MobType.SmallEnemy);
             }
         }
         public override void Update(GameTime gameTime)
