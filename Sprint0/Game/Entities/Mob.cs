@@ -222,8 +222,6 @@ namespace Sprint0
 
         public void SpawnProjectile()
         {
-            float speed = 280f;
-
             Vector2 cannonTipOffset = new Vector2(0, 48); // so the bullets spwan from the cannon
             Vector2 cannonTip = position + Vector2.Transform(cannonTipOffset, Matrix.CreateRotationZ(cannonRotation));
 
@@ -240,21 +238,19 @@ namespace Sprint0
             Vector2 leftDirection = Vector2.Transform(baseDirection, Matrix.CreateRotationZ(-spreadAngle));
             Vector2 rightDirection = Vector2.Transform(baseDirection, Matrix.CreateRotationZ(spreadAngle));
 
-            Vector2[] projectileVelocities =
-            {
-                leftDirection * speed + velocity,
-                baseDirection * speed + velocity,
-                rightDirection * speed + velocity
-            };
+            Vector2[] projectileDirections = {leftDirection, baseDirection, rightDirection};
 
             for (int i = 0; i < 3; i++)
             {
+                string projectileKey = "MobProjectile_" + projectileCounter++;
+                Projectile projectile = new Projectile(content, projectileKey);
+
                 Dictionary<string, object> projectileParams = new Dictionary<string, object>
                 {
-                    { "create", new Projectile(content) },
-                    { "entityName", "MobProjectile_" + projectileCounter++ },
+                    { "create", projectile},
+                    { "entityName", projectile.GetEntityKey()},
                     { "position", cannonTip },
-                    { "velocity", projectileVelocities[i] }
+                    { "velocity", (projectileDirections[i] * projectile.GetBaseSpeed()) + velocity}
                 };
 
                 commandQueue.Enqueue(new CommandRequest("CreateEntity", projectileParams));

@@ -21,8 +21,10 @@ namespace Sprint0
                 {Keys.Q, "Quit"},
                 {Keys.R, "Reset"},
 
-                {Keys.D1, "UseItem1"},
-                {Keys.D2, "UseItem2"},
+                {Keys.D1, "UseItem"},
+                {Keys.D2, "UseItem"},
+                {Keys.D3, "UseItem"},
+                {Keys.D4, "UseItem"},
 
                 {Keys.W, "Move"},
                 {Keys.A, "Move"},
@@ -47,7 +49,10 @@ namespace Sprint0
 
         public void Update(Game1 game)
         {
+
             KeyboardState state = Keyboard.GetState();
+
+            // Movement logic
             Vector2 playerVelocity = Vector2.Zero;
             bool playerMoving = false;
 
@@ -59,28 +64,31 @@ namespace Sprint0
             playerMoving = (playerVelocity != Vector2.Zero);
 
             if (playerMoving)
-            {
                 game.GameManager.ExecuteCommand("Move", new Dictionary<string, object>{{"player", game.GameManager.GetEntity("player") }, {"velocity", playerVelocity}});
-            }
-            else 
-            {
-                game.GameManager.ExecuteCommand("StopeMove", new Dictionary<string, object>{{ "player", game.GameManager.GetEntity("player")}});
-            }
+
+            // Everything Else Logic
+            int itemType = 0;
+            if (state.IsKeyDown(Keys.D1)) itemType = 1;
+            if (state.IsKeyDown(Keys.D2)) itemType = 2;
+            if (state.IsKeyDown(Keys.D3)) itemType = 3;
+            if (state.IsKeyDown(Keys.D4)) itemType = 4;
     
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                { "gameManager", game.GameManager },
+                { "content", game.GameManager.GetContent() },
+                { "player", game.GameManager.GetEntity("player") }, 
+                { "playerVelocity", playerVelocity },
+                { "pickupItem", game.GameManager.GetEntity("pickupItem") },
+                { "blocks", game.GameManager.GetEntity("blocks") },
+                { "mob", game.GameManager.GetEntity("mob") },
+                { "itemType", itemType}
+            };
+
             foreach (var key in keyMappings.Keys)
             {
                 if (state.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key))
                 {
-                    Dictionary<string, object> parameters = new Dictionary<string, object>
-                    {
-                        { "gameManager", game.GameManager },
-                        { "content", game.GameManager.GetContent() },
-                        { "player", game.GameManager.GetEntity("player") }, // Player is always entity(0)
-                        { "playerVelocity", playerVelocity },
-                        { "pickupItem", game.GameManager.GetEntity("pickupItem") },
-                        { "blocks", game.GameManager.GetEntity("blocks") },
-                        { "mob", game.GameManager.GetEntity("mob") }
-                    };
     
                     game.GameManager.ExecuteCommand(keyMappings[key], parameters);
                 

@@ -39,7 +39,7 @@ namespace Sprint0
             return position;
         }
 
-        public void SetPosition(Vector2 position)
+        public virtual void SetPosition(Vector2 position)
         {
             this.position = position;
         }

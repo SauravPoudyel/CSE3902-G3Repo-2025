@@ -1,0 +1,25 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+
+
+namespace Sprint0
+{
+     public class RocketProjectile : Projectile
+    {   
+        public RocketProjectile(ContentManager content, string entityKey) : base(content, entityKey)
+        {
+            AddSprite("Rocket", new StaticSprite());
+            sprites["Rocket"].LoadContent(content, "TDTanksAllSprites", 0, 1090, 40, 32, 1);
+
+            SetSprite("Rocket");
+
+            baseSpeed = 200f; 
+            maxDistance = 250f; 
+        }
+        public override void Update(GameTime gameTime)
+        {
+            // special behavior (acceleration, explosion timer) here
+            base.Update(gameTime);
+        }
+    }
+}
