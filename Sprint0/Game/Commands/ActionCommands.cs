@@ -11,28 +11,46 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("player") && parameters["player"] is Player player &&
-                parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                parameters.ContainsKey("content") && parameters["content"] is ContentManager content)
+                parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
                     // this command tells the player to create a projectile which then eventually calls create entity command
                     // it's all a bit tedious but it's the only way to get the player to create a projectile while storing it's own projectiles 
-                    player.CreateProjectile(content);
+                    player.SetProjectileType("Default");
+                    player.CreateProjectile();
                 }
             }
         }
     
         public class UseItemCommand : ICommand
         {
-            private int itemNumber;
-
-            public UseItemCommand(int itemNumber)
-            {
-                this.itemNumber = itemNumber;
-            }
-
             public void Execute(Dictionary<string, object> parameters)
             {
-                // Implement the logic for the entity to use item
+                if (parameters.ContainsKey("player") && parameters["player"] is Player player &&
+                parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                parameters.ContainsKey("itemType") && parameters["itemType"] is int itemType)
+                {
+                    // this command tells the player to create a projectile which then eventually calls create entity command
+                    // it's all a bit tedious but it's the only way to get the player to create a projectile while storing it's own projectiles 
+                    if(itemType == 1)
+                    {
+                        player.SetProjectileType("Sniper");
+                        player.CreateProjectile();
+                    }
+                    else if(itemType == 2)
+                    {
+                        player.SetProjectileType("Rocket");
+                        player.CreateProjectile();
+                    }
+                    else if(itemType == 3)
+                    {
+                        player.SetProjectileType("Shotgun");
+                        player.CreateProjectile();
+                    }
+                    else if(itemType == 4)
+                    {
+                        // logic to use a bomb maybe? it's an item so I don't know how to do that in player
+                    }
+                }
             }
         }
     
@@ -64,6 +82,18 @@ namespace Sprint0
                     gameManager.GetEntities().Add(entityName, entity);
                     gameManager.GetEntities()[entityName].SetPosition(position);
                     gameManager.GetEntities()[entityName].SetVelocity(velocity);
+                }
+            }
+        }
+
+        public class DestroyEntityCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("destroyEntity") && parameters["destroyEntity"] is string entityName)
+                {
+                    gameManager.GetEntities().Remove(entityName);
                 }
             }
         }

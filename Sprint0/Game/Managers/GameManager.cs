@@ -36,9 +36,9 @@ namespace Sprint0
                 {"StopMove", new MovementCommands.MoveCommand()},
 
                 {"Attack", new ActionCommands.AttackCommand()},
-                {"CreateEntity", new ActionCommands.CreateEntityCommand()}, 
-                {"UseItem1", new ActionCommands.UseItemCommand(1)},
-                {"UseItem2", new ActionCommands.UseItemCommand(2)},
+                {"CreateEntity", new ActionCommands.CreateEntityCommand()},
+                {"DestroyEntity", new ActionCommands.DestroyEntityCommand()}, 
+                {"UseItem", new ActionCommands.UseItemCommand()},
                 {"Damage", new ActionCommands.DamageCommand()}
             };
 
@@ -123,6 +123,8 @@ namespace Sprint0
             if (commandMap.ContainsKey(commandKey))
             {
                 commandMap[commandKey].Execute(parameters);
+            } else {
+                System.Console.WriteLine("Invalid Command; check commandKey and or parameters entered");
             }
         }
 
