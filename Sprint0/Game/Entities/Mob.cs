@@ -57,11 +57,11 @@ namespace Sprint0
             AddSprite("Explosion1", new AnimatedSprite(0.3f));
             sprites["Explosion1"].LoadContent(content, "TDTanksAllSprites", 765, 508, 114, 112, 1);
             
-            AddSprite("Explosion2", new AnimatedSprite(0.3f));
-            sprites["Explosion2"].LoadContent(content, "TDTanksAllSprites", 641, 383, 125, 125, 1);
-
             AddSprite("Explosion3", new AnimatedSprite(0.3f));
-            sprites["Explosion3"].LoadContent(content, "TDTanksAllSprites", 641, 256, 125, 126, 1);
+            sprites["Explosion3"].LoadContent(content, "TDTanksAllSprites", 641, 383, 124, 125, 1);
+
+            AddSprite("Explosion2", new AnimatedSprite(0.3f));
+            sprites["Explosion2"].LoadContent(content, "TDTanksAllSprites", 642, 256, 124, 126, 1);
 
             SetSprite(sprites["ExplodingTank"]);
             SetSpriteSecondary(sprites["Cannon"]);
@@ -114,7 +114,7 @@ namespace Sprint0
             {
                 UpdateBossTank();
             }
-            else
+            else if (mobType == MobType.SmallEnemy)
             {
                 UpdateSmallEnemy(gameTime);
             } else if (mobType == MobType.ExplodingTank) 
