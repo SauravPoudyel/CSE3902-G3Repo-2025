@@ -67,14 +67,18 @@ namespace Sprint0
         public void CycleItemNext() {
             if(itemType != ItemType.Instakill) {
                 this.itemType++;
-                SetItemType(this.itemType);
+            } else {
+                this.itemType = ItemType.Shield;
             }
+            SetItemType(this.itemType);
         }
         public void CycleItemPrev() {
             if(itemType != ItemType.Shield) {
                 this.itemType--;
-                SetItemType(this.itemType);
-            }     
+            } else {
+                this.itemType = ItemType.Instakill;
+            }
+            SetItemType(this.itemType);
         }
         public override void Update(GameTime gameTime)
         {
