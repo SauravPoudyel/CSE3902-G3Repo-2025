@@ -48,7 +48,8 @@ namespace Sprint0
                     }
                     else if(itemType == 4)
                     {
-                        // logic to use a bomb maybe? it's an item so I don't know how to do that in player
+                        player.SetProjectileType("Bomb");
+                        player.CreateProjectile();
                     }
                 }
             }

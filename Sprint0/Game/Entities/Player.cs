@@ -119,7 +119,7 @@ namespace Sprint0
         }
         public void SetProjectileType(string newType)
         {
-            if (newType == "Default" || newType == "Sniper" || newType == "Rocket" || newType == "Shotgun")
+            if (newType == "Default" || newType == "Sniper" || newType == "Rocket" || newType == "Shotgun" || newType == "Bomb")
                 currentProjectileVariables["projectileType"] = newType;
             else
                 System.Console.WriteLine("Invalid projectile type: " + newType);
@@ -187,6 +187,9 @@ namespace Sprint0
                         break;
                     case "Rocket":
                         proj = new RocketProjectile(content, projKey);
+                        break;
+                    case "Bomb":
+                        proj = new BombProjectile(content, projKey);
                         break;
                     default:
                         proj = new Projectile(content, projKey);
