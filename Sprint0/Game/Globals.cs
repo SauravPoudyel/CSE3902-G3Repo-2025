@@ -10,5 +10,8 @@ namespace Sprint0
     {
         public const int SCREENWIDTH = 1100;
         public const int SCREENHEIGHT = 750;
+
+        public static List<int> NULLSPRITE = new List<int> {129, 0, 12, 12};
+
     }
 }

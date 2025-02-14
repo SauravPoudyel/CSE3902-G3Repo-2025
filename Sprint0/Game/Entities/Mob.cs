@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Threading;
 
+
 namespace Sprint0
 {
     public class Mob : Entity
@@ -50,12 +51,12 @@ namespace Sprint0
             AddSprite("Cannon", new AnimatedSprite(0.3f));
             sprites["Cannon"].LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);
 
+            //Change this sprite to a different tank
             AddSprite("ExplodingTank", new AnimatedSprite(0.3f));
-            sprites["ExplodingTank"].LoadContent(content, "TDTanksAllSprites", 768, 256, 95, 113, 1);  
-
+            sprites["ExplodingTank"].LoadContent(content, "TDTanksAllSprites", 952, 569, 81, 76, 1);  
 
             AddSprite("Explosion1", new AnimatedSprite(0.3f));
-            sprites["Explosion1"].LoadContent(content, "TDTanksAllSprites", 765, 508, 114, 112, 1);
+            sprites["Explosion1"].LoadContent(content, "TDTanksAllSprites", 765, 508, 113, 112, 1);
             
             AddSprite("Explosion3", new AnimatedSprite(0.3f));
             sprites["Explosion3"].LoadContent(content, "TDTanksAllSprites", 641, 383, 124, 125, 1);
@@ -63,7 +64,10 @@ namespace Sprint0
             AddSprite("Explosion2", new AnimatedSprite(0.3f));
             sprites["Explosion2"].LoadContent(content, "TDTanksAllSprites", 642, 256, 124, 126, 1);
 
-            SetSprite(sprites["ExplodingTank"]);
+            AddSprite("NULL", new AnimatedSprite(0.3f));
+            sprites["NULL"].LoadContent(content, "TDTanksAllSprites", 129, 0, 12, 12, 1);
+
+            SetSprite(sprites["BossTank"]);
             SetSpriteSecondary(sprites["Cannon"]);
         }
 
@@ -71,6 +75,7 @@ namespace Sprint0
         {
             this.mobType = mobType;
             this.SetSprite(this.mobType.ToString());
+            SetSpriteSecondary(sprites["Cannon"]);
         }
 
         public string GetEnemyType()
@@ -208,6 +213,7 @@ namespace Sprint0
         private void HandleExplosion(GameTime gameTime){
             explosionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if(explosionTimer > 0.5f) {
+                SetSpriteSecondary(sprites["NULL"]);
                 switch (explosionPhase)
             {
                 case 0: SetSprite("Explosion1"); break;
