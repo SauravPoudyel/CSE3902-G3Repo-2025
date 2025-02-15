@@ -13,7 +13,8 @@ namespace Sprint0
             SetSprite("Sniper");
 
             baseSpeed = 1500f; 
-            maxDistance = 1000f;  
+            maxDistance = 1000f; 
+            colors = new Color[] { Color.Blue, Color.LightBlue, Color.DarkBlue }; 
         }
 
         public override void Update(GameTime gameTime)

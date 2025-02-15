@@ -24,9 +24,11 @@ namespace Sprint0
     {
         protected Vector2 position; // protected so that subclasses can access it
         protected Vector2 velocity;
-        protected  ISprite sprite;
+        protected ISprite sprite;
+        protected bool hasSprite = true; // default to every entity having a sprite, set to false if not
         protected Dictionary<string, ISprite> sprites;
-        protected  Rectangle bounds;
+        protected Rectangle bounds;
+
         protected Queue<CommandRequest> commandQueue;
 
         public Entity()
@@ -101,12 +103,18 @@ namespace Sprint0
 
         public virtual void Update(GameTime gameTime)
         {
-            sprite.Update(gameTime);
+            if (hasSprite && sprite != null)
+            {
+                sprite.Update(gameTime);
+            }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            sprite.Draw(spriteBatch, position);
+            if (hasSprite && sprite != null)
+            {
+                sprite.Draw(spriteBatch, position);
+            }
         }
     }
 }

@@ -35,10 +35,10 @@ namespace Sprint0
                 {"Move", new MovementCommands.MoveCommand()},
                 {"StopMove", new MovementCommands.MoveCommand()},
 
-                {"Attack", new ActionCommands.AttackCommand()},
+                {"CreateProjectile", new ActionCommands.CreateProjectileCommand()},
                 {"CreateEntity", new ActionCommands.CreateEntityCommand()},
                 {"DestroyEntity", new ActionCommands.DestroyEntityCommand()}, 
-                {"UseItem", new ActionCommands.UseItemCommand()},
+                {"PlayerAction", new ActionCommands.PlayerActionCommand()},
                 {"Damage", new ActionCommands.DamageCommand()}
             };
 
@@ -85,6 +85,10 @@ namespace Sprint0
             Blocks blocks = new Blocks(content);
             blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 - 300, 480));
             entities.Add("blocks", blocks);
+
+            ProjectileFactory projectileFactory = new ProjectileFactory(content);
+            projectileFactory.SetPosition(new Vector2(Globals.SCREENWIDTH/2, 300)); // this is an invisible entity, so it's kind of weird
+            entities.Add("projectileFactory", projectileFactory);
         }
 
         public void Update(GameTime gameTime)
@@ -124,7 +128,7 @@ namespace Sprint0
             {
                 commandMap[commandKey].Execute(parameters);
             } else {
-                System.Console.WriteLine("Invalid Command; check commandKey and or parameters entered");
+                System.Console.WriteLine("Invalid Request for " + commandKey + "; check commandKey and or parameters entered");
             }
         }
 

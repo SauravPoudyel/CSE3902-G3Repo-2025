@@ -8,7 +8,7 @@ namespace Sprint0
 {
     public static class Globals
     {
-        public const int SCREENWIDTH = 1100;
-        public const int SCREENHEIGHT = 750;
+        public const int SCREENWIDTH = 1920;
+        public const int SCREENHEIGHT = 1080;
     }
 }

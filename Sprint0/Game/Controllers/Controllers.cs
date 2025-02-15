@@ -21,21 +21,17 @@ namespace Sprint0
                 {Keys.Q, "Quit"},
                 {Keys.R, "Reset"},
 
-                {Keys.D1, "UseItem"},
-                {Keys.D2, "UseItem"},
-                {Keys.D3, "UseItem"},
-                {Keys.D4, "UseItem"},
+                {Keys.D1, "PlayerAction"},
+                {Keys.D2, "PlayerAction"},
+                {Keys.D3, "PlayerAction"},
+                {Keys.D4, "PlayerAction"},
 
                 {Keys.W, "Move"},
                 {Keys.A, "Move"},
                 {Keys.S, "Move"},
                 {Keys.D, "Move"},
-                {Keys.Up, "MoveUp"},
-                {Keys.Left, "MoveLeft"},
-                {Keys.Down, "MoveDown"},
-                {Keys.Right, "MoveRight"},
 
-                {Keys.Z, "Attack"},
+                {Keys.Z, "PlayerAction"},
                 {Keys.E, "Damage"},
 
                 {Keys.T, "CycleBlockPrev"},
@@ -66,23 +62,24 @@ namespace Sprint0
             if (playerMoving)
                 game.GameManager.ExecuteCommand("Move", new Dictionary<string, object>{{"player", game.GameManager.GetEntity("player") }, {"velocity", playerVelocity}});
 
-            // Everything Else Logic
-            int itemType = 0;
-            if (state.IsKeyDown(Keys.D1)) itemType = 1;
-            if (state.IsKeyDown(Keys.D2)) itemType = 2;
-            if (state.IsKeyDown(Keys.D3)) itemType = 3;
-            if (state.IsKeyDown(Keys.D4)) itemType = 4;
+            // Player Action Logic
+            string actionType = "";
+            if (state.IsKeyDown(Keys.Z)) actionType = "fire";
+            if (state.IsKeyDown(Keys.D1)) actionType = "item1";
+            if (state.IsKeyDown(Keys.D2)) actionType = "item2";
+            if (state.IsKeyDown(Keys.D3)) actionType = "item3";
+            if (state.IsKeyDown(Keys.D4)) actionType = "item4";
     
             Dictionary<string, object> parameters = new Dictionary<string, object>
             {
                 { "gameManager", game.GameManager },
                 { "content", game.GameManager.GetContent() },
                 { "player", game.GameManager.GetEntity("player") }, 
+                { "actionType", actionType},
                 { "playerVelocity", playerVelocity },
                 { "pickupItem", game.GameManager.GetEntity("pickupItem") },
                 { "blocks", game.GameManager.GetEntity("blocks") },
                 { "mob", game.GameManager.GetEntity("mob") },
-                { "itemType", itemType}
             };
 
             foreach (var key in keyMappings.Keys)
