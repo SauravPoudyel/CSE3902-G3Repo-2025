@@ -75,6 +75,8 @@ namespace Sprint0
                 return new SniperProjectile(content, entityName);
             else if (projectileType == "Rocket")
                 return new RocketProjectile(content, entityName);
+            else if (projectileType == "Bomb")
+                return new BombProjectile(content, entityName);
             else
                 return new Projectile(content, entityName);
         }

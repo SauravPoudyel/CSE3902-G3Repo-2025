@@ -112,7 +112,6 @@ namespace Sprint0
             if (isExploding) 
             {
                 HandleExplosion(gameTime);
-                System.Console.WriteLine("Exploding"); 
             } 
             if (mobType == MobType.BossTank)
             {
@@ -123,7 +122,6 @@ namespace Sprint0
                 UpdateSmallEnemy(gameTime);
             } else if (mobType == MobType.ExplodingTank) 
             {
-                System.Console.WriteLine("Exploding tank"); 
                 UpdateExplodingTank(gameTime);
             }
 
@@ -174,7 +172,7 @@ namespace Sprint0
 
             // Fire projectile every 4 seconds
             shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (shootTimer > 4)
+            if (shootTimer > 4 && isExploding)
             {
                 FireProjectile();
                 shootTimer = 0f;

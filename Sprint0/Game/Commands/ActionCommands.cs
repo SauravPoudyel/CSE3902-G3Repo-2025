@@ -38,10 +38,9 @@ namespace Sprint0
                             player.SetProjectileType("Shotgun");
                             player.FireProjectile();
                             break;
-
                         case "item4":
-                            // Placeholder for bomb logic
-                            System.Console.WriteLine("Bomb logic not implemented yet.");
+                            player.SetProjectileType("Bomb");
+                            player.FireProjectile();
                             break;
 
                         default:

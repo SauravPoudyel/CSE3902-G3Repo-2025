@@ -28,16 +28,13 @@ namespace Sprint0
 
         public override void Update(GameTime gameTime)
         {
-            // special behavior (acceleration, explosion timer) here
-            base.Update(gameTime);
-
             //Detonate the bomb after the time controlled by explosionTimer
             explosionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (explosionTimer >= ExplosionDelay)
             {
                 Dictionary<string, object> destroyParams = new Dictionary<string, object>()
                 {
-                    { "destroyEntity", GetEntityKey() }
+                    { "destroyEntity", entityKey }
                 };
                 commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
             }
