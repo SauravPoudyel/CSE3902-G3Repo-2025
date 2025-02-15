@@ -17,9 +17,6 @@ namespace Sprint0
         // Store projectile variables in a dictionary for flexibility (powerups, ammo types, etc.)
         private Dictionary<string, object> currentProjectileVariables;
 
-        // Store iventory variables in a dictionary for flexibility (ammo amount, bombs, coins, etc.)
-        private Dictionary<string, object> inventoryVariables;
-
         public Player(ContentManager content)
         {
             this.content = content;
@@ -111,7 +108,7 @@ namespace Sprint0
         }
         public void SetProjectileType(string newType)
         {
-            if (newType == "Default" || newType == "Sniper" || newType == "Rocket" || newType == "Shotgun")
+            if (newType == "Default" || newType == "Sniper" || newType == "Rocket" || newType == "Shotgun" || newType == "Bomb")
                 currentProjectileVariables["projectileType"] = newType;
             else
                 System.Console.WriteLine("Invalid projectile type: " + newType);

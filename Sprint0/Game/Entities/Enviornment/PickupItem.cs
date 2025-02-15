@@ -10,9 +10,14 @@ namespace Sprint0
     {
         enum ItemType
         {
+            Shield,
             Ammo,
             Repair,
-            Shield
+            Speed,
+            Cloak,
+            Fire,
+            Bounce,
+            Instakill,
         }
         private ContentManager content;
         private float timer;
@@ -22,16 +27,31 @@ namespace Sprint0
         public PickupItem(ContentManager content) 
         {
             this.content = content;
-            this.itemType = ItemType.Ammo;
+            this.itemType = ItemType.Shield;
 
-            AddSprite("Ammo", new AnimatedSprite(0.3f));
-            sprites["Ammo"].LoadContent(content, "2DTanksSprites", 459, 120, 110, 100, 1);
+            AddSprite("Shield", new AnimatedSprite(0.15f));
+            sprites["Shield"].LoadContent(content, "PickupItemSpritesheet", 0, 0, 100, 100, 10);    
+
+            AddSprite("Ammo", new AnimatedSprite(0.15f));
+            sprites["Ammo"].LoadContent(content, "PickupItemSpritesheet", 0, 100, 100, 100, 10);
             
-            AddSprite("Repair", new AnimatedSprite(0.3f));
-            sprites["Repair"].LoadContent(content, "2DTanksSprites", 464, 651, 110, 100, 1);
+            AddSprite("Repair", new AnimatedSprite(0.15f));
+            sprites["Repair"].LoadContent(content, "PickupItemSpritesheet", 0, 200, 100, 100, 10);
 
-            AddSprite("Shield", new AnimatedSprite(0.3f));
-            sprites["Shield"].LoadContent(content, "2DTanksSprites", 468, 322, 110, 100, 1);    
+            AddSprite("Speed", new AnimatedSprite(0.15f));
+            sprites["Speed"].LoadContent(content, "PickupItemSpritesheet", 0, 300, 100, 100, 10);
+
+            AddSprite("Cloak", new AnimatedSprite(0.15f));
+            sprites["Cloak"].LoadContent(content, "PickupItemSpritesheet", 0, 400, 100, 100, 10);
+
+            AddSprite("Fire", new AnimatedSprite(0.15f));
+            sprites["Fire"].LoadContent(content, "PickupItemSpritesheet", 0, 500, 100, 100, 10);
+
+            AddSprite("Bounce", new AnimatedSprite(0.15f));
+            sprites["Bounce"].LoadContent(content, "PickupItemSpritesheet", 0, 600, 100, 100, 10);
+
+            AddSprite("Instakill", new AnimatedSprite(0.15f));
+            sprites["Instakill"].LoadContent(content, "PickupItemSpritesheet", 0, 700, 100, 100, 10);
 
             SetSprite(sprites[this.itemType.ToString()]);
         }
@@ -45,22 +65,20 @@ namespace Sprint0
             return itemType.ToString();
         }
         public void CycleItemNext() {
-            if(itemType == ItemType.Ammo) {
-                SetItemType(ItemType.Repair);
-            } else if (itemType == ItemType.Repair) {
-                SetItemType(ItemType.Shield);
-            } else if (itemType == ItemType.Shield) {
-                SetItemType(ItemType.Ammo);
-            }            
+            if(itemType != ItemType.Instakill) {
+                this.itemType++;
+            } else {
+                this.itemType = ItemType.Shield;
+            }
+            SetItemType(this.itemType);
         }
         public void CycleItemPrev() {
-            if(itemType == ItemType.Ammo) {
-                SetItemType(ItemType.Shield);
-            } else if (itemType == ItemType.Repair) {
-                SetItemType(ItemType.Ammo);
-            } else if (itemType == ItemType.Shield) {
-                SetItemType(ItemType.Repair);
-            }            
+            if(itemType != ItemType.Shield) {
+                this.itemType--;
+            } else {
+                this.itemType = ItemType.Instakill;
+            }
+            SetItemType(this.itemType);
         }
         public override void Update(GameTime gameTime)
         {
@@ -70,7 +88,7 @@ namespace Sprint0
         public override void Draw(SpriteBatch spriteBatch)
         {
             SpriteEffects effects = SpriteEffects.None;
-
+            
             sprite.Draw(spriteBatch, position, effects, 0f);
         }
     }
