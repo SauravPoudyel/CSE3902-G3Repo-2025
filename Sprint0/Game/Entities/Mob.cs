@@ -16,7 +16,8 @@ namespace Sprint0
         {
             BossTank,
             SmallEnemy,
-            ExplodingTank
+            ExplodingTank,
+            Turret
         }
 
         private static int projectileCounter = 0;
@@ -64,6 +65,12 @@ namespace Sprint0
             AddSprite("Explosion2", new AnimatedSprite(0.3f));
             sprites["Explosion2"].LoadContent(content, "TDTanksAllSprites", 642, 256, 124, 126, 1);
 
+            AddSprite("Turret", new AnimatedSprite(0.3f));
+            sprites["Turret"].LoadContent(content, "TDTowerDefenseSprites", 2444, 908, 104, 104, 1);
+
+            AddSprite("TurretCannon1", new AnimatedSprite(0.3f));
+            sprites["TurretCannon1"].LoadContent(content, "TDTowerDefenseSprites", 2455, 1290, 85, 110, 1);
+
             AddSprite("NULL", new AnimatedSprite(0.3f));
             sprites["NULL"].LoadContent(content, "TDTanksAllSprites", 129, 0, 12, 12, 1);
 
@@ -103,6 +110,8 @@ namespace Sprint0
                 SetEnemyType(MobType.BossTank);
             } else if (mobType == MobType.ExplodingTank) {
                 SetEnemyType(MobType.SmallEnemy);
+            } else if (mobType == MobType.SmallEnemy) {
+                SetEnemyType(MobType.Turret);
             }
         }
 
@@ -126,9 +135,10 @@ namespace Sprint0
             {
                 System.Console.WriteLine("Exploding tank"); 
                 UpdateExplodingTank(gameTime);
+            } else if (mobType == MobType.Turret) {
+                UpdateTurret();
             }
             
-
             position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             cannonRotation += cannonAngularVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -226,9 +236,14 @@ namespace Sprint0
     
         }
 
+        public void UpdateTurret()
+        {
+            velocity = new Vector2(0, 0);
+        }
+
         public void SpawnProjectile()
         {
-            Vector2 cannonTipOffset = new Vector2(0, 48); // so the bullets spwan from the cannon
+            Vector2 cannonTipOffset = new Vector2(0, 48); // so the bullets spawn from the cannon
             Vector2 cannonTip = position + Vector2.Transform(cannonTipOffset, Matrix.CreateRotationZ(cannonRotation));
 
             /* 
