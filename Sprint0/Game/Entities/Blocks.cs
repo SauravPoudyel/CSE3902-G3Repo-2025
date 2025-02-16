@@ -15,7 +15,10 @@ namespace Sprint0
         {
             Tree,
             Box,
-            Oil
+            Oil,
+            BarbedFence,
+            Barrel,
+            RedBarrel,
         }
         private ContentManager content;
         private float timer;
@@ -36,6 +39,15 @@ namespace Sprint0
             AddSprite("Oil", new AnimatedSprite(0.3f));
             sprites["Oil"].LoadContent(content, "TDTanksAllSprites", 524, 1024, 100, 100, 1);
 
+            AddSprite("BarbedFence", new AnimatedSprite(0.3f));
+            sprites["BarbedFence"].LoadContent(content, "TDTanksAllSprites", 958, 1048, 56, 56, 1);
+
+            AddSprite("Barrel", new AnimatedSprite(0.3f));
+            sprites["Barrel"].LoadContent(content, "2DTanksSprites", 485, 1523, 80, 99, 1);
+
+            AddSprite("RedBarrel", new AnimatedSprite(0.3f));
+            sprites["RedBarrel"].LoadContent(content, "2DTanksSprites", 485, 1622, 80, 99, 1);
+
             SetSprite(sprites[this.blocktype.ToString()]);
         }
 
@@ -52,34 +64,22 @@ namespace Sprint0
 
         public void CycleBlockNext()
         {
-            if (blocktype == BlockType.Tree)
-            {
-                SetBlockType(BlockType.Box);
+            if(blocktype != BlockType.RedBarrel) {
+                this.blocktype++;
+            } else {
+                this.blocktype = BlockType.Tree;
             }
-            else if (blocktype == BlockType.Box)
-            {
-                SetBlockType(BlockType.Oil);
-            }
-            else if (blocktype == BlockType.Oil)
-            {
-                SetBlockType(BlockType.Tree);
-            }
+            SetBlockType(this.blocktype);
         }
 
         public void CycleBlockPrev()
         {
-            if (blocktype == BlockType.Tree)
-            {
-                SetBlockType(BlockType.Oil);
+            if(blocktype != BlockType.Tree) {
+                this.blocktype--;
+            } else {
+                this.blocktype = BlockType.RedBarrel;
             }
-            else if (blocktype == BlockType.Box)
-            {
-                SetBlockType(BlockType.Tree);
-            }
-            else if (blocktype == BlockType.Oil)
-            {
-                SetBlockType(BlockType.Box);
-            }
+            SetBlockType(this.blocktype);
         }
 
         public override void Update(GameTime gameTime)
