@@ -25,12 +25,14 @@ namespace Sprint0
         private float movementTimer;
         private float shootTimer;
         private ISprite spriteSecondary;
+        private SpriteEffects spriteSecondaryEffects = SpriteEffects.None;
         private MobType mobType;
         private int mobPhase; // Tracks phase of "L" movement for SmallEnemy
         Boolean isExploding;
         private int explosionPhase = 0;
         private float explodeTimer = 0f; //explodeTimer is when explosion starts
         private float explosionTimer = 0f; //explosionTimer is once the explosion starts 
+        private Vector2 cannonPivot = new Vector2(14, 10);
         private float cannonRotation = MathHelper.ToRadians(200);
         private float cannonAngularVelocity = MathHelper.ToRadians(20);
         // Cannon oscillates between 90 (π/2) and 270 (3π/2)
@@ -68,8 +70,9 @@ namespace Sprint0
             AddSprite("Turret", new AnimatedSprite(0.3f));
             sprites["Turret"].LoadContent(content, "TDTowerDefenseSprites", 2444, 908, 104, 104, 1);
 
-            AddSprite("TurretCannon1", new AnimatedSprite(0.3f));
-            sprites["TurretCannon1"].LoadContent(content, "TDTowerDefenseSprites", 2455, 1290, 85, 110, 1);
+            AddSprite("TurretCannon", new AnimatedSprite(0.3f));
+            sprites["TurretCannon"].LoadContent(content, "TDTowerDefenseSprites", 2455, 1290, 85, 110, 1);
+            // sprites["TurretCannon"].
 
             AddSprite("NULL", new AnimatedSprite(0.3f));
             sprites["NULL"].LoadContent(content, "TDTanksAllSprites", 129, 0, 12, 12, 1);
@@ -82,7 +85,15 @@ namespace Sprint0
         {
             this.mobType = mobType;
             this.SetSprite(this.mobType.ToString());
-            SetSpriteSecondary(sprites["Cannon"]);
+            if(this.mobType == MobType.Turret) {
+                SetSpriteSecondary(sprites[this.mobType.ToString() + "Cannon"]);
+                this.spriteSecondaryEffects = SpriteEffects.FlipVertically;
+                cannonPivot = new Vector2(42, 34);
+            } else {
+                SetSpriteSecondary(sprites["Cannon"]);
+                this.spriteSecondaryEffects = SpriteEffects.None;
+                cannonPivot = new Vector2(14, 10);
+            }
         }
 
         public string GetEnemyType()
@@ -92,27 +103,20 @@ namespace Sprint0
 
         public void CycleEnemyNext()
         {
-            if (mobType == MobType.BossTank)
-            {
-                SetEnemyType(MobType.SmallEnemy);
-            } else if (mobType == MobType.SmallEnemy) {
-                SetEnemyType(MobType.ExplodingTank);
-                explosionPhase = 0;
-            } else if (mobType == MobType.ExplodingTank) {
-                SetEnemyType(MobType.BossTank);
+            if(this.mobType != MobType.Turret) {
+                this.mobType++;
+            } else {
+                this.mobType = MobType.BossTank;
             }
+            SetEnemyType(this.mobType);
         }
         public void CycleEnemyPrev() {
-            if(mobType == MobType.BossTank) {
-                SetEnemyType(MobType.ExplodingTank);
-                explosionPhase = 0;
-            } else if (mobType == MobType.SmallEnemy) {
-                SetEnemyType(MobType.BossTank);
-            } else if (mobType == MobType.ExplodingTank) {
-                SetEnemyType(MobType.SmallEnemy);
-            } else if (mobType == MobType.SmallEnemy) {
-                SetEnemyType(MobType.Turret);
+            if(this.mobType != MobType.BossTank) {
+                this.mobType--;
+            } else {
+                this.mobType = MobType.Turret;
             }
+            SetEnemyType(this.mobType);
         }
 
         public override void Update(GameTime gameTime)
@@ -287,10 +291,7 @@ namespace Sprint0
         {
             SpriteEffects effects = SpriteEffects.None;
             sprite.Draw(spriteBatch, position, effects, 0f);
-
-            // Draw the cannon using the tank's center (position) and the given pivot (14,10).
-            Vector2 cannonPivot = new Vector2(14, 10);
-            spriteSecondary.Draw(spriteBatch, position, effects, cannonRotation, cannonPivot);
+            spriteSecondary.Draw(spriteBatch, position, spriteSecondaryEffects, cannonRotation, cannonPivot);
         }
     }
 }
