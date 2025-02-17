@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
@@ -43,6 +44,18 @@ namespace Sprint0
             }
         }
 
+        public class UpdateCannonCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("player") && parameters["player"] is Player player &&
+                    parameters.ContainsKey("rotation") && parameters["rotation"] is float rotation)
+                {
+                    player.SetCannonRotation(rotation);
+                }
+            }
+        }
+
         public class CycleBlockPrevCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
@@ -70,7 +83,7 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 // Implement the logic to cycle to the previous item
-                if (parameters.ContainsKey("pickupItem") && parameters["pickupItem"] is PickupItem pickupItem) 
+                if (parameters.ContainsKey("pickUpItem") && parameters["pickUpItem"] is PickupItem pickupItem) 
                 {
                     pickupItem.CycleItemPrev();
                 }
@@ -81,7 +94,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("pickupItem") && parameters["pickupItem"] is PickupItem pickupItem) 
+                if (parameters.ContainsKey("pickUpItem") && parameters["pickUpItem"] is PickupItem pickupItem) 
                 {
                     pickupItem.CycleItemNext();
                 }

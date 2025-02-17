@@ -6,50 +6,46 @@ namespace Sprint0
 {
     public static class ActionCommands
     {
-        public class AttackCommand : ICommand
-        {
-            public void Execute(Dictionary<string, object> parameters)
-            {
-                if (parameters.ContainsKey("player") && parameters["player"] is Player player &&
-                parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
-                {
-                    // this command tells the player to create a projectile which then eventually calls create entity command
-                    // it's all a bit tedious but it's the only way to get the player to create a projectile while storing it's own projectiles 
-                    player.SetProjectileType("Default");
-                    player.CreateProjectile();
-                }
-            }
-        }
-    
-        public class UseItemCommand : ICommand
+
+        public class PlayerActionCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("player") && parameters["player"] is Player player &&
                 parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                parameters.ContainsKey("itemType") && parameters["itemType"] is int itemType)
+                parameters.ContainsKey("actionType") && parameters["actionType"] is string actionType)
                 {
                     // this command tells the player to create a projectile which then eventually calls create entity command
                     // it's all a bit tedious but it's the only way to get the player to create a projectile while storing it's own projectiles 
-                    if(itemType == 1)
+                    switch (actionType)
                     {
-                        player.SetProjectileType("Sniper");
-                        player.CreateProjectile();
-                    }
-                    else if(itemType == 2)
-                    {
-                        player.SetProjectileType("Rocket");
-                        player.CreateProjectile();
-                    }
-                    else if(itemType == 3)
-                    {
-                        player.SetProjectileType("Shotgun");
-                        player.CreateProjectile();
-                    }
-                    else if(itemType == 4)
-                    {
-                        player.SetProjectileType("Bomb");
-                        player.CreateProjectile();
+                        case "fire":
+                            player.SetProjectileType("Default");
+                            player.FireProjectile();
+                            break;
+
+                        case "item1":
+                            player.SetProjectileType("Sniper");
+                            player.FireProjectile();
+                            break;
+
+                        case "item2":
+                            player.SetProjectileType("Rocket");
+                            player.FireProjectile();
+                            break;
+
+                        case "item3":
+                            player.SetProjectileType("Shotgun");
+                            player.FireProjectile();
+                            break;
+                        case "item4":
+                            player.SetProjectileType("Bomb");
+                            player.FireProjectile();
+                            break;
+
+                        default:
+                            System.Console.WriteLine("Error: invalid aactionType.");
+                            break;
                     }
                 }
             }
@@ -66,6 +62,39 @@ namespace Sprint0
                     {
                         player.Damage();
                     }
+                }
+            }
+        }
+        
+        public class CreateProjectileCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("projectileType") && parameters["projectileType"] is string projectileType &&
+                    parameters.ContainsKey("spawnPosition") && parameters["spawnPosition"] is Vector2 spawnPosition &&
+                    parameters.ContainsKey("cannonRotation") && parameters["cannonRotation"] is float cannonRotation &&
+                    parameters.ContainsKey("shooterVelocity") && parameters["shooterVelocity"] is Vector2 shooterVelocity)
+                {
+                    var projectileFactory = gameManager.GetEntity("projectileFactory") as ProjectileFactory;
+
+                    if (projectileFactory == null)
+                    {
+                        System.Console.WriteLine("Error: ProjectileFactory not found or invalid type.");
+                        return;
+                    }
+                    int numberOfProjectiles = 1;
+                    float spreadAngle = 0f;
+
+                    // Additional parameters if neccesary 
+                    if (parameters.ContainsKey("numberOfProjectiles") && parameters["numberOfProjectiles"] is int num)
+                        numberOfProjectiles = num;
+
+                    if (parameters.ContainsKey("spreadAngle") && parameters["spreadAngle"] is float angle)
+                        spreadAngle = angle;
+
+                    projectileFactory.CalculateProjectiles(projectileType, spawnPosition, cannonRotation, shooterVelocity, spreadAngle, numberOfProjectiles);
+                    projectileFactory.SpawnProjectiles();
                 }
             }
         }

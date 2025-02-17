@@ -8,90 +8,101 @@ namespace Sprint0
     {
         void Update(Game1 game);
     }
-
     public class KeyboardController : IController
     {
         private Dictionary<Keys, string> keyMappings;
         private KeyboardState previousKeyboardState;
+
         public KeyboardController()
         {
             previousKeyboardState = new KeyboardState();
             keyMappings = new Dictionary<Keys, string>
             {
-                {Keys.Q, "Quit"},
-                {Keys.R, "Reset"},
-
-                {Keys.D1, "UseItem"},
-                {Keys.D2, "UseItem"},
-                {Keys.D3, "UseItem"},
-                {Keys.D4, "UseItem"},
-
-                {Keys.W, "Move"},
-                {Keys.A, "Move"},
-                {Keys.S, "Move"},
-                {Keys.D, "Move"},
-                {Keys.Up, "MoveUp"},
-                {Keys.Left, "MoveLeft"},
-                {Keys.Down, "MoveDown"},
-                {Keys.Right, "MoveRight"},
-
-                {Keys.Z, "Attack"},
-                {Keys.E, "Damage"},
-
-                {Keys.T, "CycleBlockPrev"},
-                {Keys.Y, "CycleBlockNext"},
-                {Keys.U, "CycleItemPrev"},
-                {Keys.I, "CycleItemNext"},
-                {Keys.O, "CycleEnemyPrev"},
-                {Keys.P, "CycleEnemyNext"}
+                { Keys.Q, "Quit" },
+                { Keys.R, "Reset" },
+                { Keys.D1, "PlayerAction" },
+                { Keys.D2, "PlayerAction" },
+                { Keys.D3, "PlayerAction" },
+                { Keys.D4, "PlayerAction" },
+                { Keys.W, "Move" },
+                { Keys.A, "Move" },
+                { Keys.S, "Move" },
+                { Keys.D, "Move" },
+                { Keys.Z, "PlayerAction" },
+                { Keys.E, "Damage" },
+                { Keys.T, "CycleBlockPrev" },
+                { Keys.Y, "CycleBlockNext" },
+                { Keys.U, "CycleItemPrev" },
+                { Keys.I, "CycleItemNext" },
+                { Keys.O, "CycleEnemyPrev" },
+                { Keys.P, "CycleEnemyNext" },
+                { Keys.Escape, "ShowStartMenu" }
             };
         }
 
         public void Update(Game1 game)
         {
-
             KeyboardState state = Keyboard.GetState();
-
-            // Movement logic
-            Vector2 playerVelocity = Vector2.Zero;
+            Vector2 playerVelocity = new Vector2(0, 0);
             bool playerMoving = false;
 
-            if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up)) playerVelocity.Y -= 40;
-            if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down)) playerVelocity.Y += 40;
-            if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left)) playerVelocity.X -= 40;
-            if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right)) playerVelocity.X += 40;
+            if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
+                playerVelocity.Y -= 40;
+            if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
+                playerVelocity.Y += 40;
+            if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
+                playerVelocity.X -= 40;
+            if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
+                playerVelocity.X += 40;
 
             playerMoving = (playerVelocity != Vector2.Zero);
 
-            if (playerMoving)
-                game.GameManager.ExecuteCommand("Move", new Dictionary<string, object>{{"player", game.GameManager.GetEntity("player") }, {"velocity", playerVelocity}});
+            if (game.GameManager.GetActiveScreen() == null)
+            {
+                if (playerMoving)
+                {
+                    game.GameManager.eventManager.ExecuteCommand("Move", new Dictionary<string, object>
+                    {
+                        { "player", game.GameManager.GetEntity("player") },
+                        { "velocity", playerVelocity },
+                        { "gameManager", game.GameManager }
+                    });
+                }
+                else
+                {
+                    game.GameManager.eventManager.ExecuteCommand("ApplyFriction", new Dictionary<string, object>
+                    {
+                        { "player", game.GameManager.GetEntity("player") },
+                        { "gameManager", game.GameManager }
+                    });
+                }
+            }
 
             // Everything Else Logic
-            int itemType = 0;
-            if (state.IsKeyDown(Keys.D1)) itemType = 1;
-            if (state.IsKeyDown(Keys.D2)) itemType = 2;
-            if (state.IsKeyDown(Keys.D3)) itemType = 3;
-            if (state.IsKeyDown(Keys.D4)) itemType = 4;
-    
+            string actionType = "fire";
+            if (state.IsKeyDown(Keys.Z)) actionType = "fire";
+            if (state.IsKeyDown(Keys.D1)) actionType = "item1";
+            if (state.IsKeyDown(Keys.D2)) actionType = "item2";
+            if (state.IsKeyDown(Keys.D3)) actionType = "item3";
+            if (state.IsKeyDown(Keys.D4)) actionType = "item4";
+
             Dictionary<string, object> parameters = new Dictionary<string, object>
             {
                 { "gameManager", game.GameManager },
                 { "content", game.GameManager.GetContent() },
-                { "player", game.GameManager.GetEntity("player") }, 
-                { "playerVelocity", playerVelocity },
-                { "pickupItem", game.GameManager.GetEntity("pickupItem") },
-                { "blocks", game.GameManager.GetEntity("blocks") },
-                { "mob", game.GameManager.GetEntity("mob") },
-                { "itemType", itemType}
+                { "player", game.GameManager.GetEntity("player") },
+                { "mob", game.GameManager.GetEntity("mob") }, 
+                { "pickUpItem", game.GameManager.GetEntity("pickUpItem") }, 
+                { "blocks", game.GameManager.GetEntity("blocks")},
+                { "actionType", actionType} , 
+                { "game", game} , 
             };
 
-            foreach (var key in keyMappings.Keys)
+            foreach (Keys key in keyMappings.Keys)
             {
                 if (state.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key))
                 {
-    
-                    game.GameManager.ExecuteCommand(keyMappings[key], parameters);
-                
+                    game.GameManager.eventManager.ExecuteCommand(keyMappings[key], parameters);
                 }
             }
             previousKeyboardState = state;
@@ -103,32 +114,28 @@ namespace Sprint0
         public void Update(Game1 game)
         {
             MouseState state = Mouse.GetState();
-
-            if (state.LeftButton == ButtonState.Pressed)
+            if (game.GameManager.GetActiveScreen() != null)
             {
-                var parameters = new Dictionary<string, object>
+                if (state.LeftButton == ButtonState.Pressed)
                 {
-                    { "gameManager", game.GameManager },
-                    { "content", game.GameManager.GetContent() },
-                    { "player", game.GameManager.GetEntity("player") }
-                };
-
-                if (state.X < 400 && state.Y < 300) game.GameManager.ExecuteCommand("Static", parameters);
-                else if (state.X >= 400 && state.Y < 300) game.GameManager.ExecuteCommand("Animated", parameters);
-                else if (state.X < 400 && state.Y >= 300) game.GameManager.ExecuteCommand("Moving", parameters);
-                else if (state.X >= 400 && state.Y >= 300) game.GameManager.ExecuteCommand("MovingAnimated", parameters);
+                    Point clickPos = new Point(state.X, state.Y);
+                    game.GameManager.GetActiveScreen().HandleClick(clickPos);
+                }
             }
-            else if (state.RightButton == ButtonState.Pressed)
+            else
             {
-                var parameters = new Dictionary<string, object>
+                Vector2 mousePosition = new Vector2(state.X, state.Y);
+                if (game.GameManager.GetEntity("player") is Player player)
                 {
-                    { "gameManager", game.GameManager },
-                    { "content", game.GameManager.GetContent() },
-                    { "player", game.GameManager.GetEntity("player") }
-                };
-
-                game.GameManager.ExecuteCommand("Quit", parameters);
-                game.GameManager.ExecuteCommand("Static", parameters);
+                    Vector2 playerCenter = player.GetPosition();
+                    Vector2 direction = mousePosition - playerCenter;
+                    float rotation = (float)System.Math.Atan2(direction.Y, direction.X) - MathHelper.PiOver2;
+                    Dictionary<string, object> parameters = new Dictionary<string, object>();
+                    parameters.Add("player", player);
+                    parameters.Add("rotation", rotation);
+                    parameters.Add("gameManager", game.GameManager);
+                    game.GameManager.eventManager.ExecuteCommand("UpdateCannon", parameters);
+                }
             }
         }
     }

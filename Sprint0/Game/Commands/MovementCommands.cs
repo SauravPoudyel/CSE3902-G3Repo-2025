@@ -19,6 +19,24 @@ namespace Sprint0
             }
         }
 
+        public class ApplyFrictionCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("player") && parameters["player"] is Player player)
+                {
+                    // Assuming the Entity base class provides a GetVelocity() method.
+                    Vector2 currentVelocity = player.GetVelocity();
+                    Vector2 newVelocity = currentVelocity * 0.982f;
+                    if (newVelocity.LengthSquared() < 0.05f)
+                    {
+                        newVelocity = Vector2.Zero;
+                    }
+                    player.SetVelocity(newVelocity);
+                }
+            }
+        }
+
         public class MoveCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)

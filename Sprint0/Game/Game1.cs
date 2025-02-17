@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 
@@ -31,6 +32,12 @@ namespace Sprint0
             GameManager = new GameManager(this);
             keyboardController = new KeyboardController();
             mouseController = new MouseController();
+            GameManager.eventManager.ExecuteCommand("ShowStartMenu", new Dictionary<string, object>
+            {
+                { "gameManager", GameManager },
+                { "content", Content },
+                { "game", this }
+            });
             base.Initialize();
         }
 
