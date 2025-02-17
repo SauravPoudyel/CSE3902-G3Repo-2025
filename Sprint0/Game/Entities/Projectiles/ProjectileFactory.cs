@@ -1,75 +1,71 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
 namespace Sprint0
 {
-    public class ProjectileFactory : Entity
+    public static class ProjectileFactory
     {
-        private ContentManager content;
-        private int projectileCounter = 0;
-        private List<ProjectileData> projectileDataList;
+        private static ContentManager content;
+        private static int projectileCounter = 0;
+        private static List<ProjectileData> projectileDataList = new List<ProjectileData>();
 
         public class ProjectileData
         {
-            public Projectile projectileVar { get; }
-            public string entityName { get; }
-            public Vector2 spawnPosition { get; }
-            public Vector2 velocity { get; }
+            public Projectile ProjectileVar { get; }
+            public string EntityName { get; }
+            public Vector2 SpawnPosition { get; }
+            public Vector2 Velocity { get; }
 
             public ProjectileData(Projectile projectile, string entityName, Vector2 spawnPosition, Vector2 velocity)
             {
-                projectileVar = projectile;
-                this.entityName = entityName;
-                this.spawnPosition = spawnPosition;
-                this.velocity = velocity;
+                ProjectileVar = projectile;
+                EntityName = entityName;
+                SpawnPosition = spawnPosition;
+                Velocity = velocity;
             }
         }
 
-        public ProjectileFactory(ContentManager content)
+        public static void Initialize(ContentManager cm)
         {
-            this.content = content;
-            projectileDataList = new List<ProjectileData>();
-            hasSprite = false; 
+            content = cm;
         }
 
-        public void CalculateProjectiles(string projectileType, Vector2 spawnPosition, float cannonRotation, Vector2 shooterVelocity, float spreadAngle = 0f, int numberOfProjectiles = 1)
+        public static void CalculateProjectiles(string projectileType, Vector2 spawnPosition, float cannonRotation, float spreadAngle = 0f, int numberOfProjectiles = 1, float speedModifer = 0)
         {
             projectileDataList.Clear();
-
             float startAngle = cannonRotation - ((numberOfProjectiles - 1) * spreadAngle / 2f);
             for (int i = 0; i < numberOfProjectiles; i++)
             {
                 string entityName = projectileType + "_" + projectileCounter++;
                 Projectile projectile = InstantiateProjectile(projectileType, entityName);
-
                 float currentAngle = startAngle + i * spreadAngle;
                 Vector2 direction = Vector2.Transform(Vector2.UnitY, Matrix.CreateRotationZ(currentAngle));
-                float speed = projectile.GetBaseSpeed(); 
-                Vector2 velocity = direction * speed + shooterVelocity;
-
+                float speed = projectile.GetBaseSpeed();
+                Vector2 velocity = direction * (speed - speedModifer); 
                 projectileDataList.Add(new ProjectileData(projectile, entityName, spawnPosition, velocity));
             }
         }
 
-        public void SpawnProjectiles()
+        public static void SpawnProjectiles(GameManager gameManager)
         {
-            foreach (var projectile in projectileDataList)
+            foreach (var data in projectileDataList)
             {
                 var parameters = new Dictionary<string, object>
                 {
-                    { "create", projectile.projectileVar },
-                    { "entityName", projectile.entityName },
-                    { "position", projectile.spawnPosition },
-                    { "velocity", projectile.velocity }
+                    { "gameManager", gameManager},
+                    { "create", data.ProjectileVar },
+                    { "entityName", data.EntityName },
+                    { "position", data.SpawnPosition },
+                    { "velocity", data.Velocity }
                 };
-
-                commandQueue.Enqueue(new CommandRequest("CreateEntity", parameters));
+                gameManager.eventManager.ExecuteCommand("CreateEntity", parameters);
             }
             projectileDataList.Clear();
         }
 
-        private Projectile InstantiateProjectile(string projectileType, string entityName)
+        private static Projectile InstantiateProjectile(string projectileType, string entityName)
         {
             if (projectileType == "Sniper")
                 return new SniperProjectile(content, entityName);

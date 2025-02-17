@@ -66,38 +66,29 @@ namespace Sprint0
             }
         }
         
-        public class CreateProjectileCommand : ICommand
+    public class CreateProjectileCommand : ICommand
+    {
+        public void Execute(Dictionary<string, object> parameters)
         {
-            public void Execute(Dictionary<string, object> parameters)
+            if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                parameters.ContainsKey("projectileType") && parameters["projectileType"] is string projectileType &&
+                parameters.ContainsKey("spawnPosition") && parameters["spawnPosition"] is Vector2 spawnPosition &&
+                parameters.ContainsKey("cannonRotation") && parameters["cannonRotation"] is float cannonRotation)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("projectileType") && parameters["projectileType"] is string projectileType &&
-                    parameters.ContainsKey("spawnPosition") && parameters["spawnPosition"] is Vector2 spawnPosition &&
-                    parameters.ContainsKey("cannonRotation") && parameters["cannonRotation"] is float cannonRotation &&
-                    parameters.ContainsKey("shooterVelocity") && parameters["shooterVelocity"] is Vector2 shooterVelocity)
-                {
-                    var projectileFactory = gameManager.GetEntity("projectileFactory") as ProjectileFactory;
-
-                    if (projectileFactory == null)
-                    {
-                        System.Console.WriteLine("Error: ProjectileFactory not found or invalid type.");
-                        return;
-                    }
-                    int numberOfProjectiles = 1;
-                    float spreadAngle = 0f;
-
-                    // Additional parameters if neccesary 
-                    if (parameters.ContainsKey("numberOfProjectiles") && parameters["numberOfProjectiles"] is int num)
-                        numberOfProjectiles = num;
-
-                    if (parameters.ContainsKey("spreadAngle") && parameters["spreadAngle"] is float angle)
-                        spreadAngle = angle;
-
-                    projectileFactory.CalculateProjectiles(projectileType, spawnPosition, cannonRotation, shooterVelocity, spreadAngle, numberOfProjectiles);
-                    projectileFactory.SpawnProjectiles();
-                }
+                int numberOfProjectiles = 1;
+                float spreadAngle = 0f;
+                float speedModifer = 0f;
+                if (parameters.ContainsKey("numberOfProjectiles") && parameters["numberOfProjectiles"] is int num)
+                    numberOfProjectiles = num;
+                if (parameters.ContainsKey("spreadAngle") && parameters["spreadAngle"] is float angle)
+                    spreadAngle = angle;
+                if (parameters.ContainsKey("speedModifier") && parameters["speedModifier"] is float speedMod)
+                    speedModifer = speedMod;
+                ProjectileFactory.CalculateProjectiles(projectileType, spawnPosition, cannonRotation, spreadAngle, numberOfProjectiles, speedModifer);
+                ProjectileFactory.SpawnProjectiles(gameManager);
             }
         }
+    }
 
         public class CreateEntityCommand : ICommand
         {
