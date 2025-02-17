@@ -94,7 +94,8 @@ namespace Sprint0
                 { "mob", game.GameManager.GetEntity("mob") }, 
                 { "pickUpItem", game.GameManager.GetEntity("pickUpItem") }, 
                 { "blocks", game.GameManager.GetEntity("blocks")},
-                { "actionType", actionType} 
+                { "actionType", actionType} , 
+                { "game", game} , 
             };
 
             foreach (Keys key in keyMappings.Keys)
