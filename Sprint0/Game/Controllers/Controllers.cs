@@ -35,17 +35,17 @@ namespace Sprint0
                 { Keys.U, "CycleItemPrev" },
                 { Keys.I, "CycleItemNext" },
                 { Keys.O, "CycleEnemyPrev" },
-                { Keys.P, "CycleEnemyNext" }
+                { Keys.P, "CycleEnemyNext" },
+                { Keys.Escape, "ShowStartMenu" }
             };
         }
 
         public void Update(Game1 game)
         {
             KeyboardState state = Keyboard.GetState();
-            Vector2 playerVelocity = Vector2.Zero;
+            Vector2 playerVelocity = new Vector2(0, 0);
             bool playerMoving = false;
 
-            // Process movement keys.
             if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
                 playerVelocity.Y -= 40;
             if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
@@ -57,51 +57,42 @@ namespace Sprint0
 
             playerMoving = (playerVelocity != Vector2.Zero);
 
-            // Execute Move command if moving; otherwise, apply friction.
-            if (playerMoving)
+            if (game.GameManager.GetActiveScreen() == null)
             {
-                game.GameManager.eventManager.ExecuteCommand("Move", new Dictionary<string, object>
+                if (playerMoving)
                 {
-                    { "player", game.GameManager.GetEntity("player") },
-                    { "velocity", playerVelocity }
-                });
-            }
-            else
-            {
-                game.GameManager.eventManager.ExecuteCommand("ApplyFriction", new Dictionary<string, object>
+                    game.GameManager.eventManager.ExecuteCommand("Move", new Dictionary<string, object>
+                    {
+                        { "player", game.GameManager.GetEntity("player") },
+                        { "velocity", playerVelocity },
+                        { "gameManager", game.GameManager }
+                    });
+                }
+                else
                 {
-                    { "player", game.GameManager.GetEntity("player") }
-                });
+                    game.GameManager.eventManager.ExecuteCommand("ApplyFriction", new Dictionary<string, object>
+                    {
+                        { "player", game.GameManager.GetEntity("player") },
+                        { "gameManager", game.GameManager }
+                    });
+                }
             }
 
-            // Player Action Logic
-            string actionType = "";
-            if (state.IsKeyDown(Keys.Z)) actionType = "fire";
-            if (state.IsKeyDown(Keys.D1)) actionType = "item1";
-            if (state.IsKeyDown(Keys.D2)) actionType = "item2";
-            if (state.IsKeyDown(Keys.D3)) actionType = "item3";
-            if (state.IsKeyDown(Keys.D4)) actionType = "item4";
-
-            // Process other key-based actions.
             Dictionary<string, object> parameters = new Dictionary<string, object>
             {
                 { "gameManager", game.GameManager },
                 { "content", game.GameManager.GetContent() },
                 { "player", game.GameManager.GetEntity("player") },
-                { "pickupItem", game.GameManager.GetEntity("pickupItem") },
-                { "blocks", game.GameManager.GetEntity("blocks") },
-                { "mob", game.GameManager.GetEntity("mob") }, 
-                { "actionType", actionType }
+                { "game", game }
             };
 
-            foreach (var key in keyMappings.Keys)
+            foreach (Keys key in keyMappings.Keys)
             {
                 if (state.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key))
                 {
                     game.GameManager.eventManager.ExecuteCommand(keyMappings[key], parameters);
                 }
             }
-
             previousKeyboardState = state;
         }
     }
@@ -111,19 +102,28 @@ namespace Sprint0
         public void Update(Game1 game)
         {
             MouseState state = Mouse.GetState();
-
-            // Update the player's cannon rotation based on the current mouse position.
-            Vector2 mousePosition = new Vector2(state.X, state.Y);
-            if (game.GameManager.GetEntity("player") is Player player)
+            if (game.GameManager.GetActiveScreen() != null)
             {
-                Vector2 playerCenter = player.GetPosition();
-                Vector2 direction = mousePosition - playerCenter;
-                float rotation = (float)System.Math.Atan2(direction.Y, direction.X) - MathHelper.PiOver2;
-                game.GameManager.eventManager.ExecuteCommand("UpdateCannon", new Dictionary<string, object>
+                if (state.LeftButton == ButtonState.Pressed)
                 {
-                    { "player", player },
-                    { "rotation", rotation }
-                });
+                    Point clickPos = new Point(state.X, state.Y);
+                    game.GameManager.GetActiveScreen().HandleClick(clickPos);
+                }
+            }
+            else
+            {
+                Vector2 mousePosition = new Vector2(state.X, state.Y);
+                if (game.GameManager.GetEntity("player") is Player player)
+                {
+                    Vector2 playerCenter = player.GetPosition();
+                    Vector2 direction = mousePosition - playerCenter;
+                    float rotation = (float)System.Math.Atan2(direction.Y, direction.X) - MathHelper.PiOver2;
+                    Dictionary<string, object> parameters = new Dictionary<string, object>();
+                    parameters.Add("player", player);
+                    parameters.Add("rotation", rotation);
+                    parameters.Add("gameManager", game.GameManager);
+                    game.GameManager.eventManager.ExecuteCommand("UpdateCannon", parameters);
+                }
             }
         }
     }

@@ -1,22 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Sprint0
 {
-    public class PlayerInventory : Screen
+    public class PlayerInventory : IScreen
     {
-        public List<Item> Inventory { get; set; }
-        public int CoinCount { get; set; }
+        public List<PlayerInventory.Item> Inventory;
+        public int CoinCount;
 
         public PlayerInventory()
         {
-            Inventory = new List<Item>
-            {
-                new Item("null", 0),
-                new Item("null", 0),
-                new Item("null", 0),
-                new Item("null", 0)
-            };
-
+            Inventory = new List<PlayerInventory.Item>();
+            Inventory.Add(new PlayerInventory.Item("null", 0));
+            Inventory.Add(new PlayerInventory.Item("null", 0));
+            Inventory.Add(new PlayerInventory.Item("null", 0));
+            Inventory.Add(new PlayerInventory.Item("null", 0));
             CoinCount = 0;
         }
 
@@ -24,7 +23,7 @@ namespace Sprint0
         {
             if (amount > 0)
             {
-                CoinCount += amount;
+                CoinCount = CoinCount + amount;
             }
         }
 
@@ -32,14 +31,34 @@ namespace Sprint0
         {
             if (amount > 0 && amount <= CoinCount)
             {
-                CoinCount -= amount;
+                CoinCount = CoinCount - amount;
             }
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            // Update inventory animations if needed.
+        }
+
+        public void HandleClick(Point clickLocation) 
+        {
+
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            Texture2D rect = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            rect.SetData(new Color[] { Color.White });
+            Color bgColor = new Color(0, 0, 0, 128);
+            Rectangle inventoryRect = new Rectangle(10, 10, 200, 100);
+            spriteBatch.Draw(rect, inventoryRect, bgColor);
+            // Draw coin count and items here.
         }
 
         public class Item
         {
-            public string ItemKey { get; set; }
-            public int Count { get; set; }
+            public string ItemKey;
+            public int Count;
 
             public Item(string itemKey, int count)
             {
@@ -51,7 +70,7 @@ namespace Sprint0
             {
                 if (amount > 0)
                 {
-                    Count += amount;
+                    Count = Count + amount;
                 }
             }
 
@@ -59,7 +78,7 @@ namespace Sprint0
             {
                 if (amount > 0 && amount <= Count)
                 {
-                    Count -= amount;
+                    Count = Count - amount;
                 }
             }
         }

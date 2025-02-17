@@ -12,13 +12,17 @@ namespace Sprint0
         private SpriteManager spriteManager;
         private ContentManager content;
         public EventManager eventManager { get; private set; }
+        private List<IScreen> screens;
+        public Game1 Game { get; private set; }
 
         public GameManager(Game1 game)
         {
+            Game = game;
             entities = new Dictionary<string, Entity>();
             physicsManager = new PhysicsManager();
             spriteManager = new SpriteManager();
             eventManager = new EventManager(game, this);
+            screens = new List<IScreen>();
         }
 
         public ContentManager GetContent()
@@ -40,6 +44,7 @@ namespace Sprint0
         {
             content = contentManager;
             InitializeEntities();
+            
         }
 
         private void InitializeEntities()
@@ -65,17 +70,41 @@ namespace Sprint0
             entities.Add("projectileFactory", projectileFactory);
         }
 
+        public void AddScreen(IScreen screen)
+        {
+            screens.Add(screen);
+        }
+
+        public void RemoveScreen(IScreen screen)
+        {
+            screens.Remove(screen);
+        }
+
+        public IScreen GetActiveScreen()
+        {
+            if (screens.Count > 0)
+                return screens[0];
+            return null;
+        }
+
         public void Update(GameTime gameTime)
         {
-            foreach (var entity in entities.Values)
+            if (GetActiveScreen() == null)
             {
-                entity.Update(gameTime);
-                
-                eventManager.CollectCommandRequests(entity.GetCommandQueue());
+                foreach (var entity in entities.Values)
+                {
+                    entity.Update(gameTime);
+                    eventManager.CollectCommandRequests(entity.GetCommandQueue());
+                }
+                physicsManager.Update(gameTime, entities);
+                spriteManager.Update(gameTime);
+                eventManager.ProcessCommandRequests();
             }
-            physicsManager.Update(gameTime, entities);
-            spriteManager.Update(gameTime);
-            eventManager.ProcessCommandRequests();
+            int i;
+            for (i = 0; i < screens.Count; i++)
+            {
+                screens[i].Update(gameTime);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -85,11 +114,11 @@ namespace Sprint0
                 entity.Draw(spriteBatch);
             }
             spriteManager.Draw(spriteBatch);
-        }
-
-        public void SetSprite(ISprite sprite)
-        {
-            spriteManager.SetSprite(sprite);
+            int i;
+            for (i = 0; i < screens.Count; i++)
+            {
+                screens[i].Draw(spriteBatch);
+            }
         }
     }
 }
