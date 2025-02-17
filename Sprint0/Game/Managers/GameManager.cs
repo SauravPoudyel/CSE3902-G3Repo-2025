@@ -59,7 +59,7 @@ namespace Sprint0
 
             PickupItem pickupItem = new PickupItem(content);
             pickupItem.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 + 170, 180));
-            entities.Add("pickupItem", pickupItem);
+            entities.Add("pickUpItem", pickupItem);
 
             Blocks blocks = new Blocks(content);
             blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 - 300, 480));

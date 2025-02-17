@@ -50,7 +50,7 @@ namespace Sprint0
             while (commandQueue.Count > 0)
             {
                 var commandRequest = commandQueue.Dequeue();
-                commandRequest.Parameters["gameManager"] = gameManager; // Add reference to GameManager
+                commandRequest.Parameters.Add("gameManager", gameManager); 
                 commandRequests.Add(commandRequest);
             }
         }

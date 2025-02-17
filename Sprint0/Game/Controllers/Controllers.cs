@@ -15,7 +15,7 @@ namespace Sprint0
 
         public KeyboardController()
         {
-            previousKeyboardState = Keyboard.GetState();
+            previousKeyboardState = new KeyboardState();
             keyMappings = new Dictionary<Keys, string>
             {
                 { Keys.Q, "Quit" },
@@ -78,12 +78,23 @@ namespace Sprint0
                 }
             }
 
+            // Everything Else Logic
+            string actionType = "fire";
+            if (state.IsKeyDown(Keys.Z)) actionType = "fire";
+            if (state.IsKeyDown(Keys.D1)) actionType = "item1";
+            if (state.IsKeyDown(Keys.D2)) actionType = "item2";
+            if (state.IsKeyDown(Keys.D3)) actionType = "item3";
+            if (state.IsKeyDown(Keys.D4)) actionType = "item4";
+
             Dictionary<string, object> parameters = new Dictionary<string, object>
             {
                 { "gameManager", game.GameManager },
                 { "content", game.GameManager.GetContent() },
                 { "player", game.GameManager.GetEntity("player") },
-                { "game", game }
+                { "mob", game.GameManager.GetEntity("mob") }, 
+                { "pickUpItem", game.GameManager.GetEntity("pickUpItem") }, 
+                { "blocks", game.GameManager.GetEntity("blocks")},
+                { "actionType", actionType} 
             };
 
             foreach (Keys key in keyMappings.Keys)
