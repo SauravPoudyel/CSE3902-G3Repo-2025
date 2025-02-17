@@ -60,7 +60,7 @@ namespace Sprint0
             // Execute Move command if moving; otherwise, apply friction.
             if (playerMoving)
             {
-                game.GameManager.ExecuteCommand("Move", new Dictionary<string, object>
+                game.GameManager.eventManager.ExecuteCommand("Move", new Dictionary<string, object>
                 {
                     { "player", game.GameManager.GetEntity("player") },
                     { "velocity", playerVelocity }
@@ -68,7 +68,7 @@ namespace Sprint0
             }
             else
             {
-                game.GameManager.ExecuteCommand("ApplyFriction", new Dictionary<string, object>
+                game.GameManager.eventManager.ExecuteCommand("ApplyFriction", new Dictionary<string, object>
                 {
                     { "player", game.GameManager.GetEntity("player") }
                 });
@@ -98,7 +98,7 @@ namespace Sprint0
             {
                 if (state.IsKeyDown(key) && !previousKeyboardState.IsKeyDown(key))
                 {
-                    game.GameManager.ExecuteCommand(keyMappings[key], parameters);
+                    game.GameManager.eventManager.ExecuteCommand(keyMappings[key], parameters);
                 }
             }
 
@@ -119,7 +119,7 @@ namespace Sprint0
                 Vector2 playerCenter = player.GetPosition();
                 Vector2 direction = mousePosition - playerCenter;
                 float rotation = (float)System.Math.Atan2(direction.Y, direction.X) - MathHelper.PiOver2;
-                game.GameManager.ExecuteCommand("UpdateCannon", new Dictionary<string, object>
+                game.GameManager.eventManager.ExecuteCommand("UpdateCannon", new Dictionary<string, object>
                 {
                     { "player", player },
                     { "rotation", rotation }
