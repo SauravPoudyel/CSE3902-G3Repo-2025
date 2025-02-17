@@ -37,14 +37,27 @@ namespace Sprint0
 
         public Entity GetEntity(string entityKey)
         {
-            return entities[entityKey];
+            return entities.ContainsKey(entityKey) ? entities[entityKey] : null;
+        }
+
+        public void SetEntity(string key, Entity entity)
+        {
+            entities[key] = entity;
+        }
+
+        public void RemoveEntity(string key)
+        {
+            if (entities.ContainsKey(key))
+            {
+                entities.Remove(key);
+            }
         }
 
         public void LoadContent(ContentManager contentManager)
         {
             content = contentManager;
+            Globals.LoadGlobalSprites(content);
             InitializeEntities();
-            
         }
 
         private void InitializeEntities()
@@ -53,38 +66,19 @@ namespace Sprint0
             player.SetPosition(new Vector2(Globals.SCREENWIDTH / 2, 300));
             entities.Add("player", player);
 
-            Entity mob = new Mob(content);
+            Mob mob = MobFactory.CreateMob(content);
             mob.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 + 100, 400));
             entities.Add("mob", mob);
 
             PickupItem pickupItem = new PickupItem(content);
             pickupItem.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 + 170, 180));
-            entities.Add("pickUpItem", pickupItem);
+            entities.Add("pickupItem", pickupItem);
 
             Blocks blocks = new Blocks(content);
             blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 - 300, 480));
             entities.Add("blocks", blocks);
 
-            ProjectileFactory projectileFactory = new ProjectileFactory(content);
-            projectileFactory.SetPosition(new Vector2(Globals.SCREENWIDTH / 2, 300));
-            entities.Add("projectileFactory", projectileFactory);
-        }
-
-        public void AddScreen(IScreen screen)
-        {
-            screens.Add(screen);
-        }
-
-        public void RemoveScreen(IScreen screen)
-        {
-            screens.Remove(screen);
-        }
-
-        public IScreen GetActiveScreen()
-        {
-            if (screens.Count > 0)
-                return screens[0];
-            return null;
+            ProjectileFactory.Initialize(content);
         }
 
         public void Update(GameTime gameTime)
@@ -100,25 +94,34 @@ namespace Sprint0
                 spriteManager.Update(gameTime);
                 eventManager.ProcessCommandRequests();
             }
-            int i;
-            for (i = 0; i < screens.Count; i++)
-            {
+            for (int i = 0; i < screens.Count; i++)
                 screens[i].Update(gameTime);
-            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (var entity in entities.Values)
-            {
                 entity.Draw(spriteBatch);
-            }
             spriteManager.Draw(spriteBatch);
-            int i;
-            for (i = 0; i < screens.Count; i++)
-            {
+            for (int i = 0; i < screens.Count; i++)
                 screens[i].Draw(spriteBatch);
-            }
         }
+
+        public void AddScreen(IScreen screen)
+        {
+            screens.Add(screen);
+        }
+
+        public void RemoveScreen(IScreen screen)
+        {
+            screens.Remove(screen);
+        }
+        public IScreen GetActiveScreen()
+        {
+            if (screens.Count > 0)
+                return screens[0];
+            return null;
+        }
+
     }
 }

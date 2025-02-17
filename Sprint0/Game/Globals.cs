@@ -1,8 +1,4 @@
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace Sprint0
 {
@@ -10,8 +6,12 @@ namespace Sprint0
     {
         public const int SCREENWIDTH = 1920;
         public const int SCREENHEIGHT = 1080;
+        public static ISprite NULLSPRITE;
 
-        public static List<int> NULLSPRITE = new List<int> {129, 0, 12, 12};
-
+        public static void LoadGlobalSprites(ContentManager content)
+        {
+            NULLSPRITE = new StaticSprite();
+            NULLSPRITE.LoadContent(content, "TDTanksAllSprites", 129, 0, 1, 1, 1);
+        }
     }
 }

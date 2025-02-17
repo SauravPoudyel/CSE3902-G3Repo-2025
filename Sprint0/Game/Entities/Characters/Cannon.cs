@@ -6,59 +6,64 @@ namespace Sprint0
 {
     public class Cannon : Entity
     {
-        public IEntity Owner { get; set; }
-        public SpriteEffects cannonEffects = SpriteEffects.None;
+        public IEntity Owner { get; private set; }
         public float Rotation { get; set; }
         public float AngularVelocity { get; set; }
-        public float? LowerBound { get; set; }
-        public float? UpperBound { get; set; }
-        public Vector2 Pivot { get; set; }  // Attachment offset from the owner’s position.
-        public Vector2 TipOffset { get; set; }  // Offset from the Pivot to the cannon tip.
+        public float LowerBound { get; set; }
+        public float UpperBound { get; set; }
+        public Vector2 Pivot { get; set; }   // cannon’s rotation center
+        public float TipDistance { get; set; }   // Distance from Pivot to spawn the projectile
+        public SpriteEffects CannonEffects { get; set; }
 
-        public Cannon() { }
-
-        public Cannon(ISprite sprite, IEntity owner, Vector2 pivot, Vector2 tipOffset, float initialRotation = 0f, float angularVelocity = 0f, float? lowerBound = null, float? upperBound = null)
+        // Primary constructor (all parameters specified)
+        public Cannon(ISprite sprite, IEntity owner, Vector2 pivot, float tipDistance,
+                      float initialRotation, float angularVelocity, float lowerBound, float upperBound)
         {
             this.sprite = sprite;
             Owner = owner;
             Pivot = pivot;
-            TipOffset = tipOffset;
+            TipDistance = tipDistance;
             Rotation = initialRotation;
             AngularVelocity = angularVelocity;
             LowerBound = lowerBound;
             UpperBound = upperBound;
+            CannonEffects = SpriteEffects.None;
+        }
+
+        // Overload with default tip distance of 30 pixels.
+        public Cannon(ISprite sprite, IEntity owner, Vector2 pivot,
+                      float initialRotation, float angularVelocity, float lowerBound, float upperBound)
+            : this(sprite, owner, pivot, 30f, initialRotation, angularVelocity, lowerBound, upperBound)
+        {
         }
 
         public override void Update(GameTime gameTime)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (LowerBound.HasValue && UpperBound.HasValue)
+            Rotation += AngularVelocity * elapsed;
+            if (Rotation > UpperBound)
             {
-                Rotation += AngularVelocity * elapsed;
-                if (Rotation >= UpperBound.Value)
-                {
-                    Rotation = UpperBound.Value;
-                    AngularVelocity = -Math.Abs(AngularVelocity);
-                }
-                else if (Rotation <= LowerBound.Value)
-                {
-                    Rotation = LowerBound.Value;
-                    AngularVelocity = Math.Abs(AngularVelocity);
-                }
+                Rotation = UpperBound;
+                AngularVelocity = -Math.Abs(AngularVelocity);
+            }
+            else if (Rotation < LowerBound)
+            {
+                Rotation = LowerBound;
+                AngularVelocity = Math.Abs(AngularVelocity);
             }
         }
 
         public Vector2 GetTipPosition()
         {
-            // The tip is computed from the owner's position plus the pivot and then the rotated tip offset.
-            return Owner.GetPosition() + Pivot + Vector2.Transform(TipOffset, Matrix.CreateRotationZ(Rotation));
+            Vector2 direction = Vector2.Transform(Vector2.UnitY, Matrix.CreateRotationZ(Rotation)) * TipDistance;
+            return Owner.GetPosition() + Pivot + direction;
         }
+
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            // Draw the cannon at the owner's position + Pivot, using Pivot as the origin.
             Vector2 ownerPos = Owner.GetPosition();
-            sprite.Draw(spriteBatch, ownerPos, cannonEffects, Rotation, Pivot);
+            sprite.Draw(spriteBatch, ownerPos, CannonEffects, Rotation, Pivot);
         }
     }
 }

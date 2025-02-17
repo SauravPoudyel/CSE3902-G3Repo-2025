@@ -101,28 +101,27 @@ namespace Sprint0
             }
         }
 
-        public class CycleEnemyPrevCommand : ICommand
-        {
-            public void Execute(Dictionary<string, object> parameters)
-            {
-                // Implement the logic to cycle to the next enemy/NPC
-                if (parameters.ContainsKey("mob") && parameters["mob"] is Mob mob) 
-                {
-                    mob.CycleEnemyPrev();
-                }
-            }
-        }
-
         public class CycleEnemyNextCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                // Implement the logic to cycle to the next enemy/NPC
-                if (parameters.ContainsKey("mob") && parameters["mob"] is Mob mob) 
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    mob.CycleEnemyNext();
+                    MobFactory.CycleNextMob(gameManager);
                 }
             }
         }
+
+        public class CycleEnemyPrevCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    MobFactory.CyclePreviousMob(gameManager);
+                }
+            }
+        }
+
     }
 }
