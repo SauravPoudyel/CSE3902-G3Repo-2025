@@ -290,43 +290,6 @@ namespace Sprint0
             velocity = new Vector2(0, 0);
         }
 
-        public void SpawnProjectile()
-        {
-            Vector2 cannonTipOffset = new Vector2(0, 48); // so the bullets spawn from the cannon
-            Vector2 cannonTip = position + Vector2.Transform(cannonTipOffset, Matrix.CreateRotationZ(cannonRotation));
-
-            /* 
-             * The cannon has a base direction and two additional directions to create a spread effect. the cannon **points downward** so by default, we use (0, 1)
-             * The left and right directions are slightly rotated from the base direction.
-             * Matrix.CreateRotationZ(angle)` rotates a vector counterclockwise by the specified angle in radians, 
-             * got reference from: https://community.monogame.net/t/rotating-a-sprite-and-getting-the-new-point-and-rotation/20058
-             * If anybody feels a burning desire to work on collision and stuff, this is good to look at for the future
-             */
-             
-            Vector2 baseDirection = Vector2.Transform(new Vector2(0, 1), Matrix.CreateRotationZ(cannonRotation));
-            float spreadAngle = MathHelper.ToRadians(10);
-            Vector2 leftDirection = Vector2.Transform(baseDirection, Matrix.CreateRotationZ(-spreadAngle));
-            Vector2 rightDirection = Vector2.Transform(baseDirection, Matrix.CreateRotationZ(spreadAngle));
-
-            Vector2[] projectileDirections = {leftDirection, baseDirection, rightDirection};
-
-            for (int i = 0; i < 3; i++)
-            {
-                string projectileKey = "MobProjectile_" + projectileCounter++;
-                Projectile projectile = new Projectile(content, projectileKey);
-
-                Dictionary<string, object> projectileParams = new Dictionary<string, object>
-                {
-                    { "create", projectile},
-                    { "entityName", projectile.GetEntityKey()},
-                    { "position", cannonTip },
-                    { "velocity", (projectileDirections[i] * projectile.GetBaseSpeed()) + velocity}
-                };
-
-                commandQueue.Enqueue(new CommandRequest("CreateEntity", projectileParams));
-            }
-        }
-
         public void SetSpriteSecondary(ISprite sprite)
         {
             spriteSecondary = sprite;
