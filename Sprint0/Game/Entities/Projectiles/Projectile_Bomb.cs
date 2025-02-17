@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,12 @@ namespace Sprint0
     {
         private float explosionTimer;
         private const float ExplosionDelay = 2f;
+        private const float FrameTime = 0.25f;
 
         public BombProjectile(ContentManager content, string entityKey) : base(content, entityKey)
         {
-            AddSprite("Bomb", new StaticSprite());
-            sprites["Bomb"].LoadContent(content, "TDTanksAllSprites", 0, 1090, 40, 32, 1);
-
+            AddSprite("Bomb", new AnimatedSprite(FrameTime, AnimatedSprite.FrameOrientation.Vertical));
+            sprites["Bomb"].LoadContent(content, "TDTanksAllSprites", 1014, 936, 48, 48, 2);
             SetSprite("Bomb");
 
             baseSpeed = 0f;
@@ -28,6 +29,8 @@ namespace Sprint0
 
         public override void Update(GameTime gameTime)
         {
+            sprite.Update(gameTime);
+
             //Detonate the bomb after the time controlled by explosionTimer
             explosionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (explosionTimer >= ExplosionDelay)
@@ -38,6 +41,12 @@ namespace Sprint0
                 };
                 commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
             }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            SpriteEffects effects = SpriteEffects.None;
+            sprite.Draw(spriteBatch, position, effects, 0f, null, Color.White);
         }
     }
 }

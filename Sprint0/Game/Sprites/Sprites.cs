@@ -53,10 +53,18 @@ namespace Sprint0
         private float frameTime;
         private float timer;
         private bool isDamaged;
+        private FrameOrientation orientation;
 
-        public AnimatedSprite(float frameTime)
+        public enum FrameOrientation
+        {
+            Horizontal,
+            Vertical
+        }
+
+        public AnimatedSprite(float frameTime, FrameOrientation orientation = FrameOrientation.Horizontal)
         {
             this.frameTime = frameTime;
+            this.orientation = orientation;
             frames = new List<Rectangle>();
             currentFrame = 0;
             timer = 0f;
@@ -67,9 +75,28 @@ namespace Sprint0
         public void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
         {
             spriteSheet = content.Load<Texture2D>(assetName);
-            frames = SpriteManager.ExtractFrames(startX, startY, frameWidth, frameHeight, frameCount);
+            frames = ExtractFrames(startX, startY, frameWidth, frameHeight, frameCount);
         }
 
+        private List<Rectangle> ExtractFrames(int startX, int startY, int frameWidth, int frameHeight, int frameCount)
+        {
+            List<Rectangle> frameList = new List<Rectangle>();
+
+            for (int i = 0; i < frameCount; i++)
+            {
+                int x = orientation == FrameOrientation.Horizontal
+                    ? startX + (i * frameWidth)
+                    : startX;
+                
+                int y = orientation == FrameOrientation.Vertical
+                    ? startY + (i * frameHeight)
+                    : startY;
+
+                frameList.Add(new Rectangle(x, y, frameWidth, frameHeight));
+            }
+
+            return frameList;
+        }
 
         public void Damage()
         {
