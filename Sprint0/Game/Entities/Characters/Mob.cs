@@ -2,48 +2,48 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
-using System.Threading;
-
 
 namespace Sprint0
 {
     public class Mob : Entity
     {
-        enum MobType
-        {
-            BossTank,
-            SmallEnemy,
-            ExplodingTank,
-            Turret
-        }
+        private enum MobType { BossTank, SmallEnemy, ExplodingTank, Turret }
+        private static readonly MobType[] MobTypesArray = { MobType.BossTank, MobType.SmallEnemy, MobType.ExplodingTank, MobType.Turret };
 
+        private Dictionary<string, float> timers;
         private ContentManager content;
-        private float movementTimer;
-        private float shootTimer;
-        private ISprite spriteSecondary;
-        private SpriteEffects spriteSecondaryEffects = SpriteEffects.None;
         private MobType mobType;
-        private int mobPhase; // Tracks phase of "L" movement for SmallEnemy
-        Boolean isExploding;
-        private int explosionPhase = 0;
-        private float explodeTimer = 0f; //explodeTimer is when explosion starts
-        private float explosionTimer = 0f; //explosionTimer is once the explosion starts 
-        private Vector2 cannonPivot = new Vector2(14, 10);
-        private float cannonRotation = MathHelper.ToRadians(200);
-        private float cannonAngularVelocity = MathHelper.ToRadians(20);
-        // Cannon oscillates between 90 (π/2) and 270 (3π/2)
-        private float cannonLowerBound = MathHelper.PiOver2;
-        private float cannonUpperBound = MathHelper.Pi + MathHelper.PiOver2;
+        private int mobPhase;
+        private bool isExploding;
+        private int explosionPhase;
+        private readonly string[] explosionSpriteNames = { "Explosion1", "Explosion2", "Explosion3" };
+        private Cannon cannon;
 
         public Mob(ContentManager content)
         {
             this.content = content;
-            this.velocity = new Vector2(80, 0);
-            this.mobType = MobType.BossTank;
+            velocity = new Vector2(80, 0);
+            mobType = MobType.BossTank;
+            timers = new Dictionary<string, float>
+            {
+                {"shoot", 0f},
+                {"movement", 0f},
+                {"explosionDelay", 0f},
+                {"explosionFrame", 0f}
+            };
+            isExploding = false;
+            explosionPhase = 0;
+            LoadSprites();
 
+            // Create a default cannon instance; its configuration is completed in SetEnemyType.
+            cannon = new Cannon(sprites["Cannon"], this, new Vector2(14, 10), new Vector2(0, 48));
+
+            SetEnemyType(mobType);
+        }
+
+        private void LoadSprites()
+        {
             AddSprite("BossTank", new AnimatedSprite(0.3f));
             sprites["BossTank"].LoadContent(content, "TDTanksAllSprites", 641, 661, 123, 144, 1);
 
@@ -53,46 +53,68 @@ namespace Sprint0
             AddSprite("Cannon", new AnimatedSprite(0.3f));
             sprites["Cannon"].LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);
 
-            //Change this sprite to a different tank
             AddSprite("ExplodingTank", new AnimatedSprite(0.3f));
-            sprites["ExplodingTank"].LoadContent(content, "TDTanksAllSprites", 952, 569, 81, 76, 1);  
+            sprites["ExplodingTank"].LoadContent(content, "TDTanksAllSprites", 952, 569, 81, 76, 1);
 
             AddSprite("Explosion1", new AnimatedSprite(0.3f));
             sprites["Explosion1"].LoadContent(content, "TDTanksAllSprites", 765, 508, 113, 112, 1);
-            
-            AddSprite("Explosion3", new AnimatedSprite(0.3f));
-            sprites["Explosion3"].LoadContent(content, "TDTanksAllSprites", 641, 383, 124, 125, 1);
 
             AddSprite("Explosion2", new AnimatedSprite(0.3f));
             sprites["Explosion2"].LoadContent(content, "TDTanksAllSprites", 642, 256, 124, 126, 1);
+
+            AddSprite("Explosion3", new AnimatedSprite(0.3f));
+            sprites["Explosion3"].LoadContent(content, "TDTanksAllSprites", 641, 383, 124, 125, 1);
 
             AddSprite("Turret", new AnimatedSprite(0.3f));
             sprites["Turret"].LoadContent(content, "TDTowerDefenseSprites", 2444, 908, 104, 104, 1);
 
             AddSprite("TurretCannon", new AnimatedSprite(0.3f));
             sprites["TurretCannon"].LoadContent(content, "TDTowerDefenseSprites", 2455, 1290, 85, 110, 1);
-            // sprites["TurretCannon"].
 
             AddSprite("NULL", new AnimatedSprite(0.3f));
             sprites["NULL"].LoadContent(content, "TDTanksAllSprites", 129, 0, 12, 12, 1);
-
-            SetSprite(sprites["BossTank"]);
-            SetSpriteSecondary(sprites["Cannon"]);
         }
 
-        private void SetEnemyType(MobType mobType)
+        private void InitializeCannonSettings()
         {
-            this.mobType = mobType;
-            this.SetSprite(this.mobType.ToString());
-            if(this.mobType == MobType.Turret) {
-                SetSpriteSecondary(sprites[this.mobType.ToString() + "Cannon"]);
-                this.spriteSecondaryEffects = SpriteEffects.FlipVertically;
-                cannonPivot = new Vector2(42, 34);
-            } else {
-                SetSpriteSecondary(sprites["Cannon"]);
-                this.spriteSecondaryEffects = SpriteEffects.None;
-                cannonPivot = new Vector2(14, 10);
+            if (mobType == MobType.SmallEnemy)
+            {
+                cannon.AngularVelocity = MathHelper.ToRadians(80);
+                cannon.LowerBound = MathHelper.ToRadians(120);
+                cannon.UpperBound = MathHelper.ToRadians(240);
             }
+            else
+            {
+                cannon.AngularVelocity = MathHelper.ToRadians(20);
+                cannon.LowerBound = MathHelper.PiOver2;
+                cannon.UpperBound = MathHelper.Pi + MathHelper.PiOver2;
+            }
+        }
+
+        private void SetEnemyType(MobType type)
+        {
+            mobType = type;
+            SetSprite(sprites[type.ToString()]);
+            isExploding = false;
+            explosionPhase = 0;
+            timers["explosionDelay"] = 0f;
+            timers["explosionFrame"] = 0f;
+            timers["shoot"] = 0f;
+            if (type == MobType.Turret)
+            {
+                cannon.SetSprite(sprites["TurretCannon"]);
+                cannon.cannonEffects = SpriteEffects.FlipVertically;
+                cannon.Pivot = new Vector2(42, 34);
+                cannon.TipOffset = new Vector2(0, 48);
+            }
+            else
+            {
+                cannon.SetSprite(sprites["Cannon"]);
+                cannon.cannonEffects = SpriteEffects.None;
+                cannon.Pivot = new Vector2(14, 10);
+                cannon.TipOffset = new Vector2(0, 48);
+            }
+            InitializeCannonSettings();
         }
 
         public string GetEnemyType()
@@ -100,206 +122,163 @@ namespace Sprint0
             return mobType.ToString();
         }
 
+        private void ResetPosition()
+        {
+            position = new Vector2(Globals.SCREENWIDTH / 2 + 100, 400);
+        }
+
         public void CycleEnemyNext()
         {
-            if(this.mobType != MobType.Turret) {
-                this.mobType++;
-            } else {
-                this.mobType = MobType.BossTank;
-            }
-            SetEnemyType(this.mobType);
+            int index = Array.IndexOf(MobTypesArray, mobType);
+            SetEnemyType(MobTypesArray[(index + 1) % MobTypesArray.Length]);
+            ResetPosition();
         }
-        public void CycleEnemyPrev() {
-            if(this.mobType != MobType.BossTank) {
-                this.mobType--;
-            } else {
-                this.mobType = MobType.Turret;
-            }
-            SetEnemyType(this.mobType);
+
+        public void CycleEnemyPrev()
+        {
+            int index = Array.IndexOf(MobTypesArray, mobType);
+            SetEnemyType(MobTypesArray[(index - 1 + MobTypesArray.Length) % MobTypesArray.Length]);
+            ResetPosition();
         }
 
         public override void Update(GameTime gameTime)
         {
             sprite.Update(gameTime);
-
-            if (isExploding) 
-            {
-                HandleExplosion(gameTime);
-            } 
-            if (mobType == MobType.BossTank)
-            {
-                UpdateBossTank();
-            }
-            else if (mobType == MobType.SmallEnemy) 
-            {
-                UpdateSmallEnemy(gameTime);
-            } else if (mobType == MobType.ExplodingTank) 
-            {
+            if (mobType == MobType.ExplodingTank)
                 UpdateExplodingTank(gameTime);
-            } else if (mobType == MobType.Turret) {
-                UpdateTurret();
-            }
-
-            UpdateCannon(gameTime); 
-
-            position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            else
+                UpdateMobBehavior(gameTime);
+            UpdateCannon(gameTime);
+            UpdatePosition(gameTime);
         }
 
-        private void UpdateCannon(GameTime gameTime) 
+        private void UpdatePosition(GameTime gameTime)
         {
-            // Set speed and bounds based on mob type **only once** when the type changes
-            float newAngularVelocity = 0;
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            position += velocity * elapsed;
+        }
+
+        private void UpdateMobBehavior(GameTime gameTime)
+        {
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (mobType == MobType.BossTank)
             {
-                newAngularVelocity = MathHelper.ToRadians(20); // Slower oscillation speed
-                cannonLowerBound = MathHelper.PiOver2;            // 90 degrees
-                cannonUpperBound = MathHelper.Pi + MathHelper.PiOver2; // 270 degrees
+                float rightBound = Globals.SCREENWIDTH / 2 + 300;
+                float leftBound = Globals.SCREENWIDTH / 2;
+                if (position.X > rightBound)
+                    velocity = new Vector2(-80, 0);
+                else if (position.X < leftBound)
+                    velocity = new Vector2(80, 0);
             }
             else if (mobType == MobType.SmallEnemy)
             {
-                newAngularVelocity = MathHelper.ToRadians(80); // Faster oscillation speed
-                cannonLowerBound = MathHelper.ToRadians(120);     // 120 degrees
-                cannonUpperBound = MathHelper.ToRadians(240);     // 240 degrees
+                timers["movement"] += elapsed;
+                if (timers["movement"] > 0.6f)
+                {
+                    mobPhase = (mobPhase + 1) % 4;
+                    timers["movement"] = 0f;
+                }
+                if (mobPhase == 0) velocity = new Vector2(200, 0);
+                else if (mobPhase == 1) velocity = new Vector2(0, 200);
+                else if (mobPhase == 2) velocity = new Vector2(-200, 0);
+                else if (mobPhase == 3) velocity = new Vector2(0, -200);
             }
-            
-            if (System.Math.Abs(cannonAngularVelocity) != newAngularVelocity)
+            else if (mobType == MobType.Turret)
             {
-                if (cannonAngularVelocity < 0)
-                    cannonAngularVelocity = -newAngularVelocity;
-                else
-                    cannonAngularVelocity = newAngularVelocity;
+                velocity = Vector2.Zero;
+            }
+        }
+
+        private void UpdateExplodingTank(GameTime gameTime)
+        {
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float rightBound = Globals.SCREENWIDTH / 2 + 300;
+            float leftBound = Globals.SCREENWIDTH / 2;
+
+            if (position.X > rightBound)
+                velocity = new Vector2(-80, 0);
+            else if (position.X < leftBound)
+                velocity = new Vector2(80, 0);
+
+            timers["explosionDelay"] += elapsed;
+
+            // **Start Explosion & Remove Cannon Immediately**
+            if (!isExploding && timers["explosionDelay"] > 2f)
+            {
+                isExploding = true;
+                timers["explosionFrame"] = 0f;
+                explosionPhase = 0;
+                timers["explosionDelay"] = 0f;
+                
+                cannon.SetSprite(sprites["NULL"]); 
+                SetSprite(sprites[explosionSpriteNames[0]]); 
             }
 
-            // Update cannon rotation
-            cannonRotation += cannonAngularVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            // oscillate
-            if (cannonRotation >= cannonUpperBound)
+            if (isExploding)
             {
-                cannonRotation = cannonUpperBound;
-                cannonAngularVelocity = -System.Math.Abs(cannonAngularVelocity);
-            }
-            else if (cannonRotation <= cannonLowerBound)
-            {
-                cannonRotation = cannonLowerBound;
-                cannonAngularVelocity = System.Math.Abs(cannonAngularVelocity);
-            }
+                timers["explosionFrame"] += elapsed;
+                if (timers["explosionFrame"] > 0.5f && explosionPhase < explosionSpriteNames.Length)
+                {
+                    SetSprite(sprites[explosionSpriteNames[explosionPhase]]);
+                    explosionPhase++;
+                    timers["explosionFrame"] = 0f;
+                }
 
-            // Fire projectile every 4 seconds
-            shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (shootTimer > 4 && isExploding)
-            {
-                FireProjectile();
-                shootTimer = 0f;
+                if (explosionPhase >= explosionSpriteNames.Length)
+                {
+                    isExploding = false;
+                    SetEnemyType(mobType);  
+                }
             }
+        }
 
+
+        private void UpdateCannon(GameTime gameTime)
+        {
+            cannon.Update(gameTime);
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (!isExploding)
+            {
+                timers["shoot"] += elapsed;
+                if (timers["shoot"] > 4f)
+                {
+                    FireProjectile();
+                    timers["shoot"] = 0f;
+                }
+            }
         }
 
         public void FireProjectile()
         {
-            Vector2 cannonTipOffset = new Vector2(0, 48); // Ensures bullets spawn from the cannon
-            Vector2 cannonTip = position + Vector2.Transform(cannonTipOffset, Matrix.CreateRotationZ(cannonRotation));
-
+            Vector2 cannonTip = cannon.GetTipPosition();
+            Dictionary<MobType, string> projectileMap = new Dictionary<MobType, string>
+            {
+                { MobType.BossTank, "Shotgun" },
+                { MobType.SmallEnemy, "Default" },
+                { MobType.ExplodingTank, "Bomb" },
+                { MobType.Turret, "Rocket" }
+            };
+            string projectileType = projectileMap.ContainsKey(mobType) ? projectileMap[mobType] : "Default";
             var parameters = new Dictionary<string, object>
             {
-                { "projectileType", "Shotgun" },
+                { "projectileType", projectileType },
                 { "spawnPosition", cannonTip },
-                { "cannonRotation", cannonRotation },
+                { "cannonRotation", cannon.Rotation },
                 { "shooterVelocity", velocity }
             };
-
-            parameters["spreadAngle"] = MathHelper.ToRadians(10);
-            parameters["numberOfProjectiles"] = 3;
-
+            if (projectileType.Equals("Shotgun"))
+            {
+                parameters["spreadAngle"] = MathHelper.ToRadians(10);
+                parameters["numberOfProjectiles"] = 3;
+            }
             commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
-        }
-
-        public void UpdateSmallEnemy(GameTime gameTime)
-        {
-            float speed = 200f;
-            switch (mobPhase)
-            {
-                case 0:
-                    velocity = new Vector2(speed, 0);
-                    break;
-                case 1:
-                    velocity = new Vector2(0, speed);
-                    break;
-                case 2:
-                    velocity = new Vector2(-speed, 0);
-                    break;
-                case 3:
-                    velocity = new Vector2(0, -speed);
-                    break;
-            }
-
-            movementTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (movementTimer > 0.6f)
-            {
-                mobPhase = (mobPhase + 1) % 4;
-                movementTimer = 0f;
-            }
-        }
-
-        public void UpdateBossTank()
-        {
-            if (position.X > 700)
-                velocity = new Vector2(-80, 0);
-            else if (position.X < 600)
-                velocity = new Vector2(80, 0);
-        }
-
-        public void UpdateExplodingTank(GameTime gameTime) {
-
-            if (position.X > 700)
-                velocity = new Vector2(-50, 0);
-            else if (position.X < 600)
-                velocity = new Vector2(50, 0);
-
-            explodeTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            
-            if(explodeTimer > 2) {
-                System.Console.WriteLine("Exploding 1"); 
-                isExploding = true;
-                explosionTimer = 0f;
-                explodeTimer = 0; 
-            }
-            if (explosionPhase > 2) {
-                isExploding = false;
-            }
-        }
-
-        private void HandleExplosion(GameTime gameTime){
-            explosionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if(explosionTimer > 0.5f) {
-                SetSpriteSecondary(sprites["NULL"]);
-                switch (explosionPhase)
-            {
-                case 0: SetSprite("Explosion1"); break;
-                case 1: SetSprite("Explosion2"); break;
-                case 2: SetSprite("Explosion3"); break;
-            }
-            explosionPhase++;
-            explosionTimer = 0f;
-            }
-    
-        }
-
-        public void UpdateTurret()
-        {
-            velocity = new Vector2(0, 0);
-        }
-
-        public void SetSpriteSecondary(ISprite sprite)
-        {
-            spriteSecondary = sprite;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            SpriteEffects effects = SpriteEffects.None;
-            sprite.Draw(spriteBatch, position, effects, 0f);
-            spriteSecondary.Draw(spriteBatch, position, spriteSecondaryEffects, cannonRotation, cannonPivot);
+            sprite.Draw(spriteBatch, position, SpriteEffects.None, 0f);
+            if(!isExploding)
+            cannon.Draw(spriteBatch);
         }
     }
 }

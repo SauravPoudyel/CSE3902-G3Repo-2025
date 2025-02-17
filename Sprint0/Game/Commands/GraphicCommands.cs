@@ -43,6 +43,18 @@ namespace Sprint0
             }
         }
 
+        public class UpdateCannonCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("player") && parameters["player"] is Player player &&
+                    parameters.ContainsKey("rotation") && parameters["rotation"] is float rotation)
+                {
+                    player.SetCannonRotation(rotation);
+                }
+            }
+        }
+
         public class CycleBlockPrevCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)

@@ -31,8 +31,10 @@ namespace Sprint0
                 {"CycleItemNext", new GraphicCommands.CycleItemNextCommand()},
                 {"CycleEnemyPrev", new GraphicCommands.CycleEnemyPrevCommand()},
                 {"CycleEnemyNext", new GraphicCommands.CycleEnemyNextCommand()},
+                {"UpdateCannon", new GraphicCommands.UpdateCannonCommand()},
 
                 {"Move", new MovementCommands.MoveCommand()},
+                {"ApplyFriction", new MovementCommands.ApplyFrictionCommand()},
                 {"StopMove", new MovementCommands.MoveCommand()},
 
                 {"CreateProjectile", new ActionCommands.CreateProjectileCommand()},
