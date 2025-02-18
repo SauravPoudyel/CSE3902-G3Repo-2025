@@ -83,7 +83,7 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 // Implement the logic to cycle to the previous item
-                if (parameters.ContainsKey("pickUpItem") && parameters["pickUpItem"] is PickupItem pickupItem) 
+                if (parameters.ContainsKey("pickupItem") && parameters["pickupItem"] is PickupItem pickupItem) 
                 {
                     pickupItem.CycleItemPrev();
                 }
@@ -94,7 +94,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("pickUpItem") && parameters["pickUpItem"] is PickupItem pickupItem) 
+                if (parameters.ContainsKey("pickupItem") && parameters["pickupItem"] is PickupItem pickupItem) 
                 {
                     pickupItem.CycleItemNext();
                 }

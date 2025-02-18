@@ -92,7 +92,7 @@ namespace Sprint0
                 { "content", game.GameManager.GetContent() },
                 { "player", game.GameManager.GetEntity("player") },
                 { "mob", game.GameManager.GetEntity("mob") }, 
-                { "pickUpItem", game.GameManager.GetEntity("pickUpItem") }, 
+                { "pickupItem", game.GameManager.GetEntity("pickupItem") }, 
                 { "blocks", game.GameManager.GetEntity("blocks")},
                 { "actionType", actionType} , 
                 { "game", game} , 
