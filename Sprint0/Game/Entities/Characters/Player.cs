@@ -9,6 +9,8 @@ namespace Sprint0
     {
         public Player(ContentManager content) : base(content)
         {
+            this.bounds = new Rectangle((int)position.X, (int)position.Y, 66, 66);
+
             AddSprite("Idle", new AnimatedSprite(0.3f));
             sprites["Idle"].LoadContent(content, "LinkSpritesheet", 5, 2, 66, 64, 1);
             AddSprite("Up", new AnimatedSprite(0.3f));
@@ -31,11 +33,16 @@ namespace Sprint0
 
         public override void Update(GameTime gameTime)
         {
+            this.bounds = new Rectangle((int)position.X, (int)position.Y, 64, 64);
             if (velocity.LengthSquared() > 10f)
                 sprite.Update(gameTime);
+            prevPosition = position; 
             position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
+        public Vector2 GetPreviousPosition() {
+            return prevPosition; 
+        }
         public override void Draw(SpriteBatch spriteBatch)
         {
             SpriteEffects effects = SpriteEffects.None;
@@ -43,6 +50,16 @@ namespace Sprint0
                 effects = SpriteEffects.FlipHorizontally;
             sprite.Draw(spriteBatch, position, effects, 0f);
             cannon.Draw(spriteBatch);
+        }
+
+        public override void OnCollide(Entity entityActedUpon)
+        {
+            var parameters = new Dictionary<string, object>{{ "player", this }};
+
+            if(entityActedUpon is Blocks block){
+                parameters.Add("block", entityActedUpon); 
+                commandQueue.Enqueue(new CommandRequest("PlayerBlockCollision", parameters));
+            }
         }
     }
 }

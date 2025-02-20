@@ -18,11 +18,13 @@ namespace Sprint0
         void Draw(SpriteBatch spriteBatch);
         void SetSprite(string key);
         ISprite GetSprite();
+        void OnCollide(Entity ActedUponEntity); 
     }
     
     public class Entity : IEntity
     {
         protected Vector2 position; // protected so that subclasses can access it
+        protected Vector2 prevPosition; // protected so that subclasses can access it
         protected Vector2 velocity;
         protected ISprite sprite;
         protected bool hasSprite = true; // default to every entity having a sprite, set to false if not
@@ -115,6 +117,10 @@ namespace Sprint0
             {
                 sprite.Draw(spriteBatch, position);
             }
+        }
+
+        public virtual void OnCollide(Entity entityActedUpon)
+        {
         }
     }
 }

@@ -39,7 +39,9 @@ namespace Sprint0
                 {"CreateEntity", new ActionCommands.CreateEntityCommand()},
                 {"DestroyEntity", new ActionCommands.DestroyEntityCommand()},
                 {"PlayerAction", new ActionCommands.PlayerActionCommand()},
-                {"Damage", new ActionCommands.DamageCommand()}
+                {"Damage", new ActionCommands.DamageCommand()}, 
+
+                {"PlayerBlockCollision", new CollisionCommands.PlayerBlockCollisionCommand()}
             };
 
             commandRequests = new List<CommandRequest>();

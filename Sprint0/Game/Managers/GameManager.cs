@@ -8,7 +8,7 @@ namespace Sprint0
     public class GameManager
     {
         private Dictionary<string, Entity> entities;
-        private PhysicsManager physicsManager;
+        private CollisionManager collisionManager;
         private SpriteManager spriteManager;
         private ContentManager content;
         public EventManager eventManager { get; private set; }
@@ -19,7 +19,7 @@ namespace Sprint0
         {
             Game = game;
             entities = new Dictionary<string, Entity>();
-            physicsManager = new PhysicsManager();
+            collisionManager = new CollisionManager();
             spriteManager = new SpriteManager();
             eventManager = new EventManager(game, this);
             screens = new List<IScreen>();
@@ -90,7 +90,7 @@ namespace Sprint0
                     entity.Update(gameTime);
                     eventManager.CollectCommandRequests(entity.GetCommandQueue());
                 }
-                physicsManager.Update(gameTime, entities);
+                collisionManager.Update(gameTime, entities);
                 spriteManager.Update(gameTime);
                 eventManager.ProcessCommandRequests();
             }
