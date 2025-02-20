@@ -37,9 +37,9 @@ namespace Sprint0
             velocity = new Vector2(defaultSpeed, 0);
         }
 
-        protected override void UpdateMobBehavior(GameTime gameTime)
+        protected override void UpdateMobBehavior()
         {
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float elapsed = Globals.FRAMETIME;
 
             // Stop shooting while exploding
             if (!isExploding)

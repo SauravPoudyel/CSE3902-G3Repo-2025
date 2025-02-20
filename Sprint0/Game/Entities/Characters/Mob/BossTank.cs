@@ -28,7 +28,7 @@ namespace Sprint0
             velocity = new Vector2(defaultSpeed, 0);
         }
 
-        protected override void UpdateMobBehavior(GameTime gameTime)
+        protected override void UpdateMobBehavior()
         {
             float rightBound = Globals.SCREENWIDTH / 2 + 300;
             float leftBound = Globals.SCREENWIDTH / 2;

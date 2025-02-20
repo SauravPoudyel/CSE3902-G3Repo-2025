@@ -45,12 +45,12 @@ namespace Sprint0
             return baseSpeed; 
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            sprite.Update(gameTime);
-            position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            sprite.Update();
+            position += velocity * Globals.FRAMETIME; 
 
-            colorChangeTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            colorChangeTimer += Globals.FRAMETIME; 
             if (colorChangeTimer > 0.1f)
             {
                 colorIndex = (colorIndex + 1) % colors.Length;

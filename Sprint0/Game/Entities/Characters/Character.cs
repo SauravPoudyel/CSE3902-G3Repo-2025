@@ -69,11 +69,12 @@ namespace Sprint0
                 cannon.Rotation = rotation;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float elapsed = Globals.FRAMETIME;
             position += velocity * elapsed;
-            sprite?.Update(gameTime);
+            if(sprite != null)
+                sprite.Update();
         }
 
         public override void Draw(SpriteBatch spriteBatch)

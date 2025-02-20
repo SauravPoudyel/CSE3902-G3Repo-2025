@@ -6,7 +6,7 @@ namespace Sprint0
 {
     public class CollisionManager
     {
-        public void Update(GameTime gameTime, Dictionary<string, Entity> entities)
+        public void Update(Dictionary<string, Entity> entities)
         {
             CheckCollisions(entities.Values.ToList());  
         }

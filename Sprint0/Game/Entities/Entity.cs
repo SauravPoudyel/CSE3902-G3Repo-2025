@@ -14,7 +14,7 @@ namespace Sprint0
         void SetVelocity(Vector2 velocity);
         Rectangle GetBounds();
         void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount);
-        void Update(GameTime gameTime);
+        void Update();
         void Draw(SpriteBatch spriteBatch);
         void SetSprite(string key);
         ISprite GetSprite();
@@ -103,11 +103,11 @@ namespace Sprint0
             sprite.LoadContent(content, assetName, startX, startY, frameWidth, frameHeight, frameCount);
         }
 
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update()
         {
             if (hasSprite && sprite != null)
             {
-                sprite.Update(gameTime);
+                sprite.Update();
             }
         }
 

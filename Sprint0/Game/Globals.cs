@@ -8,6 +8,8 @@ namespace Sprint0
         public const int SCREENHEIGHT = 1080;
         public static ISprite NULLSPRITE;
 
+        public const float FRAMETIME = 1f/ 60f; 
+
         public static void LoadGlobalSprites(ContentManager content)
         {
             NULLSPRITE = new StaticSprite();

@@ -31,13 +31,13 @@ namespace Sprint0
             currentProjectileVariables["projectileType"] = "Default";
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             this.bounds = new Rectangle((int)position.X, (int)position.Y, 64, 64);
             if (velocity.LengthSquared() > 10f)
-                sprite.Update(gameTime);
+                sprite.Update();
             prevPosition = position; 
-            position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            position += velocity * Globals.FRAMETIME;
         }
 
         public Vector2 GetPreviousPosition() {

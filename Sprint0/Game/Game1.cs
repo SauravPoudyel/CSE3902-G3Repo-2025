@@ -57,7 +57,7 @@ namespace Sprint0
         {
             keyboardController.Update(this);
             mouseController.Update(this);
-            GameManager.Update(gameTime);
+            GameManager.Update();
             base.Update(gameTime);
         }
 

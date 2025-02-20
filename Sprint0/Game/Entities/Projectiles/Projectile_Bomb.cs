@@ -27,12 +27,12 @@ namespace Sprint0
             explosionTimer = 0f;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            sprite.Update(gameTime);
+            sprite.Update();
 
             //Detonate the bomb after the time controlled by explosionTimer
-            explosionTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            explosionTimer += Globals.FRAMETIME; 
             if (explosionTimer >= ExplosionDelay)
             {
                 Dictionary<string, object> destroyParams = new Dictionary<string, object>()

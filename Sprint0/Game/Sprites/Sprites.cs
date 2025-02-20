@@ -8,7 +8,7 @@ namespace Sprint0
     public interface ISprite
     {
         void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount);
-        void Update(GameTime gameTime);
+        void Update();
         void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null);
     }
 
@@ -23,7 +23,7 @@ namespace Sprint0
             frame = new Rectangle(startX, startY, frameWidth, frameHeight);
         }
 
-        public void Update(GameTime gameTime) { }
+        public void Update() { }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
         {
@@ -103,11 +103,11 @@ namespace Sprint0
             isDamaged = true;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             if (frames.Count == 0) return;
 
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timer += Globals.FRAMETIME;
             if (timer > frameTime)
             {
                 currentFrame = (currentFrame + 1) % frames.Count;
@@ -161,7 +161,7 @@ namespace Sprint0
             this.text = text;
         }
 
-        public void Update(GameTime gameTime) { }
+        public void Update() { }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
         {

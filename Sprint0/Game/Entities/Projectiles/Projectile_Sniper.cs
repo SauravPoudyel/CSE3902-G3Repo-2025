@@ -17,10 +17,10 @@ namespace Sprint0
             colors = new Color[] { Color.Blue, Color.LightBlue, Color.DarkBlue }; 
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             // special behavior (acceleration, explosion timer) here
-            base.Update(gameTime);
+            base.Update();
         }
     }
 }

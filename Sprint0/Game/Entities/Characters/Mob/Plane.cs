@@ -31,9 +31,9 @@ namespace Sprint0
             cannon = new Cannon(Globals.NULLSPRITE, this, new Vector2(0, 0), 30f, 0f, 0f, 0f, 0f);
         }
 
-        protected override void UpdateMobBehavior(GameTime gameTime)
+        protected override void UpdateMobBehavior()
         {
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float elapsed = Globals.FRAMETIME;
             flightAngle += MathHelper.ToRadians(45) * elapsed * flightSpeedModifier;
             if (flightAngle > MathHelper.TwoPi)
                 flightAngle -= MathHelper.TwoPi;

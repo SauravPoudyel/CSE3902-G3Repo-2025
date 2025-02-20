@@ -17,10 +17,10 @@ namespace Sprint0
             maxDistance = 250f; 
             colors = new Color[] { Color.Green, Color.DarkGreen, Color.Lime };
         }
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
             // special behavior (acceleration, explosion timer) here
-            base.Update(gameTime);
+            base.Update();
         }
     }
 }

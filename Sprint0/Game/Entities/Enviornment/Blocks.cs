@@ -81,11 +81,11 @@ namespace Sprint0
             SetBlockType(this.blocktype);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            sprite.Update(gameTime);
+            sprite.Update();
             this.bounds = new Rectangle((int)position.X, (int)position.Y, 80, 80);
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timer += Globals.FRAMETIME; 
         }
 
         public override void Draw(SpriteBatch spriteBatch)

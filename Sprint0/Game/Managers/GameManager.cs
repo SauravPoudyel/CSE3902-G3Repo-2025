@@ -81,21 +81,21 @@ namespace Sprint0
             ProjectileFactory.Initialize(content);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             if (GetActiveScreen() == null)
             {
                 foreach (var entity in entities.Values)
                 {
-                    entity.Update(gameTime);
+                    entity.Update();
                     eventManager.CollectCommandRequests(entity.GetCommandQueue());
                 }
-                collisionManager.Update(gameTime, entities);
-                spriteManager.Update(gameTime);
+                collisionManager.Update(entities);
+                spriteManager.Update();
                 eventManager.ProcessCommandRequests();
             }
             for (int i = 0; i < screens.Count; i++)
-                screens[i].Update(gameTime);
+                screens[i].Update();
         }
 
         public void Draw(SpriteBatch spriteBatch)
