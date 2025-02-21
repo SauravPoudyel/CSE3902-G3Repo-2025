@@ -8,20 +8,37 @@ namespace Sprint0
     {
         public void Update(Dictionary<string, Entity> entities)
         {
-            CheckCollisions(entities.Values.ToList());  
+            CheckCollisions(entities.Values.ToList());
         }
 
-        public void CheckCollisions(List<Entity> entities)
+        private void CheckCollisions(List<Entity> entities)
         {
-            foreach (var entityActor in entities)
+            foreach (Entity actor in entities)
             {
-                foreach (var entityActedUpon in entities)
+                Rectangle futureActorBounds = actor.PredictFutureBounds();
+                foreach (Entity target in entities)
                 {
-                    if (entityActor != entityActedUpon && entityActor.GetBounds().Intersects(entityActedUpon.GetBounds()))
-                    {
-                        entityActor.OnCollide(entityActedUpon); 
-                    }
+                    if (actor == target)
+                        continue;
+                    Rectangle futureTargetBounds = target.PredictFutureBounds();
+                    
+                    if (futureActorBounds.Intersects(futureTargetBounds))
+                        ResolveCollision(actor, target);
                 }
+            }
+        }
+
+        private void ResolveCollision(Entity actor, Entity target)
+        {
+            string commandKey = CollisionResponse.GetResponseCommand(actor.GetType(), target.GetType());
+            if (commandKey != null)
+            {
+                var parameters = new Dictionary<string, object>
+                {
+                    { "actor", actor },
+                    { "target", target }
+                };
+                actor.EnqueueCommand(commandKey, parameters);
             }
         }
     }

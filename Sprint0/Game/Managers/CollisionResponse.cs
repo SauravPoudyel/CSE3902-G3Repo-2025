@@ -1,5 +1,7 @@
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sprint0
 {
@@ -10,8 +12,9 @@ namespace Sprint0
         static CollisionResponse()
         {
             responseMap = new Dictionary<Tuple<Type, Type>, string>();
-            responseMap.Add(new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "PlayerBlockCollision");
-            // (Other mappings can be added here.)
+            responseMap.Add(new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionStop");
+            responseMap.Add(new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionPush");
+            responseMap.Add(new Tuple<Type, Type>(typeof(Projectile), typeof(Blocks)), "CollisionReflect");
         }
 
         public static string GetResponseCommand(Type subject, Type target)

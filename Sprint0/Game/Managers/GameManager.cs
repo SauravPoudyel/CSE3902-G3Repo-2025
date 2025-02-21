@@ -77,7 +77,7 @@ namespace Sprint0
             Blocks blocks = new Blocks(content);
             blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 - 300, 480));
             entities.Add("blocks", blocks);
-
+            
             ProjectileFactory.Initialize(content);
         }
 
@@ -105,6 +105,8 @@ namespace Sprint0
             spriteManager.Draw(spriteBatch);
             for (int i = 0; i < screens.Count; i++)
                 screens[i].Draw(spriteBatch);
+
+            
         }
 
         public void AddScreen(IScreen screen)

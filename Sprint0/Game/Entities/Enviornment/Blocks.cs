@@ -83,6 +83,7 @@ namespace Sprint0
 
         public override void Update()
         {
+            position += velocity * Globals.FRAMETIME; 
             sprite.Update();
             this.bounds = new Rectangle((int)position.X, (int)position.Y, 80, 80);
             timer += Globals.FRAMETIME; 

@@ -32,6 +32,7 @@ namespace Sprint0
                 {"UpdateCannon", new GraphicCommands.UpdateCannonCommand()},
 
                 {"Move", new MovementCommands.MoveCommand()},
+                {"MoveTo", new MovementCommands.MoveCommand()},
                 {"ApplyFriction", new MovementCommands.ApplyFrictionCommand()},
                 {"StopMove", new MovementCommands.MoveCommand()},
 
@@ -41,7 +42,7 @@ namespace Sprint0
                 {"PlayerAction", new ActionCommands.PlayerActionCommand()},
                 {"Damage", new ActionCommands.DamageCommand()}, 
 
-                {"PlayerBlockCollision", new CollisionCommands.PlayerBlockCollisionCommand()}
+                {"CollisionStop", new CollisionCommands.CollisionStopCommand()}
             };
 
             commandRequests = new List<CommandRequest>();

@@ -43,6 +43,11 @@ namespace Sprint0
             return position;
         }
 
+        public Vector2 GetPreviousPosition()
+        {
+            return prevPosition;
+        }
+
         public virtual void SetPosition(Vector2 position)
         {
             this.position = position;
@@ -92,6 +97,12 @@ namespace Sprint0
         public Rectangle GetBounds()
         {
             return bounds; 
+        }
+
+        public Rectangle PredictFutureBounds()
+        {
+            Vector2 nextPosition = position + velocity * Globals.FRAMETIME; 
+            return new Rectangle((int)nextPosition.X,(int)nextPosition.Y, bounds.Width, bounds.Height ); 
         }
 
         public virtual void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
