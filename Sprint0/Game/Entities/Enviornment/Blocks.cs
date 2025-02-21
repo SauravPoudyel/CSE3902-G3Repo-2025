@@ -22,7 +22,6 @@ namespace Sprint0
         }
         private ContentManager content;
         private float timer;
-
         private BlockType blocktype;
 
         public Blocks(ContentManager content)
@@ -82,10 +81,12 @@ namespace Sprint0
             SetBlockType(this.blocktype);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            sprite.Update(gameTime);
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            position += velocity * Globals.FRAMETIME; 
+            sprite.Update();
+            this.bounds = new Rectangle((int)position.X, (int)position.Y, 80, 80);
+            timer += Globals.FRAMETIME; 
         }
 
         public override void Draw(SpriteBatch spriteBatch)

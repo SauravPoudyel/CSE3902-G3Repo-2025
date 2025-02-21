@@ -53,7 +53,7 @@ namespace Sprint0
             buttons.Add(startButton);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
         }
 

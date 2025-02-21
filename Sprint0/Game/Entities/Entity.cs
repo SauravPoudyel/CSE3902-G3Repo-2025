@@ -14,15 +14,17 @@ namespace Sprint0
         void SetVelocity(Vector2 velocity);
         Rectangle GetBounds();
         void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount);
-        void Update(GameTime gameTime);
+        void Update();
         void Draw(SpriteBatch spriteBatch);
         void SetSprite(string key);
         ISprite GetSprite();
+        void OnCollide(Entity ActedUponEntity); 
     }
     
     public class Entity : IEntity
     {
         protected Vector2 position; // protected so that subclasses can access it
+        protected Vector2 prevPosition; // protected so that subclasses can access it
         protected Vector2 velocity;
         protected ISprite sprite;
         protected bool hasSprite = true; // default to every entity having a sprite, set to false if not
@@ -39,6 +41,11 @@ namespace Sprint0
         public Vector2 GetPosition()
         {
             return position;
+        }
+
+        public Vector2 GetPreviousPosition()
+        {
+            return prevPosition;
         }
 
         public virtual void SetPosition(Vector2 position)
@@ -92,6 +99,12 @@ namespace Sprint0
             return bounds; 
         }
 
+        public Rectangle PredictFutureBounds()
+        {
+            Vector2 nextPosition = position + velocity * Globals.FRAMETIME; 
+            return new Rectangle((int)nextPosition.X,(int)nextPosition.Y, bounds.Width, bounds.Height ); 
+        }
+
         public virtual void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
         {
             if (sprite == null)
@@ -101,11 +114,11 @@ namespace Sprint0
             sprite.LoadContent(content, assetName, startX, startY, frameWidth, frameHeight, frameCount);
         }
 
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update()
         {
             if (hasSprite && sprite != null)
             {
-                sprite.Update(gameTime);
+                sprite.Update();
             }
         }
 
@@ -115,6 +128,10 @@ namespace Sprint0
             {
                 sprite.Draw(spriteBatch, position);
             }
+        }
+
+        public virtual void OnCollide(Entity entityActedUpon)
+        {
         }
     }
 }

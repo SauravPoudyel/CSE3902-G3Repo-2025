@@ -13,11 +13,11 @@ namespace Sprint0
             currentSprite = sprite;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             if (currentSprite != null)
             {
-                currentSprite.Update(gameTime);
+                currentSprite.Update();
             }
         }
 

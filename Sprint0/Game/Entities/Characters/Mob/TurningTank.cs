@@ -41,9 +41,9 @@ namespace Sprint0
             velocity = Vector2.Zero;
         }
 
-        protected override void UpdateMobBehavior(GameTime gameTime)
+        protected override void UpdateMobBehavior()
         {
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float elapsed = Globals.FRAMETIME;
             stateTimer += elapsed;
 
             switch (turnState)

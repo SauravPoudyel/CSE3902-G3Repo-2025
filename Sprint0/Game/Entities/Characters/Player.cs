@@ -9,6 +9,8 @@ namespace Sprint0
     {
         public Player(ContentManager content) : base(content)
         {
+            this.bounds = new Rectangle((int)position.X, (int)position.Y, 66, 66);
+
             AddSprite("Idle", new AnimatedSprite(0.3f));
             sprites["Idle"].LoadContent(content, "LinkSpritesheet", 5, 2, 66, 64, 1);
             AddSprite("Up", new AnimatedSprite(0.3f));
@@ -29,11 +31,14 @@ namespace Sprint0
             currentProjectileVariables["projectileType"] = "Default";
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
+            this.bounds = new Rectangle((int)position.X, (int)position.Y, 64, 64);
+
             if (velocity.LengthSquared() > 10f)
-                sprite.Update(gameTime);
-            position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                sprite.Update();
+            prevPosition = position; 
+            position += velocity * Globals.FRAMETIME;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

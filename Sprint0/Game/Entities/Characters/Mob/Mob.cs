@@ -30,7 +30,7 @@ namespace Sprint0
         protected float shootInterval;
 
         protected abstract void InitializeMob();
-        protected abstract void UpdateMobBehavior(GameTime gameTime);
+        protected abstract void UpdateMobBehavior();
         protected abstract void SetEnemyType(MobType type);
         protected abstract void ResetPosition();
 
@@ -52,15 +52,15 @@ namespace Sprint0
             ResetPosition();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            UpdateMobBehavior(gameTime);
+            UpdateMobBehavior();
 
             if (cannon != null)
-                cannon.Update(gameTime);
+                cannon.Update();
 
             // Update shoot timer and fire projectile if ready.
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float elapsed = Globals.FRAMETIME;
             shootTimer += elapsed;
             if (shootTimer >= shootInterval)
             {
@@ -68,7 +68,7 @@ namespace Sprint0
                 shootTimer = 0f;
             }
 
-            base.Update(gameTime);
+            base.Update();
         }
     }
 }

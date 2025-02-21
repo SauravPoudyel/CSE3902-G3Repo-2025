@@ -37,9 +37,9 @@ namespace Sprint0
         {
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float elapsed = Globals.FRAMETIME;
             Rotation += AngularVelocity * elapsed;
             if (Rotation > UpperBound)
             {

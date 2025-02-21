@@ -29,7 +29,7 @@ namespace Sprint0
             velocity = Vector2.Zero;
         }
 
-        protected override void UpdateMobBehavior(GameTime gameTime)
+        protected override void UpdateMobBehavior()
         {
             velocity = Vector2.Zero;
         }

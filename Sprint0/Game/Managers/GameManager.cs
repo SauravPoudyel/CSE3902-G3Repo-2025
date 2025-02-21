@@ -8,7 +8,7 @@ namespace Sprint0
     public class GameManager
     {
         private Dictionary<string, Entity> entities;
-        private PhysicsManager physicsManager;
+        private CollisionManager collisionManager;
         private SpriteManager spriteManager;
         private ContentManager content;
         public EventManager eventManager { get; private set; }
@@ -19,7 +19,7 @@ namespace Sprint0
         {
             Game = game;
             entities = new Dictionary<string, Entity>();
-            physicsManager = new PhysicsManager();
+            collisionManager = new CollisionManager();
             spriteManager = new SpriteManager();
             eventManager = new EventManager(game, this);
             screens = new List<IScreen>();
@@ -77,25 +77,25 @@ namespace Sprint0
             Blocks blocks = new Blocks(content);
             blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 - 300, 480));
             entities.Add("blocks", blocks);
-
+            
             ProjectileFactory.Initialize(content);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             if (GetActiveScreen() == null)
             {
                 foreach (var entity in entities.Values)
                 {
-                    entity.Update(gameTime);
+                    entity.Update();
                     eventManager.CollectCommandRequests(entity.GetCommandQueue());
                 }
-                physicsManager.Update(gameTime, entities);
-                spriteManager.Update(gameTime);
+                collisionManager.Update(entities);
+                spriteManager.Update();
                 eventManager.ProcessCommandRequests();
             }
             for (int i = 0; i < screens.Count; i++)
-                screens[i].Update(gameTime);
+                screens[i].Update();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -105,6 +105,8 @@ namespace Sprint0
             spriteManager.Draw(spriteBatch);
             for (int i = 0; i < screens.Count; i++)
                 screens[i].Draw(spriteBatch);
+
+            
         }
 
         public void AddScreen(IScreen screen)

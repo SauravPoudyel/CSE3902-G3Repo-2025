@@ -35,7 +35,7 @@ namespace Sprint0
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
             // Update inventory animations if needed.
         }

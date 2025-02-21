@@ -80,10 +80,10 @@ namespace Sprint0
             }
             SetItemType(this.itemType);
         }
-        public override void Update(GameTime gameTime)
+        public override void Update()
         {
-            sprite.Update(gameTime);
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            sprite.Update();
+            timer += Globals.FRAMETIME; 
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
