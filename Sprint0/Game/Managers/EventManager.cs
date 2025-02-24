@@ -42,7 +42,8 @@ namespace Sprint0
                 {"PlayerAction", new ActionCommands.PlayerActionCommand()},
                 {"Damage", new ActionCommands.DamageCommand()}, 
 
-                {"CollisionStop", new CollisionCommands.CollisionStopCommand()}
+                {"CollisionStop", new CollisionCommands.CollisionStopCommand()},
+                {"CollisionPickUp", new CollisionCommands.CollisionPickUpCommand()}
             };
 
             commandRequests = new List<CommandRequest>();

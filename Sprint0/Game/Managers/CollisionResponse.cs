@@ -11,10 +11,12 @@ namespace Sprint0
 
         static CollisionResponse()
         {
-            responseMap = new Dictionary<Tuple<Type, Type>, string>();
-            responseMap.Add(new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionStop");
-            responseMap.Add(new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionPush");
-            responseMap.Add(new Tuple<Type, Type>(typeof(Projectile), typeof(Blocks)), "CollisionReflect");
+            responseMap = new Dictionary<Tuple<Type, Type>, string>(){
+                {new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionStop"},
+                {new Tuple<Type, Type>(typeof(Projectile), typeof(Blocks)), "CollisionReflect"}, 
+
+                {new Tuple<Type, Type>(typeof(Player), typeof(PickupItem)), "CollisionPickUp"}
+            };
         }
 
         public static string GetResponseCommand(Type subject, Type target)

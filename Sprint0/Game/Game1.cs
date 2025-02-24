@@ -20,7 +20,7 @@ namespace Sprint0
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            Background = new Color(116, 116, 116);
+            Background = new Color(116, 116, 200);
             _graphics.PreferredBackBufferWidth = Globals.SCREENWIDTH;
             _graphics.PreferredBackBufferHeight = Globals.SCREENHEIGHT;
             _graphics.ApplyChanges();

@@ -7,46 +7,93 @@ namespace Sprint0
 {
     public class Player : Character
     {
+        private float bodyRotation;
+
+        // store effect remporary effect/powerup timers in one dictionary
+        public Dictionary<string, float> EffectTimers = new Dictionary<string, float>();
+
+        // properties directly modified by pickups.
+        public float speedMultiplier = 1f;
+        public bool shieldActive = false;
+
         public Player(ContentManager content) : base(content)
         {
-            this.bounds = new Rectangle((int)position.X, (int)position.Y, 66, 66);
+            bodyRotation = 0f;
 
-            AddSprite("Idle", new AnimatedSprite(0.3f));
-            sprites["Idle"].LoadContent(content, "LinkSpritesheet", 5, 2, 66, 64, 1);
-            AddSprite("Up", new AnimatedSprite(0.3f));
-            sprites["Up"].LoadContent(content, "LinkSpritesheet", 280, 2, 62, 64, 2);
-            AddSprite("Down", new AnimatedSprite(0.3f));
-            sprites["Down"].LoadContent(content, "LinkSpritesheet", 5, 2, 66, 64, 2);
-            AddSprite("Left", new AnimatedSprite(0.3f));
-            sprites["Left"].LoadContent(content, "LinkSpritesheet", 140, 2, 62, 66, 2);
-            AddSprite("Right", new AnimatedSprite(0.3f));
-            sprites["Right"].LoadContent(content, "LinkSpritesheet", 140, 2, 62, 66, 2);
-            SetSprite("Idle");
+            AddSprite("TankBody", new AnimatedSprite(0.3f));
+            sprites["TankBody"].LoadContent(content, "TDTanksAllSprites", 795, 1052, 74, 76, 1);
+            SetSprite("TankBody");
 
             ISprite cannonSprite = new AnimatedSprite(0.3f);
-            cannonSprite.LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);
-            cannon = new Cannon(cannonSprite, this, new Vector2(14, 10), 30f,
-                                0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
+            cannonSprite.LoadContent(content, "TDTanksAllSprites", 1060, 837, 24, 60, 1);
+            cannon = new Cannon(cannonSprite, this, new Vector2(12, 5), 50f,
+                    0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
+
 
             currentProjectileVariables["projectileType"] = "Default";
         }
 
         public override void Update()
         {
-            this.bounds = new Rectangle((int)position.X, (int)position.Y, 64, 64);
+            prevPosition = position;
 
-            if (velocity.LengthSquared() > 10f)
+            float turnSpeed = 0.05f;  
+            bodyRotation += velocity.X * turnSpeed * Globals.FRAMETIME;
+
+            Vector2 forwardDirection = new Vector2((float)System.Math.Sin(bodyRotation), -(float)System.Math.Cos(bodyRotation));
+            float movementSpeed = -velocity.Y;
+            position += forwardDirection * movementSpeed * speedMultiplier * Globals.FRAMETIME;
+
+            float spriteWidth = 74f;
+            float spriteHeight = 76f;
+            float halfWidth = spriteWidth * 0.5f;
+            float halfHeight = spriteHeight * 0.5f;
+
+            float cosRotation = (float)System.Math.Cos(bodyRotation);
+            float sinRotation = (float)System.Math.Sin(bodyRotation);
+
+            // Define the four corners of the bounding box relative to the sprite's center
+            Vector2[] boundingBoxCorners = new Vector2[4];
+            boundingBoxCorners[0] = new Vector2(-halfWidth, -halfHeight);
+            boundingBoxCorners[1] = new Vector2(halfWidth, -halfHeight);
+            boundingBoxCorners[2] = new Vector2(halfWidth, halfHeight);
+            boundingBoxCorners[3] = new Vector2(-halfWidth, halfHeight);
+
+            // Apply rotation transformation to each corner
+            for (int i = 0; i < 4; i++)
+            {
+                float x = boundingBoxCorners[i].X;
+                float y = boundingBoxCorners[i].Y;
+                boundingBoxCorners[i].X = x * cosRotation - y * sinRotation + position.X;
+                boundingBoxCorners[i].Y = x * sinRotation + y * cosRotation + position.Y;
+            }
+
+            // Compute the smallest and largest X and Y values to get the rotated bounding box dimensions
+            float minX = boundingBoxCorners[0].X, maxX = boundingBoxCorners[0].X;
+            float minY = boundingBoxCorners[0].Y, maxY = boundingBoxCorners[0].Y;
+
+            for (int i = 1; i < 4; i++)
+            {
+                if (boundingBoxCorners[i].X < minX) minX = boundingBoxCorners[i].X;
+                if (boundingBoxCorners[i].X > maxX) maxX = boundingBoxCorners[i].X;
+                if (boundingBoxCorners[i].Y < minY) minY = boundingBoxCorners[i].Y;
+                if (boundingBoxCorners[i].Y > maxY) maxY = boundingBoxCorners[i].Y;
+            }
+
+            bounds = new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
+
+            if (System.Math.Abs(movementSpeed) > 0.1f)
                 sprite.Update();
-            prevPosition = position; 
-            position += velocity * Globals.FRAMETIME;
+
+            // Update all active effect timers using the helper class
+            EffectFactory.UpdateEffects(this);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            SpriteEffects effects = SpriteEffects.None;
-            if (sprite == sprites["Left"])
-                effects = SpriteEffects.FlipHorizontally;
-            sprite.Draw(spriteBatch, position, effects, 0f);
+            Vector2 tankCenter = new Vector2(37, 38);
+
+            sprite.Draw(spriteBatch, position, SpriteEffects.FlipVertically, bodyRotation, tankCenter, Color.White);
             cannon.Draw(spriteBatch);
         }
     }

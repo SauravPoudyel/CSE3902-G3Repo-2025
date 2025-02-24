@@ -41,9 +41,11 @@ namespace Sprint0
                 string entityName = projectileType + "_" + projectileCounter++;
                 Projectile projectile = InstantiateProjectile(projectileType, entityName);
                 float currentAngle = startAngle + i * spreadAngle;
-                Vector2 direction = Vector2.Transform(Vector2.UnitY, Matrix.CreateRotationZ(currentAngle));
+ 
+                // Use (0,1) as the base vector so that when currentAngle is 0, the projectile moves in the same direction as the tip offset (which is (0,30) normalized).
+                Vector2 direction = Vector2.Transform(new Vector2(0, 1), Matrix.CreateRotationZ(currentAngle));
                 float speed = projectile.GetBaseSpeed();
-                Vector2 velocity = direction * (speed - speedModifer); 
+                Vector2 velocity = direction * (speed - speedModifer);
                 projectileDataList.Add(new ProjectileData(projectile, entityName, spawnPosition, velocity));
             }
         }
@@ -54,7 +56,7 @@ namespace Sprint0
             {
                 var parameters = new Dictionary<string, object>
                 {
-                    { "gameManager", gameManager},
+                    { "gameManager", gameManager },
                     { "create", data.ProjectileVar },
                     { "entityName", data.EntityName },
                     { "position", data.SpawnPosition },

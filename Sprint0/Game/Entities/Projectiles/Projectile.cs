@@ -19,14 +19,14 @@ namespace Sprint0
         public Projectile(ContentManager content, string entityKey)
         {
             AddSprite("Default", new StaticSprite());
-            sprites["Default"].LoadContent(content, "TDTanksAllSprites", 0, 1028, 34, 32, 1); 
+            sprites["Default"].LoadContent(content, "TDTanksAllSprites", 120, 1040, 20, 20, 1); 
             SetSprite("Default");
 
             baseSpeed = 250f;
             colorIndex = 0;
             colorChangeTimer = 200f;
             maxDistance = 600f;  
-            colors = new Color[] { Color.Red, Color.Yellow, Color.Purple, Color.Orange };
+            colors = new Color[] { Color.Red, Color.Orange };
             
             this.entityKey = entityKey;
         }

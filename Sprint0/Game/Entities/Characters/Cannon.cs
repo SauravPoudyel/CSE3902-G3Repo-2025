@@ -1,6 +1,6 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Sprint0
 {
@@ -11,11 +11,10 @@ namespace Sprint0
         public float AngularVelocity { get; set; }
         public float LowerBound { get; set; }
         public float UpperBound { get; set; }
-        public Vector2 Pivot { get; set; }   // cannon’s rotation center
-        public float TipDistance { get; set; }   // Distance from Pivot to spawn the projectile
+        public Vector2 Pivot { get; set; }
+        public float TipDistance { get; set; }   // Desired distance from center = 30f
         public SpriteEffects CannonEffects { get; set; }
 
-        // Primary constructor (all parameters specified)
         public Cannon(ISprite sprite, IEntity owner, Vector2 pivot, float tipDistance,
                       float initialRotation, float angularVelocity, float lowerBound, float upperBound)
         {
@@ -30,15 +29,8 @@ namespace Sprint0
             CannonEffects = SpriteEffects.None;
         }
 
-        // Overload with default tip distance of 30 pixels.
-        public Cannon(ISprite sprite, IEntity owner, Vector2 pivot,
-                      float initialRotation, float angularVelocity, float lowerBound, float upperBound)
-            : this(sprite, owner, pivot, 30f, initialRotation, angularVelocity, lowerBound, upperBound)
-        {
-        }
-
         public override void Update()
-        {
+        {    
             float elapsed = Globals.FRAMETIME;
             Rotation += AngularVelocity * elapsed;
             if (Rotation > UpperBound)
@@ -55,15 +47,22 @@ namespace Sprint0
 
         public Vector2 GetTipPosition()
         {
-            Vector2 direction = Vector2.Transform(Vector2.UnitY, Matrix.CreateRotationZ(Rotation)) * TipDistance;
-            return Owner.GetPosition() + Pivot + direction;
-        }
+            Vector2 spriteTip = new Vector2(12, 60);
+            Vector2 localOffset = spriteTip - Pivot;
+            float scale = TipDistance / localOffset.Length();
+            Vector2 desiredLocalOffset = localOffset * scale;
 
+            // Rotate this offset by the cannon's rotation.
+            Vector2 rotatedOffset = Vector2.Transform(desiredLocalOffset, Matrix.CreateRotationZ(Rotation));
+
+            // Owner.GetPosition() is the player's center.
+            return Owner.GetPosition() + rotatedOffset;
+        }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Vector2 ownerPos = Owner.GetPosition();
-            sprite.Draw(spriteBatch, ownerPos, CannonEffects, Rotation, Pivot);
+            // Draw the cannon with its pivot at the owner's center.
+            sprite.Draw(spriteBatch, Owner.GetPosition(), CannonEffects, Rotation, Pivot);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Sprint0
         public SniperProjectile(ContentManager content, string entityKey) : base(content, entityKey)
         {
             AddSprite("Sniper", new StaticSprite());
-            sprites["Sniper"].LoadContent(content, "TDTanksAllSprites", 0, 1060, 34, 32, 1);
+            sprites["Sniper"].LoadContent(content, "TDTanksAllSprites", 120, 1040, 20, 20, 1); 
 
             SetSprite("Sniper");
 
