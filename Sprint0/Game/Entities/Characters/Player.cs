@@ -16,6 +16,8 @@ namespace Sprint0
         public float speedMultiplier = 1f;
         public bool shieldActive = false;
 
+        ISprite trailSprite  = new StaticSprite(); 
+
         public Player(ContentManager content) : base(content)
         {
             bodyRotation = 0f;
@@ -29,6 +31,8 @@ namespace Sprint0
             cannon = new Cannon(cannonSprite, this, new Vector2(12, 5), 50f,
                     0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
 
+
+            trailSprite.LoadContent(content, "TDTanksAllSprites", 952, 645, 73, 100, 1);
 
             currentProjectileVariables["projectileType"] = "Default";
         }
@@ -92,7 +96,9 @@ namespace Sprint0
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 tankCenter = new Vector2(37, 38);
-
+            if(trailSprite != null){
+                trailSprite.Draw(spriteBatch, position -  (new Vector2(1, 1) * bodyRotation), SpriteEffects.None, bodyRotation, tankCenter, Color.White);
+            }
             sprite.Draw(spriteBatch, position, SpriteEffects.FlipVertically, bodyRotation, tankCenter, Color.White);
             cannon.Draw(spriteBatch);
         }
