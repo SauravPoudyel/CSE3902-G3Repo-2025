@@ -1,0 +1,24 @@
+Code review assignments for Sprint 2
+Payton: Review the Keyboard and Mouse controller, the block class, and the pickup item class
+Harry: Review the Projectile class and its subclasses (rocket, sniper, shotgun) and Action Commands
+Leo: Review the Player, Mob, and Entity classes
+Saurav: Review the graphics code (static sprites, animated sprites, text sprites)
+Alex: Review the main game script, game manager, and sprite manager
+Daoping: Review the Game Commands, Movement Commands, Command Request, and ICommands interface
+
+Payton's Comments:
+
+
+Harry's Comments:
+
+
+Leo's Comments:
+
+
+Saurav's Comments:
+
+
+Alex's Comments:
+
+
+Daoping's Comments:
