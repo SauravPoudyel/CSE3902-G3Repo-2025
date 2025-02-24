@@ -47,13 +47,13 @@ namespace Sprint0
             bool playerMoving = false;
 
             if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
-                playerVelocity.Y -= 40;
+                playerVelocity.Y -= 50;
             if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
-                playerVelocity.Y += 40;
+                playerVelocity.Y += 50;
             if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
-                playerVelocity.X -= 40;
+                playerVelocity.X -= 50;
             if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
-                playerVelocity.X += 40;
+                playerVelocity.X += 50;
 
             playerMoving = (playerVelocity != Vector2.Zero);
 

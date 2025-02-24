@@ -45,17 +45,8 @@ namespace Sprint0
                     parameters.ContainsKey("velocity") && parameters["velocity"] is Vector2 velocity) 
                 {
                     entity.SetVelocity(velocity);
-                    entity.SetSprite(GetDirectionFromVelocity(velocity));
                 }
                 
-            }
-            private string GetDirectionFromVelocity(Vector2 velocity)
-            {
-                if (velocity.Y < 0) return "Up";
-                if (velocity.Y > 0) return "Down";
-                if (velocity.X < 0) return "Left";
-                if (velocity.X > 0) return "Right";
-                return "Idle";
             }
         }
     }

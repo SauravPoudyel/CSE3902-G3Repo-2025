@@ -7,7 +7,7 @@ namespace Sprint0
 {
     public abstract class Character : Entity
     {
-        protected Cannon cannon;
+        public Cannon cannon { get; set; }
         protected ContentManager content;
         protected Dictionary<string, object> currentProjectileVariables;
 
@@ -29,12 +29,12 @@ namespace Sprint0
                 currentProjectileVariables["projectileType"] = newType;
             else
                 System.Console.WriteLine("Invalid projectile type: " + newType);
-        }
-
+        }        
         public virtual void FireProjectile()
         {
             if (cannon == null)
                 return;
+            // Get the tip from the cannon (computed as above).
             Vector2 tip = cannon.GetTipPosition();
             var parameters = new Dictionary<string, object>
             {
@@ -48,7 +48,6 @@ namespace Sprint0
                 parameters["numberOfProjectiles"] = 3;
             }
             commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
-            HandleRecoil();
         }
 
         protected virtual void HandleRecoil()
@@ -79,8 +78,11 @@ namespace Sprint0
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            sprite?.Draw(spriteBatch, position, SpriteEffects.None, 0f);
-            cannon?.Draw(spriteBatch);
+            
+            if(sprite != null)
+                sprite.Draw(spriteBatch, position);
+            if(cannon != null)
+                cannon.Draw(spriteBatch);
         }
     }
 }

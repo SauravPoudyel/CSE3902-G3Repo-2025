@@ -102,7 +102,7 @@ namespace Sprint0
         public Rectangle PredictFutureBounds()
         {
             Vector2 nextPosition = position + velocity * Globals.FRAMETIME; 
-            return new Rectangle((int)nextPosition.X,(int)nextPosition.Y, bounds.Width, bounds.Height ); 
+            return new Rectangle((int)nextPosition.X,(int)nextPosition.Y, bounds.Width, bounds.Height); 
         }
 
         public virtual void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)

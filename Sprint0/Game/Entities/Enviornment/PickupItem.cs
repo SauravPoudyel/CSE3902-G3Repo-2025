@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Sprint0
 {
@@ -21,7 +20,6 @@ namespace Sprint0
         }
         private ContentManager content;
         private float timer;
-
         private ItemType itemType;
 
         public PickupItem(ContentManager content) 
@@ -82,14 +80,54 @@ namespace Sprint0
         }
         public override void Update()
         {
+            position += velocity * Globals.FRAMETIME; 
+            bounds = new Rectangle((int)position.X, (int)position.Y, 100, 100);
             sprite.Update();
             timer += Globals.FRAMETIME; 
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             SpriteEffects effects = SpriteEffects.None;
-            
             sprite.Draw(spriteBatch, position, effects, 0f);
+        }
+
+        public void ApplyEffect(Player player)
+        {
+            switch(itemType)
+            {
+                case ItemType.Shield:
+                    player.shieldActive = true;
+                    player.EffectTimers["Shield"] = 5f;
+                    break;
+                case ItemType.Ammo:
+                    // Increase ammo count
+                    break;
+                case ItemType.Repair:
+                    // Repair health 
+                    break;
+                case ItemType.Speed:
+                    player.speedMultiplier = 8f;
+                    player.EffectTimers["SpeedBoost"] = 5f;
+                    break;
+                case ItemType.Cloak:
+                    // Set cloaking
+                    break;
+                case ItemType.Fire:
+                    if (player.cannon != null)
+                    {
+                        player.cannon.AngularVelocity *= 2f;
+                        player.EffectTimers["FireBoost"] = 5f;
+                    }
+                    break;
+                case ItemType.Bounce:
+                    // Implement bounce 
+                    break;
+                case ItemType.Instakill:
+                    // Implement instakill
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

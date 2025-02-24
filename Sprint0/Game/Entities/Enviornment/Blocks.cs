@@ -85,7 +85,8 @@ namespace Sprint0
         {
             position += velocity * Globals.FRAMETIME; 
             sprite.Update();
-            this.bounds = new Rectangle((int)position.X, (int)position.Y, 80, 80);
+            bounds = new Rectangle((int)position.X, (int)position.Y, 80, 80);
+            
             timer += Globals.FRAMETIME; 
         }
 
