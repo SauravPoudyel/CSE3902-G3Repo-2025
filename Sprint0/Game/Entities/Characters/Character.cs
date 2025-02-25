@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace Sprint0
@@ -10,6 +11,16 @@ namespace Sprint0
         public Cannon cannon { get; set; }
         protected ContentManager content;
         protected Dictionary<string, object> currentProjectileVariables;
+        protected float bodyRotation;
+        protected float speedMultiplier = 1f;
+        protected List<TrackTrail> trackTrailList;
+        protected float trackTrailSpawnTimer;
+        protected float trackTrailSpawnInterval = 0.2f;
+        protected bool areTrackTrailsEnabled = true;
+        protected ISprite trackTrailSprite;
+
+        public float health = 100f;
+        protected bool isDead = false;
 
         public Character(ContentManager content) : base()
         {
@@ -20,21 +31,27 @@ namespace Sprint0
                 { "projectileSpread", MathHelper.ToRadians(10) },
                 { "projectileType", "Default" }
             };
+            trackTrailList = new List<TrackTrail>();
+            trackTrailSpawnTimer = 0f;
+            trackTrailSprite = new StaticSprite();
+            trackTrailSprite.LoadContent(content, "TDTanksAllSprites", 953, 665, 73, 88, 1);
+            bodyRotation = 0f;
         }
 
-        public void SetProjectileType(string newType)
+        public void ToggleTrackTrails()
         {
-            if (newType == "Default" || newType == "Sniper" || newType == "Rocket" ||
-                newType == "Shotgun" || newType == "Bomb")
-                currentProjectileVariables["projectileType"] = newType;
-            else
-                System.Console.WriteLine("Invalid projectile type: " + newType);
-        }        
+            areTrackTrailsEnabled = !areTrackTrailsEnabled;
+        }
+
+        public void SetCannonRotation(float rotation)
+        {
+            if (cannon != null)
+                cannon.Rotation = rotation;
+        }
+
         public virtual void FireProjectile()
         {
-            if (cannon == null)
-                return;
-            // Get the tip from the cannon (computed as above).
+            if (cannon == null) return;
             Vector2 tip = cannon.GetTipPosition();
             var parameters = new Dictionary<string, object>
             {
@@ -50,39 +67,101 @@ namespace Sprint0
             commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
         }
 
-        protected virtual void HandleRecoil()
-        {
-            string projType = (string)currentProjectileVariables["projectileType"];
-            float recoilStrength = 20f;
-            if (projType == "Sniper")
-                recoilStrength = 30f;
-            else if (projType == "Rocket")
-                recoilStrength = 80f;
-            Vector2 recoilDir = Vector2.Transform(new Vector2(0, 1), Matrix.CreateRotationZ(cannon.Rotation));
-            velocity -= recoilDir * recoilStrength;
-        }
+        // protected virtual void HandleRecoil()
+        // {
+        //     string t = (string)currentProjectileVariables["projectileType"];
+        //     float s = 20f;
+        //     if (t == "Sniper") s = 30f;
+        //     else if (t == "Rocket") s = 80f;
+        //     Vector2 d = Vector2.Transform(new Vector2(0, 1), Matrix.CreateRotationZ(cannon.Rotation));
+        //     velocity -= d * s;
+        // }
 
-        public void SetCannonRotation(float rotation)
+        public void SetProjectileType(string newType)
         {
-            if (cannon != null)
-                cannon.Rotation = rotation;
+            if (newType == "Default" || newType == "Sniper" || newType == "Rocket" ||
+                newType == "Shotgun" || newType == "Bomb")
+                currentProjectileVariables["projectileType"] = newType;
         }
 
         public override void Update()
         {
-            float elapsed = Globals.FRAMETIME;
-            position += velocity * elapsed;
-            if(sprite != null)
-                sprite.Update();
+            float deltaTime = Globals.FRAMETIME;
+            float baseTurnSpeed = 0.05f;
+            float turnFactor = MathHelper.Clamp(Math.Abs(velocity.Y) / 50f, 0.4f, 0.5f);
+            if (Math.Abs(velocity.X) > 0.01f || Math.Abs(velocity.Y) > 0.01f)
+            {
+                float targetRotation = bodyRotation + velocity.X * baseTurnSpeed * turnFactor * deltaTime;
+                if (velocity.X > 0 && targetRotation < bodyRotation)
+                    targetRotation = bodyRotation;
+                if (velocity.X < 0 && targetRotation > bodyRotation)
+                    targetRotation = bodyRotation;
+                bodyRotation = targetRotation;
+            }
+            Vector2 forward = new Vector2((float)Math.Sin(bodyRotation), -(float)Math.Cos(bodyRotation));
+            position += forward * -velocity.Y * speedMultiplier * deltaTime;
+            sprite?.Update();
+
+            if (areTrackTrailsEnabled)
+                TrackTrail.UpdateTrackTrails(trackTrailList, deltaTime, position, bodyRotation, trackTrailSprite, ref trackTrailSpawnTimer, trackTrailSpawnInterval);
+
+            if (health <= 0 && !isDead)
+            {
+                isDead = true;
+                OnDeath();
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            
-            if(sprite != null)
-                sprite.Draw(spriteBatch, position);
-            if(cannon != null)
-                cannon.Draw(spriteBatch);
+            foreach (var trail in trackTrailList)
+                trail.Draw(spriteBatch);
+            sprite?.Draw(spriteBatch, position, SpriteEffects.None, bodyRotation);
+            cannon?.Draw(spriteBatch);
+        }
+
+        protected void CalculateBounds(float spriteWidth, float spriteHeight)
+        {
+            float halfWidth = spriteWidth * 0.5f;
+            float halfHeight = spriteHeight * 0.5f;
+            float cosAngle = (float)Math.Cos(bodyRotation);
+            float sinAngle = (float)Math.Sin(bodyRotation);
+            Vector2[] corners = new Vector2[4];
+            corners[0] = new Vector2(-halfWidth, -halfHeight);
+            corners[1] = new Vector2(halfWidth, -halfHeight);
+            corners[2] = new Vector2(halfWidth, halfHeight);
+            corners[3] = new Vector2(-halfWidth, halfHeight);
+            for (int i = 0; i < 4; i++)
+            {
+                float x = corners[i].X;
+                float y = corners[i].Y;
+                corners[i].X = x * cosAngle - y * sinAngle + position.X;
+                corners[i].Y = x * sinAngle + y * cosAngle + position.Y;
+            }
+            float minX = corners[0].X, maxX = corners[0].X;
+            float minY = corners[0].Y, maxY = corners[0].Y;
+            for (int i = 1; i < 4; i++)
+            {
+                if (corners[i].X < minX) minX = corners[i].X;
+                if (corners[i].X > maxX) maxX = corners[i].X;
+                if (corners[i].Y < minY) minY = corners[i].Y;
+                if (corners[i].Y > maxY) maxY = corners[i].Y;
+            }
+            bounds = new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
+        }
+
+        public virtual void Damage(float damage)
+        {
+            health -= damage; 
+        }
+        protected virtual void OnDeath()
+        {
+            var parameters = new Dictionary<string, object>()
+            {
+                {"spawnPosition", position},
+                {"phaseInterval", 0.5f}
+            };
+            commandQueue.Enqueue(new CommandRequest("SpawnExplosion", parameters));
         }
     }
 }

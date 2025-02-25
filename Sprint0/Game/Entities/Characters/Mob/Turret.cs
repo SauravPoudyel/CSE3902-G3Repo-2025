@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -6,25 +7,26 @@ namespace Sprint0
 {
     public class Turret : Mob
     {
-        public Turret(ContentManager content) : base(content)
-        {
-        }
+        private float turretRotationSpeed;
+
+        public Turret(ContentManager content) : base(content) {}
 
         protected override void InitializeMob()
         {
-            mobType = MobType.Turret;
-            defaultSpeed = 0f;
-            shootInterval = 2.5f; // Shoots every 2.5 seconds
+            currentMobType = MobType.Turret;
+            defaultMovementSpeed = 0f;
+            firingInterval = 2.5f;
+            turretRotationSpeed = MathHelper.ToRadians(40);
             currentProjectileVariables["projectileType"] = "Rocket";
 
-            AnimatedSprite turretSprite = new AnimatedSprite(0.3f);
-            turretSprite.LoadContent(content, "TDTowerDefenseSprites", 2444, 908, 104, 104, 1);
-            SetSprite(turretSprite);
+            var turretBaseSprite = new AnimatedSprite(0.3f);
+            turretBaseSprite.LoadContent(content, "TDTowerDefenseSprites", 2444, 908, 104, 104, 1);
+            SetSprite(turretBaseSprite);
 
-            ISprite turretCannonSprite = new AnimatedSprite(0.3f);
+            var turretCannonSprite = new AnimatedSprite(0.3f);
             turretCannonSprite.LoadContent(content, "TDTowerDefenseSprites", 2455, 1290, 85, 110, 1);
-            cannon = new Cannon(turretCannonSprite, this, new Vector2(42, 34), 30f,
-                            0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
+            cannon = new Cannon(turretCannonSprite, this, new Vector2(42, 34), 30f, 
+                                0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
             cannon.CannonEffects = SpriteEffects.FlipVertically; 
             velocity = Vector2.Zero;
         }
@@ -32,15 +34,28 @@ namespace Sprint0
         protected override void UpdateMobBehavior()
         {
             velocity = Vector2.Zero;
+
+            if (lastKnownPlayerPosition != Vector2.Zero)
+            {
+                Vector2 directionToPlayer = lastKnownPlayerPosition - position;
+                float targetRotation = (float)Math.Atan2(directionToPlayer.Y, directionToPlayer.X) - MathHelper.PiOver2;
+                float angleDifference = MathHelper.WrapAngle(targetRotation - cannon.Rotation);
+                float maxTurnAmount = turretRotationSpeed * Globals.FRAMETIME;
+
+                if (Math.Abs(angleDifference) > maxTurnAmount)
+                    angleDifference = Math.Sign(angleDifference) * maxTurnAmount;
+
+                cannon.Rotation += angleDifference;
+            }
         }
 
-        protected override void SetEnemyType(MobType type)
+        protected override void ChangeMobType(MobType type)
         {
-            mobType = type;
+            currentMobType = type;
             InitializeMob();
         }
 
-        protected override void ResetPosition()
+        protected override void ResetMobPosition()
         {
             position = new Vector2(Globals.SCREENWIDTH / 2 + 100, 400);
         }

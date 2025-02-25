@@ -8,6 +8,7 @@ namespace Sprint0
     public class GameManager
     {
         private Dictionary<string, Entity> entities;
+        private List<Tile> tiles;
         private CollisionManager collisionManager;
         private SpriteManager spriteManager;
         private ContentManager content;
@@ -19,6 +20,7 @@ namespace Sprint0
         {
             Game = game;
             entities = new Dictionary<string, Entity>();
+            tiles = new List<Tile>();
             collisionManager = new CollisionManager();
             spriteManager = new SpriteManager();
             eventManager = new EventManager(game, this);
@@ -57,7 +59,25 @@ namespace Sprint0
         {
             content = contentManager;
             Globals.LoadGlobalSprites(content);
+            InitializeTiles();
             InitializeEntities();
+        }
+
+        private void InitializeTiles()
+        {
+            int tileSize = 128;
+            int rows = (Globals.SCREENHEIGHT / tileSize) + 1;
+            int cols = (Globals.SCREENWIDTH / tileSize) + 1;
+
+            for (int y = 0; y < rows; y++)
+            {
+                for (int x = 0; x < cols; x++)
+                {
+                    Tile.TileType type = Tile.TileType.Grass; 
+
+                    tiles.Add(new Tile(content, type, new Vector2(x * tileSize, y * tileSize)));
+                }
+            }
         }
 
         private void InitializeEntities()
@@ -77,7 +97,7 @@ namespace Sprint0
             Blocks blocks = new Blocks(content);
             blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 - 300, 480));
             entities.Add("blocks", blocks);
-            
+
             ProjectileFactory.Initialize(content);
         }
 
@@ -94,19 +114,24 @@ namespace Sprint0
                 spriteManager.Update();
                 eventManager.ProcessCommandRequests();
             }
-            for (int i = 0; i < screens.Count; i++)
-                screens[i].Update();
+
+            foreach (var screen in screens)
+                screen.Update();
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            // Draw tiles first 
+            foreach (var tile in tiles)
+                tile.Draw(spriteBatch);
+
             foreach (var entity in entities.Values)
                 entity.Draw(spriteBatch);
-            spriteManager.Draw(spriteBatch);
-            for (int i = 0; i < screens.Count; i++)
-                screens[i].Draw(spriteBatch);
 
-            
+            spriteManager.Draw(spriteBatch);
+
+            foreach (var screen in screens)
+                screen.Draw(spriteBatch);
         }
 
         public void AddScreen(IScreen screen)
@@ -118,12 +143,10 @@ namespace Sprint0
         {
             screens.Remove(screen);
         }
+
         public IScreen GetActiveScreen()
         {
-            if (screens.Count > 0)
-                return screens[0];
-            return null;
+            return screens.Count > 0 ? screens[0] : null;
         }
-
     }
 }

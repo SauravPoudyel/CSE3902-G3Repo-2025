@@ -1,115 +1,113 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Sprint0
 {
     public class ExplodingTank : Mob
     {
         private float explosionTimer;
-        private int explosionPhase;
+        private int explosionPhaseIndex;
+        private bool inExplosionState;
         private readonly string[] explosionSpriteNames = { "Explosion1", "Explosion2", "Explosion3" };
-        private bool isExploding;
 
         public ExplodingTank(ContentManager content) : base(content)
         {
+            ToggleTrackTrails();
+            spriteWidth = 81;
+            spriteHeight = 76;
         }
 
         protected override void InitializeMob()
         {
-            mobType = MobType.ExplodingTank;
-            defaultSpeed = 80f;
-            shootInterval = 3f; // Shoots every 3 seconds
+            currentMobType = MobType.ExplodingTank;
+            defaultMovementSpeed = 50f;
+            firingInterval = 3f;
             explosionTimer = 0f;
-            explosionPhase = 0;
-            isExploding = false;
+            explosionPhaseIndex = 0;
+            inExplosionState = false;
             currentProjectileVariables["projectileType"] = "Default";
 
-            AnimatedSprite tankSprite = new AnimatedSprite(0.3f);
-            tankSprite.LoadContent(content, "TDTanksAllSprites", 952, 569, 81, 76, 1);
-            SetSprite(tankSprite);
+            var bodySprite = new AnimatedSprite(0.3f);
+            bodySprite.LoadContent(content, "TDTanksAllSprites", 952, 569, 81, 76, 1);
+            SetSprite(bodySprite);
 
-            ISprite cannonSprite = new AnimatedSprite(0.3f);
+            var cannonSprite = new AnimatedSprite(0.3f);
             cannonSprite.LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);
             cannon = new Cannon(cannonSprite, this, new Vector2(14, 10), 30f,
                                 0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
-
-            velocity = new Vector2(defaultSpeed, 0);
         }
 
         protected override void UpdateMobBehavior()
         {
             float elapsed = Globals.FRAMETIME;
-
-            // Stop shooting while exploding
-            if (!isExploding)
+            if (!inExplosionState)
             {
-                float rightBound = Globals.SCREENWIDTH / 2 + 300;
-                float leftBound = Globals.SCREENWIDTH / 2;
-                if (position.X > rightBound)
-                    velocity = new Vector2(-defaultSpeed, 0);
-                else if (position.X < leftBound)
-                    velocity = new Vector2(defaultSpeed, 0);
-            }
-            else
-            {
-                shootTimer = 0; 
-                velocity = Vector2.Zero; // Stops movement while exploding
-            }
-
-            // Explosion logic:
-            explosionTimer += elapsed;
-            if (!isExploding && explosionTimer > 2f)
-            {
-                isExploding = true;
-                explosionTimer = 0f;
-                explosionPhase = 0;
-                cannon.SetSprite(Globals.NULLSPRITE); // Remove cannon while exploding
-                SetSprite(LoadExplosionSprite(explosionPhase));
-            }
-
-            if (isExploding)
-            {
-                if (explosionTimer > 0.5f && explosionPhase < explosionSpriteNames.Length)
+                if (lastKnownPlayerPosition != Vector2.Zero)
                 {
-                    SetSprite(LoadExplosionSprite(explosionPhase));
-                    explosionPhase++;
+                    Vector2 dirToPlayer = lastKnownPlayerPosition - position;
+                    if (dirToPlayer != Vector2.Zero)
+                        dirToPlayer.Normalize();
+                    float trackingTurnRate = MathHelper.ToRadians(90) * elapsed;
+                    float desiredAngle = (float)Math.Atan2(dirToPlayer.Y, dirToPlayer.X) - MathHelper.PiOver2;
+                    float angleDiff = MathHelper.WrapAngle(desiredAngle - bodyRotation);
+                    if (Math.Abs(angleDiff) > trackingTurnRate)
+                        angleDiff = Math.Sign(angleDiff) * trackingTurnRate;
+                    bodyRotation += angleDiff;
+                    velocity = new Vector2(dirToPlayer.X, -dirToPlayer.Y) * defaultMovementSpeed;
+                }
+                else
+                {
+                    velocity = Vector2.Zero;
+                }
+            }
+
+            explosionTimer += elapsed;
+            if (!inExplosionState && explosionTimer > 5f)
+            {
+                inExplosionState = true;
+                explosionTimer = 0f;
+                explosionPhaseIndex = 0;
+                cannon.SetSprite(Globals.NULLSPRITE);
+                SetSprite(LoadExplosionSprite(explosionPhaseIndex));
+                velocity = Vector2.Zero;
+            }
+
+            if (inExplosionState)
+            {
+                if (explosionTimer > 0.5f && explosionPhaseIndex < explosionSpriteNames.Length)
+                {
+                    SetSprite(LoadExplosionSprite(explosionPhaseIndex));
+                    explosionPhaseIndex++;
                     explosionTimer = 0f;
                 }
-
-                if (explosionPhase >= explosionSpriteNames.Length)
+                if (explosionPhaseIndex >= explosionSpriteNames.Length)
                 {
-                    isExploding = false;
-                    InitializeMob(); 
+                    inExplosionState = false;
+                    InitializeMob();
                 }
             }
         }
 
         private ISprite LoadExplosionSprite(int phase)
         {
-            AnimatedSprite explosionSprite = new AnimatedSprite(0.3f);
-            switch (phase)
-            {
-                case 0:
-                    explosionSprite.LoadContent(content, "TDTanksAllSprites", 765, 508, 113, 112, 1);
-                    break;
-                case 1:
-                    explosionSprite.LoadContent(content, "TDTanksAllSprites", 642, 256, 124, 126, 1);
-                    break;
-                case 2:
-                    explosionSprite.LoadContent(content, "TDTanksAllSprites", 641, 383, 124, 125, 1);
-                    break;
-            }
-            return explosionSprite;
+            var expSprite = new AnimatedSprite(0.3f);
+            if (phase == 0)
+                expSprite.LoadContent(content, "TDTanksAllSprites", 765, 508, 113, 112, 1);
+            else if (phase == 1)
+                expSprite.LoadContent(content, "TDTanksAllSprites", 642, 256, 124, 126, 1);
+            else
+                expSprite.LoadContent(content, "TDTanksAllSprites", 641, 383, 124, 125, 1);
+            return expSprite;
         }
 
-        protected override void SetEnemyType(MobType type)
+        protected override void ChangeMobType(MobType type)
         {
-            mobType = type;
+            currentMobType = type;
             InitializeMob();
         }
 
-        protected override void ResetPosition()
+        protected override void ResetMobPosition()
         {
             position = new Vector2(Globals.SCREENWIDTH / 2 + 100, 400);
         }

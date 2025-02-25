@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace Sprint0
@@ -119,6 +120,21 @@ namespace Sprint0
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
                     MobFactory.CyclePreviousMob(gameManager);
+                }
+            }
+        }
+
+        public class SpawnExplosionCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("spawnPosition") && parameters["spawnPosition"] is Vector2 spawnPosition &&
+                    parameters.ContainsKey("phaseInterval") && parameters["phaseInterval"] is float phaseInterval)
+                {
+                    string explosionKey = "explosion_" + Guid.NewGuid().ToString();
+                    Explosion explosion = new Explosion(gameManager.GetContent(), spawnPosition, phaseInterval, explosionKey);
+                    gameManager.GetEntities().Add(explosionKey, explosion);
                 }
             }
         }

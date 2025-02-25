@@ -58,9 +58,9 @@ namespace Sprint0
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
                     // Implement the logic for the entity to take damage
-                    if (gameManager.GetEntity("player").GetSprite() is AnimatedSprite player)
+                    if (gameManager.GetEntity("player") is Character player)
                     {
-                        player.Damage();
+                        player.Damage(100f);
                     }
                 }
             }
