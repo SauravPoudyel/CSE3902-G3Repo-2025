@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -8,6 +9,8 @@ namespace Sprint0
 {
     public class GameManager
     {
+        public static GameManager Instance { get; private set; }
+
         private Dictionary<string, Entity> entities;
         private List<Tile> tiles;
         private CollisionManager collisionManager;
@@ -32,6 +35,7 @@ namespace Sprint0
         // Allow external initialization of gameStarted (default is false)
         public GameManager(Game1 game, bool started = false)
         {
+            Instance = this;
             Game = game;
             gameStarted = started;
             entities = new Dictionary<string, Entity>();
@@ -143,10 +147,15 @@ namespace Sprint0
             int blockIndex = 0;
             foreach (var block in levelBlocks)
             {
-                if (block != null)
+                if (block is FlammableBlock flammable)
                 {
-                    entities.Add($"block_{blockIndex}", block);
-                    blockIndex++;
+                    string key = $"flammable_{Guid.NewGuid().ToString("N")}";
+                    flammable.SetEntityKey(key);
+                    entities.Add(key, flammable);
+                }
+                else
+                {
+                    entities.Add($"block_{blockIndex++}", block);
                 }
             }
 

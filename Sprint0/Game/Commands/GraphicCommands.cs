@@ -128,13 +128,13 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("spawnPosition") && parameters["spawnPosition"] is Vector2 spawnPosition &&
-                    parameters.ContainsKey("phaseInterval") && parameters["phaseInterval"] is float phaseInterval)
+                if (parameters.TryGetValue("gameManager", out var gmObj) && gmObj is GameManager gm &&
+            parameters.TryGetValue("spawnPosition", out var posObj) && posObj is Vector2 pos &&
+            parameters.TryGetValue("phaseInterval", out var intervalObj) && intervalObj is float interval)
                 {
-                    string explosionKey = "explosion_" + Guid.NewGuid().ToString();
-                    Explosion explosion = new Explosion(gameManager.GetContent(), spawnPosition, phaseInterval, explosionKey);
-                    gameManager.GetEntities().Add(explosionKey, explosion);
+                    string explosionKey = "explosion_" + Guid.NewGuid().ToString("N");
+                    var explosion = new Explosion(gm.GetContent(), pos, interval, explosionKey);
+                    gm.GetEntities().Add(explosionKey, explosion);
                 }
             }
         }

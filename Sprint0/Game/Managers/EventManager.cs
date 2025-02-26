@@ -42,11 +42,15 @@ namespace Sprint0
                 {"DestroyEntity", new ActionCommands.DestroyEntityCommand()},
                 {"PlayerAction", new ActionCommands.PlayerActionCommand()},
                 {"RequestPlayerPosition", new ActionCommands.RequestPlayerPositionCommand() },
-                {"Damage", new ActionCommands.DamageCommand()}, 
+                {"Damage", new ActionCommands.DamageCommand()},
 
+                {"CollisionPush", new CollisionCommands.CollisionPushCommand()},
                 {"CollisionStop", new CollisionCommands.CollisionStopCommand()},
                 {"CollisionPickUp", new CollisionCommands.CollisionPickUpCommand()},
-                {"CollisionProjectileToMobCommand", new CollisionCommands.CollisionProjectileToMobCommand()}
+                {"CollisionProjectileToMobCommand", new CollisionCommands.CollisionProjectileToMobCommand()},
+                {"DestroyFlammableCommand", new CollisionCommands.DestroyFlammableCommand()},
+                {"AutoDestroy", new ActionCommands.AutoDestroyCommand()}
+
             };
 
             commandRequests = new List<CommandRequest>();
@@ -66,6 +70,10 @@ namespace Sprint0
         {
             foreach (var request in commandRequests)
             {
+                if (!request.Parameters.ContainsKey("gameManager"))
+                {
+                    request.Parameters.Add("gameManager", this.gameManager);
+                }
                 ExecuteCommand(request.CommandKey, request.Parameters);
             }
             commandRequests.Clear();
