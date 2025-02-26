@@ -72,6 +72,20 @@ namespace Sprint0
                 }
             }
         }
-        
+
+
+        public class CollisionProjectileToMobCommand : ICommand 
+        {
+            public void Execute(Dictionary<string, object> parameters) 
+            {
+                if (parameters.ContainsKey("actor") && parameters["actor"] is Projectile projectile && parameters.ContainsKey("target") 
+                    && parameters["target"] is Mob mob) 
+                    {
+                        //Explode mob
+                        mob.SetSprite("NULLSPRITE");
+                    }
+            }
+        }
+    
     }
 }

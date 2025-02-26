@@ -11,6 +11,7 @@ namespace Sprint0
 
         static CollisionResponse()
         {
+
             responseMap = new Dictionary<Tuple<Type, Type>, string>()
             {
                 { new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionStop" },
@@ -19,7 +20,9 @@ namespace Sprint0
                 { new Tuple<Type, Type>(typeof(Player), typeof(FlammableBlock)), "CollisionPush" },
                 { new Tuple<Type, Type>(typeof(Player), typeof(Mob)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(Blocks)), "CollisionReflect" },
-                { new Tuple<Type, Type>(typeof(Player), typeof(PickupItem)), "CollisionPickUp" }
+                { new Tuple<Type, Type>(typeof(Player), typeof(PickupItem)), "CollisionPickUp" },
+                {new Tuple<Type, Type>(typeof(Projectile), typeof(Mob)), "CollisionProjectileToMob"}
+
             };
         }
 

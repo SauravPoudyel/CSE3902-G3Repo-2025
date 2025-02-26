@@ -66,6 +66,7 @@ namespace Sprint0
                 };
                 commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
             }
+            bounds = new Rectangle((int)position.X, (int)position.Y, 20, 20);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
