@@ -11,12 +11,12 @@ namespace Sprint0
         public Cannon cannon { get; set; }
         protected ContentManager content;
         protected Dictionary<string, object> currentProjectileVariables;
-        protected float bodyRotation;
+        public float bodyRotation { get; set; }
         protected float speedMultiplier = 1f;
         protected List<TrackTrail> trackTrailList;
         protected float trackTrailSpawnTimer;
         protected float trackTrailSpawnInterval = 0.2f;
-        protected bool areTrackTrailsEnabled = true;
+        protected bool TrackTrailsEnabled { get; set; } = true;
         protected ISprite trackTrailSprite;
 
         public float health = 100f;
@@ -38,15 +38,18 @@ namespace Sprint0
             bodyRotation = 0f;
         }
 
-        public void ToggleTrackTrails()
+        protected void TurnTowards(float targetAngle, float turnSpeed)
         {
-            areTrackTrailsEnabled = !areTrackTrailsEnabled;
+            float angleDiff = MathHelper.WrapAngle(targetAngle - bodyRotation);
+            float maxTurn = turnSpeed * Globals.FRAMETIME;
+            if (Math.Abs(angleDiff) > maxTurn)
+                angleDiff = Math.Sign(angleDiff) * maxTurn;
+            bodyRotation += angleDiff;
         }
 
-        public void SetCannonRotation(float rotation)
+        public void SetCannonRotation(float rotation) 
         {
-            if (cannon != null)
-                cannon.Rotation = rotation;
+            cannon.Rotation = rotation; 
         }
 
         public virtual void FireProjectile()
@@ -67,16 +70,6 @@ namespace Sprint0
             commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
         }
 
-        // protected virtual void HandleRecoil()
-        // {
-        //     string t = (string)currentProjectileVariables["projectileType"];
-        //     float s = 20f;
-        //     if (t == "Sniper") s = 30f;
-        //     else if (t == "Rocket") s = 80f;
-        //     Vector2 d = Vector2.Transform(new Vector2(0, 1), Matrix.CreateRotationZ(cannon.Rotation));
-        //     velocity -= d * s;
-        // }
-
         public void SetProjectileType(string newType)
         {
             if (newType == "Default" || newType == "Sniper" || newType == "Rocket" ||
@@ -87,37 +80,25 @@ namespace Sprint0
         public override void Update()
         {
             float deltaTime = Globals.FRAMETIME;
-            float baseTurnSpeed = 0.05f;
-            float turnFactor = MathHelper.Clamp(Math.Abs(velocity.Y) / 50f, 0.4f, 0.5f);
-            if (Math.Abs(velocity.X) > 0.01f || Math.Abs(velocity.Y) > 0.01f)
-            {
-                float targetRotation = bodyRotation + velocity.X * baseTurnSpeed * turnFactor * deltaTime;
-                if (velocity.X > 0 && targetRotation < bodyRotation)
-                    targetRotation = bodyRotation;
-                if (velocity.X < 0 && targetRotation > bodyRotation)
-                    targetRotation = bodyRotation;
-                bodyRotation = targetRotation;
-            }
             Vector2 forward = new Vector2((float)Math.Sin(bodyRotation), -(float)Math.Cos(bodyRotation));
             position += forward * -velocity.Y * speedMultiplier * deltaTime;
-            sprite?.Update();
 
-            if (areTrackTrailsEnabled)
+            // Update track trails.
+            if (TrackTrailsEnabled)
                 TrackTrail.UpdateTrackTrails(trackTrailList, deltaTime, position, bodyRotation, trackTrailSprite, ref trackTrailSpawnTimer, trackTrailSpawnInterval);
+
+            if (sprite != null)
+            {
+                sprite.Update();
+                CalculateBounds(spriteWidth, spriteHeight);
+            }
 
             if (health <= 0 && !isDead)
             {
                 isDead = true;
                 OnDeath();
             }
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            foreach (var trail in trackTrailList)
-                trail.Draw(spriteBatch);
-            sprite?.Draw(spriteBatch, position, SpriteEffects.None, bodyRotation);
-            cannon?.Draw(spriteBatch);
+            prevPosition = position;
         }
 
         protected void CalculateBounds(float spriteWidth, float spriteHeight)
@@ -126,11 +107,13 @@ namespace Sprint0
             float halfHeight = spriteHeight * 0.5f;
             float cosAngle = (float)Math.Cos(bodyRotation);
             float sinAngle = (float)Math.Sin(bodyRotation);
-            Vector2[] corners = new Vector2[4];
-            corners[0] = new Vector2(-halfWidth, -halfHeight);
-            corners[1] = new Vector2(halfWidth, -halfHeight);
-            corners[2] = new Vector2(halfWidth, halfHeight);
-            corners[3] = new Vector2(-halfWidth, halfHeight);
+            Vector2[] corners = new Vector2[4]
+            {
+                new Vector2(-halfWidth, -halfHeight),
+                new Vector2(halfWidth, -halfHeight),
+                new Vector2(halfWidth, halfHeight),
+                new Vector2(-halfWidth, halfHeight)
+            };
             for (int i = 0; i < 4; i++)
             {
                 float x = corners[i].X;
@@ -150,18 +133,28 @@ namespace Sprint0
             bounds = new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
         }
 
-        public virtual void Damage(float damage)
-        {
-            health -= damage; 
-        }
         protected virtual void OnDeath()
         {
             var parameters = new Dictionary<string, object>()
             {
-                {"spawnPosition", position},
-                {"phaseInterval", 0.5f}
+                { "spawnPosition", position },
+                { "phaseInterval", 0.5f }
             };
             commandQueue.Enqueue(new CommandRequest("SpawnExplosion", parameters));
         }
+
+        public virtual void Damage(int damage)
+        {
+            health -= damage;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (var trail in trackTrailList)
+                trail.Draw(spriteBatch);
+            sprite?.Draw(spriteBatch, position, SpriteEffects.None, bodyRotation);
+            cannon?.Draw(spriteBatch);
+        }
     }
+
 }

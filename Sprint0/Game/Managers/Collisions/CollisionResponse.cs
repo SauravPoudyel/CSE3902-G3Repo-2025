@@ -11,23 +11,35 @@ namespace Sprint0
 
         static CollisionResponse()
         {
-            responseMap = new Dictionary<Tuple<Type, Type>, string>(){
-                {new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionStop"},
-                {new Tuple<Type, Type>(typeof(Projectile), typeof(Blocks)), "CollisionReflect"}, 
 
-                {new Tuple<Type, Type>(typeof(Player), typeof(PickupItem)), "CollisionPickUp"}, 
+            responseMap = new Dictionary<Tuple<Type, Type>, string>()
+            {
+                { new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionStop" },
+                { new Tuple<Type, Type>(typeof(Player), typeof(RigidBlock)), "CollisionStop" },
+                { new Tuple<Type, Type>(typeof(Player), typeof(PushableBlock)), "CollisionPush" },
+                { new Tuple<Type, Type>(typeof(Player), typeof(FlammableBlock)), "CollisionPush" },
+                { new Tuple<Type, Type>(typeof(Player), typeof(Mob)), "CollisionStop" },
+                { new Tuple<Type, Type>(typeof(Projectile), typeof(Blocks)), "CollisionReflect" },
+                { new Tuple<Type, Type>(typeof(Player), typeof(PickupItem)), "CollisionPickUp" },
                 {new Tuple<Type, Type>(typeof(Projectile), typeof(Mob)), "CollisionProjectileToMob"}
+
             };
         }
 
         public static string GetResponseCommand(Type subject, Type target)
         {
-            Tuple<Type, Type> key = new Tuple<Type, Type>(subject, target);
-            if (responseMap.ContainsKey(key))
-                return responseMap[key];
-            key = new Tuple<Type, Type>(target, subject);
-            if (responseMap.ContainsKey(key))
-                return responseMap[key];
+            // First, try to find an exact or assignable match
+            foreach (var kvp in responseMap)
+            {
+                if (kvp.Key.Item1.IsAssignableFrom(subject) && kvp.Key.Item2.IsAssignableFrom(target))
+                    return kvp.Value;
+            }
+            // Try reversed order.
+            foreach (var kvp in responseMap)
+            {
+                if (kvp.Key.Item1.IsAssignableFrom(target) && kvp.Key.Item2.IsAssignableFrom(subject))
+                    return kvp.Value;
+            }
             return null;
         }
     }

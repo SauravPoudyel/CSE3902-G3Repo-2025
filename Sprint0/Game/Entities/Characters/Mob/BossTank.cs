@@ -11,7 +11,12 @@ namespace Sprint0
         private float targetRotation;
         private Vector2 movementDirection;
 
-        public BossTank(ContentManager content) : base(content) { }
+        public BossTank(ContentManager content) : base(content) 
+        { 
+            TrackTrailsEnabled = true; 
+            spriteWidth = 123;
+            spriteHeight = 144;
+        }
 
         protected override void InitializeMob()
         {
@@ -31,7 +36,7 @@ namespace Sprint0
 
             position = new Vector2(Globals.SCREENWIDTH / 2, 200);
             bodyRotation = 0f;
-            movementDirection = new Vector2(0f, -1f); // Start moving UP
+            movementDirection = new Vector2(0f, -1f); // Initially moving UP
             velocity = movementDirection * defaultMovementSpeed;
             state = BossState.Moving;
         }
@@ -39,43 +44,30 @@ namespace Sprint0
         protected override void UpdateMobBehavior()
         {
             float elapsed = Globals.FRAMETIME;
-
             switch (state)
             {
                 case BossState.Moving:
-                    // If reaching an edge, stop moving and rotate
+                    // When reaching vertical bounds, start turning.
                     if (position.Y <= 100 || position.Y >= 500)
                     {
                         velocity = Vector2.Zero;
                         state = BossState.Turning;
-                        targetRotation = bodyRotation + MathHelper.Pi; // Rotate 180 degrees
+                        targetRotation = bodyRotation + MathHelper.Pi; // 180° turn
                     }
                     break;
 
                 case BossState.Turning:
-                    TurnToTarget(elapsed, targetRotation);
+                    // Use the shared TurnTowards helper.
+                    float turnSpeed = MathHelper.ToRadians(90); // 90° per second
+                    TurnTowards(targetRotation, turnSpeed);
+                    if (Math.Abs(MathHelper.WrapAngle(targetRotation - bodyRotation)) < 0.05f)
+                    {
+                        bodyRotation = targetRotation;
+                        state = BossState.Moving;
+                        movementDirection *= -1;
+                        velocity = movementDirection * defaultMovementSpeed;
+                    }
                     break;
-            }
-        }
-
-        private void TurnToTarget(float elapsed, float targetAngle)
-        {
-            float angleDiff = MathHelper.WrapAngle(targetAngle - bodyRotation);
-            float turnSpeed = MathHelper.ToRadians(90) * elapsed;
-
-            if (Math.Abs(angleDiff) > turnSpeed)
-                angleDiff = Math.Sign(angleDiff) * turnSpeed;
-
-            bodyRotation += angleDiff;
-
-            if (Math.Abs(MathHelper.WrapAngle(targetAngle - bodyRotation)) < 0.05f)
-            {
-                bodyRotation = targetAngle;
-                state = BossState.Moving;
-
-                // Switch movement direction after turning
-                movementDirection *= -1;
-                velocity = movementDirection * defaultMovementSpeed;
             }
         }
 
@@ -90,4 +82,5 @@ namespace Sprint0
             position = new Vector2(Globals.SCREENWIDTH / 2, 200);
         }
     }
+
 }

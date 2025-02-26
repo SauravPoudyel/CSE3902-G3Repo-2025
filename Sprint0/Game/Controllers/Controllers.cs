@@ -25,9 +25,7 @@ namespace Sprint0
                 { Keys.D3, "PlayerAction" },
                 { Keys.D4, "PlayerAction" },
                 { Keys.W, "Move" },
-                { Keys.A, "Move" },
                 { Keys.S, "Move" },
-                { Keys.D, "Move" },
                 { Keys.Z, "PlayerAction" },
                 { Keys.E, "Damage" },
                 { Keys.T, "CycleBlockPrev" },
@@ -43,28 +41,24 @@ namespace Sprint0
         public void Update(Game1 game)
         {
             KeyboardState state = Keyboard.GetState();
-            Vector2 playerVelocity = new Vector2(0, 0);
-            bool playerMoving = false;
 
+            // Only use W/S for forward/backward movement.
+            Vector2 playerVelocity = Vector2.Zero;
             if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
                 playerVelocity.Y -= 50;
             if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
                 playerVelocity.Y += 50;
-            if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
-                playerVelocity.X -= 50;
-            if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
-                playerVelocity.X += 50;
 
-            playerMoving = (playerVelocity != Vector2.Zero);
-
-            if (game.GameManager.GetActiveScreen() == null)
+            bool playerMoving = (playerVelocity != Vector2.Zero);
+            if (game.GameManager.GetBlockingScreen() == null)
             {
                 if (playerMoving)
                 {
                     game.GameManager.eventManager.ExecuteCommand("Move", new Dictionary<string, object>
                     {
                         { "player", game.GameManager.GetEntity("player") },
-                        { "velocity", playerVelocity },
+                        // Only pass the Y component; X is now handled separately.
+                        { "velocity", new Vector2(0, playerVelocity.Y) },
                         { "gameManager", game.GameManager }
                     });
                 }
@@ -78,7 +72,18 @@ namespace Sprint0
                 }
             }
 
-            // Everything Else Logic
+            if (game.GameManager.GetEntity("player") is Player player)
+            {
+                if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
+                {
+                    player.rotationInput = -1; // rotate left
+                }
+                if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
+                {
+                    player.rotationInput = 1; // rotate right
+                }
+            }
+
             string actionType = "fire";
             if (state.IsKeyDown(Keys.Z)) actionType = "fire";
             if (state.IsKeyDown(Keys.D1)) actionType = "item1";
@@ -91,11 +96,11 @@ namespace Sprint0
                 { "gameManager", game.GameManager },
                 { "content", game.GameManager.GetContent() },
                 { "player", game.GameManager.GetEntity("player") },
-                { "mob", game.GameManager.GetEntity("mob") }, 
-                { "pickupItem", game.GameManager.GetEntity("pickupItem") }, 
-                { "blocks", game.GameManager.GetEntity("blocks")},
-                { "actionType", actionType} , 
-                { "game", game} , 
+                { "mob", game.GameManager.GetEntity("mob") },
+                { "pickupItem", game.GameManager.GetEntity("pickupItem") },
+                { "blocks", game.GameManager.GetEntity("blocks") },
+                { "actionType", actionType },
+                { "game", game }
             };
 
             foreach (Keys key in keyMappings.Keys)
@@ -114,12 +119,13 @@ namespace Sprint0
         public void Update(Game1 game)
         {
             MouseState state = Mouse.GetState();
-            if (game.GameManager.GetActiveScreen() != null)
+            // If a blocking screen is active, let it handle clicks.
+            if (game.GameManager.GetBlockingScreen() != null)
             {
                 if (state.LeftButton == ButtonState.Pressed)
                 {
                     Point clickPos = new Point(state.X, state.Y);
-                    game.GameManager.GetActiveScreen().HandleClick(clickPos);
+                    game.GameManager.GetBlockingScreen().HandleClick(clickPos);
                 }
             }
             else
@@ -130,10 +136,12 @@ namespace Sprint0
                     Vector2 playerCenter = player.GetPosition();
                     Vector2 direction = mousePosition - playerCenter;
                     float rotation = (float)System.Math.Atan2(direction.Y, direction.X) - MathHelper.PiOver2;
-                    Dictionary<string, object> parameters = new Dictionary<string, object>();
-                    parameters.Add("player", player);
-                    parameters.Add("rotation", rotation);
-                    parameters.Add("gameManager", game.GameManager);
+                    Dictionary<string, object> parameters = new Dictionary<string, object>
+                    {
+                        { "player", player },
+                        { "rotation", rotation },
+                        { "gameManager", game.GameManager }
+                    };
                     game.GameManager.eventManager.ExecuteCommand("UpdateCannon", parameters);
                 }
             }

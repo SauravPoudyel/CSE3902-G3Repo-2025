@@ -2,10 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-
 namespace Sprint0
 {
-
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -32,12 +30,7 @@ namespace Sprint0
             GameManager = new GameManager(this);
             keyboardController = new KeyboardController();
             mouseController = new MouseController();
-            GameManager.eventManager.ExecuteCommand("ShowStartMenu", new Dictionary<string, object>
-            {
-                { "gameManager", GameManager },
-                { "content", Content },
-                { "game", this }
-            });
+            // (Note: The previous ShowStartMenu command call is now handled by our StartMenu screen.)
             base.Initialize();
         }
 
@@ -49,7 +42,6 @@ namespace Sprint0
         public void ResetGame()
         {
             GameManager = new GameManager(this);
-
             GameManager.LoadContent(Content);
         }
         

@@ -5,24 +5,32 @@ namespace Sprint0
 {
     public class CollisionCommands
     {
+        private const float BounceSpeed = 70f;
         public class CollisionStopCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
+                // For collisions between Player and RigidBlock or Mob.
                 if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
-                    parameters.ContainsKey("target") && parameters["target"] is Blocks block)
+                    ((parameters.ContainsKey("target") && (parameters["target"] is RigidBlock)) ||
+                    (parameters.ContainsKey("target") && (parameters["target"] is Mob))))
                 {
+                    // Compute the backward (bounce) direction based on the player's current rotation.
+                    Vector2 backwardDir = new Vector2(-(float)System.Math.Sin(player.bodyRotation),
+                                                      (float)System.Math.Cos(player.bodyRotation));
+                    backwardDir.Normalize();
 
-                    player.SetPosition(player.GetPreviousPosition());
-                    player.SetVelocity(Vector2.Zero);
-                }
+                    float bounceOffset = BounceSpeed * Globals.FRAMETIME;
+                    // Instead of reverting to the previous position, nudge the player backward.
+                    player.SetPosition(player.GetPosition() + backwardDir * bounceOffset);
 
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Player player2 &&
-                    parameters.ContainsKey("target") && parameters["target"] is Mob mob)
-                {
+                    player.SetVelocity(new Vector2(0, BounceSpeed));
 
-                    player2.SetPosition(player2.GetPreviousPosition());
-                    player2.SetVelocity(Vector2.Zero);
+                    if (parameters.ContainsKey("target") && (parameters["target"] is Mob mob))
+                    {
+                        mob.SetPosition(mob.GetPreviousPosition());
+                        mob.SetVelocity(Vector2.Zero);
+                    }
                 }
             }
         }
@@ -32,19 +40,19 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
-                    parameters.ContainsKey("target") && parameters["target"] is Blocks block)
+                    ((parameters.ContainsKey("target") && (parameters["target"] is Blocks)) ||
+                     (parameters.ContainsKey("target") && (parameters["target"] is Mob))))
                 {
+                    float currentRotation = player.bodyRotation;
+                    Vector2 backwardDir = new Vector2(-(float)System.Math.Sin(player.bodyRotation),
+                                                      (float)System.Math.Cos(player.bodyRotation));
+                    backwardDir.Normalize();
 
-                    player.SetPosition(player.GetPreviousPosition());
-                    player.SetVelocity(Vector2.Zero);
-                }
+                    float bounceOffset = BounceSpeed * Globals.FRAMETIME;
 
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Player player2 &&
-                    parameters.ContainsKey("target") && parameters["target"] is Mob mob)
-                {
-
-                    player2.SetPosition(player2.GetPreviousPosition());
-                    player2.SetVelocity(Vector2.Zero);
+                    player.SetPosition(player.GetPosition() + backwardDir * bounceOffset);
+                    player.SetVelocity(new Vector2(0, BounceSpeed));
+                    player.bodyRotation = currentRotation;
                 }
             }
         }
@@ -57,15 +65,14 @@ namespace Sprint0
                     parameters.ContainsKey("target") && parameters["target"] is PickupItem pickupItem)
                 {
                     pickupItem.ApplyEffect(player);
-
-                    if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameMananger)
+                    if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                     {
-                        gameMananger.RemoveEntity("pickupItem");
+                        gameManager.RemoveEntity("pickupItem");
                     }
-
                 }
             }
         }
+
 
         public class CollisionProjectileToMobCommand : ICommand 
         {

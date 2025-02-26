@@ -8,14 +8,19 @@ namespace Sprint0
 {
     public class Player : Character
     {
-        public Dictionary<string, float> EffectTimers = new Dictionary<string, float>();
         public float speedMultiplier = 1f;
         public bool shieldActive = false;
+        public Dictionary<string, float> EffectTimers = new Dictionary<string, float>();
+
+        // Dedicated rotation input (set by the controller)
+        public float rotationInput = 0f;
+
+        ISprite trailSprite = new StaticSprite();
 
         public Player(ContentManager content) : base(content)
         {
             bodyRotation = 0f;
-
+            
             AddSprite("TankBody", new AnimatedSprite(0.3f));
             sprites["TankBody"].LoadContent(content, "TDTanksAllSprites", 795, 1052, 74, 76, 1);
             SetSprite("TankBody");
@@ -23,43 +28,52 @@ namespace Sprint0
             ISprite cannonSprite = new AnimatedSprite(0.3f);
             cannonSprite.LoadContent(content, "TDTanksAllSprites", 1060, 837, 24, 60, 1);
             cannon = new Cannon(cannonSprite, this, new Vector2(12, 5), 50f,
-                                  0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
+                    0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
 
-            trackTrailSprite = new StaticSprite();
-            trackTrailSprite.LoadContent(content, "TDTanksAllSprites", 953, 665, 73, 88, 1);
+            trailSprite.LoadContent(content, "TDTanksAllSprites", 952, 645, 73, 100, 1);
+
+            currentProjectileVariables["projectileType"] = "Default";
+        }
+
+        public override void Damage(int damage)
+        {
+            health -= damage;
+            Globals.PlayerData.TemporaryHealth -= damage; 
         }
 
         public override void Update()
         {
             prevPosition = position;
-            float baseTurnSpeed = 0.05f;
-            float turnSpeedFactor = MathHelper.Clamp(Math.Abs(velocity.Y) / 50f, 0.5f, 0.6f);
-            if (Math.Abs(velocity.X) > 1f || Math.Abs(velocity.Y) > 1f)
-               bodyRotation += velocity.X * baseTurnSpeed * turnSpeedFactor * Globals.FRAMETIME;
-            Vector2 forwardDir = new Vector2((float)Math.Sin(bodyRotation), -(float)Math.Cos(bodyRotation));
-            position += forwardDir * -velocity.Y * speedMultiplier * Globals.FRAMETIME;
-            CalculateBounds(74f, 76f);
 
-            if (areTrackTrailsEnabled)
-                TrackTrail.UpdateTrackTrails(trackTrailList, Globals.FRAMETIME, position, bodyRotation, trackTrailSprite, ref trackTrailSpawnTimer, trackTrailSpawnInterval);
+            // Use dedicated rotation input
+            float turnSpeed = 1.5f; // Tweak for responsiveness
+            bodyRotation += rotationInput * turnSpeed * Globals.FRAMETIME;
 
-            if (Math.Abs(velocity.Y) > 0.1f)
+            // Movement is computed solely from vertical (Y) velocity.
+            Vector2 forwardDirection = new Vector2((float)Math.Sin(bodyRotation), -(float)Math.Cos(bodyRotation));
+            float forwardSpeed = -velocity.Y;
+            position += forwardDirection * forwardSpeed * speedMultiplier * Globals.FRAMETIME;
+
+            CalculateBounds(74, 76);
+            TrackTrail.UpdateTrackTrails(trackTrailList, Globals.FRAMETIME, position, bodyRotation, trackTrailSprite, ref trackTrailSpawnTimer, trackTrailSpawnInterval);
+
+            if (Math.Abs(forwardSpeed) > 0.1f)
                 sprite.Update();
 
-            if (health <= 0 && !isDead) {
-                isDead = true; 
-                OnDeath();
-            }
-
             EffectFactory.UpdateEffects(this);
+
+            // Reset rotation input after applying it.
+            rotationInput = 0f;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            TrackTrail.DrawTrackTrails(trackTrailList, spriteBatch);
             Vector2 tankCenter = new Vector2(37, 38);
+            foreach (var trail in trackTrailList)
+                trail.Draw(spriteBatch);
             sprite.Draw(spriteBatch, position, SpriteEffects.FlipVertically, bodyRotation, tankCenter, Color.White);
             cannon.Draw(spriteBatch);
         }
     }
+
 }
