@@ -106,7 +106,7 @@ namespace Sprint0
                     // Repair health 
                     break;
                 case ItemType.Speed:
-                    player.speedMultiplier = 8f;
+                    player.speedMultiplier = 2f;
                     player.EffectTimers["SpeedBoost"] = 5f;
                     break;
                 case ItemType.Cloak:

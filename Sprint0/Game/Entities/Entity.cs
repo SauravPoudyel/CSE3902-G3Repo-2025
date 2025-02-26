@@ -27,6 +27,8 @@ namespace Sprint0
         protected Vector2 prevPosition; // protected so that subclasses can access it
         protected Vector2 velocity;
         protected ISprite sprite;
+        protected int spriteHeight; // use as neccesary variables
+        protected int spriteWidth;
         protected bool hasSprite = true; // default to every entity having a sprite, set to false if not
         protected Dictionary<string, ISprite> sprites;
         protected Rectangle bounds;

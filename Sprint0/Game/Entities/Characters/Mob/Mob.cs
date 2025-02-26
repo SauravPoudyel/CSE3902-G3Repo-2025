@@ -17,107 +17,100 @@ namespace Sprint0
 
     public abstract class Mob : Character
     {
-        protected MobType mobType;
-        protected float defaultSpeed;
-
-        protected float shootTimer;
-        protected float shootInterval;
-        private float positionRequestTimer;
-        private float lastSeenPlayerTimer;
-        private Vector2 lastKnownPlayerPosition;
-        protected float aggressionDistance; // Mob fires only if the player is within this distance
+        protected MobType currentMobType;
+        protected float defaultMovementSpeed;
+        protected float firingTimer;
+        protected float firingInterval;
+        private float requestPlayerTimer;
+        private float timeSinceLastPlayerSeen;
+        protected Vector2 lastKnownPlayerPosition;
+        protected float aggressionRange;
 
         public Mob(ContentManager content) : base(content)
         {
-            shootTimer = 0f;
-            positionRequestTimer = 0.5f; // Request player position every 0.5 seconds
+            firingTimer = 0f;
+            requestPlayerTimer = 0.5f;
             lastKnownPlayerPosition = Vector2.Zero;
-            aggressionDistance = 1000f; // Default aggression range; override in subclass if needed
+            aggressionRange = 1000f;
             InitializeMob();
         }
 
         protected abstract void InitializeMob();
         protected abstract void UpdateMobBehavior();
-        protected abstract void SetEnemyType(MobType type);
-        protected abstract void ResetPosition();
+        protected abstract void ChangeMobType(MobType type);
+        protected abstract void ResetMobPosition();
 
-        public void CycleEnemyNext()
+        public void NextMobType()
         {
-            MobType[] types = (MobType[])Enum.GetValues(typeof(MobType));
-            int index = Array.IndexOf(types, mobType);
-            int nextIndex = (index + 1) % types.Length;
-            SetEnemyType(types[nextIndex]);
-            ResetPosition();
+            MobType[] allTypes = (MobType[])Enum.GetValues(typeof(MobType));
+            int index = Array.IndexOf(allTypes, currentMobType);
+            int nextIndex = (index + 1) % allTypes.Length;
+            ChangeMobType(allTypes[nextIndex]);
+            ResetMobPosition();
         }
 
-        public void CycleEnemyPrev()
+        public void PreviousMobType()
         {
-            MobType[] types = (MobType[])Enum.GetValues(typeof(MobType));
-            int index = Array.IndexOf(types, mobType);
-            int prevIndex = (index - 1 + types.Length) % types.Length;
-            SetEnemyType(types[prevIndex]);
-            ResetPosition();
+            MobType[] allTypes = (MobType[])Enum.GetValues(typeof(MobType));
+            int index = Array.IndexOf(allTypes, currentMobType);
+            int prevIndex = (index - 1 + allTypes.Length) % allTypes.Length;
+            ChangeMobType(allTypes[prevIndex]);
+            ResetMobPosition();
         }
 
         public override void Update()
         {
             float elapsed = Globals.FRAMETIME;
-            shootTimer += elapsed;
-            positionRequestTimer -= elapsed;
+            firingTimer += elapsed;
+            requestPlayerTimer -= elapsed;
 
-            if (positionRequestTimer <= 0f)
+            if (requestPlayerTimer <= 0f)
             {
-                var parameters = new Dictionary<string, object>{{ "mob", this } };
-                commandQueue.Enqueue(new CommandRequest("RequestPlayerPosition", parameters));
-                positionRequestTimer = 0.5f;
+                var commandParams = new Dictionary<string, object> { { "mob", this } };
+                commandQueue.Enqueue(new CommandRequest("RequestPlayerPosition", commandParams));
+                requestPlayerTimer = 0.5f;
             }
 
             if (lastKnownPlayerPosition != Vector2.Zero)
             {
                 float distanceToPlayer = Vector2.Distance(GetPosition(), lastKnownPlayerPosition);
-                if (distanceToPlayer <= aggressionDistance)
+                if (distanceToPlayer <= aggressionRange)
                 {
                     Vector2 directionToPlayer = lastKnownPlayerPosition - GetPosition();
-                    // Compute desired cannon angle (in radians) from mob position to player.
-                    float desiredCannonAngle = (float)Math.Atan2(directionToPlayer.Y, directionToPlayer.X) - (float)Math.PI/2;
+                    float desiredCannonAngle = (float)Math.Atan2(directionToPlayer.Y, directionToPlayer.X) - MathHelper.PiOver2;
                     float currentRotation = cannon.Rotation;
-                    float deltaAngle = MathHelper.WrapAngle(desiredCannonAngle - currentRotation);
-                    float maxRotationSpeed = MathHelper.ToRadians(90) * elapsed;
-                    if (Math.Abs(deltaAngle) > maxRotationSpeed)
-                        deltaAngle = Math.Sign(deltaAngle) * maxRotationSpeed;
-                    cannon.Rotation = currentRotation + deltaAngle;
-
-                    // Fire only if cannon is nearly aligned.
-                    if (Math.Abs(MathHelper.WrapAngle(desiredCannonAngle - cannon.Rotation)) < 0.1f && shootTimer >= shootInterval)
+                    float angleDiff = MathHelper.WrapAngle(desiredCannonAngle - currentRotation);
+                    float maxTurnRadians = MathHelper.ToRadians(60) * elapsed;
+                    if (Math.Abs(angleDiff) > maxTurnRadians)
+                        angleDiff = Math.Sign(angleDiff) * maxTurnRadians;
+                    cannon.Rotation = currentRotation + angleDiff;
+                    if (Math.Abs(MathHelper.WrapAngle(desiredCannonAngle - cannon.Rotation)) < 0.1f && firingTimer >= firingInterval)
                     {
                         FireProjectile();
-                        shootTimer = 0f;
+                        firingTimer = 0f;
                     }
                 }
                 else
                 {
-                    // Player is out of aggression range: scanning state.
-                    cannon.Rotation += MathHelper.ToRadians(30) * elapsed;
+                    cannon.Rotation += MathHelper.ToRadians(20) * elapsed;
                 }
 
-                // If it's been too long since last update, reset position
-                if (lastSeenPlayerTimer >= 0.8f)
+                if (timeSinceLastPlayerSeen >= 0.8f)
                     lastKnownPlayerPosition = Vector2.Zero;
             }
             else
             {
-                // No known player position: scanning state.
-                cannon.Rotation += MathHelper.ToRadians(30) * elapsed;
+                cannon.Rotation += MathHelper.ToRadians(20) * elapsed;
             }
 
             UpdateMobBehavior();
             base.Update();
         }
 
-        public void UpdateKnownPlayerPosition(Vector2 playerPosition)
+        public void UpdateKnownPlayerPosition(Vector2 newPlayerPosition)
         {
-            lastKnownPlayerPosition = playerPosition;
-            lastSeenPlayerTimer = 0f;
+            lastKnownPlayerPosition = newPlayerPosition;
+            timeSinceLastPlayerSeen = 0f;
         }
     }
 }

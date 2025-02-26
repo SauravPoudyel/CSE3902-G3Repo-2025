@@ -8,68 +8,77 @@ namespace Sprint0
 {
     public class Plane : Mob
     {
-        private float flightAngle;
-        private Vector2 flightCenter;
-        private float flightRadius;
-        private float flightSpeedModifier = 2f;
+        private float orbitAngle;
+        private Vector2 orbitCenter;
+        private float orbitRadius;
+        private float orbitSpeedFactor = 2f;
 
-        public Plane(ContentManager content) : base(content)
-        {
-        }
+        public Plane(ContentManager content) : base(content) {}
 
         protected override void InitializeMob()
         {
-            mobType = MobType.Plane;
-            shootInterval = 2f;
+            currentMobType = MobType.Plane;
+            firingInterval = 2f;
             currentProjectileVariables["projectileType"] = "Default";
-            flightCenter = new Vector2(Globals.SCREENWIDTH / 2, Globals.SCREENHEIGHT / 2);
-            flightRadius = 150f;
-            flightAngle = 0f;
-            ISprite planeSprite = new AnimatedSprite(0.3f);
-            planeSprite.LoadContent(content, "TDTowerDefenseSprites", 2183, 1411, 135, 135, 1);
-            SetSprite(planeSprite);
+            orbitCenter = new Vector2(Globals.SCREENWIDTH / 2, Globals.SCREENHEIGHT / 2);
+            orbitRadius = 150f;
+            orbitAngle = 0f;
+            var planeBodySprite = new AnimatedSprite(0.3f);
+            planeBodySprite.LoadContent(content, "TDTowerDefenseSprites", 2183, 1411, 135, 135, 1);
+            SetSprite(planeBodySprite);
             cannon = new Cannon(Globals.NULLSPRITE, this, new Vector2(0, 0), 30f, 0f, 0f, 0f, 0f);
+            velocity = Vector2.Zero;
+            bodyRotation = 0f;
         }
 
         protected override void UpdateMobBehavior()
         {
-            float elapsed = Globals.FRAMETIME;
-            flightAngle += MathHelper.ToRadians(45) * elapsed * flightSpeedModifier;
-            if (flightAngle > MathHelper.TwoPi)
-                flightAngle -= MathHelper.TwoPi;
-            position = flightCenter + new Vector2((float)Math.Cos(flightAngle), (float)Math.Sin(flightAngle)) * flightRadius;
+            float elap = Globals.FRAMETIME;
+            orbitAngle += MathHelper.ToRadians(25) * elap * orbitSpeedFactor;
+            orbitAngle %= MathHelper.TwoPi;
+            position = orbitCenter + new Vector2((float)Math.Cos(orbitAngle), (float)Math.Sin(orbitAngle)) * orbitRadius;
+            if (lastKnownPlayerPosition != Vector2.Zero)
+            {
+                Vector2 dir = lastKnownPlayerPosition - position;
+                float desired = (float)Math.Atan2(dir.Y, dir.X) - MathHelper.PiOver2;
+                float diff = MathHelper.WrapAngle(desired - bodyRotation);
+                float turnRate = MathHelper.ToRadians(50) * elap;
+                if (Math.Abs(diff) > turnRate)
+                    diff = Math.Sign(diff) * turnRate;
+                bodyRotation += diff;
+            }
         }
 
         public override void FireProjectile()
         {
             Vector2 spawnPos = GetPosition();
-            var parameters = new Dictionary<string, object>
+            var p = new Dictionary<string, object>
             {
                 { "projectileType", currentProjectileVariables["projectileType"] },
                 { "spawnPosition", spawnPos },
-                { "cannonRotation", 0f },
+                { "cannonRotation", cannon.Rotation },
                 { "speedModifier", -200f }
             };
-            commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
+            commandQueue.Enqueue(new CommandRequest("CreateProjectile", p));
         }
 
-        protected override void SetEnemyType(MobType type)
+        protected override void ChangeMobType(MobType type)
         {
+            currentMobType = type;
             InitializeMob();
         }
 
-        protected override void ResetPosition()
+        protected override void ResetMobPosition()
         {
-            flightCenter = new Vector2(Globals.SCREENWIDTH / 2, Globals.SCREENHEIGHT / 2);
-            flightAngle = 0f;
+            orbitCenter = new Vector2(Globals.SCREENWIDTH / 2, Globals.SCREENHEIGHT / 2);
+            orbitAngle = 0f;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            // Draw the plane sprite rotated so it faces the tangent direction.
-            // For a sprite facing right by default, the tangent (for counterclockwise orbit) is flightAngle + Pi/2.
+            float planeRot = orbitAngle + MathHelper.PiOver2;
             if (sprite != null)
-                sprite.Draw(spriteBatch, position, SpriteEffects.None, flightAngle + MathHelper.PiOver2);
+                sprite.Draw(spriteBatch, position, SpriteEffects.None, planeRot);
         }
     }
 }
