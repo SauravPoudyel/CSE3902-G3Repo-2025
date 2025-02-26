@@ -27,6 +27,7 @@ namespace Sprint0
         private Vector2 lastKnownPlayerPosition;
         protected float aggressionDistance; // Mob fires only if the player is within this distance
 
+
         public Mob(ContentManager content) : base(content)
         {
             shootTimer = 0f;

@@ -15,7 +15,8 @@ namespace Sprint0
                 {new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionStop"},
                 {new Tuple<Type, Type>(typeof(Projectile), typeof(Blocks)), "CollisionReflect"}, 
 
-                {new Tuple<Type, Type>(typeof(Player), typeof(PickupItem)), "CollisionPickUp"}
+                {new Tuple<Type, Type>(typeof(Player), typeof(PickupItem)), "CollisionPickUp"}, 
+                {new Tuple<Type, Type>(typeof(Projectile), typeof(Mob)), "CollisionProjectileToMob"}
             };
         }
 
