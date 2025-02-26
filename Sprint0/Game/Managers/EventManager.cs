@@ -40,6 +40,7 @@ namespace Sprint0
                 {"CreateEntity", new ActionCommands.CreateEntityCommand()},
                 {"DestroyEntity", new ActionCommands.DestroyEntityCommand()},
                 {"PlayerAction", new ActionCommands.PlayerActionCommand()},
+                {"RequestPlayerPosition", new ActionCommands.RequestPlayerPositionCommand() },
                 {"Damage", new ActionCommands.DamageCommand()}, 
 
                 {"CollisionStop", new CollisionCommands.CollisionStopCommand()},

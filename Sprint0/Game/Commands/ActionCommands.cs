@@ -119,5 +119,35 @@ namespace Sprint0
             }
         }
 
+        public class RequestPlayerPositionCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("mob") && parameters["mob"] is Mob mob)
+                {
+                    if (gameManager.GetEntity("player") is Player player)
+                    {
+                        Vector2 playerPos = player.GetPosition();
+                        Rectangle playerBounds = player.GetBounds();
+
+                        List<Entity> blocks = new List<Entity>();
+                        foreach (var entity in gameManager.GetEntities().Values)
+                        {
+                            if (entity is Blocks)
+                                blocks.Add(entity);
+                        }
+
+                        // Use the new RayTracer function to determine full exposure
+                        bool fullyVisible = RayTracer.IsPlayerFullyExposed(mob.GetPosition(), playerBounds, blocks);
+
+                        if (fullyVisible)
+                        {
+                            mob.UpdateKnownPlayerPosition(playerPos);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
