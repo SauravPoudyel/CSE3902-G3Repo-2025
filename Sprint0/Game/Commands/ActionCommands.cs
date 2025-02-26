@@ -22,6 +22,7 @@ namespace Sprint0
                         case "fire":
                             player.SetProjectileType("Default");
                             player.FireProjectile();
+                            Globals.PlayerData.TemporaryAmmo--; 
                             break;
 
                         case "item1":
@@ -60,7 +61,7 @@ namespace Sprint0
                     // Implement the logic for the entity to take damage
                     if (gameManager.GetEntity("player") is Character player)
                     {
-                        player.Damage(100f);
+                        player.Damage(20);
                     }
                 }
             }
@@ -134,7 +135,7 @@ namespace Sprint0
                         List<Entity> blocks = new List<Entity>();
                         foreach (var entity in gameManager.GetEntities().Values)
                         {
-                            if (entity is Blocks)
+                            if (entity is IObtuse)
                                 blocks.Add(entity);
                         }
 

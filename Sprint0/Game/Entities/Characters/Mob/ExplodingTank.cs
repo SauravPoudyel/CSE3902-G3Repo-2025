@@ -13,7 +13,7 @@ namespace Sprint0
 
         public ExplodingTank(ContentManager content) : base(content)
         {
-            ToggleTrackTrails();
+            TrackTrailsEnabled = true; 
             spriteWidth = 81;
             spriteHeight = 76;
         }
@@ -41,6 +41,7 @@ namespace Sprint0
         protected override void UpdateMobBehavior()
         {
             float elapsed = Globals.FRAMETIME;
+
             if (!inExplosionState)
             {
                 if (lastKnownPlayerPosition != Vector2.Zero)

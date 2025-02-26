@@ -104,6 +104,11 @@ namespace Sprint0
             isDamaged = true;
         }
 
+        public void SetFrameTime(float frameTime)
+        {
+            this.frameTime = frameTime; 
+        }
+
         public void Update()
         {
             if (frames.Count == 0) return;

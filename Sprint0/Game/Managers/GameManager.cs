@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Sprint0
 {
@@ -16,9 +17,23 @@ namespace Sprint0
         private List<IScreen> screens;
         public Game1 Game { get; private set; }
 
-        public GameManager(Game1 game)
+        // Persistent player data and HUD overlay
+        private PlayerData playerData;
+        private PlayerInventory playerInventory;
+
+        // Flag to indicate if the game has started (i.e. start menu dismissed)
+        private bool gameStarted;
+        public bool GameStarted
+        {
+            get { return gameStarted; }
+            set { gameStarted = value; }
+        }
+
+        // Allow external initialization of gameStarted (default is false)
+        public GameManager(Game1 game, bool started = false)
         {
             Game = game;
+            gameStarted = started;
             entities = new Dictionary<string, Entity>();
             tiles = new List<Tile>();
             collisionManager = new CollisionManager();
@@ -59,8 +74,25 @@ namespace Sprint0
         {
             content = contentManager;
             Globals.LoadGlobalSprites(content);
+            Globals.LoadPlayerData(); 
             InitializeTiles();
             InitializeEntities();
+
+            // Load persistent player data from CSV (located in Data\playerData.csv)
+            string playerDataFile = Path.Combine("Data", "playerData.csv");
+            playerData = PlayerData.LoadData(playerDataFile);
+
+            // Create and load the player inventory HUD overlay (nonblocking)
+            playerInventory = new PlayerInventory();
+            playerInventory.LoadContent(content);
+            screens.Add(playerInventory);
+
+            // Only add the Start Menu if the game has not yet started.
+            if (!gameStarted)
+            {
+                StartMenu startMenu = new StartMenu(content, Game.GraphicsDevice, Game);
+                screens.Insert(0, startMenu);
+            }
         }
 
         private void InitializeTiles()
@@ -73,8 +105,7 @@ namespace Sprint0
             {
                 for (int x = 0; x < cols; x++)
                 {
-                    Tile.TileType type = Tile.TileType.Grass; 
-
+                    Tile.TileType type = Tile.TileType.Grass;
                     tiles.Add(new Tile(content, type, new Vector2(x * tileSize, y * tileSize)));
                 }
             }
@@ -98,12 +129,34 @@ namespace Sprint0
             blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 - 300, 480));
             entities.Add("blocks", blocks);
 
+            // Create different block types at various positions
+            List<BaseBlock> levelBlocks = new List<BaseBlock>();
+
+            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.Tree, content, new Vector2(200, 800), 0.3f));
+            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.Box, content, new Vector2(400, 800), 0.3f));
+            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.OilBarrel_Red, content, new Vector2(600, 800), 0.3f));
+            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.OilBarrel_Black, content, new Vector2(800, 800), 0.3f));
+            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.BarbedFence, content, new Vector2(1000, 800), 0.3f));
+            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.Oil, content, new Vector2(1200, 800), 0.3f));
+
+            // Add blocks to entities dictionary
+            int blockIndex = 0;
+            foreach (var block in levelBlocks)
+            {
+                if (block != null)
+                {
+                    entities.Add($"block_{blockIndex}", block);
+                    blockIndex++;
+                }
+            }
+
             ProjectileFactory.Initialize(content);
         }
 
         public void Update()
         {
-            if (GetActiveScreen() == null)
+            // If the game has started, update entities normally.
+            if (gameStarted)
             {
                 foreach (var entity in entities.Values)
                 {
@@ -114,22 +167,40 @@ namespace Sprint0
                 spriteManager.Update();
                 eventManager.ProcessCommandRequests();
             }
+            // Otherwise, if the game hasn't started, update entities only if no blocking screen is present.
+            else
+            {
+                if (GetActiveScreen() == null)
+                {
+                    foreach (var entity in entities.Values)
+                    {
+                        entity.Update();
+                        eventManager.CollectCommandRequests(entity.GetCommandQueue());
+                    }
+                    collisionManager.Update(entities);
+                    spriteManager.Update();
+                    eventManager.ProcessCommandRequests();
+                }
+            }
 
+            // Always update all screens (HUD and menus).
             foreach (var screen in screens)
                 screen.Update();
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            // Draw tiles first 
+            // Draw background tiles.
             foreach (var tile in tiles)
                 tile.Draw(spriteBatch);
 
+            // Draw game entities.
             foreach (var entity in entities.Values)
                 entity.Draw(spriteBatch);
 
             spriteManager.Draw(spriteBatch);
 
+            // Draw overlay screens (e.g., HUD, menus).
             foreach (var screen in screens)
                 screen.Draw(spriteBatch);
         }
@@ -147,6 +218,16 @@ namespace Sprint0
         public IScreen GetActiveScreen()
         {
             return screens.Count > 0 ? screens[0] : null;
+        }
+
+        public IScreen GetBlockingScreen()
+        {
+            foreach (var screen in screens)
+            {
+                if (screen.BlocksInput)
+                    return screen;
+            }
+            return null;
         }
     }
 }

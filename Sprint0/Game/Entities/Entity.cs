@@ -100,12 +100,16 @@ namespace Sprint0
         {
             return bounds; 
         }
-
         public Rectangle PredictFutureBounds()
         {
-            Vector2 nextPosition = position + velocity * Globals.FRAMETIME; 
-            return new Rectangle((int)nextPosition.X,(int)nextPosition.Y, bounds.Width, bounds.Height); 
+            Vector2 nextPosition = position + velocity * Globals.FRAMETIME;
+
+            // offset the top-left corner accordingly.
+            int halfWidth = bounds.Width / 2;
+            int halfHeight = bounds.Height / 2;
+            return new Rectangle((int)(nextPosition.X - halfWidth), (int)(nextPosition.Y - halfHeight), bounds.Width, bounds.Height);
         }
+
 
         public virtual void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
         {

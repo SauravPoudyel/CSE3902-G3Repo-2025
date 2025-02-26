@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Sprint0
 {
     public interface IScreen
     {
+        bool BlocksInput { get; }
         void Update();
         void Draw(SpriteBatch spriteBatch);
-        void HandleClick(Point clickLocation); 
+        void HandleClick(Point clickLocation);
     }
 }

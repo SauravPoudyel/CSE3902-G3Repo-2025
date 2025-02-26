@@ -1,20 +1,23 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
 namespace Sprint0
 {
-    public class StartMenuScreen : IScreen
+    public class StartMenu : IScreen
     {
         private List<Button> buttons;
         private Texture2D backgroundTexture;
         private Color overlayColor;
-        private bool drawn; 
         private ContentManager content;
         private GraphicsDevice graphicsDevice;
 
-        public StartMenuScreen(ContentManager content, GraphicsDevice graphicsDevice, Game1 game)
+        // StartMenu should block game input.
+        public bool BlocksInput => true;
+
+        public StartMenu(ContentManager content, GraphicsDevice graphicsDevice, Game1 game)
         {
             this.content = content;
             this.graphicsDevice = graphicsDevice;
@@ -27,26 +30,33 @@ namespace Sprint0
             Texture2D buttonTexture = new Texture2D(graphicsDevice, 1, 1);
             buttonTexture.SetData(new Color[] { Color.Gray });
 
-            Dictionary<string, object> restartParams = new Dictionary<string, object>();
-            restartParams.Add("gameManager", game.GameManager);
-            restartParams.Add("game", game);
+            Dictionary<string, object> restartParams = new Dictionary<string, object>
+            {
+                { "gameManager", game.GameManager },
+                { "game", game }
+            };
             Button restartButton = new Button(buttonTexture, font,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 80, 150, 40),
                 "Restart", new GameCommands.ResetCommand(game), restartParams);
 
-            Dictionary<string, object> quitParams = new Dictionary<string, object>();
-            quitParams.Add("gameManager", game.GameManager);
-            quitParams.Add("game", game);
+            Dictionary<string, object> quitParams = new Dictionary<string, object>
+            {
+                { "gameManager", game.GameManager },
+                { "game", game }
+            };
             Button quitButton = new Button(buttonTexture, font,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 20, 150, 40),
                 "Quit", new GameCommands.QuitCommand(game), quitParams);
 
-            Dictionary<string, object> startParams = new Dictionary<string, object>();
-            startParams.Add("gameManager", game.GameManager);
-            startParams.Add("screen", this);
+            Dictionary<string, object> startParams = new Dictionary<string, object>
+            {
+                { "gameManager", game.GameManager },
+                { "screen", this }
+            };
+            // Note: The Start button uses "StartGameCommand" to remove the start menu.
             Button startButton = new Button(buttonTexture, font,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 + 40, 150, 40),
-                "Start", new GameCommands.StartGameCommand(), startParams);
+                "StartGame", new GameCommands.StartGameCommand(), startParams);
 
             buttons.Add(restartButton);
             buttons.Add(quitButton);
@@ -55,26 +65,29 @@ namespace Sprint0
 
         public void Update()
         {
+            MouseState mouseState = Mouse.GetState();
+            foreach (Button button in buttons)
+            {
+                button.Update(mouseState);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(backgroundTexture, new Rectangle(0, 0, Globals.SCREENWIDTH, Globals.SCREENHEIGHT), overlayColor);
-            drawn = true; 
-
-            for (int i = 0; i < buttons.Count; i++)
+            foreach (Button button in buttons)
             {
-                buttons[i].Draw(spriteBatch);
+                button.Draw(spriteBatch);
             }
         }
 
         public void HandleClick(Point clickLocation)
         {
-            for (int i = 0; i < buttons.Count; i++)
+            foreach (Button button in buttons)
             {
-                if (buttons[i].ContainsPoint(clickLocation))
+                if (button.ContainsPoint(clickLocation))
                 {
-                    buttons[i].Click();
+                    button.Click();
                 }
             }
         }

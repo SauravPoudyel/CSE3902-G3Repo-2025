@@ -1,4 +1,3 @@
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 
@@ -37,7 +36,7 @@ namespace Sprint0
     
             public void Execute(Dictionary<string, object> parameters)
             {
-                game.ResetGame(); 
+                game.ResetGame();
             }
         }
 
@@ -49,6 +48,7 @@ namespace Sprint0
                     parameters.ContainsKey("screen") && parameters["screen"] is IScreen screen)
                 {
                     gameManager.RemoveScreen(screen);
+                    gameManager.GameStarted = true; // Mark game as started so future resets don't show the start menu.
                 }
             }
         }
@@ -61,8 +61,12 @@ namespace Sprint0
                     parameters.ContainsKey("content") && parameters["content"] is ContentManager content &&
                     parameters.ContainsKey("game") && parameters["game"] is Game1 game)
                 {
-                    StartMenuScreen menu = new StartMenuScreen(content, game.GraphicsDevice, game);
-                    gameManager.AddScreen(menu);
+                    // Only show the start menu if the game has not already started.
+                    if (!gameManager.GameStarted)
+                    {
+                        StartMenu menu = new StartMenu(content, game.GraphicsDevice, game);
+                        gameManager.AddScreen(menu);
+                    }
                 }
             }
         }

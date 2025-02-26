@@ -10,7 +10,12 @@ namespace Sprint0
         private int phase; // 0: Right, 1: Down, 2: Left, 3: Up
         private readonly float phaseDuration = 1.5f;
 
-        public SmallEnemy(ContentManager content) : base(content) { }
+        public SmallEnemy(ContentManager content) : base(content) 
+        { 
+            TrackTrailsEnabled = true; 
+            spriteWidth = 95;
+            spriteHeight = 113;
+        }
 
         protected override void InitializeMob()
         {
@@ -30,7 +35,7 @@ namespace Sprint0
             cannon = new Cannon(cannonSprite, this, new Vector2(14, 10), 30f,
                                 0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
 
-            // Start at a corner of a square
+            // Starting position and initial velocity.
             position = new Vector2(Globals.SCREENWIDTH / 2, 150);
             velocity = new Vector2(defaultMovementSpeed, 0f);
             bodyRotation = 0f;
@@ -44,7 +49,7 @@ namespace Sprint0
             {
                 phaseTimer = 0f;
                 phase = (phase + 1) % 4;
-                velocity = Vector2.Zero; // wait until fully rotated
+                velocity = Vector2.Zero; // Pause to turn.
             }
 
             float desiredAngle = 0f;
@@ -68,18 +73,16 @@ namespace Sprint0
                     desiredVelocity = new Vector2(0f, -defaultMovementSpeed);
                     break;
             }
-            float angleDiff = MathHelper.WrapAngle(desiredAngle - bodyRotation);
-            float turnSpeed = MathHelper.ToRadians(90) * elapsed;
-            if (Math.Abs(angleDiff) > 0.05f)
+            // Turn smoothly toward the desired angle.
+            float turnSpeed = MathHelper.ToRadians(90);
+            TurnTowards(desiredAngle, turnSpeed);
+            if (Math.Abs(MathHelper.WrapAngle(desiredAngle - bodyRotation)) < 0.05f)
             {
-                if (Math.Abs(angleDiff) > turnSpeed)
-                    angleDiff = Math.Sign(angleDiff) * turnSpeed;
-                bodyRotation += angleDiff;
-                velocity = Vector2.Zero;
+                velocity = desiredVelocity;
             }
             else
             {
-                velocity = desiredVelocity;
+                velocity = Vector2.Zero;
             }
         }
 
@@ -94,4 +97,5 @@ namespace Sprint0
             position = new Vector2(Globals.SCREENWIDTH / 2 + 100, 400);
         }
     }
+
 }
