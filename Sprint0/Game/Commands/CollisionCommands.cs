@@ -83,12 +83,10 @@ namespace Sprint0
                     && parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager) 
                     {
                         //Explode mob
-                        //
-                        if (projectile.Owner == mob) {
-
+                        if (projectile.Owner != mob) {
+                            mob.health -= projectile.damage;
+                            gameManager.RemoveEntity(projectile.entityKey);
                         }
-                        mob.health -= projectile.damage;
-                        gameManager.RemoveEntity(projectile.entityKey);
                     }
             }
         }
