@@ -7,9 +7,9 @@ namespace Sprint0
 {
     public class Projectile : Entity
     {
-        private float colorChangeTimer;
-        private int colorIndex;
-        private Vector2 startPosition;
+        protected float colorChangeTimer;
+        protected int colorIndex;
+        protected Vector2 startPosition;
         private bool startPositionSet; 
         protected string entityKey;
         protected Color[] colors;
@@ -44,6 +44,8 @@ namespace Sprint0
         public float GetBaseSpeed(){
             return baseSpeed; 
         }
+
+        public virtual void OnDeath(){}
 
         public override void Update()
         {

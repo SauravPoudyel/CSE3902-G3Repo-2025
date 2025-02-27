@@ -72,7 +72,6 @@ namespace Sprint0
             isDamaged = false;
         }
 
-        
         public void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
         {
             spriteSheet = content.Load<Texture2D>(assetName);
@@ -88,7 +87,7 @@ namespace Sprint0
                 int x = orientation == FrameOrientation.Horizontal
                     ? startX + (i * frameWidth)
                     : startX;
-                
+
                 int y = orientation == FrameOrientation.Vertical
                     ? startY + (i * frameHeight)
                     : startY;
@@ -98,6 +97,16 @@ namespace Sprint0
 
             return frameList;
         }
+        public void AddFrame(int startX, int startY, int frameWidth, int frameHeight)
+        {
+            frames.Add(new Rectangle(startX, startY, frameWidth, frameHeight)); 
+        }
+
+        public void ResetAnimation()
+        {
+            currentFrame = 0;
+            timer = 0f;
+        }
 
         public void Damage()
         {
@@ -106,7 +115,7 @@ namespace Sprint0
 
         public void SetFrameTime(float frameTime)
         {
-            this.frameTime = frameTime; 
+            this.frameTime = frameTime;
         }
 
         public void Update()
@@ -127,19 +136,19 @@ namespace Sprint0
             if (frames.Count == 0) return;
 
             Color drawColor = isDamaged ? Color.Red : color ?? Color.White;
-            Vector2 origin = pivot ?? new Vector2(frames[currentFrame].Width / 2, frames[currentFrame].Height / 2); // Default to center
+            Vector2 origin = pivot ?? new Vector2(frames[currentFrame].Width / 2, frames[currentFrame].Height / 2);
 
             spriteBatch.Draw(
                 spriteSheet,
                 position,
                 frames[currentFrame],
                 drawColor,
-                rotation, 
-                origin, 
+                rotation,
+                origin,
                 1f,
                 effects,
                 0f
-            ); 
+            );
         }
     }
 

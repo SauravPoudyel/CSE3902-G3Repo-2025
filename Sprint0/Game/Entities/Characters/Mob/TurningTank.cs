@@ -29,7 +29,7 @@ namespace Sprint0
             SetSprite(turningBodySprite);
             var turningCannonSprite = new AnimatedSprite(0.3f);
             turningCannonSprite.LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);
-            cannon = new Cannon(turningCannonSprite, this, new Vector2(14, 10), 30f,
+            cannon = new Cannon(content, turningCannonSprite, this, new Vector2(14, 10), 30f,
                                 0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
             currentTurnState = TurnState.RotateTo45;
             turnStateTimer = 0f;

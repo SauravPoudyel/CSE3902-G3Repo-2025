@@ -22,7 +22,7 @@ namespace Sprint0
                         case "fire":
                             player.SetProjectileType("Default");
                             player.FireProjectile();
-                            Globals.PlayerData.TemporaryAmmo--; 
+                            Globals.PlayerData.TemporaryAmmoDefault--; 
                             break;
 
                         case "item1":
@@ -43,7 +43,10 @@ namespace Sprint0
                             player.SetProjectileType("Bomb");
                             player.FireProjectile();
                             break;
-
+                        case "item5":
+                            player.SetProjectileType("Teleporter");
+                            player.FireProjectile();
+                            break; 
                         default:
                             System.Console.WriteLine("Error: invalid aactionType.");
                             break;
@@ -129,6 +132,9 @@ namespace Sprint0
                 {
                     if (gameManager.GetEntity("player") is Player player)
                     {
+                        if(player.isInvis)
+                            return; 
+                        
                         Vector2 playerPos = player.GetPosition();
                         Rectangle playerBounds = player.GetBounds();
 

@@ -18,10 +18,10 @@ namespace Sprint0
                     // Compute the backward (bounce) direction based on the player's current rotation.
                     Vector2 backwardDir = new Vector2(-(float)System.Math.Sin(player.bodyRotation),
                                                       (float)System.Math.Cos(player.bodyRotation));
+                                                      
                     backwardDir.Normalize();
 
                     float bounceOffset = BounceSpeed * Globals.FRAMETIME;
-                    // Instead of reverting to the previous position, nudge the player backward.
                     player.SetPosition(player.GetPosition() + backwardDir * bounceOffset);
 
                     player.SetVelocity(new Vector2(0, BounceSpeed));
@@ -64,7 +64,8 @@ namespace Sprint0
                 if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
                     parameters.ContainsKey("target") && parameters["target"] is PickupItem pickupItem)
                 {
-                    pickupItem.ApplyEffect(player);
+                   PowerUpFactory.ApplyPickupEffect(player, pickupItem.GetItemType());
+
                     if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                     {
                         gameManager.RemoveEntity("pickupItem");
@@ -72,7 +73,6 @@ namespace Sprint0
                 }
             }
         }
-
 
         public class CollisionProjectileToMobCommand : ICommand 
         {
