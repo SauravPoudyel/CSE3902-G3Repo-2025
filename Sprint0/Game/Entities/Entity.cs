@@ -19,6 +19,7 @@ namespace Sprint0
         void SetSprite(string key);
         ISprite GetSprite();
         void OnCollide(Entity ActedUponEntity); 
+        void SetOwner(Entity owner);
     }
     
     public class Entity : IEntity
@@ -32,6 +33,7 @@ namespace Sprint0
         protected bool hasSprite = true; // default to every entity having a sprite, set to false if not
         protected Dictionary<string, ISprite> sprites;
         protected Rectangle bounds;
+        protected Entity owner;
 
         protected Queue<CommandRequest> commandQueue;
 
@@ -138,6 +140,11 @@ namespace Sprint0
 
         public virtual void OnCollide(Entity entityActedUpon)
         {
+        }
+
+        public virtual void SetOwner(Entity owner)
+        {
+            this.owner = owner;
         }
     }
 }

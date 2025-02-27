@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace Sprint0
@@ -39,21 +40,20 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
-                    ((parameters.ContainsKey("target") && (parameters["target"] is Blocks)) ||
-                     (parameters.ContainsKey("target") && (parameters["target"] is Mob))))
+                if (parameters["actor"] is Player player &&
+                parameters["target"] is IPushable pushable)
                 {
-                    float currentRotation = player.bodyRotation;
-                    Vector2 backwardDir = new Vector2(-(float)System.Math.Sin(player.bodyRotation),
-                                                      (float)System.Math.Cos(player.bodyRotation));
-                    backwardDir.Normalize();
-
-                    float bounceOffset = BounceSpeed * Globals.FRAMETIME;
-
-                    player.SetPosition(player.GetPosition() + backwardDir * bounceOffset);
-                    player.SetVelocity(new Vector2(0, BounceSpeed));
-                    player.bodyRotation = currentRotation;
+                    Vector2 direction = CalculatePushDirection(player);
+                    pushable.Push(direction);
                 }
+            }
+
+            private Vector2 CalculatePushDirection(Player player)
+            {
+                return new Vector2(
+                    (float)Math.Sin(player.bodyRotation),
+                    -(float)Math.Cos(player.bodyRotation)
+                );
             }
         }
 
@@ -78,14 +78,41 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters) 
             {
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Projectile projectile && parameters.ContainsKey("target") 
-                    && parameters["target"] is Mob mob) 
+                if (parameters.ContainsKey("actor") && parameters["actor"] is Projectile projectile 
+                    && parameters.ContainsKey("target") && parameters["target"] is Mob mob
+                    && parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager) 
                     {
                         //Explode mob
-                        mob.SetSprite("NULLSPRITE");
+                        if (projectile.Owner != mob) {
+                            mob.health -= projectile.damage;
+                            gameManager.RemoveEntity(projectile.entityKey);
+                        }
                     }
             }
         }
-    
+
+        public class CollisionProjectileToBlockCommand : ICommand 
+        {
+            public void Execute(Dictionary<string, object> parameters) 
+            {
+                if (parameters.ContainsKey("actor") && parameters["actor"] is Projectile projectile 
+                    && parameters.ContainsKey("target") && parameters["target"] is Mob mob
+                    && parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager) 
+                    {
+                        //Deleteblock 
+                        //Subclass of reflect off block
+                    }
+            }
+        }
+
+        public class DestroyFlammableCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters["target"] is FlammableBlock block)
+                    block.Destroy();
+            }
+        }
+
     }
 }

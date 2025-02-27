@@ -60,6 +60,7 @@ namespace Sprint0
         Vector2 tip = cannon.GetTipPosition();
         var parameters = new Dictionary<string, object>
         {
+<<<<<<< HEAD
             { "projectileType", currentProjectileVariables["projectileType"] },
             { "spawnPosition", tip },
             { "cannonRotation", cannon.Rotation }
@@ -68,6 +69,23 @@ namespace Sprint0
         {
             parameters["spreadAngle"] = MathHelper.ToRadians(10);
             parameters["numberOfProjectiles"] = 3;
+=======
+            if (cannon == null) return;
+            Vector2 tip = cannon.GetTipPosition();
+            var parameters = new Dictionary<string, object>
+            {
+                { "projectileType", currentProjectileVariables["projectileType"] },
+                { "spawnPosition", tip },
+                { "cannonRotation", cannon.Rotation },
+                { "owner", this }
+            };
+            if ((string)currentProjectileVariables["projectileType"] == "Shotgun")
+            {
+                parameters["spreadAngle"] = MathHelper.ToRadians(10);
+                parameters["numberOfProjectiles"] = 3;
+            }
+            commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
+>>>>>>> origin/test
         }
         commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
 
@@ -140,15 +158,25 @@ namespace Sprint0
             bounds = new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
         }
 
-        protected virtual void OnDeath()
+        public virtual void OnDeath()
         {
             var effectParams = new Dictionary<string, object>
             {
                 { "spawnPosition", position },
                 { "effectType", "explosion" }
             };
+<<<<<<< HEAD
             commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
 
+=======
+            commandQueue.Enqueue(new CommandRequest("SpawnExplosion", parameters));
+
+            var parameters2 = new Dictionary<string, object>()
+            {
+                {"destroyEntity", "mob"}
+            };
+            commandQueue.Enqueue(new CommandRequest("DestroyEntity", parameters2));
+>>>>>>> origin/test
         }
 
         public virtual void Damage(int damage)

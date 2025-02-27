@@ -7,7 +7,7 @@ namespace Sprint0
 {
      public class RocketProjectile : Projectile
     {   
-        public RocketProjectile(ContentManager content, string entityKey) : base(content, entityKey)
+        public RocketProjectile(ContentManager content, string entityKey, Character owner) : base(content, entityKey, owner)
         {
             AddSprite("Rocket", new StaticSprite());
             sprites["Rocket"].LoadContent(content, "TDTanksAllSprites", 120, 1040, 20, 20, 1); 
@@ -17,6 +17,7 @@ namespace Sprint0
             baseSpeed = 200f; 
             maxDistance = 250f; 
             colors = new Color[] { Color.Green, Color.DarkGreen, Color.Lime };
+            damage = 100;
         }
         public override void Update()
         {

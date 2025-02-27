@@ -77,7 +77,8 @@ namespace Sprint0
             if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
                 parameters.ContainsKey("projectileType") && parameters["projectileType"] is string projectileType &&
                 parameters.ContainsKey("spawnPosition") && parameters["spawnPosition"] is Vector2 spawnPosition &&
-                parameters.ContainsKey("cannonRotation") && parameters["cannonRotation"] is float cannonRotation)
+                parameters.ContainsKey("cannonRotation") && parameters["cannonRotation"] is float cannonRotation &&
+                parameters.ContainsKey("owner") && parameters["owner"] is Character owner)
             {
                 int numberOfProjectiles = 1;
                 float spreadAngle = 0f;
@@ -88,8 +89,8 @@ namespace Sprint0
                     spreadAngle = angle;
                 if (parameters.ContainsKey("speedModifier") && parameters["speedModifier"] is float speedMod)
                     speedModifer = speedMod;
-                ProjectileFactory.CalculateProjectiles(projectileType, spawnPosition, cannonRotation, spreadAngle, numberOfProjectiles, speedModifer);
-                ProjectileFactory.SpawnProjectiles(gameManager);
+                ProjectileFactory.CalculateProjectiles(owner, projectileType, spawnPosition, cannonRotation, spreadAngle, numberOfProjectiles, speedModifer);
+                ProjectileFactory.SpawnProjectiles(gameManager, owner);
             }
         }
     }
@@ -102,11 +103,14 @@ namespace Sprint0
                     parameters.ContainsKey("create") && parameters["create"] is Projectile entity &&
                     parameters.ContainsKey("entityName") && parameters["entityName"] is string entityName &&
                     parameters.ContainsKey("position") && parameters["position"] is Vector2 position &&
-                    parameters.ContainsKey("velocity") && parameters["velocity"] is Vector2 velocity)
+                    parameters.ContainsKey("velocity") && parameters["velocity"] is Vector2 velocity &&
+                    parameters.ContainsKey("owner") && parameters["owner"] is Character owner)
                 {
                     gameManager.GetEntities().Add(entityName, entity);
                     gameManager.GetEntities()[entityName].SetPosition(position);
                     gameManager.GetEntities()[entityName].SetVelocity(velocity);
+
+                    gameManager.GetEntities()[entityName].SetOwner(owner);
                 }
             }
         }
@@ -153,6 +157,18 @@ namespace Sprint0
                             mob.UpdateKnownPlayerPosition(playerPos);
                         }
                     }
+                }
+            }
+        }
+
+        public class AutoDestroyCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters["targetKey"] is string key &&
+                    parameters["gameManager"] is GameManager gm)
+                {
+                    gm.RemoveEntity(key);
                 }
             }
         }

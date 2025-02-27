@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Sprint0
 {
@@ -11,12 +12,15 @@ namespace Sprint0
         protected int colorIndex;
         protected Vector2 startPosition;
         private bool startPositionSet; 
-        protected string entityKey;
+        public string entityKey;
         protected Color[] colors;
         protected float maxDistance;
         protected float baseSpeed;
+        public int damage = 20; 
+        public IEntity Owner { get; private set; }
+        public bool canReflect;
 
-        public Projectile(ContentManager content, string entityKey)
+        public Projectile(ContentManager content, string entityKey, Character owner)
         {
             AddSprite("Default", new StaticSprite());
             sprites["Default"].LoadContent(content, "TDTanksAllSprites", 120, 1040, 20, 20, 1); 
@@ -27,6 +31,7 @@ namespace Sprint0
             colorChangeTimer = 200f;
             maxDistance = 600f;  
             colors = new Color[] { Color.Red, Color.Orange };
+            Owner = owner;
             
             this.entityKey = entityKey;
         }

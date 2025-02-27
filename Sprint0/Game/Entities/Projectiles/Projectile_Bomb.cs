@@ -12,7 +12,7 @@ namespace Sprint0
         private const float ExplosionDelay = 2f;
         private const float FrameTime = 0.25f;
 
-        public BombProjectile(ContentManager content, string entityKey) : base(content, entityKey)
+        public BombProjectile(ContentManager content, string entityKey, Character owner) : base(content, entityKey, owner)
         {
             AddSprite("Bomb", new AnimatedSprite(FrameTime, AnimatedSprite.FrameOrientation.Vertical));
             sprites["Bomb"].LoadContent(content, "TDTanksAllSprites", 1014, 936, 48, 48, 2);
