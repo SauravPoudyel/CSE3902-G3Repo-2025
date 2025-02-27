@@ -106,7 +106,8 @@ namespace Sprint0
             {
                 { "projectileType", currentProjectileVariables["projectileType"] },
                 { "spawnPosition", tip },
-                { "cannonRotation", cannon.Rotation }
+                { "cannonRotation", cannon.Rotation },
+                { "owner", this }
             };
             if ((string)currentProjectileVariables["projectileType"] == "Shotgun")
             {

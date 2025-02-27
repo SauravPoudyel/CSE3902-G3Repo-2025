@@ -52,25 +52,11 @@ namespace Sprint0
             cannon.Rotation = rotation; 
         }
 
-    public virtual void FireProjectile()
-    {
-        if (cannon == null)
-            return;
- 
-        Vector2 tip = cannon.GetTipPosition();
-        var parameters = new Dictionary<string, object>
+        public virtual void FireProjectile()
         {
-<<<<<<< HEAD
-            { "projectileType", currentProjectileVariables["projectileType"] },
-            { "spawnPosition", tip },
-            { "cannonRotation", cannon.Rotation }
-        };
-        if ((string)currentProjectileVariables["projectileType"] == "Shotgun")
-        {
-            parameters["spreadAngle"] = MathHelper.ToRadians(10);
-            parameters["numberOfProjectiles"] = 3;
-=======
-            if (cannon == null) return;
+            if (cannon == null)
+                return;
+    
             Vector2 tip = cannon.GetTipPosition();
             var parameters = new Dictionary<string, object>
             {
@@ -85,12 +71,9 @@ namespace Sprint0
                 parameters["numberOfProjectiles"] = 3;
             }
             commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
->>>>>>> origin/test
-        }
-        commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
 
-        cannon.TriggerFiringEffect();
-    }
+            cannon.TriggerFiringEffect();
+        }
 
 
         public void SetProjectileType(string newType)
@@ -165,18 +148,13 @@ namespace Sprint0
                 { "spawnPosition", position },
                 { "effectType", "explosion" }
             };
-<<<<<<< HEAD
             commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
-
-=======
-            commandQueue.Enqueue(new CommandRequest("SpawnExplosion", parameters));
 
             var parameters2 = new Dictionary<string, object>()
             {
                 {"destroyEntity", "mob"}
             };
             commandQueue.Enqueue(new CommandRequest("DestroyEntity", parameters2));
->>>>>>> origin/test
         }
 
         public virtual void Damage(int damage)

@@ -10,7 +10,7 @@ namespace Sprint0
         private const float TeleportDelay = 2.5f; 
         private float teleportTimer;
 
-        public TeleportProjectile(ContentManager content, string entityKey) : base(content, entityKey)
+        public TeleportProjectile(ContentManager content, string entityKey, Character owner) : base(content, entityKey, owner)
         {
             // This projectile is stationary.
             baseSpeed = 80f;
