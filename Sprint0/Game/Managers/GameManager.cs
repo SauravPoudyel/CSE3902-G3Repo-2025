@@ -13,6 +13,7 @@ namespace Sprint0
         private CollisionManager collisionManager;
         private SpriteManager spriteManager;
         private ContentManager content;
+        private LevelManager levelManager;
         public EventManager eventManager { get; private set; }
         private List<IScreen> screens;
         public Game1 Game { get; private set; }
@@ -38,6 +39,7 @@ namespace Sprint0
             tiles = new List<Tile>();
             collisionManager = new CollisionManager();
             spriteManager = new SpriteManager();
+            levelManager = new LevelManager();
             eventManager = new EventManager(game, this);
             screens = new List<IScreen>();
         }
@@ -113,22 +115,9 @@ namespace Sprint0
 
         private void InitializeEntities()
         {
-            Entity player = new Player(content);
-            player.SetPosition(new Vector2(Globals.SCREENWIDTH / 2, 300));
-            entities.Add("player", player);
-
-            Mob mob = MobFactory.CreateMob(content);
-            mob.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 + 100, 400));
-            entities.Add("mob", mob);
-
-            PickupItem pickupItem = new PickupItem(content);
-            pickupItem.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 + 170, 180));
-            entities.Add("pickupItem", pickupItem);
-
-            Blocks blocks = new Blocks(content);
-            blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 - 300, 480));
-            entities.Add("blocks", blocks);
-
+            levelManager.LoadContent(content);
+            entities = levelManager.LoadLevelEntities();
+            
             // Create different block types at various positions
             List<BaseBlock> levelBlocks = new List<BaseBlock>();
 
