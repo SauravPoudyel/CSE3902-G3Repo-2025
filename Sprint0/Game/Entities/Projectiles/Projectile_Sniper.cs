@@ -15,6 +15,7 @@ namespace Sprint0
             baseSpeed = 1500f; 
             maxDistance = 1000f; 
             colors = new Color[] { Color.Blue, Color.LightBlue, Color.DarkBlue }; 
+            damage = 50;
         }
 
         public override void Update()

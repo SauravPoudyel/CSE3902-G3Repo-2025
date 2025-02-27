@@ -78,11 +78,31 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters) 
             {
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Projectile projectile && parameters.ContainsKey("target") 
-                    && parameters["target"] is Mob mob) 
+                if (parameters.ContainsKey("actor") && parameters["actor"] is Projectile projectile 
+                    && parameters.ContainsKey("target") && parameters["target"] is Mob mob
+                    && parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager) 
                     {
                         //Explode mob
-                        mob.SetSprite("NULLSPRITE");
+                        //
+                        if (projectile.Owner == mob) {
+
+                        }
+                        mob.health -= projectile.damage;
+                        gameManager.RemoveEntity(projectile.entityKey);
+                    }
+            }
+        }
+
+        public class CollisionProjectileToBlockCommand : ICommand 
+        {
+            public void Execute(Dictionary<string, object> parameters) 
+            {
+                if (parameters.ContainsKey("actor") && parameters["actor"] is Projectile projectile 
+                    && parameters.ContainsKey("target") && parameters["target"] is Mob mob
+                    && parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager) 
+                    {
+                        //Deleteblock 
+                        //Subclass of reflect off block
                     }
             }
         }

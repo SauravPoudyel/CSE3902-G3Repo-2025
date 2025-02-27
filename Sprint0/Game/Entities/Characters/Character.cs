@@ -60,7 +60,8 @@ namespace Sprint0
             {
                 { "projectileType", currentProjectileVariables["projectileType"] },
                 { "spawnPosition", tip },
-                { "cannonRotation", cannon.Rotation }
+                { "cannonRotation", cannon.Rotation },
+                { "Owner", this }
             };
             if ((string)currentProjectileVariables["projectileType"] == "Shotgun")
             {
@@ -133,7 +134,7 @@ namespace Sprint0
             bounds = new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
         }
 
-        protected virtual void OnDeath()
+        public virtual void OnDeath()
         {
             var parameters = new Dictionary<string, object>()
             {
@@ -141,6 +142,12 @@ namespace Sprint0
                 { "phaseInterval", 0.5f }
             };
             commandQueue.Enqueue(new CommandRequest("SpawnExplosion", parameters));
+
+            var parameters2 = new Dictionary<string, object>()
+            {
+                {"destroyEntity", "mob"}
+            };
+            commandQueue.Enqueue(new CommandRequest("DestroyEntity", parameters2));
         }
 
         public virtual void Damage(int damage)

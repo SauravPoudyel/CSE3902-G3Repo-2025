@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Sprint0
 {
@@ -11,10 +12,13 @@ namespace Sprint0
         private int colorIndex;
         private Vector2 startPosition;
         private bool startPositionSet; 
-        protected string entityKey;
+        public string entityKey;
         protected Color[] colors;
         protected float maxDistance;
         protected float baseSpeed;
+        public int damage = 20; 
+        public IEntity Owner { get; private set; }
+        public bool canReflect;
 
         public Projectile(ContentManager content, string entityKey)
         {
