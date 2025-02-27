@@ -78,6 +78,7 @@ namespace Sprint0
         {
             content = contentManager;
             Globals.LoadGlobalSprites(content);
+            Globals.LoadGlobalFonts(content);
             Globals.LoadPlayerData(); 
             InitializeTiles();
             InitializeEntities();
@@ -87,9 +88,7 @@ namespace Sprint0
             playerData = PlayerData.LoadData(playerDataFile);
 
             // Create and load the player inventory HUD overlay (nonblocking)
-            playerInventory = new PlayerInventory();
-            playerInventory.LoadContent(content);
-            screens.Add(playerInventory);
+            playerInventory = new PlayerInventory(content);
 
             // Only add the Start Menu if the game has not yet started.
             if (!gameStarted)
@@ -175,6 +174,10 @@ namespace Sprint0
                 collisionManager.Update(entities);
                 spriteManager.Update();
                 eventManager.ProcessCommandRequests();
+                if (!screens.Contains(playerInventory))
+                {
+                    screens.Add(playerInventory);
+                }
             }
             // Otherwise, if the game hasn't started, update entities only if no blocking screen is present.
             else

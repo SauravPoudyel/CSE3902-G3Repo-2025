@@ -23,8 +23,7 @@ namespace Sprint0
             this.graphicsDevice = graphicsDevice;
             buttons = new List<Button>();
             overlayColor = new Color(0, 0, 0, 180);
-            backgroundTexture = new Texture2D(graphicsDevice, 1, 1);
-            backgroundTexture.SetData(new Color[] { Color.DimGray });
+            backgroundTexture = content.Load<Texture2D>("tank_menu");
 
             SpriteFont font = content.Load<SpriteFont>("Arial");
             Texture2D buttonTexture = new Texture2D(graphicsDevice, 1, 1);
@@ -36,7 +35,7 @@ namespace Sprint0
                 { "game", game }
             };
             Button restartButton = new Button(buttonTexture, font,
-                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 80, 150, 40),
+                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 20, 150, 40),
                 "Restart", new GameCommands.ResetCommand(game), restartParams);
 
             Dictionary<string, object> quitParams = new Dictionary<string, object>
@@ -45,7 +44,7 @@ namespace Sprint0
                 { "game", game }
             };
             Button quitButton = new Button(buttonTexture, font,
-                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 20, 150, 40),
+                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 + 40, 150, 40),
                 "Quit", new GameCommands.QuitCommand(game), quitParams);
 
             Dictionary<string, object> startParams = new Dictionary<string, object>
@@ -55,8 +54,8 @@ namespace Sprint0
             };
             // Note: The Start button uses "StartGameCommand" to remove the start menu.
             Button startButton = new Button(buttonTexture, font,
-                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 + 40, 150, 40),
-                "StartGame", new GameCommands.StartGameCommand(), startParams);
+                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 80, 150, 40),
+                "Start", new GameCommands.StartGameCommand(), startParams);
 
             buttons.Add(restartButton);
             buttons.Add(quitButton);
@@ -74,7 +73,7 @@ namespace Sprint0
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(backgroundTexture, new Rectangle(0, 0, Globals.SCREENWIDTH, Globals.SCREENHEIGHT), overlayColor);
+            spriteBatch.Draw(backgroundTexture, new Rectangle(0, 0, Globals.SCREENWIDTH, Globals.SCREENHEIGHT), Color.White);
             foreach (Button button in buttons)
             {
                 button.Draw(spriteBatch);

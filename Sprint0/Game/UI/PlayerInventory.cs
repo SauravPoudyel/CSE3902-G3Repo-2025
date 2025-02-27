@@ -7,52 +7,33 @@ namespace Sprint0
 {
     public class PlayerInventory : IScreen
     {
-        // Reference global player data.
-        private PlayerData playerData;
-
-        private TextSprite healthText;
-        private TextSprite ammoText;
-        private TextSprite shieldText;
-        private TextSprite coinText;
+        private List<IHUD> hudElements;
 
         public bool BlocksInput => false;
 
-        public PlayerInventory()
+        public PlayerInventory(ContentManager content)
         {
-            playerData = Globals.PlayerData;
-            healthText = new TextSprite("Health: " + playerData.TemporaryHealth, Color.White);
-            ammoText = new TextSprite("Ammo: " + playerData.TemporaryAmmo, Color.White);
-            shieldText = new TextSprite("Shield: " + playerData.TemporaryShield, Color.White);
-            coinText = new TextSprite("Coins: " + playerData.TemporaryCoins, Color.Yellow);
-        }
-
-        public void LoadContent(ContentManager content)
-        {
-            healthText.LoadContent(content, "Arial", 0, 0, 0, 0, 0);
-            ammoText.LoadContent(content, "Arial", 0, 0, 0, 0, 0);
-            shieldText.LoadContent(content, "Arial", 0, 0, 0, 0, 0);
-            coinText.LoadContent(content, "Arial", 0, 0, 0, 0, 0);
+            hudElements = new List<IHUD>();
+            // Initialize HUD elements here
+            hudElements.Add(new ShieldHUD(content.Load<Texture2D>("ShieldIcon")));
+            hudElements.Add(new HealthHUD(content.Load<Texture2D>("HealthIcon")));
+            hudElements.Add(new AmmoHUD(content.Load<Texture2D>("AmmoIcon")));
         }
 
         public void Update()
         {
-            healthText.SetText("Health: " + playerData.TemporaryHealth);
-            ammoText.SetText("Ammo: " + playerData.TemporaryAmmo);
-            shieldText.SetText("Shield: " + playerData.TemporaryShield);
-            coinText.SetText("Coins: " + playerData.TemporaryCoins);
+            foreach (var hud in hudElements)
+            {
+                hud.Update();
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Texture2D rect = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-            rect.SetData(new Color[] { Color.White });
-            Rectangle hudRect = new Rectangle(10, 10, 220, 100);
-            spriteBatch.Draw(rect, hudRect, new Color(0, 0, 0, 150));
-
-            healthText.Draw(spriteBatch, new Vector2(100, 20));
-            ammoText.Draw(spriteBatch, new Vector2(100, 40));
-            shieldText.Draw(spriteBatch, new Vector2(100, 60));
-            coinText.Draw(spriteBatch, new Vector2(100, 80));
+            foreach (var hud in hudElements)
+            {
+                hud.Draw(spriteBatch);
+            }
         }
 
         public void HandleClick(Point clickLocation)
