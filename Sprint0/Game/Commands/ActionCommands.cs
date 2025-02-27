@@ -150,5 +150,17 @@ namespace Sprint0
                 }
             }
         }
+
+        public class AutoDestroyCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters["targetKey"] is string key &&
+                    parameters["gameManager"] is GameManager gm)
+                {
+                    gm.RemoveEntity(key);
+                }
+            }
+        }
     }
 }

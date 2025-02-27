@@ -6,6 +6,10 @@ namespace Sprint0
 {
     public class PushableBlock : BaseBlock, IObtuse, IPushable
     {
+        private Vector2 velocity;
+        private const float Friction = 0.9f;
+        private const float PushForce = 256f;
+
         public PushableBlock(ContentManager content, BlockSpriteKey spriteKey, float frameTime = 0.3f)
         {
             LoadBlockContent(content, spriteKey);
@@ -26,6 +30,29 @@ namespace Sprint0
                 default:
                     throw new System.ArgumentException($"Invalid BlockSpriteKey: {spriteKey}");
             }
+        }
+
+        public void Push(Vector2 direction)
+        {
+            direction.Normalize();
+            velocity = direction * PushForce;
+        }
+
+        public override void Update()
+        {
+            ApplyMovement();
+            base.Update();
+        }
+
+        private void ApplyMovement()
+        {
+            position += velocity * Globals.FRAMETIME;
+            velocity *= Friction;
+
+            if (velocity.Length() < 0.5f)
+                velocity = Vector2.Zero;
+
+            bounds.Location = position.ToPoint();
         }
     }
 }
