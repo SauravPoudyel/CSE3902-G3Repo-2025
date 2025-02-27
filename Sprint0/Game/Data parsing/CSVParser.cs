@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Numerics;
+using Microsoft.Xna.Framework.Content;
 
 namespace Sprint0
 {
@@ -9,12 +11,14 @@ namespace Sprint0
         public static List<Dictionary<string, string>> ParseFile(string filePath)
         {
             List<Dictionary<string, string>> rows = new List<Dictionary<string, string>>();
-            if (!File.Exists(filePath))
-                return rows;
+            if (!File.Exists(filePath)) {
+                Console.WriteLine($"File path does not exist: {filePath}");
+                return rows; }
 
             string[] lines = File.ReadAllLines(filePath);
-            if (lines.Length == 0)
-                return rows;
+            if (lines.Length == 0) {
+                Console.WriteLine($"Zero lines read: {filePath}");
+                return rows; }
 
             string[] headers = lines[0].Split(',');
 
@@ -72,6 +76,69 @@ namespace Sprint0
             string line = $"{data.PermanentHealth},{data.PermanentAmmo},{data.PermanentShield},{data.PermanentCoins}," +
                           $"{data.TemporaryHealth},{data.TemporaryAmmo},{data.TemporaryShield},{data.TemporaryCoins}";
             File.WriteAllText(filePath, header + Environment.NewLine + line);
+        }
+
+        public static Level ParseLevel(string filePath, ContentManager content)
+        {
+            Level level = new Level();
+            var rows = ParseFile(filePath);
+            Console.WriteLine($"Parsed {rows.Count} rows from CSV file: {filePath}");
+            for(int i=0; i<rows.Count; i++)
+            {
+                var currentRow = rows[i];
+                // retrieve and store current entity's x and y positions
+                float xPos = 0, yPos = 0; // default position if left blank in csv file
+                if (currentRow.ContainsKey("X") && float.TryParse(currentRow["X"], out xPos)) {}
+                if (currentRow.ContainsKey("Y") && float.TryParse(currentRow["Y"], out yPos)) {}
+                Vector2 position = new Vector2(xPos, yPos); 
+                // retrieve current entity's type
+                string temp;
+                if(currentRow.ContainsKey("Type")){
+                    switch(currentRow["Type"]) 
+                    {
+                    case "Player":
+                        level.AddPlayer(content, position);
+                        break;
+                    case "Enemy":
+                        MobType mobType = MobType.SmallEnemy; // default case if blank
+                        if(currentRow.ContainsKey("Subtype")) {
+                            switch(currentRow["Subtype"]) 
+                            {
+                                case "BossTank":
+                                    mobType = MobType.BossTank;
+                                    break;
+                                case "SmallEnemy":
+                                    mobType = MobType.SmallEnemy;
+                                    break;
+                                case "ExplodingTank":
+                                    mobType = MobType.ExplodingTank;
+                                    break;
+                                case "Turret":
+                                    mobType = MobType.Turret;
+                                    break;
+                                case "TurningTank":
+                                    mobType = MobType.TurningTank;
+                                    break;
+                                case "Plane":
+                                    mobType = MobType.Plane;
+                                    break;
+                            }
+                        }
+                        level.AddEnemy(content, mobType, position);
+                        break;
+                    case "Item":
+                        level.AddItem(content, position);
+                        break;
+                    case "Block":
+                        level.AddBlock(content, position);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                
+            }
+            return level;
         }
     }
 }

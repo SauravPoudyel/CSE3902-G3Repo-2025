@@ -80,8 +80,8 @@ namespace Sprint0
             InitializeTiles();
             InitializeEntities();
 
-            // Load persistent player data from CSV (located in Data\playerData.csv)
-            string playerDataFile = Path.Combine("Data", "playerData.csv");
+            // Load persistent player data from CSV (located in Data\playerDataFile.csv)
+            string playerDataFile = Path.Combine("Data", "playerDataFile.csv");
             playerData = PlayerData.LoadData(playerDataFile);
 
             // Create and load the player inventory HUD overlay (nonblocking)
