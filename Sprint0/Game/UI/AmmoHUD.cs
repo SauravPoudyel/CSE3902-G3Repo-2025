@@ -15,13 +15,13 @@ namespace Sprint0
         {
             this.icon = texture;
             playerData = Globals.PlayerData;
-            maxAmmo = playerData.PermanentAmmo;
-            currentAmmo = playerData.TemporaryAmmo;
+            maxAmmo = playerData.PermanentAmmoDefault;
+            currentAmmo = playerData.TemporaryAmmoDefault;
         }
         public void Update()
         {
             // Update ammo count based on player ammo
-            currentAmmo = playerData.TemporaryAmmo;
+            currentAmmo = playerData.TemporaryAmmoDefault;
         }
         public void Draw(SpriteBatch spriteBatch)
         {

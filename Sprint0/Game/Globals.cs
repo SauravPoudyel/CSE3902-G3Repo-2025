@@ -12,6 +12,7 @@ namespace Sprint0
         public static float FRAMETIME = 1f / 60f;
         public const float PLAYERFRAMETIME = 1f / 60f; // just so the slow powerup works
         private static PlayerData playerData;
+        public static SpriteFont FONT;
 
         public static PlayerData PlayerData
         {
