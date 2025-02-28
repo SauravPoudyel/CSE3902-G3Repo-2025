@@ -15,6 +15,8 @@ namespace Sprint0
         private bool hasSentDestroyCommand;
         private ContentManager content;
         public bool IsFinished { get; private set; }
+        public string effectType; 
+        public bool didDamage = false; 
 
         public Effect(ContentManager content, Vector2 spawnPosition, string entityKey, string effectType)
         {
@@ -24,6 +26,7 @@ namespace Sprint0
             this.hasSentDestroyCommand = false;
             this.timer = 0f;
             this.IsFinished = false;
+            this.effectType = effectType; 
 
             // Determine starting Y coordinate based on the effect type.
             int rowY = 0;
@@ -70,7 +73,7 @@ namespace Sprint0
 
             timer += Globals.FRAMETIME;
             effectSprite.Update();
-
+            bounds = new Rectangle((int)position.X, (int)position.Y, 128, 128);
             // Once the animation has played completely, enqueue a destroy command.
             if (timer >= effectDuration)
             {

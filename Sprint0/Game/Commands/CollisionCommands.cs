@@ -155,5 +155,20 @@ namespace Sprint0
             }
         }
 
+        public class CollisionHurtCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
+                    parameters.ContainsKey("target") && parameters["target"] is Effect effect)
+                {
+                    if(effect.effectType.Equals("explosion") && !effect.didDamage) {
+                        player.Damage(50); 
+                        effect.didDamage = true; 
+                    }
+                }
+            }
+        }
+
     }
 }

@@ -83,7 +83,7 @@ namespace Sprint0
             InitializeEntities();
 
             // Load persistent player data from CSV (located in Data\playerData.csv)
-            string playerDataFile = Path.Combine("Data", "playerData.csv");
+            string playerDataFile = "C:\\Users\\saura\\OneDrive - The Ohio State University\\Documents\\OHIO STATE DOCS\\SP 2025\\CSE3902-G3Repo-2025\\Sprint0\\Data\\playerDataFile.csv";
             playerData = PlayerData.LoadData(playerDataFile);
 
             // Create and load the player inventory HUD overlay (nonblocking)

@@ -47,6 +47,7 @@ namespace Sprint0
                 {"CollisionPush", new CollisionCommands.CollisionPushCommand()},
                 {"CollisionStop", new CollisionCommands.CollisionStopCommand()},
                 {"CollisionPickUp", new CollisionCommands.CollisionPickUpCommand()},
+                {"CollisionHurt", new CollisionCommands.CollisionHurtCommand()},
                 {"CollisionProjectileDestroy", new CollisionCommands.CollisionProjectileDestroy()},
                 {"DestroyFlammableCommand", new CollisionCommands.DestroyFlammableCommand()},
                 {"AutoDestroy", new ActionCommands.AutoDestroyCommand()}

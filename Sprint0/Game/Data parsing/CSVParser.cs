@@ -9,8 +9,10 @@ namespace Sprint0
         // Reads a CSV file expecting a header row and then two data rows (one for Permanent, one for Temporary)
         public static PlayerData ParsePlayerData(string filePath)
         {
-            if (!File.Exists(filePath))
+            if (!File.Exists(filePath)) {
+                System.Console.WriteLine("hello");
                 return new PlayerData();
+            }
 
             string[] lines = File.ReadAllLines(filePath);
             if (lines.Length < 3)
