@@ -20,9 +20,14 @@ public class LevelManager
         level.AddItem(content, new Vector2(700, 700)); */
 
         // string filePath = Path.Combine("Sprint0", "Data", "LevelParseTest1.csv");
-        // string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sprint0", "Data", "LevelParseTest1.csv");
-        string filePath = content.RootDirectory + "\\LevelParseTest1.csv";
-        level = CSVParser.ParseLevel(filePath, content);
+        string projectDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\"));
+        string filePath2 = Path.Combine(projectDirectory, "Content\\LevelParseTest1.csv");
+        // string filePath = Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath, "Data", "LevelParseTest1.csv");
+        
+        // string filePath = content.RootDirectory + "\\LevelParseTest1.csv";
+        // C:\Users\manzl\Documents\GitHub\CSE3902-G3Repo-2025\Sprint0\Content\LevelParseTest1.csv
+        // string filePath = "GitHub\\CSE3902-G3Repo-2025\\Sprint0\\Content\\LevelParseTest1.csv";
+        level = CSVParser.ParseLevel(filePath2, content);
     }
     public Dictionary<string, Entity> LoadLevelEntities() {
         return level.LevelEntities;
