@@ -151,7 +151,10 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters["target"] is FlammableBlock block)
+                {
                     block.Destroy();
+                    block.Ignite();
+                }
             }
         }
 
