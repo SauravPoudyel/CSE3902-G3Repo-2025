@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 
 namespace Sprint0
@@ -11,6 +12,7 @@ namespace Sprint0
         public static float FRAMETIME = 1f / 60f;
         public const float PLAYERFRAMETIME = 1f / 60f; // just so the slow powerup works
         private static PlayerData playerData;
+        public static SpriteFont FONT;
 
         public static PlayerData PlayerData
         {
@@ -30,6 +32,11 @@ namespace Sprint0
 
             NULLSPRITE_A = new AnimatedSprite(0.1f);
             NULLSPRITE_A.LoadContent(content, "TDTanksAllSprites", 129, 0, 1, 1, 1);
+        }
+
+        public static void LoadGlobalFonts(ContentManager content)
+        {
+            FONT = content.Load<SpriteFont>("Arial");
         }
 
         public static void LoadPlayerData()
