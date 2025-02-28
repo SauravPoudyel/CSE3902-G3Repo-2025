@@ -1,11 +1,43 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Numerics;
+using Microsoft.Xna.Framework.Content;
 
 namespace Sprint0
 {
     public static class CSVParser
     {
+        public static List<Dictionary<string, string>> ParseFile(string filePath)
+        {
+            List<Dictionary<string, string>> rows = new List<Dictionary<string, string>>();
+            if (!File.Exists(filePath)) {
+                Console.WriteLine($"File path does not exist: {filePath}");
+                return rows; }
+
+            string[] lines = File.ReadAllLines(filePath);
+            if (lines.Length == 0) {
+                Console.WriteLine($"Zero lines read: {filePath}");
+                return rows; }
+
+            string[] headers = lines[0].Split(',');
+
+            for (int i = 1; i < lines.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(lines[i]))
+                    continue;
+
+                string[] columns = lines[i].Split(',');
+                if (columns.Length != headers.Length)
+                    continue;
+
+                Dictionary<string, string> row = new Dictionary<string, string>();
+                for (int j = 0; j < headers.Length; j++)
+                    row[headers[j].Trim()] = columns[j].Trim();
+                rows.Add(row);
+            }
+            return rows;
+        }
         // Reads a CSV file expecting a header row and then two data rows (one for Permanent, one for Temporary)
         public static PlayerData ParsePlayerData(string filePath)
         {
@@ -101,6 +133,69 @@ namespace Sprint0
             string permanentLine = $"Permanent,{data.PermanentHealth},{data.PermanentAmmoDefault},{data.PermanentAmmoShotgun},{data.PermanentAmmoSniper},{data.PermanentAmmoRocket},{data.PermanentAmmoLaser},{data.PermanentAmmoMine},{data.PermanentShield},{data.PermanentCoins}";
             string temporaryLine = $"Temporary,{data.TemporaryHealth},{data.TemporaryAmmoDefault},{data.TemporaryAmmoShotgun},{data.TemporaryAmmoSniper},{data.TemporaryAmmoRocket},{data.TemporaryAmmoLaser},{data.TemporaryAmmoMine},{data.TemporaryShield},{data.TemporaryCoins}";
             File.WriteAllText(filePath, header + Environment.NewLine + permanentLine + Environment.NewLine + temporaryLine);
+        }
+
+        public static Level ParseLevel(string filePath, ContentManager content)
+        {
+            Level level = new Level();
+            var rows = ParseFile(filePath);
+            Console.WriteLine($"Parsed {rows.Count} rows from CSV file: {filePath}");
+            for(int i=0; i<rows.Count; i++)
+            {
+                var currentRow = rows[i];
+                // retrieve and store current entity's x and y positions
+                float xPos = 0, yPos = 0; // default position if left blank in csv file
+                if (currentRow.ContainsKey("X") && float.TryParse(currentRow["X"], out xPos)) {}
+                if (currentRow.ContainsKey("Y") && float.TryParse(currentRow["Y"], out yPos)) {}
+                Vector2 position = new Vector2(xPos, yPos); 
+                // retrieve current entity's type
+                string temp;
+                if(currentRow.ContainsKey("Type")){
+                    switch(currentRow["Type"]) 
+                    {
+                    case "Player":
+                        level.AddPlayer(content, position);
+                        break;
+                    case "Enemy":
+                        MobType mobType = MobType.SmallEnemy; // default case if blank
+                        if(currentRow.ContainsKey("Subtype")) {
+                            switch(currentRow["Subtype"]) 
+                            {
+                                case "BossTank":
+                                    mobType = MobType.BossTank;
+                                    break;
+                                case "SmallEnemy":
+                                    mobType = MobType.SmallEnemy;
+                                    break;
+                                case "ExplodingTank":
+                                    mobType = MobType.ExplodingTank;
+                                    break;
+                                case "Turret":
+                                    mobType = MobType.Turret;
+                                    break;
+                                case "TurningTank":
+                                    mobType = MobType.TurningTank;
+                                    break;
+                                case "Plane":
+                                    mobType = MobType.Plane;
+                                    break;
+                            }
+                        }
+                        level.AddEnemy(content, mobType, position);
+                        break;
+                    case "Item":
+                        level.AddItem(content, position);
+                        break;
+                    case "Block":
+                        level.AddBlock(content, position);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                
+            }
+            return level;
         }
     }
 }
