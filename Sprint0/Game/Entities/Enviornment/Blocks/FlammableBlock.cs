@@ -9,6 +9,10 @@ namespace Sprint0
     {
         public bool IsDestroyed { get; private set; }
 
+        public bool IsIgnited { get; private set; }
+        private string _entityKey;
+        public void SetEntityKey(string key) => _entityKey = key;
+
         public FlammableBlock(ContentManager content, BlockSpriteKey spriteKey, float frameTime = 0.3f)
         {
             LoadBlockContent(content, spriteKey);
@@ -22,7 +26,7 @@ namespace Sprint0
             var effectParams = new Dictionary<string, object>
             {
                 { "spawnPosition", position },
-                { "effectType", "explosion" }
+                { "effectType", "explosion" },
             };
             commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
 
@@ -60,7 +64,20 @@ namespace Sprint0
 
         public void Ignite()
         {
-            // Ignite logic (spawn fire, etc.)
+            if (IsIgnited || string.IsNullOrEmpty(_entityKey)) return;
+            IsIgnited = true;
+
+            var effectParams = new Dictionary<string, object>
+            {
+                { "spawnPosition", position },
+                { "effectType", "fire" },
+            };
+            commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
+
+            commandQueue.Enqueue(new CommandRequest("DestroyEntity", new Dictionary<string, object>
+            {
+                { "destroyEntity", _entityKey }
+            }));
         }
     }
 }

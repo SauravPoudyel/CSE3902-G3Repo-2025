@@ -147,7 +147,9 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("target") && parameters["target"] is FlammableBlock block)
+                {
                     block.Destroy();
+                }
             }
         }
     }
