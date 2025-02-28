@@ -26,6 +26,7 @@ namespace Sprint0
         protected Vector2 lastKnownPlayerPosition;
         protected float aggressionRange;
 
+
         public Mob(ContentManager content) : base(content)
         {
             firingTimer = 0f;

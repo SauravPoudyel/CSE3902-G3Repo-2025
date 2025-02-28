@@ -2,21 +2,25 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Sprint0
 {
     public class Projectile : Entity
     {
-        private float colorChangeTimer;
-        private int colorIndex;
-        private Vector2 startPosition;
+        protected float colorChangeTimer;
+        protected int colorIndex;
+        protected Vector2 startPosition;
         private bool startPositionSet; 
-        protected string entityKey;
+        public string entityKey;
         protected Color[] colors;
         protected float maxDistance;
         protected float baseSpeed;
+        public int damage = 20; 
+        public IEntity Owner { get; private set; }
+        public bool canReflect;
 
-        public Projectile(ContentManager content, string entityKey)
+        public Projectile(ContentManager content, string entityKey, Character owner)
         {
             AddSprite("Default", new StaticSprite());
             sprites["Default"].LoadContent(content, "TDTanksAllSprites", 120, 1040, 20, 20, 1); 
@@ -27,6 +31,7 @@ namespace Sprint0
             colorChangeTimer = 200f;
             maxDistance = 600f;  
             colors = new Color[] { Color.Red, Color.Orange };
+            Owner = owner;
             
             this.entityKey = entityKey;
         }
@@ -45,6 +50,15 @@ namespace Sprint0
             return baseSpeed; 
         }
 
+        public virtual void OnDeath()
+        {
+            var destroyParams = new Dictionary<string, object>
+                {
+                    {"destroyEntity", entityKey}
+                };
+                commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
+        }
+
         public override void Update()
         {
             sprite.Update();
@@ -60,12 +74,9 @@ namespace Sprint0
             float distanceTraveled = Vector2.Distance(startPosition, position);
             if (distanceTraveled > maxDistance)
             {
-                var destroyParams = new Dictionary<string, object>
-                {
-                    {"destroyEntity", entityKey}
-                };
-                commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
+                OnDeath(); 
             }
+            bounds = new Rectangle((int)position.X, (int)position.Y, 20, 20);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

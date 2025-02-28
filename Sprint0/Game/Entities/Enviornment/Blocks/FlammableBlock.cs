@@ -1,17 +1,37 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Sprint0
 {
     public class FlammableBlock : BaseBlock, IObtuse, IFlammable, IDestructible
     {
         public bool IsDestroyed { get; private set; }
+        private string _entityKey;
+        public void SetEntityKey(string key) => _entityKey = key;
 
         public FlammableBlock(ContentManager content, BlockSpriteKey spriteKey, float frameTime = 0.3f)
         {
             LoadBlockContent(content, spriteKey);
-            SetFrameTime(frameTime);
+        }
+
+        public void Destroy()
+        {
+            if (IsDestroyed || string.IsNullOrEmpty(_entityKey)) return;
+            IsDestroyed = true;
+
+            var effectParams = new Dictionary<string, object>
+            {
+                { "spawnPosition", position },
+                { "effectType", "explosion" }
+            };
+            commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
+
+            commandQueue.Enqueue(new CommandRequest("DestroyEntity", new Dictionary<string, object>
+            {
+                { "destroyEntity", _entityKey }
+            }));
         }
 
         public override void LoadBlockContent(ContentManager content, BlockSpriteKey spriteKey)
@@ -38,11 +58,6 @@ namespace Sprint0
                 default:
                     throw new System.ArgumentException($"Invalid BlockSpriteKey: {spriteKey}");
             }
-        }
-
-        public void Destroy()
-        {
-            IsDestroyed = true;
         }
 
         public void Ignite()

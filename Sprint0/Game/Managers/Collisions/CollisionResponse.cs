@@ -11,15 +11,27 @@ namespace Sprint0
 
         static CollisionResponse()
         {
+
             responseMap = new Dictionary<Tuple<Type, Type>, string>()
             {
+                // Stop Interactions
                 { new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(Player), typeof(RigidBlock)), "CollisionStop" },
-                { new Tuple<Type, Type>(typeof(Player), typeof(PushableBlock)), "CollisionPush" },
-                { new Tuple<Type, Type>(typeof(Player), typeof(FlammableBlock)), "CollisionPush" },
                 { new Tuple<Type, Type>(typeof(Player), typeof(Mob)), "CollisionStop" },
+                { new Tuple<Type, Type>(typeof(PushableBlock), typeof(RigidBlock)), "CollisionStop" },
+                { new Tuple<Type, Type>(typeof(Mob), typeof(RigidBlock)), "CollisionStop" },
+
+                { new Tuple<Type, Type>(typeof(Player), typeof(PushableBlock)), "CollisionPush" },
+
+                { new Tuple<Type, Type>(typeof(Projectile), typeof(FlammableBlock)), "DestroyFlammableCommand" },
+
+
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(Blocks)), "CollisionReflect" },
-                { new Tuple<Type, Type>(typeof(Player), typeof(PickupItem)), "CollisionPickUp" }
+                { new Tuple<Type, Type>(typeof(Projectile), typeof(RigidBlock)), "CollisionProjectileDestroy" },
+                {new Tuple<Type, Type>(typeof(Projectile), typeof(Mob)), "CollisionProjectileDestroy"},
+
+                { new Tuple<Type, Type>(typeof(Player), typeof(PickupItem)), "CollisionPickUp" },
+
             };
         }
 

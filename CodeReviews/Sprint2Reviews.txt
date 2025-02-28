@@ -1,0 +1,40 @@
+Code review assignments for Sprint 2
+Payton: Review the Keyboard and Mouse controller, the block class, and the pickup item class
+Harry: Review the Projectile class and its subclasses (rocket, sniper, shotgun) and Action Commands
+Leo: Review the Player, Mob, and Entity classes
+Saurav: Review the graphics code (static sprites, animated sprites, text sprites)
+Alex: Review the main game script, game manager, and sprite manager
+Daoping: Review the Game Commands, Movement Commands, Command Request, and ICommands interface
+
+Payton's Comments:
+Keyboard & Mouse - Will likely want to change having multiple buttons, each for a projectile. To having one button to shoot, and a way to cycle or change projectile type. Will eventually need to change the key mappings to not cycle through blocks but that’s closer to the end of the project
+
+Block - BaseBlock feels unnecessary. Can we take its methods and move them to Blocks or BlockFactory. Can IObtuse be a parameter we pass in, instead of an interface? All three block types implement IObtuse currently.  Also I feel like for every block currently, the line of sight is already blocked, so maybe we make it a default thing? Unless we want to make a block see through. 
+
+Pickup Item - I don’t think anything needs to be changed. Needs to be completed still, but the file is set up well to be able to easily add the rest of the item logic. Plus the effect factory looks good to be able to reset the item abilities.
+
+Harry's Comments:
+Projectile - The logic is pretty solid overall, the color shading is just kinda weirdly implemented and may be better used as a dictionary. Additionally, the Projectile ownership system might need to be reworked. 
+
+Action Commands - The system for create projectile and crete entity are kinda flawed in that the ownership system is a little unintuitive
+
+Leo's Comments:
+Player - the fire projectile method is kinda hard to understand and is unintuitive. 
+
+Mob - The Update method is very overloaded and should be simplified if possible
+
+Entity - Pretty good overall, but there's a method called predict future bomb that's incomplete and the bomb class may not work correctly
+
+
+Saurav's Comments:
+Static Sprites - Kinda redundant, it's easier to implement a static sprite as an animated sprite with only one frame. Should integrate into one universal sprite class which helps with inheritance. 
+
+Animated Sprite - Extract Frames isn't always very useful, it only works when all the frames are in one line. It's easier to manually add each frame since it doesn't take too long. Also the implementation of damaged sprites should be changed to just be a color filter layered oevr top instead of a different sprite. Also the Draw function is pretty overloaded and should be pared down, has too many parameters. 
+
+Text Sprite - Outdated and should be made more useful. Should implement new fonts so that it can beused later. 
+
+Alex's Comments:
+
+
+Daoping's Comments:
+Commands for moveable blocks are kinda complicated and should be made easier. The command has to be used across multiple classes to make sure it works and it's easy to forget what's already been done. 

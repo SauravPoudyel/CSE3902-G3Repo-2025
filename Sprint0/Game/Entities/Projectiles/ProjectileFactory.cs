@@ -32,14 +32,14 @@ namespace Sprint0
             content = cm;
         }
 
-        public static void CalculateProjectiles(string projectileType, Vector2 spawnPosition, float cannonRotation, float spreadAngle = 0f, int numberOfProjectiles = 1, float speedModifer = 0)
+        public static void CalculateProjectiles(Character owner, string projectileType, Vector2 spawnPosition, float cannonRotation, float spreadAngle = 0f, int numberOfProjectiles = 1, float speedModifer = 0)
         {
             projectileDataList.Clear();
             float startAngle = cannonRotation - ((numberOfProjectiles - 1) * spreadAngle / 2f);
             for (int i = 0; i < numberOfProjectiles; i++)
             {
                 string entityName = projectileType + "_" + projectileCounter++;
-                Projectile projectile = InstantiateProjectile(projectileType, entityName);
+                Projectile projectile = InstantiateProjectile(projectileType, entityName, owner);
                 float currentAngle = startAngle + i * spreadAngle;
  
                 // Use (0,1) as the base vector so that when currentAngle is 0, the projectile moves in the same direction as the tip offset (which is (0,30) normalized).
@@ -50,7 +50,7 @@ namespace Sprint0
             }
         }
 
-        public static void SpawnProjectiles(GameManager gameManager)
+        public static void SpawnProjectiles(GameManager gameManager, Character owner)
         {
             foreach (var data in projectileDataList)
             {
@@ -60,23 +60,26 @@ namespace Sprint0
                     { "create", data.ProjectileVar },
                     { "entityName", data.EntityName },
                     { "position", data.SpawnPosition },
-                    { "velocity", data.Velocity }
+                    { "velocity", data.Velocity }, 
+                    { "owner", owner }
                 };
                 gameManager.eventManager.ExecuteCommand("CreateEntity", parameters);
             }
             projectileDataList.Clear();
         }
 
-        private static Projectile InstantiateProjectile(string projectileType, string entityName)
+        private static Projectile InstantiateProjectile(string projectileType, string entityName, Character owner)
         {
             if (projectileType == "Sniper")
-                return new SniperProjectile(content, entityName);
+                return new SniperProjectile(content, entityName, owner);
             else if (projectileType == "Rocket")
-                return new RocketProjectile(content, entityName);
+                return new RocketProjectile(content, entityName, owner);
             else if (projectileType == "Bomb")
-                return new BombProjectile(content, entityName);
+                return new BombProjectile(content, entityName, owner);
+            else if (projectileType == "Teleporter")
+                return new TeleportProjectile(content, entityName, owner);
             else
-                return new Projectile(content, entityName);
+                return new Projectile(content, entityName, owner);
         }
     }
 }

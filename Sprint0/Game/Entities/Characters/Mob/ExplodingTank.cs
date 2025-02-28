@@ -34,7 +34,7 @@ namespace Sprint0
 
             var cannonSprite = new AnimatedSprite(0.3f);
             cannonSprite.LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);
-            cannon = new Cannon(cannonSprite, this, new Vector2(14, 10), 30f,
+            cannon = new Cannon(content, cannonSprite, this, new Vector2(14, 10), 30f,
                                 0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
         }
 
@@ -69,7 +69,7 @@ namespace Sprint0
                 inExplosionState = true;
                 explosionTimer = 0f;
                 explosionPhaseIndex = 0;
-                cannon.SetSprite(Globals.NULLSPRITE);
+                cannon.SetSprite(Globals.NULLSPRITE_S);
                 SetSprite(LoadExplosionSprite(explosionPhaseIndex));
                 velocity = Vector2.Zero;
             }

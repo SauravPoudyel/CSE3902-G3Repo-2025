@@ -30,7 +30,9 @@ namespace Sprint0
         
         public override void Update()
         {
+            prevPosition = position; 
             animatedSprite?.Update();
+            position += velocity * Globals.FRAMETIME;  
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -7,9 +7,9 @@ namespace Sprint0
     {
         public const int SCREENWIDTH = 1920;
         public const int SCREENHEIGHT = 1080;
-        public static ISprite NULLSPRITE;
-        public const float FRAMETIME = 1f / 60f;
-
+        public static ISprite NULLSPRITE_S, NULLSPRITE_A;
+        public static float FRAMETIME = 1f / 60f;
+        public const float PLAYERFRAMETIME = 1f / 60f; // just so the slow powerup works
         private static PlayerData playerData;
 
         public static PlayerData PlayerData
@@ -25,8 +25,11 @@ namespace Sprint0
 
         public static void LoadGlobalSprites(ContentManager content)
         {
-            NULLSPRITE = new StaticSprite();
-            NULLSPRITE.LoadContent(content, "TDTanksAllSprites", 129, 0, 1, 1, 1);
+            NULLSPRITE_S = new StaticSprite();
+            NULLSPRITE_S.LoadContent(content, "TDTanksAllSprites", 129, 0, 1, 1, 1);
+
+            NULLSPRITE_A = new AnimatedSprite(0.1f);
+            NULLSPRITE_A.LoadContent(content, "TDTanksAllSprites", 129, 0, 1, 1, 1);
         }
 
         public static void LoadPlayerData()

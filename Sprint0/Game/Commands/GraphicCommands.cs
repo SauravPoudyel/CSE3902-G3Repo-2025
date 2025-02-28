@@ -124,17 +124,17 @@ namespace Sprint0
             }
         }
 
-        public class SpawnExplosionCommand : ICommand
+        public class SpawnEffectCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
                     parameters.ContainsKey("spawnPosition") && parameters["spawnPosition"] is Vector2 spawnPosition &&
-                    parameters.ContainsKey("phaseInterval") && parameters["phaseInterval"] is float phaseInterval)
+                    parameters.ContainsKey("effectType") && parameters["effectType"] is string effectType)
                 {
-                    string explosionKey = "explosion_" + Guid.NewGuid().ToString();
-                    Explosion explosion = new Explosion(gameManager.GetContent(), spawnPosition, phaseInterval, explosionKey);
-                    gameManager.GetEntities().Add(explosionKey, explosion);
+                    string effectKey = "effect_" + Guid.NewGuid().ToString();
+                    Effect effect = new Effect(gameManager.GetContent(), spawnPosition, effectKey, effectType);
+                    gameManager.GetEntities().Add(effectKey, effect);
                 }
             }
         }

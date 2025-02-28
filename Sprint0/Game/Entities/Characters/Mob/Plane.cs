@@ -26,7 +26,7 @@ namespace Sprint0
             var planeBodySprite = new AnimatedSprite(0.3f);
             planeBodySprite.LoadContent(content, "TDTowerDefenseSprites", 2183, 1411, 135, 135, 1);
             SetSprite(planeBodySprite);
-            cannon = new Cannon(Globals.NULLSPRITE, this, new Vector2(0, 0), 30f, 0f, 0f, 0f, 0f);
+            cannon = new Cannon(content, Globals.NULLSPRITE_S, this, new Vector2(0, 0), 30f, 0f, 0f, 0f, 0f);
             velocity = Vector2.Zero;
             bodyRotation = 0f;
         }
