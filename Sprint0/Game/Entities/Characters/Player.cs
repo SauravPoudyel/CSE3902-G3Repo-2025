@@ -15,13 +15,13 @@ namespace Sprint0
         public float baseShootInterval = 1.2f;    
         public float currentShootInterval;   
         ISprite effectSprite = new StaticSprite(); 
-        public Dictionary<string, float> EffectTimers = new Dictionary<string, float>();
         public float rotationInput = 0f;
         private float timeSinceLastShot = 0f;
         public static Player Instance { get; private set; }
 
         public Player(ContentManager content) : base(content)
         {
+            EntityKey = "player"; 
             Instance = this;
             currentShootInterval = baseShootInterval;
 
@@ -39,7 +39,7 @@ namespace Sprint0
 
             ISprite cannonSprite = new AnimatedSprite(0.3f);
             cannonSprite.LoadContent(content, "TDTanksAllSprites", 1060, 837, 24, 60, 1);
-            cannon = new Cannon(content, cannonSprite, this, new Vector2(12, 5), 50f,
+            cannon = new Cannon(content, cannonSprite, this, new Vector2(12, 5), 50f, new Vector2(12, 60),
                     0f, MathHelper.ToRadians(20));
 
             ISprite cannonSpriteInvis = new AnimatedSprite(0.3f);

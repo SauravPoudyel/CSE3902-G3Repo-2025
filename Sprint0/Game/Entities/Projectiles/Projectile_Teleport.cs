@@ -65,7 +65,7 @@ namespace Sprint0
             // Enqueue the command to destroy this projectile.
             var destroyParams = new Dictionary<string, object>
             {
-                { "destroyEntity", entityKey }
+                { "destroyEntity", EntityKey }
             };
             commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
         }

@@ -46,7 +46,7 @@ namespace Sprint0
             commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
             var destroyParams = new Dictionary<string, object>
             {
-                {"destroyEntity", entityKey}
+                {"destroyEntity", EntityKey}
             };
             commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
         }

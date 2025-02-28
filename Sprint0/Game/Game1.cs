@@ -30,7 +30,6 @@ namespace Sprint0
             GameManager = new GameManager(this);
             keyboardController = new KeyboardController();
             mouseController = new MouseController();
-            // (Note: The previous ShowStartMenu command call is now handled by our StartMenu screen.)
             base.Initialize();
         }
 

@@ -110,7 +110,7 @@ namespace Sprint0
                     gameManager.GetEntities()[entityName].SetPosition(position);
                     gameManager.GetEntities()[entityName].SetVelocity(velocity);
 
-                    gameManager.GetEntities()[entityName].SetOwner(owner);
+                    gameManager.GetEntities()[entityName].Owner = owner;
                 }
             }
         }

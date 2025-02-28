@@ -8,8 +8,6 @@ namespace Sprint0
     public class FlammableBlock : BaseBlock, IObtuse, IFlammable, IDestructible
     {
         public bool IsDestroyed { get; private set; }
-        private string _entityKey;
-        public void SetEntityKey(string key) => _entityKey = key;
 
         public FlammableBlock(ContentManager content, BlockSpriteKey spriteKey, float frameTime = 0.3f)
         {
@@ -18,7 +16,7 @@ namespace Sprint0
 
         public void Destroy()
         {
-            if (IsDestroyed || string.IsNullOrEmpty(_entityKey)) return;
+            if (IsDestroyed || string.IsNullOrEmpty(EntityKey)) return;
             IsDestroyed = true;
 
             var effectParams = new Dictionary<string, object>
@@ -30,7 +28,7 @@ namespace Sprint0
 
             commandQueue.Enqueue(new CommandRequest("DestroyEntity", new Dictionary<string, object>
             {
-                { "destroyEntity", _entityKey }
+                { "destroyEntity", EntityKey }
             }));
         }
 
