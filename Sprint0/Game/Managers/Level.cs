@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 public class Level
 {
+    public int tileSize = 120;
     private bool completed; // boolean to track whether level is completed
+    private List<Tile> tilesList;
     private List<Entity> entitiesList;
     private Dictionary<string, Entity> entities;
     private Player player;
@@ -15,6 +17,8 @@ public class Level
     private List<Blocks> blocksList;
     public Level()
     {
+        completed = false;
+        tilesList = new List<Tile>();
         entitiesList = new List<Entity>();
         entities = new Dictionary<string, Entity>();
         itemsList = new List<PickupItem>();
@@ -25,6 +29,14 @@ public class Level
     {
         get => entities;
     }
+    public List<Tile> LevelTiles
+    {
+        get => tilesList;
+    }
+    public void AddTile(ContentManager content, Tile.TileType tileType, Vector2 position)
+        {
+            tilesList.Add(new Tile(content, tileType, (position * tileSize)+(new Vector2(tileSize/2, tileSize/2))));
+        }
     public void AddPlayer (ContentManager content, Vector2 position) {
         player = new Player(content);
         player.SetPosition(position);

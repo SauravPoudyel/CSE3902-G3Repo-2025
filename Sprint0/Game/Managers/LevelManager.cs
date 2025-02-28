@@ -14,10 +14,17 @@ public class LevelManager
     }
     public void LoadContent(ContentManager content) {
         string projectDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\"));
-        string filePath2 = Path.Combine(projectDirectory, "Data\\LevelParseTest1.csv");
-        level = CSVParser.ParseLevel(filePath2, content);
+        string entityFilePath = Path.Combine(projectDirectory, "Data\\LevelParseTest1.csv");
+        string tilesFilePath = Path.Combine(projectDirectory, "Data\\LevelTilesParseTest1.csv");
+        level = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
     }
+    
     public Dictionary<string, Entity> LoadLevelEntities() {
         return level.LevelEntities;
+    }
+
+    public List<Tile> LoadLevelTiles() {
+
+        return level.LevelTiles;
     }
 }

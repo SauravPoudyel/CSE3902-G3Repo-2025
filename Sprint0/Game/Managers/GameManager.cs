@@ -102,7 +102,7 @@ namespace Sprint0
 
         private void InitializeTiles()
         {
-            int tileSize = 128;
+            /* int tileSize = 128;
             int rows = (Globals.SCREENHEIGHT / tileSize) + 1;
             int cols = (Globals.SCREENWIDTH / tileSize) + 1;
 
@@ -113,7 +113,9 @@ namespace Sprint0
                     Tile.TileType type = Tile.TileType.Grass;
                     tiles.Add(new Tile(content, type, new Vector2(x * tileSize, y * tileSize)));
                 }
-            }
+            } */
+            levelManager.LoadContent(content);
+            tiles = levelManager.LoadLevelTiles();
         }
 
         private void InitializeEntities()
