@@ -40,8 +40,8 @@ namespace Sprint0
 
         public override void Update()
         {
-            ApplyMovement();
             base.Update();
+            ApplyMovement();
         }
 
         private void ApplyMovement()

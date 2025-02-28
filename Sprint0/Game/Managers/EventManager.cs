@@ -30,7 +30,7 @@ namespace Sprint0
                 {"CycleEnemyPrev", new GraphicCommands.CycleEnemyPrevCommand()},
                 {"CycleEnemyNext", new GraphicCommands.CycleEnemyNextCommand()},
                 {"UpdateCannon", new GraphicCommands.UpdateCannonCommand()},
-                {"SpawnExplosion", new GraphicCommands.SpawnExplosionCommand()},
+                {"SpawnEffect", new GraphicCommands.SpawnEffectCommand()},
 
                 {"Move", new MovementCommands.MoveCommand()},
                 {"MoveTo", new MovementCommands.MoveCommand()},
@@ -47,7 +47,7 @@ namespace Sprint0
                 {"CollisionPush", new CollisionCommands.CollisionPushCommand()},
                 {"CollisionStop", new CollisionCommands.CollisionStopCommand()},
                 {"CollisionPickUp", new CollisionCommands.CollisionPickUpCommand()},
-                {"CollisionProjectileToMob", new CollisionCommands.CollisionProjectileToMobCommand()},
+                {"CollisionProjectileDestroy", new CollisionCommands.CollisionProjectileDestroy()},
                 {"DestroyFlammableCommand", new CollisionCommands.DestroyFlammableCommand()},
                 {"AutoDestroy", new ActionCommands.AutoDestroyCommand()}
 

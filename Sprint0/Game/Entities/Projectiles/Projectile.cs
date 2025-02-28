@@ -8,9 +8,9 @@ namespace Sprint0
 {
     public class Projectile : Entity
     {
-        private float colorChangeTimer;
-        private int colorIndex;
-        private Vector2 startPosition;
+        protected float colorChangeTimer;
+        protected int colorIndex;
+        protected Vector2 startPosition;
         private bool startPositionSet; 
         public string entityKey;
         protected Color[] colors;
@@ -50,6 +50,15 @@ namespace Sprint0
             return baseSpeed; 
         }
 
+        public virtual void OnDeath()
+        {
+            var destroyParams = new Dictionary<string, object>
+                {
+                    {"destroyEntity", entityKey}
+                };
+                commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
+        }
+
         public override void Update()
         {
             sprite.Update();
@@ -65,11 +74,7 @@ namespace Sprint0
             float distanceTraveled = Vector2.Distance(startPosition, position);
             if (distanceTraveled > maxDistance)
             {
-                var destroyParams = new Dictionary<string, object>
-                {
-                    {"destroyEntity", entityKey}
-                };
-                commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
+                OnDeath(); 
             }
             bounds = new Rectangle((int)position.X, (int)position.Y, 20, 20);
         }

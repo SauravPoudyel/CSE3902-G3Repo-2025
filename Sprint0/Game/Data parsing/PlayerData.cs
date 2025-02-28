@@ -6,13 +6,23 @@ namespace Sprint0
     {
         // Permanent data: modified by permanent powerups; persists across deaths.
         public int PermanentHealth { get; set; } = 100;
-        public int PermanentAmmo { get; set; } = 50;
+        public int PermanentAmmoDefault { get; set; } = 50;
+        public int PermanentAmmoShotgun { get; set; } = 10;
+        public int PermanentAmmoSniper { get; set; } = 5;
+        public int PermanentAmmoRocket { get; set; } = 5;
+        public int PermanentAmmoLaser { get; set; } = 20;
+        public int PermanentAmmoMine { get; set; } = 5;
         public int PermanentShield { get; set; } = 25;
         public int PermanentCoins { get; set; } = 0;
 
         // Temporary data: resets on death or can be modified by temporary powerups.
         public int TemporaryHealth { get; set; } = 100;
-        public int TemporaryAmmo { get; set; } = 50;
+        public int TemporaryAmmoDefault { get; set; } = 50;
+        public int TemporaryAmmoShotgun { get; set; } = 10;
+        public int TemporaryAmmoSniper { get; set; } = 5;
+        public int TemporaryAmmoRocket { get; set; } = 5;
+        public int TemporaryAmmoLaser { get; set; } = 20;
+        public int TemporaryAmmoMine { get; set; } = 5;
         public int TemporaryShield { get; set; } = 25;
         public int TemporaryCoins { get; set; } = 0;
 
@@ -21,7 +31,12 @@ namespace Sprint0
         public void ResetTemporaryData()
         {
             TemporaryHealth = PermanentHealth;
-            TemporaryAmmo = PermanentAmmo;
+            TemporaryAmmoDefault = PermanentAmmoDefault;
+            TemporaryAmmoShotgun = PermanentAmmoShotgun;
+            TemporaryAmmoSniper = PermanentAmmoSniper;
+            TemporaryAmmoRocket = PermanentAmmoRocket;
+            TemporaryAmmoLaser = PermanentAmmoLaser;
+            TemporaryAmmoMine = PermanentAmmoMine;
             TemporaryShield = PermanentShield;
             TemporaryCoins = 0; // Or keep coins permanently
         }

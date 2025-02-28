@@ -54,7 +54,9 @@ namespace Sprint0
 
         public virtual void FireProjectile()
         {
-            if (cannon == null) return;
+            if (cannon == null)
+                return;
+    
             Vector2 tip = cannon.GetTipPosition();
             var parameters = new Dictionary<string, object>
             {
@@ -69,12 +71,15 @@ namespace Sprint0
                 parameters["numberOfProjectiles"] = 3;
             }
             commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
+
+            cannon.TriggerFiringEffect();
         }
+
 
         public void SetProjectileType(string newType)
         {
             if (newType == "Default" || newType == "Sniper" || newType == "Rocket" ||
-                newType == "Shotgun" || newType == "Bomb")
+                newType == "Shotgun" || newType == "Bomb" || newType == "Teleporter")
                 currentProjectileVariables["projectileType"] = newType;
         }
 
@@ -100,6 +105,8 @@ namespace Sprint0
                 OnDeath();
             }
             prevPosition = position;
+
+            cannon.Update(); 
         }
 
         protected void CalculateBounds(float spriteWidth, float spriteHeight)
@@ -136,12 +143,12 @@ namespace Sprint0
 
         public virtual void OnDeath()
         {
-            var parameters = new Dictionary<string, object>()
+            var effectParams = new Dictionary<string, object>
             {
                 { "spawnPosition", position },
-                { "phaseInterval", 0.5f }
+                { "effectType", "explosion" }
             };
-            commandQueue.Enqueue(new CommandRequest("SpawnExplosion", parameters));
+            commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
 
             var parameters2 = new Dictionary<string, object>()
             {

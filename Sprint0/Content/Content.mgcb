@@ -44,6 +44,18 @@
 /processorParam:TextureFormat=Compressed
 /build:Arial.spritefont
 
+#begin EffectSprites.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:EffectSprites.png
+
 #begin CoinIcon.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -115,6 +127,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:tank_menu.jpg
+
+#begin PickupItemSpritesheet2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PickupItemSpritesheet2.png
 
 #begin TDTanksAllSprites.png
 /importer:TextureImporter

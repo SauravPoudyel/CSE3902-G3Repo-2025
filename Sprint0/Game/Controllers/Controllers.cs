@@ -24,6 +24,7 @@ namespace Sprint0
                 { Keys.D2, "PlayerAction" },
                 { Keys.D3, "PlayerAction" },
                 { Keys.D4, "PlayerAction" },
+                { Keys.D5, "PlayerAction" },
                 { Keys.W, "Move" },
                 { Keys.S, "Move" },
                 { Keys.Z, "PlayerAction" },
@@ -90,6 +91,7 @@ namespace Sprint0
             if (state.IsKeyDown(Keys.D2)) actionType = "item2";
             if (state.IsKeyDown(Keys.D3)) actionType = "item3";
             if (state.IsKeyDown(Keys.D4)) actionType = "item4";
+            if (state.IsKeyDown(Keys.D5)) actionType = "item5";
 
             Dictionary<string, object> parameters = new Dictionary<string, object>
             {
