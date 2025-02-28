@@ -21,7 +21,7 @@ namespace Sprint0
         {
             playerData = Globals.PlayerData;
             healthText = new TextSprite("Health: " + playerData.TemporaryHealth, Color.White);
-            ammoText = new TextSprite("Ammo: " + playerData.TemporaryAmmo, Color.White);
+            ammoText = new TextSprite("Ammo: " + playerData.TemporaryAmmoDefault, Color.White);
             shieldText = new TextSprite("Shield: " + playerData.TemporaryShield, Color.White);
             coinText = new TextSprite("Coins: " + playerData.TemporaryCoins, Color.Yellow);
         }
@@ -37,7 +37,7 @@ namespace Sprint0
         public void Update()
         {
             healthText.SetText("Health: " + playerData.TemporaryHealth);
-            ammoText.SetText("Ammo: " + playerData.TemporaryAmmo);
+            ammoText.SetText("Ammo: " + playerData.TemporaryAmmoDefault);
             shieldText.SetText("Shield: " + playerData.TemporaryShield);
             coinText.SetText("Coins: " + playerData.TemporaryCoins);
         }

@@ -25,7 +25,7 @@ namespace Sprint0
 
             var turretCannonSprite = new AnimatedSprite(0.3f);
             turretCannonSprite.LoadContent(content, "TDTowerDefenseSprites", 2455, 1290, 85, 110, 1);
-            cannon = new Cannon(turretCannonSprite, this, new Vector2(42, 34), 30f, 
+            cannon = new Cannon(content, turretCannonSprite, this, new Vector2(42, 34), 30f, 
                                 0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
             cannon.CannonEffects = SpriteEffects.FlipVertically; 
             velocity = Vector2.Zero;
