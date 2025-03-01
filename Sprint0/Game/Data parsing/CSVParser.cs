@@ -133,6 +133,7 @@ namespace Sprint0
                                      data.TemporaryAmmoMine.ToString() + "," + data.TemporaryShield.ToString() + "," + data.TemporaryCoins.ToString();
             File.WriteAllText(filePath, header + Environment.NewLine + permanentLine + Environment.NewLine + temporaryLine);
         }
+
         public static Level ParseLevel(string filePath, ContentManager content)
         {
             Level level = new Level();

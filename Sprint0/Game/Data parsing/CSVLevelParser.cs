@@ -17,62 +17,61 @@ namespace Sprint0
             return level;
         }
         private static void ParseEntities(string filePath, Level level, ContentManager content) {
-            var rows = ParseFile(filePath);
-            Console.WriteLine($"Parsed {rows.Count} rows from CSV file: {filePath}");
-            for(int i=0; i<rows.Count; i++)
+            List<Dictionary<string, string>> rows = ParseFile(filePath);
+            Console.WriteLine("Parsed " + rows.Count.ToString() + " rows from CSV file: " + filePath);
+            int i, j;
+            for (i = 0; i < rows.Count; i++)
             {
-                var currentRow = rows[i];
-                // retrieve and store current entity's x and y positions
-                float xPos = 0, yPos = 0; // default position if left blank in csv file
-                if (currentRow.ContainsKey("X") && float.TryParse(currentRow["X"], out xPos)) {}
-                if (currentRow.ContainsKey("Y") && float.TryParse(currentRow["Y"], out yPos)) {}
-                Vector2 position = new Vector2(xPos, yPos); 
-                // retrieve current entity's type
-                string temp;
-                if(currentRow.ContainsKey("Type")){
-                    switch(currentRow["Type"]) 
-                    {
+                Dictionary<string, string> currentRow = rows[i];
+                float xPos = 0, yPos = 0;
+                if (currentRow.ContainsKey("X") && float.TryParse(currentRow["X"], out float tempX))
+                {
+                    xPos = tempX;
+                }
+                if (currentRow.ContainsKey("Y") && float.TryParse(currentRow["Y"], out float tempY))
+                {
+                    yPos = tempY;
+                }
+                Vector2 position = new Vector2(xPos, yPos);
+                if (!currentRow.ContainsKey("Type"))
+                {
+                    Console.WriteLine("Skipping row due to missing Type: " + string.Join(",", currentRow.Values));
+                    continue;
+                }
+                string entityType = currentRow["Type"];
+                switch (entityType)
+                {
                     case "Player":
                         level.AddPlayer(content, position);
                         break;
                     case "Enemy":
-                        MobType mobType = MobType.SmallEnemy; // default case if blank
-                        if(currentRow.ContainsKey("Subtype")) {
-                            switch(currentRow["Subtype"]) 
-                            {
-                                case "BossTank":
-                                    mobType = MobType.BossTank;
-                                    break;
-                                case "SmallEnemy":
-                                    mobType = MobType.SmallEnemy;
-                                    break;
-                                case "ExplodingTank":
-                                    mobType = MobType.ExplodingTank;
-                                    break;
-                                case "Turret":
-                                    mobType = MobType.Turret;
-                                    break;
-                                case "TurningTank":
-                                    mobType = MobType.TurningTank;
-                                    break;
-                                case "Plane":
-                                    mobType = MobType.Plane;
-                                    break;
-                            }
+                        MobType mobType = MobType.SmallEnemy;
+                        if (currentRow.ContainsKey("Subtype") && Enum.TryParse(currentRow["Subtype"], out MobType parsedMobType))
+                        {
+                            mobType = parsedMobType;
                         }
                         level.AddEnemy(content, mobType, position);
                         break;
                     case "Item":
-                        level.AddItem(content, position);
+                        PickupItemType pickupItemType = PickupItemType.SpeedBoost;
+                        if (currentRow.ContainsKey("Subtype") && Enum.TryParse(currentRow["Subtype"], out PickupItemType parsedItemType))
+                        {
+                            pickupItemType = parsedItemType;
+                        }
+                        level.AddItem(content, position, pickupItemType);
                         break;
                     case "Block":
-                        level.AddBlock(content, position);
+                        BlockSpriteKey blockType = BlockSpriteKey.Tree;
+                        if (currentRow.ContainsKey("Subtype") && Enum.TryParse(currentRow["Subtype"], out BlockSpriteKey parsedBlockType))
+                        {
+                            blockType = parsedBlockType;
+                        }
+                        level.AddBlock(content, position, blockType);
                         break;
                     default:
+                        Console.WriteLine("Unknown Type '" + entityType + "' at position (" + xPos.ToString() + ", " + yPos.ToString() + "). Skipping row.");
                         break;
-                    }
                 }
-                
             }
         }
         private static string[,] ParseTileFile(string filePath)

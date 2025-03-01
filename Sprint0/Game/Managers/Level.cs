@@ -19,6 +19,7 @@ namespace Sprint0 {
 
         public Level()
         {
+            tilesList = new List<Tile>();
             entitiesList = new List<Entity>();
             entities = new Dictionary<string, Entity>();
             itemsList = new List<Item>();
@@ -31,7 +32,7 @@ namespace Sprint0 {
             return entities;
         }
 
-        public List<Tile> LevelTiles
+        public List<Tile> GetLevelTiles
         {
             get => tilesList;
         }
