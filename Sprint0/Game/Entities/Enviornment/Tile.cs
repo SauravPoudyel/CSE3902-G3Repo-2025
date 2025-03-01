@@ -39,7 +39,7 @@ namespace Sprint0
                     sprite.LoadContent(content, "TDTanksAllSprites", 384, 256, 128, 128, 1);
                     break;
                 case TileType.Sand:
-                    sprite.LoadContent(content, "TDTanksAllSprites", 128, 128, 128, 128, 1);
+                    sprite.LoadContent(content, "TDTanksAllSprites", 256, 0, 128, 128, 1);
                     break;
                 case TileType.Concrete:
                     sprite.LoadContent(content, "TDTanksAllSprites", 256, 256, 128, 128, 1);

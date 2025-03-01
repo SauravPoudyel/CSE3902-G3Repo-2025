@@ -45,7 +45,7 @@ namespace Sprint0 {
         public void AddPlayer(ContentManager content, Vector2 position)
         {
             player = new Player(content);
-            player.SetPosition(position);
+            player.SetPosition((position * tileSize)+(new Vector2(tileSize/2, tileSize/2)));
             entitiesList.Add(player);
             entities.Add("player", player);
         }
@@ -53,7 +53,7 @@ namespace Sprint0 {
         public void AddItem(ContentManager content, Vector2 position, PickupItemType type)
         {
             Item newItem = new Item(content, type);
-            newItem.SetPosition(position);
+            newItem.SetPosition((position * tileSize)+(new Vector2(tileSize/2, tileSize/2)));
             newItem.EntityKey = "item_" + itemsList.Count + "_"  + type.ToString();
             itemsList.Add(newItem); 
             entitiesList.Add(newItem);
@@ -63,7 +63,7 @@ namespace Sprint0 {
         public void AddEnemy(ContentManager content, MobType mobType, Vector2 position)
         {
             Mob newEnemy = MobFactory.CreateMob(mobType, content);
-            newEnemy.SetPosition(position);
+            newEnemy.SetPosition((position * tileSize)+(new Vector2(tileSize/2, tileSize/2)));
             newEnemy.EntityKey = "enemy_" + enemiesList.Count + "_" + mobType.ToString();
             enemiesList.Add(newEnemy);
             entitiesList.Add(newEnemy);
@@ -72,7 +72,7 @@ namespace Sprint0 {
 
         public void AddBlock(ContentManager content, Vector2 position, BlockSpriteKey blockSpriteKey)
         {
-            BaseBlock newBlock = BlockFactory.CreateBlock(blockSpriteKey, content, position, 0.3f);
+            BaseBlock newBlock = BlockFactory.CreateBlock(blockSpriteKey, content, (position * tileSize)+(new Vector2(tileSize/2, tileSize/2)), 0.3f);
             newBlock.EntityKey = "block_" + blocksList.Count + "_" + blockSpriteKey.ToString();
             blocksList.Add(newBlock);
             entitiesList.Add(newBlock);

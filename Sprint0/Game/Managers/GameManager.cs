@@ -114,19 +114,6 @@ namespace Sprint0
 
         private void InitializeTiles()
         {
-            /* int tileSize = 128;
-            int rows = (Globals.SCREENHEIGHT / tileSize) + 1;
-            int cols = (Globals.SCREENWIDTH / tileSize) + 1;
-            int x, y;
-            for (y = 0; y < rows; y++)
-            {
-                for (x = 0; x < cols; x++)
-                {
-                    Tile.TileType type = Tile.TileType.Grass;
-                    Tile tile = new Tile(content, type, new Vector2(x * tileSize, y * tileSize));
-                    tiles.Add(tile);
-                }
-            } */
             levelManager.LoadContent(content);
             tiles = levelManager.LoadLevelTiles();
         }
@@ -135,34 +122,7 @@ namespace Sprint0
         {
             levelManager.LoadContent(content);
             entities = levelManager.LoadLevelEntities();
-
-            Mob mob = MobFactory.CreateMob(content);
-            mob.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 + 100, 400));
-            entities.Add(mob.EntityKey, mob);
-
-            PickupItem pickupItem = new PickupItem(content);
-            pickupItem.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 + 170, 180));
-            entities.Add(pickupItem.EntityKey, pickupItem);
-
-            Blocks blocks = new Blocks(content);
-            blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 - 300, 480));
-            entities.Add(blocks.EntityKey, blocks);
-
             ProjectileFactory.Initialize(content);
-
-            List<BaseBlock> levelBlocks = new List<BaseBlock>();
-            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.Tree, content, new Vector2(200, 800), 0.3f));
-            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.Box, content, new Vector2(400, 800), 0.3f));
-            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.OilBarrel_Red, content, new Vector2(600, 800), 0.3f));
-            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.OilBarrel_Black, content, new Vector2(800, 800), 0.3f));
-            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.BarbedFence, content, new Vector2(1000, 800), 0.3f));
-            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.Oil, content, new Vector2(1200, 800), 0.3f));
-            int i;
-            for (i = 0; i < levelBlocks.Count; i++)
-            {
-                BaseBlock block = levelBlocks[i];
-                entities.Add(block.EntityKey, block);
-            }
         }
 
         public void Update()
