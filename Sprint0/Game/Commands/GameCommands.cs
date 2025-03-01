@@ -13,27 +13,27 @@ namespace Sprint0
         public class QuitCommand : ICommand
         {
             private Game1 game;
-    
+
             public QuitCommand(Game1 game)
             {
                 this.game = game;
             }
-    
+
             public void Execute(Dictionary<string, object> parameters)
             {
                 game.Exit();
             }
         }
-    
+
         public class ResetCommand : ICommand
         {
             private Game1 game;
-    
+
             public ResetCommand(Game1 game)
             {
                 this.game = game;
             }
-    
+
             public void Execute(Dictionary<string, object> parameters)
             {
                 game.ResetGame();
@@ -44,11 +44,9 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("screen") && parameters["screen"] is IScreen screen)
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    gameManager.RemoveScreen(screen);
-                    gameManager.GameStarted = true; // Mark game as started so future resets don't show the start menu.
+                    gameManager.GameStarted = true; // This will automatically switch to Player Inventory screen
                 }
             }
         }
@@ -57,15 +55,11 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("content") && parameters["content"] is ContentManager content &&
-                    parameters.ContainsKey("game") && parameters["game"] is Game1 game)
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    // Only show the start menu if the game has not already started.
                     if (!gameManager.GameStarted)
                     {
-                        StartMenu menu = new StartMenu(content, game.GraphicsDevice, game);
-                        gameManager.AddScreen(menu);
+                        gameManager.GameStarted = false; // Ensures Start Menu is the only screen if game hasn't started
                     }
                 }
             }

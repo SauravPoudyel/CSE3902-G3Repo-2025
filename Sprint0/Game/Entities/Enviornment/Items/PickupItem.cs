@@ -84,9 +84,9 @@ namespace Sprint0
             SetSprite(sprites[this.itemType.ToString()]);
         }
 
-        public string GetItemType()
+        public PickupItemType GetItemType()
         {
-            return itemType.ToString();
+            return itemType; 
         }
 
         public void CycleItemNext()

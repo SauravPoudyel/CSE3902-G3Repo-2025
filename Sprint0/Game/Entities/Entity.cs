@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 
 namespace Sprint0
@@ -18,30 +17,35 @@ namespace Sprint0
         void Draw(SpriteBatch spriteBatch);
         void SetSprite(string key);
         ISprite GetSprite();
-        void OnCollide(Entity ActedUponEntity); 
-        void SetOwner(Entity owner);
+        void OnCollide(Entity actedUpon);
     }
-    
+
     public class Entity : IEntity
     {
-        protected Vector2 position; // protected so that subclasses can access it
-        protected Vector2 prevPosition; // protected so that subclasses can access it
+        protected Vector2 position;
+        protected Vector2 prevPosition;
         protected Vector2 velocity;
         protected ISprite sprite;
-        protected int spriteHeight; // use as neccesary variables
-        protected int spriteWidth;
-        protected bool hasSprite = true; // default to every entity having a sprite, set to false if not
+        protected int spriteHeight, spriteWidth; // use if neccesary for collision detection
+        protected bool hasSprite = true;
         protected Dictionary<string, ISprite> sprites;
         protected Rectangle bounds;
-        protected Entity owner;
-
         protected Queue<CommandRequest> commandQueue;
+        public Entity Owner {get; set;}
+
+        // Unique key for this entity.
+        public string EntityKey { get; set; }
+        private static int _entityCounter = 0;
 
         public Entity()
         {
-            sprites = new Dictionary<string, ISprite>(); 
+            sprites = new Dictionary<string, ISprite>();
             commandQueue = new Queue<CommandRequest>();
+            // Automatically assign a unique key.
+            EntityKey = "Entity_" + _entityCounter.ToString();
+            _entityCounter++;
         }
+
         public Vector2 GetPosition()
         {
             return position;
@@ -64,8 +68,9 @@ namespace Sprint0
 
         public void SetVelocity(Vector2 velocity)
         {
-            this.velocity = velocity; 
+            this.velocity = velocity;
         }
+
         public Queue<CommandRequest> GetCommandQueue()
         {
             return commandQueue;
@@ -75,6 +80,7 @@ namespace Sprint0
         {
             commandQueue.Enqueue(new CommandRequest(commandKey, parameters));
         }
+
         public ISprite GetSprite()
         {
             return sprite;
@@ -97,27 +103,23 @@ namespace Sprint0
                 sprite = sprites[key];
             }
         }
-        
+
         public Rectangle GetBounds()
         {
-            return bounds; 
+            return bounds;
         }
+
         public Rectangle PredictFutureBounds()
         {
-            Vector2 nextPosition = position + velocity * Globals.FRAMETIME;
-
-            // offset the top-left corner accordingly.
-            int halfWidth = bounds.Width / 2;
-            int halfHeight = bounds.Height / 2;
-            return new Rectangle((int)(nextPosition.X - halfWidth), (int)(nextPosition.Y - halfHeight), bounds.Width, bounds.Height);
+            Vector2 nextPos = position + velocity * Globals.FRAMETIME;
+            return new Rectangle((int)nextPos.X, (int)nextPos.Y, bounds.Width, bounds.Height);
         }
-
 
         public virtual void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
         {
             if (sprite == null)
             {
-                throw new NullReferenceException("Sprite is not initialized. Call SetSprite before LoadContent.");
+                throw new System.NullReferenceException("Sprite is not initialized. Call SetSprite before LoadContent.");
             }
             sprite.LoadContent(content, assetName, startX, startY, frameWidth, frameHeight, frameCount);
         }
@@ -138,13 +140,9 @@ namespace Sprint0
             }
         }
 
-        public virtual void OnCollide(Entity entityActedUpon)
+        public virtual void OnCollide(Entity actedUpon)
         {
-        }
-
-        public virtual void SetOwner(Entity owner)
-        {
-            this.owner = owner;
+            // Default: do nothing.
         }
     }
 }

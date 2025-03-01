@@ -152,7 +152,7 @@ namespace Sprint0
 
             var parameters2 = new Dictionary<string, object>()
             {
-                {"destroyEntity", "mob"}
+                {"destroyEntity", EntityKey}
             };
             commandQueue.Enqueue(new CommandRequest("DestroyEntity", parameters2));
         }
