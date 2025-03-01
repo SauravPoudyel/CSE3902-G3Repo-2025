@@ -23,7 +23,7 @@ namespace Sprint0
             this.graphicsDevice = graphicsDevice;
             buttons = new List<Button>();
             overlayColor = new Color(0, 0, 0, 180);
-            backgroundTexture = content.Load<Texture2D>("tank_menu");
+            backgroundTexture = content.Load<Texture2D>("StartMenu");
 
             SpriteFont font = content.Load<SpriteFont>("Arial");
             Texture2D buttonTexture = new Texture2D(graphicsDevice, 1, 1);
