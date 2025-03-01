@@ -11,7 +11,11 @@ namespace Sprint0
             Grass,
             Sand,
             Concrete,
-            Dirt
+            Dirt,
+            LeftGrassRightSand,
+            LeftGrassRightSandRoad,
+            HorizontalGrassRoad,
+            HorizontalSandRoad
         }
 
         private TileType tileType;
@@ -42,6 +46,18 @@ namespace Sprint0
                     break;
                 case TileType.Dirt:
                     sprite.LoadContent(content, "TDTanksAllSprites", 384, 384, 128, 128, 1);
+                    break;
+                case TileType.LeftGrassRightSand:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 640, 128, 128, 128, 1);
+                    break;
+                case TileType.LeftGrassRightSandRoad:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 512, 640, 128, 128, 1);
+                    break;
+                case TileType.HorizontalGrassRoad:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 0, 768, 128, 128, 1);
+                    break;
+                case TileType.HorizontalSandRoad:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 256, 896, 128, 128, 1);
                     break;
             }
         }

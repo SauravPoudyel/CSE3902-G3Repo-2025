@@ -15,7 +15,7 @@ public class LevelManager
     public void LoadContent(ContentManager content) {
         string projectDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\"));
         string entityFilePath = Path.Combine(projectDirectory, "Data\\LevelParseTest1.csv");
-        string tilesFilePath = Path.Combine(projectDirectory, "Data\\LevelTilesParseTest1.csv");
+        string tilesFilePath = Path.Combine(projectDirectory, "Data\\LevelTilesParseTest2.csv");
         level = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
     }
     

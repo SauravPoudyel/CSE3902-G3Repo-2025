@@ -115,6 +115,18 @@ namespace Sprint0
                         case "D":
                             tileType = Tile.TileType.Dirt;
                             break;
+                        case "LeftGrassRightSand":
+                            tileType = Tile.TileType.LeftGrassRightSand;
+                            break;
+                        case "LeftGrassRightSandRoad":
+                            tileType = Tile.TileType.LeftGrassRightSandRoad;
+                            break;
+                        case "HorizontalGrassRoad":
+                            tileType = Tile.TileType.HorizontalGrassRoad;
+                            break;
+                        case "HorizontalSandRoad":
+                            tileType = Tile.TileType.HorizontalSandRoad;
+                            break;
                     }
                     level.AddTile(content, tileType, new Vector2(x, y));
                 }

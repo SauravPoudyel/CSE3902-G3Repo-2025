@@ -29,7 +29,7 @@ namespace Sprint0
         {
             // Use the center of the frame as the default origin.
             Vector2 origin = pivot ?? new Vector2(frame.Width / 2f, frame.Height / 2f);
-
+            
             spriteBatch.Draw(
                 spriteSheet,
                 position,
