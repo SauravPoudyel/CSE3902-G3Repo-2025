@@ -57,6 +57,13 @@ namespace Sprint0
             Globals.PlayerData.TemporaryHealth -= damage; 
         }
 
+        public override void OnDeath()
+        {
+            base.OnDeath();
+            var parameters2 = new Dictionary<string, object>();
+            commandQueue.Enqueue(new CommandRequest("Reset", parameters2));
+        }
+
         public override void Update()
         {
             prevPosition = position;

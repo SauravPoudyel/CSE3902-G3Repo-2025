@@ -58,7 +58,7 @@ namespace Sprint0
             switch (type)
             {
                 case PickupItemType.SpeedBoost:
-                    player.speedMultiplier = 4f;
+                    player.speedMultiplier = 2.2f;
                     EffectTimers[PickupItemType.SpeedBoost] = 5f;
                     break;
                 case PickupItemType.Shield:
@@ -87,7 +87,7 @@ namespace Sprint0
                     EffectTimers[PickupItemType.Magnet] = 5f;
                     break;
                 case PickupItemType.FireRateIncrease:
-                    player.currentShootInterval = player.baseShootInterval * 0.5f;
+                    player.currentShootInterval = player.baseShootInterval * 0.3f;
                     EffectTimers[PickupItemType.FireRateIncrease] = 5f;
                     break;
                 case PickupItemType.MedStrong:
@@ -117,7 +117,6 @@ namespace Sprint0
                     Globals.PlayerData.TemporaryCoins += 500;
                     break;
                 case PickupItemType.Teleporter:
-                    // Implement teleporter logic if necessary
                     break;
             }
         }

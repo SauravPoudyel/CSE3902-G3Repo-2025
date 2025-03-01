@@ -58,7 +58,6 @@ namespace Sprint0
                     game.GameManager.eventManager.ExecuteCommand("Move", new Dictionary<string, object>
                     {
                         { "player", game.GameManager.GetEntity("player") },
-                        // Only pass the Y component; X is now handled separately.
                         { "velocity", new Vector2(0, playerVelocity.Y) },
                         { "gameManager", game.GameManager }
                     });

@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.IO;
 
 namespace Sprint0
@@ -13,6 +14,7 @@ namespace Sprint0
         public const float PLAYERFRAMETIME = 1f / 60f; // just so the slow powerup works
         private static PlayerData playerData;
         public static SpriteFont FONT;
+        public static string projectDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\"));
 
         public static PlayerData PlayerData
         {

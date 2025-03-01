@@ -13,7 +13,12 @@ namespace Sprint0
         private float orbitRadius;
         private float orbitSpeedFactor = 2f;
 
-        public Plane(ContentManager content) : base(content) {}
+        public Plane(ContentManager content) : base(content) 
+        {
+            TrackTrailsEnabled = true; 
+            spriteWidth = 100;
+            spriteHeight = 113;
+        }
 
         protected override void InitializeMob()
         {

@@ -43,8 +43,11 @@ namespace Sprint0
 
         public static PlayerData ParsePlayerData(string filePath)
         {
-            if (!File.Exists(filePath))
+            if (!File.Exists(filePath)) {
+                System.Console.WriteLine("hello");
                 return new PlayerData();
+            }
+
             string[] lines = File.ReadAllLines(filePath);
             if (lines.Length < 3)
                 return new PlayerData();

@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 namespace Sprint0
 {
+    public interface IRicochet
+    {
+        int RicochetCount { get; set; }
+    }
     public class Projectile : Entity
     {
         protected float colorChangeTimer;
@@ -17,6 +21,7 @@ namespace Sprint0
         public int damage = 20;
         public IEntity Owner { get; private set; }
         public bool canReflect;
+        public float ReflectCooldown = 0f;
 
         public Projectile(ContentManager content, string entityKey, Character owner)
         {
@@ -57,6 +62,12 @@ namespace Sprint0
         public override void Update()
         {
             sprite.Update();
+            prevPosition = position; 
+            // Update cooldown timer.
+            if (ReflectCooldown > 0)
+            {
+                ReflectCooldown -= Globals.FRAMETIME;
+            }
             position += velocity * Globals.FRAMETIME;
             colorChangeTimer += Globals.FRAMETIME;
             if (colorChangeTimer > 0.1f)
