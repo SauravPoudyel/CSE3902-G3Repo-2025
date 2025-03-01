@@ -61,7 +61,7 @@ namespace Sprint0
         {
             base.OnDeath();
             var parameters2 = new Dictionary<string, object>();
-            commandQueue.Enqueue(new CommandRequest("DestroyEntity", parameters2));
+            commandQueue.Enqueue(new CommandRequest("Reset", parameters2));
         }
 
         public override void Update()

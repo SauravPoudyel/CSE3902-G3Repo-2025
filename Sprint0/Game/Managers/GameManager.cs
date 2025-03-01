@@ -92,7 +92,7 @@ namespace Sprint0
             InitializeEntities();
 
             // Load persistent player data from CSV (located in Data\playerData.csv)
-            string playerDataFile = "C:\\Users\\saura\\OneDrive - The Ohio State University\\Documents\\OHIO STATE DOCS\\SP 2025\\CSE3902-G3Repo-2025\\Sprint0\\Data\\playerDataFile.csv";
+            string playerDataFile = Path.Combine(Globals.projectDirectory, "\\Data\\playerDataFile.csv");
             playerData = PlayerData.LoadData(playerDataFile);
             playerInventory = new PlayerInventory(content);
             UpdateActiveScreen();
@@ -124,6 +124,12 @@ namespace Sprint0
         {
             levelManager.LoadContent(content);
             entities = levelManager.LoadLevelEntities();
+
+            PickupItem pickupItem = new PickupItem(content); //test item
+            pickupItem.SetPosition(new Vector2(200, 700));
+            pickupItem.EntityKey = "pickupItem";
+            entities.Add(pickupItem.EntityKey, pickupItem);
+            
             ProjectileFactory.Initialize(content);
         }
 

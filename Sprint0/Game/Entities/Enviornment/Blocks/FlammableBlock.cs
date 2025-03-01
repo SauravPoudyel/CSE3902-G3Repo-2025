@@ -10,8 +10,6 @@ namespace Sprint0
         public bool IsDestroyed { get; private set; }
 
         public bool IsIgnited { get; private set; }
-        private string _entityKey;
-        public void SetEntityKey(string key) => _entityKey = key;
 
         public FlammableBlock(ContentManager content, BlockSpriteKey spriteKey, float frameTime = 0.3f)
         {

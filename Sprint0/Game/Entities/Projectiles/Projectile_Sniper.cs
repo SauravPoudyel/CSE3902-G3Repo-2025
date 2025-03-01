@@ -14,7 +14,7 @@ namespace Sprint0
             sprites["Sniper"].LoadContent(content, "TDTanksAllSprites", 120, 1040, 20, 20, 1);
             SetSprite("Sniper");
 
-            baseSpeed = 1500f;
+            baseSpeed = 800f;
             maxDistance = 1000f;
             colors = new Color[] { Color.Blue, Color.LightBlue, Color.DarkBlue };
             damage = 50;
