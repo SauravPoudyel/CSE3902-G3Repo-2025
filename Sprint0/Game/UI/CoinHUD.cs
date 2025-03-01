@@ -22,12 +22,16 @@ namespace Sprint0
 
             // Initialize source rectangles for coin icon
             sourceRectangle = new List<Rectangle>();
-            sourceRectangle.Add(new Rectangle(20, 40, 170, 170));
-            sourceRectangle.Add(new Rectangle(210, 40, 170, 170));
-            sourceRectangle.Add(new Rectangle(405, 40, 170, 170));
-            sourceRectangle.Add(new Rectangle(605, 40, 170, 170));
-            sourceRectangle.Add(new Rectangle(815, 40, 170, 170));
-            sourceRectangle.Add(new Rectangle(1020, 40, 170, 170));
+            sourceRectangle.Add(new Rectangle(0, 640, 40, 40));
+            sourceRectangle.Add(new Rectangle(40, 640, 40, 40));
+            sourceRectangle.Add(new Rectangle(80, 640, 40, 40));
+            sourceRectangle.Add(new Rectangle(120, 640, 40, 40));
+            sourceRectangle.Add(new Rectangle(160, 640, 40, 40));
+            sourceRectangle.Add(new Rectangle(200, 640, 40, 40));
+            sourceRectangle.Add(new Rectangle(240, 640, 40, 40));
+            sourceRectangle.Add(new Rectangle(280, 640, 40, 40));
+            sourceRectangle.Add(new Rectangle(320, 640, 40, 40));
+            sourceRectangle.Add(new Rectangle(360, 640, 40, 40));
         }
         public void Update()
         {

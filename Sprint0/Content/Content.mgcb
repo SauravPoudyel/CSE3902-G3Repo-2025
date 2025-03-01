@@ -116,7 +116,7 @@
 /processorParam:TextureFormat=Color
 /build:ShieldIcon.png
 
-#begin tank_menu.jpg
+#begin StartMenu.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -126,7 +126,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:tank_menu.jpg
+/build:StartMenu.png
 
 #begin PickupItemSpritesheet2.png
 /importer:TextureImporter

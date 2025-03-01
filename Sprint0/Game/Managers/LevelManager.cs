@@ -7,27 +7,25 @@ using System.IO;
 
 namespace Sprint0
 {
-    public class LevelManager
-    {
+    public class LevelManager {
         private Level level;
-
-        public LevelManager()
-        {
+        public LevelManager() {
             level = new Level();
         }
-
-        public void LoadContent(ContentManager content)
-        {
-            // Compute the file path for the level CSV.
+        public void LoadContent(ContentManager content) {
             string projectDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\"));
-            string filePath = Path.Combine(projectDirectory, "Content\\LevelParseTest1.csv");
-            level = CSVParser.ParseLevel(filePath, content);
+            string entityFilePath = Path.Combine(projectDirectory, "Data\\LevelParseTest2.csv");
+            string tilesFilePath = Path.Combine(projectDirectory, "Data\\LevelTilesParseTest2.csv");
+            level = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
+        }
+        
+        public Dictionary<string, Entity> LoadLevelEntities() {
+            return level.GetLevelEntities();
         }
 
-        public Dictionary<string, Entity> LoadLevelEntities()
-        {
-            return level.GetLevelEntities();
+        public List<Tile> LoadLevelTiles() {
+
+            return level.GetLevelTiles;
         }
     }
 }
-   
