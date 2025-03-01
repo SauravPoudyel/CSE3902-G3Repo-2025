@@ -24,12 +24,14 @@ namespace Sprint0
             defaultMovementSpeed = 80f;
             firingInterval = 3f;
             currentProjectileVariables["projectileType"] = "Default";
+
             var turningBodySprite = new AnimatedSprite(0.3f);
             turningBodySprite.LoadContent(content, "TDTanksAllSprites", 952, 569, 81, 76, 1);
             SetSprite(turningBodySprite);
-            var turningCannonSprite = new AnimatedSprite(0.3f);
-            turningCannonSprite.LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);
-            cannon = new Cannon(content, turningCannonSprite, this, new Vector2(14, 10), 30f,
+
+            var cannonSprite = new AnimatedSprite(0.3f);
+            cannonSprite.LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);
+            cannon = new Cannon(content, cannonSprite, this, new Vector2(14, 10), 40f, new Vector2(12, 70),
                                 0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
             currentTurnState = TurnState.RotateTo45;
             turnStateTimer = 0f;

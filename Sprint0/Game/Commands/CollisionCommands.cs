@@ -7,60 +7,57 @@ namespace Sprint0
     public class CollisionCommands
     {
         private const float BounceSpeed = 70f;
+
+        private static void ResetEntity(Entity entity)
+        {
+            // Resets the entity to its previous position with zero velocity.
+            entity.SetPosition(entity.GetPreviousPosition());
+            entity.SetVelocity(Vector2.Zero);
+        }
+
         public class CollisionStopCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                // For collisions between Player and RigidBlock or Mob.
+                // Handle collisions where the actor is a Player.
                 if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
-                    ((parameters.ContainsKey("target") && (parameters["target"] is RigidBlock)) ||
-                    (parameters.ContainsKey("target") && (parameters["target"] is Mob))))
+                    parameters.ContainsKey("target") &&
+                    (parameters["target"] is Blocks || parameters["target"] is RigidBlock ||
+                     parameters["target"] is Mob))
                 {
-                    // Compute the backward (bounce) direction based on the player's current rotation.
-                    Vector2 backwardDir = new Vector2(-(float)System.Math.Sin(player.bodyRotation),
-                                                      (float)System.Math.Cos(player.bodyRotation));
-                                                      
+                    // Bounce the player backwards based on current rotation.
+                    Vector2 backwardDir = new Vector2(-(float)Math.Sin(player.bodyRotation), (float)Math.Cos(player.bodyRotation));
                     backwardDir.Normalize();
-
                     float bounceOffset = BounceSpeed * Globals.FRAMETIME;
                     player.SetPosition(player.GetPosition() + backwardDir * bounceOffset);
-
                     player.SetVelocity(new Vector2(0, BounceSpeed));
 
-                    if (parameters.ContainsKey("target") && (parameters["target"] is Mob mob))
+                    // If target is a Mob, reset it.
+                    if (parameters["target"] is Mob targetMob)
                     {
-                        mob.SetPosition(mob.GetPreviousPosition());
-                        mob.SetVelocity(Vector2.Zero);
+                        ResetEntity(targetMob);
                     }
                 }
-
-                // For collisions between Mob and RigidBlock or Mob.
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Mob mob2 &&
-                    ((parameters.ContainsKey("target") && (parameters["target"] is RigidBlock)) ||
-                    (parameters.ContainsKey("target") && (parameters["target"] is Mob))))
+                // Handle collisions where the actor is a Mob.
+                else if (parameters.ContainsKey("actor") && parameters["actor"] is Mob mob &&
+                         parameters.ContainsKey("target") &&
+                         (parameters["target"] is RigidBlock || parameters["target"] is Mob))
                 {
-                    mob2.SetPosition(mob2.GetPreviousPosition());
-                    mob2.SetVelocity(Vector2.Zero);
-
-                    if (parameters.ContainsKey("target") && (parameters["target"] is Mob mob3))
+                    ResetEntity(mob);
+                    if (parameters["target"] is Mob targetMob)
                     {
-                        mob3.SetPosition(mob3.GetPreviousPosition());
-                        mob3.SetVelocity(Vector2.Zero);
+                        ResetEntity(targetMob);
                     }
                 }
-
-                // For collisions between PushableBlock and RigidBlock or Mob.
-                if (parameters.ContainsKey("actor") && parameters["actor"] is PushableBlock block1 &&
-                    ((parameters.ContainsKey("target") && (parameters["target"] is RigidBlock)) ||
-                    (parameters.ContainsKey("target") && (parameters["target"] is Mob))))
+                // Handle collisions where the actor is a PushableBlock.
+                else if (parameters.ContainsKey("actor") && parameters["actor"] is PushableBlock pushBlock &&
+                         parameters.ContainsKey("target") &&
+                         (parameters["target"] is RigidBlock || parameters["target"] is Mob || parameters["target"] is PushableBlock))
                 {
-                    block1.SetPosition(block1.GetPreviousPosition());
-                    block1.SetVelocity(Vector2.Zero);
-
-                    if (parameters.ContainsKey("target") && (parameters["target"] is Mob mob3))
+                    ResetEntity(pushBlock);
+                    if (parameters["target"] is Mob targetMob)
                     {
-                        mob3.SetPosition(mob3.GetPreviousPosition());
-                        mob3.SetVelocity(Vector2.Zero);
+                        ResetEntity(targetMob);
                     }
                 }
             }
@@ -75,33 +72,25 @@ namespace Sprint0
                 {
                     Vector2 direction = CalculatePushDirection(player);
                     pushable.Push(direction);
-                    
-                    if(parameters["target"] is PushableBlock pushableBlock) {
-                        if(pushableBlock.GetVelocity() == Vector2.Zero) {
-                        // Compute the backward (bounce) direction based on the player's current rotation.
-                        Vector2 backwardDir = new Vector2(-(float)System.Math.Sin(player.bodyRotation),
-                                                        (float)System.Math.Cos(player.bodyRotation));
-                                                        
-                        backwardDir.Normalize();
 
-                        float bounceOffset = BounceSpeed * Globals.FRAMETIME;
-                        player.SetPosition(player.GetPosition() + backwardDir * bounceOffset);
-
-                        player.SetVelocity(new Vector2(0, BounceSpeed));
+                    if (parameters["target"] is PushableBlock pushableBlock)
+                    {
+                        if (pushableBlock.GetVelocity() == Vector2.Zero)
+                        {
+                            // Bounce the player back if the pushable block is stationary.
+                            Vector2 backwardDir = new Vector2(-(float)Math.Sin(player.bodyRotation), (float)Math.Cos(player.bodyRotation));
+                            backwardDir.Normalize();
+                            float bounceOffset = BounceSpeed * Globals.FRAMETIME;
+                            player.SetPosition(player.GetPosition() + backwardDir * bounceOffset);
+                            player.SetVelocity(new Vector2(0, BounceSpeed));
+                        }
                     }
-                    } else {
-                        return; 
-                    }
-
                 }
             }
 
             private Vector2 CalculatePushDirection(Player player)
             {
-                return new Vector2(
-                    (float)Math.Sin(player.bodyRotation),
-                    -(float)Math.Cos(player.bodyRotation)
-                );
+                return new Vector2((float)Math.Sin(player.bodyRotation), -(float)Math.Cos(player.bodyRotation));
             }
         }
 
@@ -110,13 +99,20 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
-                    parameters.ContainsKey("target") && parameters["target"] is PickupItem pickupItem)
+                    parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    ((parameters.ContainsKey("target") && (parameters["target"] is PickupItem) || 
+                    (parameters.ContainsKey("target") && parameters["target"] is Item))))
                 {
-                   PowerUpFactory.ApplyPickupEffect(player, pickupItem.GetItemType());
-
-                    if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                    if (parameters["target"] is PickupItem pickupItem)
                     {
-                        gameManager.RemoveEntity("pickupItem");
+                        PowerUpFactory.ApplyPickupEffect(player, pickupItem.GetItemType());
+                        gameManager.RemoveEntity(pickupItem.EntityKey);
+                    }
+                    else if (parameters["target"] is Item item)
+                    {
+                        PowerUpFactory.ApplyPickupEffect(player, item.GetItemType());
+                        gameManager.RemoveEntity(item.EntityKey);
+                        System.Diagnostics.Debug.WriteLine("Picked up item: " + item.GetItemType());
                     }
                 }
             }
@@ -128,21 +124,21 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("actor") && parameters["actor"] is Projectile projectile 
                     && parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager 
-                    && (parameters.ContainsKey("target") && parameters["target"] is Mob|| 
-                    parameters.ContainsKey("target") && parameters["target"] is RigidBlock)) 
+                    && (parameters.ContainsKey("target") && (parameters["target"] is Mob || parameters["target"] is RigidBlock))) 
+                {
+                    if (parameters["target"] is Mob mob)
                     {
-                        if(parameters["target"] is Mob mob) {
-                            if (projectile.Owner != mob) {
-                                mob.health -= projectile.damage;
-                                projectile.OnDeath(); 
-                            }
-                        }
-
-                        if(parameters["target"] is RigidBlock block) {
+                        if (projectile.Owner != mob)
+                        {
+                            mob.health -= projectile.damage;
                             projectile.OnDeath(); 
                         }
-
                     }
+                    if (parameters["target"] is RigidBlock block)
+                    {
+                        projectile.OnDeath(); 
+                    }
+                }
             }
         }
 
@@ -150,10 +146,11 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters["target"] is FlammableBlock block)
+                if (parameters.ContainsKey("target") && parameters["target"] is FlammableBlock block)
+                {
                     block.Destroy();
+                }
             }
         }
-
     }
 }

@@ -36,6 +36,12 @@ namespace Sprint0
                     frames = 8; 
                     cycleSpeed = 0.08f; 
                     break;
+                //The fire effect here is a placeholder, might need a new spritesheet for it
+                case "fire":
+                    rowY = 0;
+                    frames = 1;
+                    cycleSpeed = 3.2f;
+                    break;
                 case "shield":
                     rowY = 128;
                     frames = 12; 

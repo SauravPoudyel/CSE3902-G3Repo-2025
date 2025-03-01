@@ -34,7 +34,11 @@ Animated Sprite - Extract Frames isn't always very useful, it only works when al
 Text Sprite - Outdated and should be made more useful. Should implement new fonts so that it can beused later. 
 
 Alex's Comments:
+Game Script - Overall pretty good, all the methods are short and easy to read, and the class is pretty simple. The only thing is that, when we implement the csv parser and load in levels, we may have to change the code that generates the background for the game, but it may also not be an issue.
 
+Game Manager - The InitializeTiles method will almost certainly need to be changed when we implement level loading, because it just makes a grass field with no features. Similarly, the InitializeEntities method is hard coded to spawn enemies in a set pattern for the test demo. Also the add/remove screen methods seem redundant but that's not really a big issue. Besides that it looks good. 
+
+Sprite Manager - The extract frames method is pretty limited and only works when all the sprites are formatted in a specific way, it does work well but we may need to implement a more usable method for getting frames from a sprite sheet
 
 Daoping's Comments:
 Commands for moveable blocks are kinda complicated and should be made easier. The command has to be used across multiple classes to make sure it works and it's easy to forget what's already been done. 

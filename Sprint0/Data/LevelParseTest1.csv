@@ -4,5 +4,5 @@ Enemy,BossTank,100,300
 Enemy,SmallEnemy,200,300
 Enemy,Turret,300,300
 Enemy,Plane,400,300
-Item,,100,500
+Item,SpeedBoost,100,500
 Block,,100,700

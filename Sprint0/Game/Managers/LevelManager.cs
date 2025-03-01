@@ -1,12 +1,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Sprint0;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-public class LevelManager
+namespace Sprint0
 {
     private Level level;
     public LevelManager() {
