@@ -62,7 +62,27 @@ namespace Sprint0
 
         public void Ignite()
         {
-            // Ignite logic (spawn fire, etc.)
+            if (IsIgnited || string.IsNullOrEmpty(EntityKey)) return;
+            IsIgnited = true;
+
+             var effectParams = new Dictionary<string, object>
+            {
+                { "spawnPosition", position },
+                { "effectType", "explosion" },
+            };
+            commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
+
+            var effectParams2 = new Dictionary<string, object>
+            {
+                { "spawnPosition", position },
+                { "effectType", "fire" },
+            };
+            commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams2));
+
+            commandQueue.Enqueue(new CommandRequest("DestroyEntity", new Dictionary<string, object>
+            {
+                { "destroyEntity", EntityKey }
+            }));
         }
     }
 }

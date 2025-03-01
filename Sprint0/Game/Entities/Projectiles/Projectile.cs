@@ -6,6 +6,10 @@ using System.Data;
 
 namespace Sprint0
 {
+    public interface IRicochet
+    {
+        int RicochetCount { get; set; }
+    }
     public class Projectile : Entity
     {
         protected float colorChangeTimer;

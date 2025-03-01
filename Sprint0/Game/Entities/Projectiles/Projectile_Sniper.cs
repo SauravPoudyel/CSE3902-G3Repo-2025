@@ -3,24 +3,29 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Sprint0
 {
-    public class SniperProjectile : Projectile
+    public class SniperProjectile : Projectile, IRicochet
     {
-        public SniperProjectile(ContentManager content, string entityKey, Character owner) : base(content, entityKey, owner)
+        public int RicochetCount { get; set; }
+
+        public SniperProjectile(ContentManager content, string entityKey, Character owner)
+            : base(content, entityKey, owner)
         {
             AddSprite("Sniper", new StaticSprite());
-            sprites["Sniper"].LoadContent(content, "TDTanksAllSprites", 120, 1040, 20, 20, 1); 
-
+            sprites["Sniper"].LoadContent(content, "TDTanksAllSprites", 120, 1040, 20, 20, 1);
             SetSprite("Sniper");
 
-            baseSpeed = 1500f; 
-            maxDistance = 1000f; 
-            colors = new Color[] { Color.Blue, Color.LightBlue, Color.DarkBlue }; 
+            baseSpeed = 1500f;
+            maxDistance = 1000f;
+            colors = new Color[] { Color.Blue, Color.LightBlue, Color.DarkBlue };
             damage = 50;
+
+            // Allow the projectile to ricochet 3 times before being destroyed.
+            RicochetCount = 3;
         }
 
         public override void Update()
         {
-            // special behavior (acceleration, explosion timer) here
+            // Special behavior (acceleration, explosion timer) could be added here.
             base.Update();
         }
     }
