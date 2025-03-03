@@ -14,7 +14,7 @@ namespace Sprint0
 
     public class StaticSprite : ISprite
     {
-        private Texture2D spriteSheet;
+        public Texture2D spriteSheet {get; set;}
         private Rectangle frame;
 
         public void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
@@ -48,7 +48,7 @@ namespace Sprint0
 
     public class AnimatedSprite : ISprite
     {
-        private Texture2D spriteSheet;
+        public Texture2D spriteSheet {get; set;}
         private List<Rectangle> frames;
         private int currentFrame;
         private float frameTime;

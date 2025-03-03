@@ -78,9 +78,9 @@ namespace Sprint0
             {
                 return new RocketProjectile(content, entityName, owner);
             }
-            else if (projectileType == "Bomb")
+            else if (projectileType == "Mine")
             {
-                return new BombProjectile(content, entityName, owner);
+                return new MineProjectile(content, entityName, owner);
             }
             else if (projectileType == "Teleporter")
             {

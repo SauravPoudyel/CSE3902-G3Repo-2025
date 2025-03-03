@@ -23,7 +23,7 @@ namespace Sprint0
         private IScreen activeScreen;
         private IScreen blockingScreen;
         private PlayerData playerData;
-        private PlayerInventory playerInventory;
+        public PlayerInventory playerInventory { get; private set; }
         private bool gameStarted;
 
         public bool GameStarted

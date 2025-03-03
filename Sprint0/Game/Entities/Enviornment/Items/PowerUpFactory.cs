@@ -13,7 +13,8 @@ namespace Sprint0
             { PickupItemType.Shield, DeactivateShield },
             { PickupItemType.FireRateIncrease, ResetFireRate },
             { PickupItemType.TimeSlow, ResetTimeSlow },
-            { PickupItemType.Cloak, ResetPlayerInvis }
+            { PickupItemType.Cloak, ResetPlayerInvis },
+            { PickupItemType.Fly, ResetPlayerFly }
         };
 
         private static void ResetSpeed(Player player) { player.speedMultiplier = 1f; } 
@@ -27,6 +28,15 @@ namespace Sprint0
             if (player.cannon != null)
                 player.cannon.SetSprite("default");
             player.isInvis = false;
+        }
+
+        private static void ResetPlayerFly(Player player)
+        {
+            player.SetSprite("TankBody");
+            if (player.cannon != null)
+                player.cannon.SetSprite("default");
+            player.isFly = false;
+            player.TrackTrailsEnabled = true;
         }
         
         private static void ResetCannonAngularVelocity(Player player) 
@@ -101,6 +111,9 @@ namespace Sprint0
                     EffectTimers[PickupItemType.TimeSlow] = 5f;
                     break;
                 case PickupItemType.Fly:
+                    player.isFly = true;
+                    player.SetSprite("FlyingTankBody");
+                    player.TrackTrailsEnabled = false;
                     EffectTimers[PickupItemType.Fly] = 5f;
                     break;
                 case PickupItemType.Cloak:
