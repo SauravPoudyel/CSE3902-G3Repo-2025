@@ -15,7 +15,7 @@ namespace Sprint0
         public Vector2 Pivot { get; set; }
         public float TipDistance { get; set; }  // desired distance from the pivot
         public Vector2 TipOffset { get; set; } = new Vector2(12, 60);  
-        public bool HasFiringEffect { get; set; }
+        public bool HasFiringEffect { get; set; } = true; 
         public SpriteEffects CannonEffects { get; set; }
 
         private AnimatedSprite firingEffectSprite;

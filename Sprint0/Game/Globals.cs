@@ -9,7 +9,8 @@ namespace Sprint0
     {
         public const int SCREENWIDTH = 1920;
         public const int SCREENHEIGHT = 1080;
-        public static ISprite NULLSPRITE_S, NULLSPRITE_A;
+        public static StaticSprite NULLSPRITE_S;
+        public static AnimatedSprite NULLSPRITE_A;
         public static float FRAMETIME = 1f / 60f;
         public const float PLAYERFRAMETIME = 1f / 60f; // just so the slow powerup works
         private static PlayerData playerData;
