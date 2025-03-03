@@ -20,12 +20,12 @@ namespace Sprint0
             {
                 case BlockSpriteKey.Tree:
                     animatedSprite.LoadContent(content, "TDTanksAllSprites", 128, 0, 128, 128, 1);
-                    bounds = new Rectangle((int)position.X, (int)position.Y, 128, 128);
+                    bounds = new Rectangle((int)position.X, (int)position.Y, 115, 115);
                     break;
 
                 case BlockSpriteKey.BarbedFence:
                     animatedSprite.LoadContent(content, "TDTanksAllSprites", 958, 1048, 56, 56, 1);
-                    bounds = new Rectangle((int)position.X, (int)position.Y, 56, 56);
+                    bounds = new Rectangle((int)position.X, (int)position.Y, 52, 52);
                     break;
 
                 default:

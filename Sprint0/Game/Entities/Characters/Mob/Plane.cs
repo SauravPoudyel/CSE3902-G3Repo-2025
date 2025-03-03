@@ -13,7 +13,12 @@ namespace Sprint0
         private float orbitRadius;
         private float orbitSpeedFactor = 2f;
 
-        public Plane(ContentManager content) : base(content) {}
+        public Plane(ContentManager content) : base(content) 
+        {
+            TrackTrailsEnabled = true; 
+            spriteWidth = 100;
+            spriteHeight = 113;
+        }
 
         protected override void InitializeMob()
         {
@@ -26,7 +31,8 @@ namespace Sprint0
             var planeBodySprite = new AnimatedSprite(0.3f);
             planeBodySprite.LoadContent(content, "TDTowerDefenseSprites", 2184, 1411, 135, 122, 1);
             SetSprite(planeBodySprite);
-            cannon = new Cannon(content, Globals.NULLSPRITE_S, this, new Vector2(0, 0), 30f, 0f, 0f, 0f, 0f);
+            cannon = new Cannon(content, Globals.NULLSPRITE_A, this, new Vector2(14, 10), 30f, new Vector2(0, 0),
+                    0f, 0f, 0f, 0f);
             velocity = Vector2.Zero;
             bodyRotation = 0f;
         }

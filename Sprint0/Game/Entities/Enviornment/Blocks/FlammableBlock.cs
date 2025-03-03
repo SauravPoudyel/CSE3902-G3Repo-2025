@@ -8,8 +8,8 @@ namespace Sprint0
     public class FlammableBlock : BaseBlock, IObtuse, IFlammable, IDestructible
     {
         public bool IsDestroyed { get; private set; }
-        private string _entityKey;
-        public void SetEntityKey(string key) => _entityKey = key;
+
+        public bool IsIgnited { get; private set; }
 
         public FlammableBlock(ContentManager content, BlockSpriteKey spriteKey, float frameTime = 0.3f)
         {
@@ -18,19 +18,19 @@ namespace Sprint0
 
         public void Destroy()
         {
-            if (IsDestroyed || string.IsNullOrEmpty(_entityKey)) return;
+            if (IsDestroyed || string.IsNullOrEmpty(EntityKey)) return;
             IsDestroyed = true;
 
             var effectParams = new Dictionary<string, object>
             {
                 { "spawnPosition", position },
-                { "effectType", "explosion" }
+                { "effectType", "explosion" },
             };
             commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
 
             commandQueue.Enqueue(new CommandRequest("DestroyEntity", new Dictionary<string, object>
             {
-                { "destroyEntity", _entityKey }
+                { "destroyEntity", EntityKey }
             }));
         }
 
@@ -62,7 +62,30 @@ namespace Sprint0
 
         public void Ignite()
         {
-            // Ignite logic (spawn fire, etc.)
+
+            if (IsIgnited || string.IsNullOrEmpty(EntityKey)) return;
+            IsIgnited = true;
+
+             var effectParams = new Dictionary<string, object>
+            {
+                { "spawnPosition", position },
+                { "effectType", "explosion" },
+            };
+            commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
+
+            var effectParams2 = new Dictionary<string, object>
+
+            {
+                { "spawnPosition", position },
+                { "effectType", "fire" },
+            };
+
+            commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams2));
+
+            commandQueue.Enqueue(new CommandRequest("DestroyEntity", new Dictionary<string, object>
+            {
+                { "destroyEntity", EntityKey }
+            }));
         }
     }
 }
