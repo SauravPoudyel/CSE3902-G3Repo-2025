@@ -12,48 +12,75 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("player") && parameters["player"] is Player player &&
-                parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                parameters.ContainsKey("actionType") && parameters["actionType"] is string actionType)
+                    parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("actionType") && parameters["actionType"] is string actionType)
                 {
-                    // this command tells the player to create a projectile which then eventually calls create entity command
-                    // it's all a bit tedious but it's the only way to get the player to create a projectile while storing it's own projectiles 
                     switch (actionType)
                     {
                         case "fire":
-                            player.SetProjectileType("Default");
+                            if (!player.CanFire) return;
                             player.FireProjectile();
-                            Globals.PlayerData.TemporaryAmmoDefault--; 
                             break;
-
                         case "item1":
-                            player.SetProjectileType("Sniper");
-                            player.FireProjectile();
-                            break;
-
                         case "item2":
-                            player.SetProjectileType("Rocket");
-                            player.FireProjectile();
-                            break;
-
                         case "item3":
-                            player.SetProjectileType("Shotgun");
-                            player.FireProjectile();
-                            break;
                         case "item4":
-                            player.SetProjectileType("Bomb");
-                            player.FireProjectile();
-                            break;
                         case "item5":
-                            player.SetProjectileType("Teleporter");
+                            int slotIndex = actionType switch
+                            {
+                                "item1" => 0,
+                                "item2" => 1,
+                                "item3" => 2,
+                                "item4" => 3,
+                                "item5" => 4,
+                                _ => 0
+                            };
+
+                            if (!player.CanFire) return;
+
+                            InventorySlot slot = gameManager.playerInventory.inventorySlots[slotIndex];
+                            string projectileType = slot.ProjectileType;
+                            if (slot.AmmoCount <= 0) return;
+
+                            // Decrement ammo based on the projectile type.
+                            switch (projectileType)
+                            {
+                                case "Sniper":
+                                    Globals.PlayerData.TemporaryAmmoSniper--;
+                                    break;
+                                case "Rocket":
+                                    Globals.PlayerData.TemporaryAmmoRocket--;
+                                    break;
+                                case "Shotgun":
+                                    Globals.PlayerData.TemporaryAmmoShotgun--;
+                                    break;
+                                case "Mine":
+                                    Globals.PlayerData.TemporaryAmmoMine--;
+                                    break;
+                                case "Teleporter":
+                                    Globals.PlayerData.TemporaryAmmoTeleporter--;
+                                    break;
+                                default:
+                                    Globals.PlayerData.TemporaryAmmoDefault--;
+                                    break;
+                            }
+
+                            player.SetProjectileType(projectileType);
                             player.FireProjectile();
-                            break; 
+
+                            if (slot.AmmoCount <= 0)
+                            {
+                                gameManager.playerInventory.ShiftEmptySlot(slotIndex);
+                            }
+                            break;
                         default:
-                            System.Console.WriteLine("Error: invalid aactionType.");
+                            System.Console.WriteLine("Error: invalid actionType.");
                             break;
                     }
                 }
             }
         }
+
     
         public class DamageCommand : ICommand
         {

@@ -16,7 +16,7 @@ namespace Sprint0
         protected List<TrackTrail> trackTrailList;
         protected float trackTrailSpawnTimer;
         protected float trackTrailSpawnInterval = 0.2f;
-        protected bool TrackTrailsEnabled { get; set; } = true;
+        public bool TrackTrailsEnabled { get; set; } = true;
         protected ISprite trackTrailSprite;
 
         public float health = 100f;
@@ -79,7 +79,7 @@ namespace Sprint0
         public void SetProjectileType(string newType)
         {
             if (newType == "Default" || newType == "Sniper" || newType == "Rocket" ||
-                newType == "Shotgun" || newType == "Bomb" || newType == "Teleporter")
+                newType == "Shotgun" || newType == "Mine" || newType == "Teleporter")
                 currentProjectileVariables["projectileType"] = newType;
         }
 

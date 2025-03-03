@@ -10,14 +10,16 @@ namespace Sprint0
     {
         // effect fields
         public float speedMultiplier = 1f;
-        public bool shieldActive = false;
-        public bool isInvis;
+        public bool shieldActive = false, 
+                    isInvis = false, 
+                    isFly = false;
         public float baseShootInterval = 1.2f;    
         public float currentShootInterval;   
         ISprite effectSprite = new StaticSprite(); 
         public float rotationInput = 0f;
         private float timeSinceLastShot = 0f;
         public static Player Instance { get; private set; }
+        public bool CanFire { get { return timeSinceLastShot >= currentShootInterval; }}
 
         public Player(ContentManager content) : base(content)
         {
@@ -33,6 +35,9 @@ namespace Sprint0
 
             AddSprite("InvisTankBody", new AnimatedSprite(0.3f));
             sprites["InvisTankBody"].LoadContent(content, "TDTanksAllSprites", 1114, 1, 84, 84, 1);
+
+            AddSprite("FlyingTankBody", new AnimatedSprite(0.3f));
+            sprites["FlyingTankBody"].LoadContent(content, "TDTanksAllSprites", 1135, 88, 86, 92, 1);
 
             effectSprite =  new AnimatedSprite(0.08f);
             effectSprite.LoadContent(content, "EffectSprites", 0, 128, 128, 128, 12);
@@ -50,6 +55,8 @@ namespace Sprint0
 
             currentProjectileVariables["projectileType"] = "Default";
         }
+
+
 
         public override void Damage(int damage)
         {
@@ -78,7 +85,9 @@ namespace Sprint0
             position += forwardDirection * forwardSpeed * speedMultiplier * Globals.PLAYERFRAMETIME;
 
             CalculateBounds(74, 76);
-            TrackTrail.UpdateTrackTrails(trackTrailList, Globals.PLAYERFRAMETIME, position, bodyRotation, trackTrailSprite, ref trackTrailSpawnTimer, trackTrailSpawnInterval);
+            
+            if(TrackTrailsEnabled)
+                TrackTrail.UpdateTrackTrails(trackTrailList, Globals.PLAYERFRAMETIME, position, bodyRotation, trackTrailSprite, ref trackTrailSpawnTimer, trackTrailSpawnInterval);
 
             if (Math.Abs(forwardSpeed) > 0.1f)
                 sprite.Update();
@@ -102,14 +111,17 @@ namespace Sprint0
 
         public override void FireProjectile()
         {
-            // If not enough time has passed, ignore input.
+            // If not ready to fire, do nothing.
             if (timeSinceLastShot < currentShootInterval)
                 return;
 
             if (cannon == null)
                 return;
             Vector2 tip = cannon.GetTipPosition();
-            var parameters = new Dictionary<string, object>
+            if((string)currentProjectileVariables["projectileType"] == "Mine")
+                tip = position; 
+                
+            var parametersFire = new Dictionary<string, object>
             {
                 { "projectileType", currentProjectileVariables["projectileType"] },
                 { "spawnPosition", tip },
@@ -118,13 +130,14 @@ namespace Sprint0
             };
             if ((string)currentProjectileVariables["projectileType"] == "Shotgun")
             {
-                parameters["spreadAngle"] = MathHelper.ToRadians(10);
-                parameters["numberOfProjectiles"] = 3;
+                parametersFire["spreadAngle"] = MathHelper.ToRadians(10);
+                parametersFire["numberOfProjectiles"] = 3;
             }
-            commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
+            commandQueue.Enqueue(new CommandRequest("CreateProjectile", parametersFire));
 
-            cannon.TriggerFiringEffect();
-
+            if(!((string)currentProjectileVariables["projectileType"] == "Mine"))
+                cannon.TriggerFiringEffect();
+                
             timeSinceLastShot = 0f;
         }
 
