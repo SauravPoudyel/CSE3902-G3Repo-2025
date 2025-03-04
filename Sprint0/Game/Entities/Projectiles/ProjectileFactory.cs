@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
+using static Sprint0.Globals;
 
 namespace Sprint0
 {
@@ -70,19 +72,19 @@ namespace Sprint0
 
         private static Projectile InstantiateProjectile(string projectileType, string entityName, Character owner)
         {
-            if (projectileType == "Sniper")
+            if (projectileType == ProjectileTypeEnum.Sniper.ToString())
             {
                 return new SniperProjectile(content, entityName, owner);
             }
-            else if (projectileType == "Rocket")
+            else if (projectileType == ProjectileTypeEnum.Rocket.ToString())
             {
                 return new RocketProjectile(content, entityName, owner);
             }
-            else if (projectileType == "Mine")
+            else if (projectileType == ProjectileTypeEnum.Mine.ToString())
             {
                 return new MineProjectile(content, entityName, owner);
             }
-            else if (projectileType == "Teleporter")
+            else if (projectileType == ProjectileTypeEnum.Teleporter.ToString())
             {
                 return new TeleportProjectile(content, entityName, owner);
             }

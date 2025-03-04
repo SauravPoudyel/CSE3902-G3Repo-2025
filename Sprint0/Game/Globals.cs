@@ -60,5 +60,9 @@ namespace Sprint0
             string playerDataFile = Path.Combine("Data", "playerDataFile.csv");
             CSVParser.SavePlayerData(playerDataFile, playerData);
         }
+
+        public enum ProjectileTypeEnum{
+            Sniper, Rocket, Shotgun, Mine, Teleporter
+        }
     }
 }

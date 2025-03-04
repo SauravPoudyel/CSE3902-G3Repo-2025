@@ -17,6 +17,9 @@ namespace Sprint0
         public bool IsFinished { get; private set; }
         public string effectType; 
         public bool didDamage = false; 
+        enum EffectType {
+            Explosion, Fire, Shield, TeleportOut, TeleportIn
+        }
 
         public Effect(ContentManager content, Vector2 spawnPosition, string entityKey, string effectType)
         {
@@ -34,28 +37,28 @@ namespace Sprint0
             float cycleSpeed = 0.8f; 
             switch(effectType)
             {
-                case "explosion":
+                case nameof(EffectType.Explosion):
                     rowY = 0;
                     frames = 8; 
                     cycleSpeed = 0.08f; 
                     break;
                 //The fire effect here is a placeholder, might need a new spritesheet for it
-                case "fire":
+                case nameof(EffectType.Fire):
                     rowY = 0;
                     frames = 1;
                     cycleSpeed = 3.2f;
                     break;
-                case "shield":
+                case  nameof(EffectType.Shield):
                     rowY = 128;
                     frames = 12; 
                     cycleSpeed = 0.08f;
                     break;
-                case "teleportOut":
+                case  nameof(EffectType.TeleportOut):
                     rowY = 256;
                     frames = 12; 
                     cycleSpeed = 0.03f;  
                     break;
-                case "teleportIn":
+                case  nameof(EffectType.TeleportIn):
                     rowY = 384;
                     frames = 12; 
                     cycleSpeed = 0.07f;
