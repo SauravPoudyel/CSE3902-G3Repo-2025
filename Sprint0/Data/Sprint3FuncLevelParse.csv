@@ -20,7 +20,7 @@ Item,MedWeak,11,4
 Block,Tree,5,5
 Block,OilBarrel_Black,3,5
 Item,TimeSlow,10,5
-Enemy,Turret,12,5
+//Enemy,Turret,12,5
 //Enemy,SmallEnemy,2,6
 Block,Oil,7,6
 //Enemy,Plane,9,6

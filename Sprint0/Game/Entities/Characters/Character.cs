@@ -74,6 +74,7 @@ namespace Sprint0
             commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
 
             cannon.TriggerFiringEffect();
+            AudioManager.PlaySound(AudioManager.SoundKey.Shoot);
         }
 
 

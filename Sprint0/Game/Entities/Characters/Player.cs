@@ -144,6 +144,7 @@ namespace Sprint0
                 cannon.TriggerFiringEffect();
                 
             timeSinceLastShot = 0f;
+            AudioManager.PlaySound(AudioManager.SoundKey.Shoot);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

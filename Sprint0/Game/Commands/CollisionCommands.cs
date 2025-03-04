@@ -153,6 +153,7 @@ namespace Sprint0
                         PowerUpFactory.ApplyPickupEffect(player, item.GetItemType());
                         gameManager.RemoveEntity(item.EntityKey);
                     }
+                    AudioManager.PlaySound(AudioManager.SoundKey.PowerUp);
                 }
             }
         }
