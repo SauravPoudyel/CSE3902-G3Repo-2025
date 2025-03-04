@@ -58,10 +58,14 @@ namespace Sprint0
 
 
 
-        public override void Damage(int damage)
+        public override void ChangeHealth(int change)
         {
-            health -= damage;
-            Globals.PlayerData.TemporaryHealth -= damage; 
+            base.ChangeHealth(change);
+            if(change < 0)
+                isDamaged = true;
+            else
+                isHealed = true;
+            Globals.PlayerData.TemporaryHealth += change; 
         }
 
         public override void OnDeath()
@@ -104,7 +108,6 @@ namespace Sprint0
             if(shieldActive)
                 effectSprite.Update(); 
 
-
             // Reset rotation input after applying it.
             rotationInput = 0f;
         }
@@ -117,7 +120,9 @@ namespace Sprint0
 
             if (cannon == null)
                 return;
+
             Vector2 tip = cannon.GetTipPosition();
+
             if((string)currentProjectileVariables["projectileType"] == "Mine")
                 tip = position; 
                 
@@ -146,7 +151,9 @@ namespace Sprint0
             Vector2 tankCenter = new Vector2(37, 38);
             foreach (var trail in trackTrailList)
                 trail.Draw(spriteBatch);
-            sprite.Draw(spriteBatch, position, SpriteEffects.FlipVertically, bodyRotation, tankCenter, Color.White);
+
+            sprite?.Draw(spriteBatch, position, SpriteEffects.None, bodyRotation, null, changeIndicator);
+
             cannon.Draw(spriteBatch);
 
             if(shieldActive)
