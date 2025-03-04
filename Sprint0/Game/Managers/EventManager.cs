@@ -43,6 +43,7 @@ namespace Sprint0
                 {"PlayerAction", new ActionCommands.PlayerActionCommand()},
                 {"RequestPlayerPosition", new ActionCommands.RequestPlayerPositionCommand() },
                 {"Damage", new ActionCommands.DamageCommand()},
+                {"HealRadius", new ActionCommands.HealRadiusCommand()},
 
                 {"CollisionPush", new CollisionCommands.CollisionPushCommand()},
                 {"CollisionStop", new CollisionCommands.CollisionStopCommand()},
