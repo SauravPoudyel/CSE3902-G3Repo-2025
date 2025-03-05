@@ -61,23 +61,23 @@ namespace Sprint0
             );
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, float scale = 1f, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
-        {
-            // Use the center of the frame as the default origin.
-            Vector2 origin = pivot ?? new Vector2(frame.Width / 2f, frame.Height / 2f);
+        // public void Draw(SpriteBatch spriteBatch, Vector2 position, float scale = 1f, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
+        // {
+        //     // Use the center of the frame as the default origin.
+        //     Vector2 origin = pivot ?? new Vector2(frame.Width / 2f, frame.Height / 2f);
             
-            spriteBatch.Draw(
-                spriteSheet,
-                position,
-                frame,
-                color ?? Color.White,
-                rotation, 
-                origin, 
-                scale,
-                effects,
-                0f
-            );
-        }
+        //     spriteBatch.Draw(
+        //         spriteSheet,
+        //         position,
+        //         frame,
+        //         color ?? Color.White,
+        //         rotation, 
+        //         origin, 
+        //         scale,
+        //         effects,
+        //         0f
+        //     );
+        // }
 
         }
 
