@@ -101,32 +101,7 @@ namespace Sprint0
                 for (int x = 0; x < tiles.GetLength(1); x++)
                 {
                     Tile.TileType tileType = Tile.TileType.Grass; // default is grass
-                    switch(tiles[y,x]) {
-                        case "G":
-                            tileType = Tile.TileType.Grass;
-                            break;
-                        case "S":
-                            tileType = Tile.TileType.Sand;
-                            break;
-                        case "C":
-                            tileType = Tile.TileType.Concrete;
-                            break;
-                        case "D":
-                            tileType = Tile.TileType.Dirt;
-                            break;
-                        case "LeftGrassRightSand":
-                            tileType = Tile.TileType.LeftGrassRightSand;
-                            break;
-                        case "LeftGrassRightSandRoad":
-                            tileType = Tile.TileType.LeftGrassRightSandRoad;
-                            break;
-                        case "HorizontalGrassRoad":
-                            tileType = Tile.TileType.HorizontalGrassRoad;
-                            break;
-                        case "HorizontalSandRoad":
-                            tileType = Tile.TileType.HorizontalSandRoad;
-                            break;
-                    }
+                    Enum.TryParse(tiles[y, x], out tileType);
                     level.AddTile(content, tileType, new Vector2(x, y));
                 }
             }

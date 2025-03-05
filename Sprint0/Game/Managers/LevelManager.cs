@@ -15,7 +15,7 @@ namespace Sprint0
         public void LoadContent(ContentManager content) {
 
             string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\Sprint3FuncLevelParse.csv"); //Sprint0\Data\LevelParseTest2.csv
-            string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\LevelTilesParseTest2.csv");
+            string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\LevelTilesParseTest3.csv");
             level = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
         }
         
