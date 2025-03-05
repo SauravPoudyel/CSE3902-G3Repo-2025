@@ -105,7 +105,7 @@ namespace Sprint0
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            sprite.Draw(spriteBatch, position, spriteScaler, SpriteEffects.None, 0f);
+            sprite.Draw(spriteBatch, position, SpriteEffects.None, 0f, null, null, spriteScaler);
         }
     }
 }

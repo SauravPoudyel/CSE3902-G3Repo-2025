@@ -12,7 +12,8 @@ namespace Sprint0
         private float timer;
         private PickupItemType itemType;
         private const float PickupRadius = 150f;   
-        private const float Acceleration = 300f;     
+        private const float Acceleration = 300f;   
+        private float itemScale = 10;
 
         public PickupItem(ContentManager content)
         {
@@ -130,7 +131,7 @@ namespace Sprint0
         {
             SpriteEffects effects = SpriteEffects.None;
             //sprite.Draw(spriteBatch, position, effects, 0f);
-            sprite.Draw(spriteBatch, position, effects, 0, null,null, 100f);
+            sprite.Draw(spriteBatch, position, effects, 0, null, null, itemScale);
 
         }
     }

@@ -9,7 +9,7 @@ namespace Sprint0
     {
         void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount);
         void Update();
-        void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 0f);
+        void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 1.0f);
     }
 
     public class StaticSprite : ISprite
@@ -25,7 +25,7 @@ namespace Sprint0
 
         public void Update() { }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 0f)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 1.0f)
         {
             // Use the center of the frame as the default origin.
             Vector2 origin = pivot ?? new Vector2(frame.Width / 2f, frame.Height / 2f);
@@ -42,44 +42,7 @@ namespace Sprint0
                 scale
             );
         }
-
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, float scale = 1f, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
-        {
-            // Use the center of the frame as the default origin.
-            Vector2 origin = pivot ?? new Vector2(frame.Width / 2f, frame.Height / 2f);
-            
-            spriteBatch.Draw(
-                spriteSheet,
-                position,
-                frame,
-                color ?? Color.White,
-                rotation, 
-                origin, 
-                scale,
-                effects,
-                0f
-            );
-        }
-
-        // public void Draw(SpriteBatch spriteBatch, Vector2 position, float scale = 1f, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
-        // {
-        //     // Use the center of the frame as the default origin.
-        //     Vector2 origin = pivot ?? new Vector2(frame.Width / 2f, frame.Height / 2f);
-            
-        //     spriteBatch.Draw(
-        //         spriteSheet,
-        //         position,
-        //         frame,
-        //         color ?? Color.White,
-        //         rotation, 
-        //         origin, 
-        //         scale,
-        //         effects,
-        //         0f
-        //     );
-        // }
-
-        }
+    }
 
 
     public class AnimatedSprite : ISprite
@@ -167,7 +130,7 @@ namespace Sprint0
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 0f)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 1.0f)
         {
             if (frames.Count == 0) return;
 
@@ -214,7 +177,7 @@ namespace Sprint0
 
         public void Update() { }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 0f)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 1.0f)
         {
             if (font != null && !string.IsNullOrEmpty(text))
             {
