@@ -22,7 +22,7 @@ namespace Sprint0
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.ShieldTank;
+            currentMobType = EntityKeys.MobType.ShieldTank;
             defaultMovementSpeed = 30f;
             firingInterval = 0f;
             currentProjectileVariables["projectileType"] = "Default";

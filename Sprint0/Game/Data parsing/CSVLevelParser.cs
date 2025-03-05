@@ -45,8 +45,8 @@ namespace Sprint0
                         level.AddPlayer(content, position);
                         break;
                     case "Enemy":
-                        MobType mobType = MobType.SmallEnemy;
-                        if (currentRow.ContainsKey("Subtype") && Enum.TryParse(currentRow["Subtype"], out MobType parsedMobType))
+                        EntityKeys.MobType mobType = EntityKeys.MobType.SmallEnemy;
+                        if (currentRow.ContainsKey("Subtype") && Enum.TryParse(currentRow["Subtype"], out EntityKeys.MobType parsedMobType))
                         {
                             mobType = parsedMobType;
                         }

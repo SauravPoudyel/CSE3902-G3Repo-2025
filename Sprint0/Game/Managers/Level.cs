@@ -62,7 +62,7 @@ namespace Sprint0 {
             entities.Add(newItem.EntityKey, newItem);
         }
 
-        public void AddEnemy(ContentManager content, MobType mobType, Vector2 position)
+        public void AddEnemy(ContentManager content, EntityKeys.MobType mobType, Vector2 position)
         {
             Mob newEnemy = MobFactory.CreateMob(mobType, content);
             newEnemy.SetPosition((position * tileSize)+(new Vector2(tileSize/2, tileSize/2)));
