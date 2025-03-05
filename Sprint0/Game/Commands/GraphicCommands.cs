@@ -135,6 +135,8 @@ namespace Sprint0
                     string effectKey = "effect_" + Guid.NewGuid().ToString();
                     Effect effect = new Effect(gameManager.GetContent(), spawnPosition, effectKey, effectType);
                     gameManager.GetEntities().Add(effectKey, effect);
+                    if(effectType == "explosion")
+                        AudioManager.PlaySound(AudioManager.SoundKey.Explosion);
                 }
             }
         }
