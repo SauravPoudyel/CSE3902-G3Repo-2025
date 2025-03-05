@@ -1,8 +1,8 @@
 Type,Subtype,X,Y
 Player,,1,4
-Mob,Dummy,4,4
-Mob,Dummy,8,1
-Mob,Turret,13,2
+Enemy,Dummy,4,4
+Enemy,Dummy,8,1
+Enemy,Turret,13,2
 Block,Tree,6,3
 Block,Tree,6,4
 Block,Tree,6,5
