@@ -167,7 +167,8 @@ namespace Sprint0
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 0f)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, 
+                        float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 1f)
         {
             if (frames.Count == 0) return;
 
@@ -181,9 +182,9 @@ namespace Sprint0
                 drawColor,
                 rotation,
                 origin,
-                1f,
+                scale,    // Use the passed scale
                 effects,
-                scale
+                0f        // Set layerDepth to 0 (or as needed)
             );
         }
     }
