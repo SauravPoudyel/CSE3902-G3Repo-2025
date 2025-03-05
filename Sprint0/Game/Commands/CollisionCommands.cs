@@ -7,97 +7,95 @@ namespace Sprint0
     public class CollisionCommands
     {
         private const float BounceSpeed = 70f;
- public class CollisionStopCommand : ICommand
-{
-    public void Execute(Dictionary<string, object> parameters)
-    {
-        // For collisions between Player and RigidBlock or Mob.
-        if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
-            ((parameters.ContainsKey("target") && (parameters["target"] is RigidBlock)) ||
-             (parameters.ContainsKey("target") && (parameters["target"] is Mob))))
+        public class CollisionStopCommand : ICommand
         {
-            // Bounce the player backwards.
-            Vector2 backwardDir = new Vector2(-(float)Math.Sin(player.bodyRotation),
-                                              (float)Math.Cos(player.bodyRotation));
-            backwardDir.Normalize();
-            float bounceOffset = 70f * Globals.FRAMETIME;
-            player.SetPosition(player.GetPosition() + backwardDir * bounceOffset);
-            player.SetVelocity(Vector2.Zero);
-
-            // For a mob target (if not a Plane), resolve collision.
-            if (parameters.ContainsKey("target") && parameters["target"] is Mob mobTargetInner && !(mobTargetInner is Plane))
+            public void Execute(Dictionary<string, object> parameters)
             {
-                ResolveCollision(mobTargetInner, player);
-                mobTargetInner.SetVelocity(Vector2.Zero);
+                // For collisions between Player and RigidBlock or Mob.
+                if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
+                    ((parameters.ContainsKey("target") && (parameters["target"] is RigidBlock)) ||
+                    (parameters.ContainsKey("target") && (parameters["target"] is Mob))))
+                {
+                    // Bounce the player backwards.
+                    Vector2 backwardDir = new Vector2(-(float)Math.Sin(player.bodyRotation),
+                                                    (float)Math.Cos(player.bodyRotation));
+                    backwardDir.Normalize();
+                    float bounceOffset = 70f * Globals.FRAMETIME;
+                    player.SetPosition(player.GetPosition() + backwardDir * bounceOffset);
+                    player.SetVelocity(Vector2.Zero);
+
+                    // For a mob target (if not a Plane), resolve collision.
+                    if (parameters.ContainsKey("target") && parameters["target"] is Mob mobTargetInner && !(mobTargetInner is Plane))
+                    {
+                        ResolveCollision(mobTargetInner, player);
+                        mobTargetInner.SetVelocity(Vector2.Zero);
+                    }
+                }
+
+                // For collisions between Mob and RigidBlock, Blocks, or Mob.
+                if (parameters.ContainsKey("actor") && parameters["actor"] is Mob mobActor && !(mobActor is Plane) &&
+                    ((parameters.ContainsKey("target") && 
+                    (parameters["target"] is RigidBlock || parameters["target"] is Blocks)) ||
+                    (parameters.ContainsKey("target") && 
+                    (parameters["target"] is Mob mobTarget && !(mobTarget is Plane)))))
+                {
+                    System.Console.WriteLine("Mob collision with block, rigidblock, or mob");
+                    ResolveCollision(mobActor, (Entity)parameters["target"]);
+                    mobActor.SetVelocity(Vector2.Zero);
+
+                    if (parameters.ContainsKey("target") && parameters["target"] is Mob mobOther && !(mobOther is Plane))
+                    {
+                        ResolveCollision(mobOther, mobActor);
+                        mobOther.SetVelocity(Vector2.Zero);
+                    }
+                }
+
+                // For collisions between PushableBlock and RigidBlock or Mob.
+                if (parameters.ContainsKey("actor") && parameters["actor"] is PushableBlock block1 &&
+                    ((parameters.ContainsKey("target") && (parameters["target"] is RigidBlock)) ||
+                    (parameters.ContainsKey("target") && (parameters["target"] is Mob))))
+                {
+                    ResolveCollision(block1, (Entity)parameters["target"]);
+                    block1.SetVelocity(Vector2.Zero);
+
+                    if (parameters.ContainsKey("target") && parameters["target"] is Mob mob3 && !(mob3 is Plane || mob3 is HoveringTank))
+                    {
+                        ResolveCollision(mob3, block1);
+                        mob3.SetVelocity(Vector2.Zero);
+                    }
+                }
+            }
+
+            private void ResolveCollision(Entity movingEntity, Entity otherEntity)
+            {
+                Rectangle boundsA = movingEntity.GetBounds();
+                Rectangle boundsB = otherEntity.GetBounds();
+                Rectangle intersect = Rectangle.Intersect(boundsA, boundsB);
+
+                if (intersect.IsEmpty)
+                    return;
+
+                // Determine minimal translation along X or Y.
+                Vector2 displacement = Vector2.Zero;
+                if (intersect.Width < intersect.Height)
+                {
+                    // Push along X axis.
+                    if (boundsA.Center.X < boundsB.Center.X)
+                        displacement = new Vector2(-intersect.Width, 0);
+                    else
+                        displacement = new Vector2(intersect.Width, 0);
+                }
+                else
+                {
+                    // Push along Y axis.
+                    if (boundsA.Center.Y < boundsB.Center.Y)
+                        displacement = new Vector2(0, -intersect.Height);
+                    else
+                        displacement = new Vector2(0, intersect.Height);
+                }
+                movingEntity.SetPosition(movingEntity.GetPosition() + displacement);
             }
         }
-
-        // For collisions between Mob and RigidBlock, Blocks, or Mob.
-        if (parameters.ContainsKey("actor") && parameters["actor"] is Mob mobActor && !(mobActor is Plane) &&
-            ((parameters.ContainsKey("target") && 
-              (parameters["target"] is RigidBlock || parameters["target"] is Blocks)) ||
-             (parameters.ContainsKey("target") && 
-              (parameters["target"] is Mob mobTarget && !(mobTarget is Plane)))))
-        {
-            System.Console.WriteLine("Mob collision with block, rigidblock, or mob");
-            ResolveCollision(mobActor, (Entity)parameters["target"]);
-            mobActor.SetVelocity(Vector2.Zero);
-
-            if (parameters.ContainsKey("target") && parameters["target"] is Mob mobOther && !(mobOther is Plane))
-            {
-                ResolveCollision(mobOther, mobActor);
-                mobOther.SetVelocity(Vector2.Zero);
-            }
-        }
-
-        // For collisions between PushableBlock and RigidBlock or Mob.
-        if (parameters.ContainsKey("actor") && parameters["actor"] is PushableBlock block1 &&
-            ((parameters.ContainsKey("target") && (parameters["target"] is RigidBlock)) ||
-             (parameters.ContainsKey("target") && (parameters["target"] is Mob))))
-        {
-            ResolveCollision(block1, (Entity)parameters["target"]);
-            block1.SetVelocity(Vector2.Zero);
-
-            if (parameters.ContainsKey("target") && parameters["target"] is Mob mob3 && !(mob3 is Plane))
-            {
-                ResolveCollision(mob3, block1);
-                mob3.SetVelocity(Vector2.Zero);
-            }
-        }
-    }
-
-    private void ResolveCollision(Entity movingEntity, Entity otherEntity)
-    {
-        Rectangle boundsA = movingEntity.GetBounds();
-        Rectangle boundsB = otherEntity.GetBounds();
-        Rectangle intersect = Rectangle.Intersect(boundsA, boundsB);
-
-        if (intersect.IsEmpty)
-            return;
-
-        // Determine minimal translation along X or Y.
-        Vector2 displacement = Vector2.Zero;
-        if (intersect.Width < intersect.Height)
-        {
-            // Push along X axis.
-            if (boundsA.Center.X < boundsB.Center.X)
-                displacement = new Vector2(-intersect.Width, 0);
-            else
-                displacement = new Vector2(intersect.Width, 0);
-        }
-        else
-        {
-            // Push along Y axis.
-            if (boundsA.Center.Y < boundsB.Center.Y)
-                displacement = new Vector2(0, -intersect.Height);
-            else
-                displacement = new Vector2(0, intersect.Height);
-        }
-        movingEntity.SetPosition(movingEntity.GetPosition() + displacement);
-    }
-}
-
-
 
         public class CollisionPushCommand : ICommand
         {
@@ -155,6 +153,7 @@ namespace Sprint0
                         PowerUpFactory.ApplyPickupEffect(player, item.GetItemType());
                         gameManager.RemoveEntity(item.EntityKey);
                     }
+                    AudioManager.PlaySound(AudioManager.SoundKey.PowerUp);
                 }
             }
         }
@@ -170,14 +169,19 @@ namespace Sprint0
                         parameters.ContainsKey("target") && parameters["target"] is Player)) 
                     {
                         if(parameters["target"] is Mob mob) {
-                            if (projectile.Owner != mob) {
-                                mob.health -= projectile.damage;
-                                projectile.OnDeath(); 
+                            if (projectile.Owner is Player player2) {
+
+                                if(mob is ShieldTank shieldedTank) { // if mob is shielded, calculate if damage goes through
+                                    shieldedTank.ShieldedDamage(projectile.damage, player2.GetPosition());
+                                } else {
+                                    mob.ChangeHealth(-projectile.damage);
+                                    projectile.OnDeath(); 
+                                }
                             }
                         }
                         if(parameters["target"] is Player player) {
                             if (projectile.Owner != player) {
-                                player.Damage(projectile.damage);
+                                player.ChangeHealth(-projectile.damage);
                                 projectile.OnDeath(); 
                             }
                         }
@@ -312,7 +316,7 @@ namespace Sprint0
                     parameters.ContainsKey("target") && parameters["target"] is Effect effect)
                 {
                     if(effect.effectType.Equals("explosion") && !effect.didDamage) {
-                        player.Damage(50); 
+                        player.ChangeHealth(-50); 
                         effect.didDamage = true; 
                     }
                 }

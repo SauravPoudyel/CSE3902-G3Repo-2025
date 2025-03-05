@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Sprint0
 {
@@ -18,9 +19,9 @@ namespace Sprint0
         protected float trackTrailSpawnInterval = 0.2f;
         public bool TrackTrailsEnabled { get; set; } = true;
         protected ISprite trackTrailSprite;
-
         public float health = 100f;
-        protected bool isDead = false;
+        public bool isDead = false, isDamaged = false, isHealed = false;
+        protected Color? changeIndicator = null; // for sprite color change when damaged or healed
 
         public Character(ContentManager content) : base()
         {
@@ -73,6 +74,7 @@ namespace Sprint0
             commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
 
             cannon.TriggerFiringEffect();
+            AudioManager.PlaySound(AudioManager.SoundKey.Shoot);
         }
 
 
@@ -157,16 +159,45 @@ namespace Sprint0
             commandQueue.Enqueue(new CommandRequest("DestroyEntity", parameters2));
         }
 
-        public virtual void Damage(int damage)
+        public virtual void ChangeHealth(int change)
         {
-            health -= damage;
+            health += change;
+            if (change < 0)
+            {
+                isDamaged = true;
+                changeIndicator = Color.Red;
+                Task.Delay(450).ContinueWith(_ =>
+                {
+                    isDamaged = false;
+                    changeIndicator = null;
+                });
+            }
+            else if(change > 0)
+            {
+                isHealed = true;
+                changeIndicator = Color.Green;
+                Task.Delay(450).ContinueWith(_ =>
+                {
+                    isHealed = false;
+                    changeIndicator = null;
+                });
+            }
+
+            if (health <= 0 && !isDead)
+            {
+                isDead = true;
+                OnDeath();
+            }
         }
+
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             foreach (var trail in trackTrailList)
                 trail.Draw(spriteBatch);
-            sprite?.Draw(spriteBatch, position, SpriteEffects.None, bodyRotation);
+
+            sprite?.Draw(spriteBatch, position, SpriteEffects.None, bodyRotation, null, changeIndicator);
+
             cannon?.Draw(spriteBatch);
         }
     }

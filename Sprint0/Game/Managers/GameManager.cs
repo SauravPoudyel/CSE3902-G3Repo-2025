@@ -38,6 +38,8 @@ namespace Sprint0
 
         public GameManager(Game1 game, bool started = false)
         {
+            AudioManager.LoadContent();
+            AudioManager.PlayMusic(AudioManager.MusicKey.Background);
             Instance = this;
             Game = game;
             gameStarted = started;

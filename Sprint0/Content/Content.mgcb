@@ -56,18 +56,6 @@
 /processorParam:TextureFormat=Color
 /build:EffectSprites.png
 
-#begin CoinIcon.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:CoinIcon.png
-
 #begin HealthIcon.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -80,18 +68,6 @@
 /processorParam:TextureFormat=Color
 /build:HealthIcon.png
 
-#begin NES - The Legend of Zelda - Link.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:NES - The Legend of Zelda - Link.png;LinkSpritesheet.png
-
 #begin PickupItemSpritesheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -103,6 +79,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PickupItemSpritesheet.png
+
+#begin PickupItemSpritesheet2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:PickupItemSpritesheet2.png
 
 #begin ShieldIcon.png
 /importer:TextureImporter
@@ -128,18 +116,6 @@
 /processorParam:TextureFormat=Color
 /build:StartMenu.png
 
-#begin PickupItemSpritesheet2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:PickupItemSpritesheet2.png
-
 #begin TDTanksAllSprites.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -163,16 +139,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:TDTowerDefenseSprites.png
-
-#begin Test.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Test.png
 

@@ -1,31 +1,27 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using System;
 
 namespace Sprint0
 {
-    public class BossTank : Mob
+    public class HoveringTank : Mob
     {
-        private enum BossState { Moving, Turning }
-        private Vector2 movementDirection;
-
-        public BossTank(ContentManager content) : base(content) 
-        { 
-            TrackTrailsEnabled = true; 
-            spriteWidth = 123;
-            spriteHeight = 144;
+        public HoveringTank(ContentManager content) : base(content)
+        {
+            TrackTrailsEnabled = false;
+            spriteWidth = 86;
+            spriteHeight = 92;
             aggressionLevel = "Neutral";
         }
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.BossTank;
-            defaultMovementSpeed = 40f;
-            firingInterval = 4f;
-            currentProjectileVariables["projectileType"] = "Shotgun";
+            currentMobType = MobType.HoveringTank; 
+            defaultMovementSpeed = 80f;
+            firingInterval = 1.4f;
 
             var bodySprite = new AnimatedSprite(0.3f);
-            bodySprite.LoadContent(content, "TDTanksAllSprites", 641, 661, 123, 144, 1);
+            bodySprite.LoadContent(content, "TDTanksAllSprites", 1135, 180, 86, 92, 1);
             SetSprite(bodySprite);
 
             var cannonSprite = new AnimatedSprite(0.3f);
@@ -33,15 +29,12 @@ namespace Sprint0
             cannon = new Cannon(content, cannonSprite, this, new Vector2(14, 10), 50f, new Vector2(12, 70),
                                 0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
 
-            position = new Vector2(Globals.SCREENWIDTH / 2, 200);
             bodyRotation = 0f;
-            movementDirection = new Vector2(0f, -1f); // Initially moving UP
-            velocity = movementDirection * defaultMovementSpeed;
         }
 
         protected override void UpdateMobBehavior()
         {
-            FollowPlayer(aggressionLevel); 
+            FollowPlayer(aggressionLevel);
             PointCannonPlayer();
         }
 
@@ -53,8 +46,7 @@ namespace Sprint0
 
         protected override void ResetMobPosition()
         {
-            position = new Vector2(Globals.SCREENWIDTH / 2, 200);
+            position = new Vector2(Globals.SCREENWIDTH / 2 + 100, 400);
         }
     }
-
 }

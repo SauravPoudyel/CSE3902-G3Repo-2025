@@ -101,10 +101,10 @@ namespace Sprint0
                     EffectTimers[PickupItemType.FireRateIncrease] = 5f;
                     break;
                 case PickupItemType.MedStrong:
-                    Globals.PlayerData.TemporaryHealth += 50;
+                    player.ChangeHealth(50);
                     break;
                 case PickupItemType.MedWeak:
-                    Globals.PlayerData.TemporaryHealth += 25;
+                    player.ChangeHealth(25);
                     break;
                 case PickupItemType.TimeSlow:
                     Globals.FRAMETIME = 1f / 150f;
