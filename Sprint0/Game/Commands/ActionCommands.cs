@@ -19,6 +19,7 @@ namespace Sprint0
                     {
                         case "fire":
                             if (!player.CanFire) return;
+                            player.SetProjectileType("Default");
                             player.FireProjectile();
                             break;
                         case "item1":
@@ -91,7 +92,7 @@ namespace Sprint0
                     // Implement the logic for the entity to take damage
                     if (gameManager.GetEntity("player") is Character player)
                     {
-                        player.Damage(20);
+                        player.ChangeHealth(-20);
                     }
                 }
             }
@@ -196,6 +197,39 @@ namespace Sprint0
                     parameters["gameManager"] is GameManager gm)
                 {
                     gm.RemoveEntity(key);
+                }
+            }
+        }
+
+        public class HealRadiusCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("healOrigin") && parameters["healOrigin"] is Vector2 origin &&
+                    parameters.ContainsKey("healRadius") && parameters["healRadius"] is float healRadius &&
+                    parameters.ContainsKey("healAmount") && parameters["healAmount"] is int healAmount)
+                {
+                    foreach (var entity in gameManager.GetEntities().Values)
+                    {
+                        if (entity is Mob mob)
+                        {
+                            if (Vector2.Distance(origin, mob.GetPosition()) <= healRadius)
+                            {
+                                mob.ChangeHealth(healAmount);
+                            }
+                        }
+                        // for testing only, not actually used in the game
+                        // if (entity is Player player)
+                        // {
+                        //     System.Console.WriteLine("Healing player");
+                        //     if (Vector2.Distance(origin, player.GetPosition()) <= healRadius)
+                        //     {
+                        //         System.Console.WriteLine("Healed player");
+                        //         player.ChangeHealth(healAmount);
+                        //     }
+                        // }
+                    }
                 }
             }
         }

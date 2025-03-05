@@ -7,7 +7,7 @@ namespace Sprint0
 {
     public class Cannon : Entity
     {
-        public IEntity Owner { get; private set; }
+        public Character Owner { get; private set; }
         public float Rotation { get; set; }
         public float AngularVelocity { get; set; }
         public float LowerBound { get; set; }
@@ -25,7 +25,7 @@ namespace Sprint0
         private const float defaultUpperBound = MathHelper.Pi + MathHelper.PiOver2;
 
         // Added parameter tipOffset with a default value that worked for the player.
-        public Cannon(ContentManager content, ISprite sprite, IEntity owner, Vector2 pivot, float tipDistance, Vector2 tipOffset,
+        public Cannon(ContentManager content, ISprite sprite, Character owner, Vector2 pivot, float tipDistance, Vector2 tipOffset,
                       float initialRotation, float angularVelocity, float lowerBound = defaultLowerBound, float upperBound = defaultUpperBound)
         {
             this.sprite = sprite;
@@ -82,7 +82,13 @@ namespace Sprint0
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            sprite.Draw(spriteBatch, Owner.GetPosition(), CannonEffects, Rotation, Pivot);
+            if(Owner.isDamaged) 
+                sprite?.Draw(spriteBatch, Owner.GetPosition(), CannonEffects, Rotation, Pivot, Color.Red);
+            else if (Owner.isHealed)
+                sprite?.Draw(spriteBatch, Owner.GetPosition(), CannonEffects, Rotation, Pivot, Color.Green);
+            else
+                sprite?.Draw(spriteBatch, Owner.GetPosition(), CannonEffects, Rotation, Pivot);
+
             if (showFiringEffect && HasFiringEffect)
             {
                 Vector2 tip = GetTipPosition(); 
