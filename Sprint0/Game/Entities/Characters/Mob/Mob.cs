@@ -2,18 +2,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
+using static Sprint0.EntityKeys;
+
 
 namespace Sprint0
 {
-    public enum MobType
-    {
-        BossTank,
-        SmallEnemy,
-        ExplodingTank,
-        Turret,
-        TurningTank,
-        Plane
-    }
 
     public abstract class Mob : Character
     {

@@ -6,20 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Sprint0.EntityKeys;
+
 
 namespace Sprint0
 {
     public class Blocks : Entity
     {
-        enum BlockType
-        {
-            Tree,
-            Box,
-            Oil,
-            BarbedFence,
-            Barrel,
-            RedBarrel,
-        }
         private ContentManager content;
         private float timer;
         private BlockType blocktype;

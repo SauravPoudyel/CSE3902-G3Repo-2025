@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using static Sprint0.EntityKeys;
 
 namespace Sprint0
 {
@@ -17,9 +18,6 @@ namespace Sprint0
         public bool IsFinished { get; private set; }
         public string effectType; 
         public bool didDamage = false; 
-        enum EffectType {
-            Explosion, Fire, Shield, TeleportOut, TeleportIn
-        }
 
         public Effect(ContentManager content, Vector2 spawnPosition, string entityKey, string effectType)
         {

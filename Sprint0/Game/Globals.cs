@@ -61,8 +61,5 @@ namespace Sprint0
             CSVParser.SavePlayerData(playerDataFile, playerData);
         }
 
-        public enum ProjectileTypeEnum{
-            Sniper, Rocket, Shotgun, Mine, Teleporter
-        }
     }
 }

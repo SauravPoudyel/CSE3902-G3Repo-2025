@@ -9,7 +9,7 @@ namespace Sprint0
     {
         void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount);
         void Update();
-        void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null);
+        void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 0f);
     }
 
     public class StaticSprite : ISprite
@@ -25,7 +25,7 @@ namespace Sprint0
 
         public void Update() { }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 0f)
         {
             // Use the center of the frame as the default origin.
             Vector2 origin = pivot ?? new Vector2(frame.Width / 2f, frame.Height / 2f);
@@ -39,9 +39,11 @@ namespace Sprint0
                 origin, 
                 1f,
                 effects,
-                0f
+                scale
             );
         }
+
+        
 
         }
 
@@ -131,7 +133,7 @@ namespace Sprint0
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 0f)
         {
             if (frames.Count == 0) return;
 
@@ -147,7 +149,7 @@ namespace Sprint0
                 origin,
                 1f,
                 effects,
-                0f
+                scale
             );
         }
     }
@@ -178,7 +180,7 @@ namespace Sprint0
 
         public void Update() { }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 0f)
         {
             if (font != null && !string.IsNullOrEmpty(text))
             {
@@ -193,7 +195,7 @@ namespace Sprint0
                     origin,
                     scale,
                     effects,
-                    0f
+                    scale
                 );
             }
         }
