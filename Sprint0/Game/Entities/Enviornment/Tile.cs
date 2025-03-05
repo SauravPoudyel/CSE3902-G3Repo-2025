@@ -29,8 +29,9 @@ namespace Sprint0
         }
 
         private TileType tileType;
-        private ISprite sprite;
+        private StaticSprite sprite;
         private Vector2 position;
+        private float spriteScaler = 0.9375f; // = 120/128, used to scale between the spritesheet size of 128x128 and grid size of 120
 
         public Tile(ContentManager content, TileType type, Vector2 position)
         {
@@ -104,7 +105,7 @@ namespace Sprint0
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            sprite.Draw(spriteBatch, position, SpriteEffects.None, 0f);
+            sprite.Draw(spriteBatch, position, spriteScaler, SpriteEffects.None, 0f);
         }
     }
 }
