@@ -12,6 +12,18 @@ namespace Sprint0
         OilBarrel_Black,
         BarbedFence,
         Oil,
+        RockPile,
+        Factory,
+        RockPileVar1,
+        RockPileVar2,
+        Hosue,
+        House2,
+        SmallTree,
+        Fence,
+        DeadTree,
+        Garage,
+        CoconutTree,
+        SmallBarrel,
     }
 
     public abstract class BaseBlock : Entity
