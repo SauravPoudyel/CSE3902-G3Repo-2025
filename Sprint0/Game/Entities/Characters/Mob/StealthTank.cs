@@ -24,7 +24,7 @@ namespace Sprint0
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.StealthTank; // Use ShieldTank to represent the stealth enemy
+            currentMobType = EntityKeys.MobType.StealthTank; // Use ShieldTank to represent the stealth enemy
             defaultMovementSpeed = 50f;
             normalSpeed = defaultMovementSpeed;
             aggressiveSpeed = normalSpeed * 1.7f;
@@ -59,7 +59,7 @@ namespace Sprint0
             }
         }
 
-        protected override void ChangeMobType(MobType type)
+        protected override void ChangeMobType(EntityKeys.MobType type)
         {
             currentMobType = type;
             InitializeMob();

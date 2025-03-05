@@ -11,7 +11,7 @@ namespace Sprint0
 
     public abstract class Mob : Character
     {
-        protected MobType currentMobType;
+        protected EntityKeys.MobType currentMobType;
         protected float defaultMovementSpeed;
         protected float firingTimer;
         protected float firingInterval;

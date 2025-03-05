@@ -18,7 +18,7 @@ namespace Sprint0
 
         public enum MobType
         {
-        BossTank, SmallEnemy, ExplodingTank, Turret, TurningTank, Plane
+        BossTank, SmallEnemy, ExplodingTank, Turret, TurningTank, Plane, ShieldTank, SwarmingTank, HoveringTank, StealthTank, HealerTank
         }
 
         public enum EffectType {

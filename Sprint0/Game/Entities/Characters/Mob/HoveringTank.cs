@@ -16,7 +16,7 @@ namespace Sprint0
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.HoveringTank; 
+            currentMobType = EntityKeys.MobType.HoveringTank; 
             defaultMovementSpeed = 80f;
             firingInterval = 1.4f;
 
@@ -38,7 +38,7 @@ namespace Sprint0
             PointCannonPlayer();
         }
 
-        protected override void ChangeMobType(MobType type)
+        protected override void ChangeMobType(EntityKeys.MobType type)
         {
             currentMobType = type;
             InitializeMob();

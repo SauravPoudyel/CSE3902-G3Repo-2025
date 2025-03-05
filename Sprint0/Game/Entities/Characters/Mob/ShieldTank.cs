@@ -40,7 +40,7 @@ namespace Sprint0
             FollowPlayer(aggressionLevel);
         }
 
-        protected override void ChangeMobType(MobType type)
+        protected override void ChangeMobType(EntityKeys.MobType type)
         {
             currentMobType = type;
             InitializeMob();
