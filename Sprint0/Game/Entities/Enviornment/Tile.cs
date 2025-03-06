@@ -32,6 +32,10 @@ namespace Sprint0
             TopLeftGrassCurve,
             BottomRightGrassCurve,
             BottomLeftGrassCurve,
+            Forest,
+            SandShipWreckage,
+            Water,
+            ItemSpawn,
         }
 
         private TileType tileType;
@@ -123,6 +127,18 @@ namespace Sprint0
                     break;
                 case TileType.BottomLeftGrassCurve:
                     sprite.LoadContent(content, "TDTanksAllSprites", 1 * 128, 3 * 128, 128, 128, 1);
+                    break;
+                case TileType.Forest:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 512, 1640, 128, 128, 1);
+                    break;
+                case TileType.SandShipWreckage:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 0, 2872, 128, 128, 1);
+                    break;
+                case TileType.Water:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 1024, 2744, 128, 128, 1);
+                    break;
+                case TileType.ItemSpawn:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 384, 1512, 128, 128, 1);
                     break;
             }
         }
