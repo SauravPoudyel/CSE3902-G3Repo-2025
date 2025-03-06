@@ -15,8 +15,8 @@ namespace Sprint0
 
             commandMap = new Dictionary<string, ICommand>
             {
-                {"Quit", new GameCommands.QuitCommand(game)},
-                {"Reset", new GameCommands.ResetCommand(game)},
+                {"Quit", new GameCommands.QuitCommand()},
+                {"Reset", new GameCommands.ResetCommand()},
                 {"StartGame", new GameCommands.StartGameCommand()},
                 {"ShowStartMenu", new GameCommands.ShowStartMenuCommand()},
 

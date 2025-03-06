@@ -126,7 +126,6 @@ namespace Sprint0
                 if (state.LeftButton == ButtonState.Pressed)
                 {
                     Point clickPos = new Point(state.X, state.Y);
-                    game.GameManager.GetBlockingScreen().HandleClick(clickPos);
                 }
             }
             else

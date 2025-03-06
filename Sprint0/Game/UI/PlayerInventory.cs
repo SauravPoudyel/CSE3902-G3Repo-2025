@@ -17,9 +17,9 @@ namespace Sprint0
         {
             this.content = content; // Store for later use.
             hudElements = new List<IHUD>();
-            hudElements.Add(new ShieldHUD(content.Load<Texture2D>("ShieldIcon")));
-            hudElements.Add(new HealthHUD(content.Load<Texture2D>("HealthIcon")));
-            hudElements.Add(new AmmoHUD(content.Load<Texture2D>("AmmoIcon")));
+            hudElements.Add(new ShieldHUD(content.Load<Texture2D>("UI/ShieldIcon")));
+            hudElements.Add(new HealthHUD(content.Load<Texture2D>("UI/HealthIcon")));
+            hudElements.Add(new AmmoHUD(content.Load<Texture2D>("UI/AmmoIcon")));
             hudElements.Add(new CoinHUD(content.Load<Texture2D>("PickupItemSpritesheet2")));
 
             // Initialize 5 inventory slots.
@@ -54,11 +54,6 @@ namespace Sprint0
                 hud.Draw(spriteBatch);
             foreach (var slot in inventorySlots)
                 slot.Draw(spriteBatch);
-        }
-
-        public void HandleClick(Point clickLocation)
-        {
-            // No click handling needed.
         }
 
         public void SelectSlot(int slotIndex)

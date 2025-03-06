@@ -6,9 +6,9 @@ using static Sprint0.GameCommands;
 
 namespace Sprint0;
 
-public class StartButton : Button
+public class RestartButton : Button
 {
-    public StartButton(Texture2D texture, Texture2D backgroundTexture, Vector2 vector, Dictionary<string, object> paramters) {
+    public RestartButton(Texture2D texture, Texture2D backgroundTexture, Vector2 vector, Dictionary<string, object> paramters) {
         this.parameters = paramters;
         this.texture = texture;
         this.backgroundTexture = backgroundTexture;
@@ -19,7 +19,7 @@ public class StartButton : Button
         mouseState = Mouse.GetState();
         if (IsClicked())
         {
-            new StartGameCommand().Execute(parameters);
+            new ResetCommand().Execute(parameters);
         }
         previousMouseState = mouseState;
     }
@@ -27,8 +27,8 @@ public class StartButton : Button
     {
         Color backgroundColor = IsHovered() ? Color.White : Color.White * 0.5f;
         spriteBatch.Draw(backgroundTexture, position, backgroundColor);
-        int x = (int)position.X + (backgroundTexture.Width - texture.Width) / 2;
-        int y = (int)position.Y + (backgroundTexture.Height - texture.Height) / 2;
-        spriteBatch.Draw(texture, new Rectangle(x, y, 68, 68), Color.White);
+        int x = (int)position.X + 25;
+        int y = (int)position.Y + 25;
+        spriteBatch.Draw(texture, new Vector2(x, y), Color.White);
     }
 }
