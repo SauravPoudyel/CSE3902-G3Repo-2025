@@ -11,10 +11,11 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                // For collisions between Player and RigidBlock or Mob.
+                // For collisions between Player and RigidBlock, FlammableBlock, or Mob.
                 if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
                     ((parameters.ContainsKey("target") && (parameters["target"] is RigidBlock)) ||
-                    (parameters.ContainsKey("target") && (parameters["target"] is Mob))))
+                    (parameters.ContainsKey("target") && (parameters["target"] is Mob)) || 
+                    (parameters.ContainsKey("target") && (parameters["target"] is FlammableBlock))))
                 {
                     // Bounce the player backwards.
                     Vector2 backwardDir = new Vector2(-(float)Math.Sin(player.bodyRotation),
@@ -64,6 +65,7 @@ namespace Sprint0
                         mob3.SetVelocity(Vector2.Zero);
                     }
                 }
+                
             }
 
             private void ResolveCollision(Entity movingEntity, Entity otherEntity)
