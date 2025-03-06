@@ -68,5 +68,27 @@ namespace Sprint0
                 }
             }
         }
+
+        public class IncreaseLevelCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    gameManager.LevelNumber++;
+                }
+            }
+        }
+
+        public class DecreaseLevelCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    if(gameManager.LevelNumber>1) gameManager.LevelNumber--;
+                }
+            }
+        }
     }
 }

@@ -26,6 +26,7 @@ namespace Sprint0
         public PlayerInventory playerInventory { get; private set; }
         private bool gameStarted;
         private bool gamePaused;
+        private int levelNumber;
 
         public bool GameStarted
         {
@@ -47,6 +48,16 @@ namespace Sprint0
             }
         }
 
+        public int LevelNumber
+        {
+            get { return levelNumber; }
+            set
+            {
+                levelNumber = value;
+                UpdateActiveScreen();
+            }
+        }
+
         public GameManager(Game1 game, bool started = false)
         {
             AudioManager.LoadContent();
@@ -54,6 +65,8 @@ namespace Sprint0
             Instance = this;
             Game = game;
             gameStarted = started;
+            gamePaused = false;
+            levelNumber = 1;
             entities = new Dictionary<string, Entity>();
             tiles = new List<Tile>();
             collisionManager = new CollisionManager();
@@ -132,13 +145,13 @@ namespace Sprint0
 
         private void InitializeTiles()
         {
-            levelManager.LoadContent(content);
+            levelManager.LoadContent(content, "Level1");
             tiles = levelManager.LoadLevelTiles();
         }
 
         private void InitializeEntities()
         {
-            levelManager.LoadContent(content);
+            levelManager.LoadContent(content, "Level1");
             entities = levelManager.LoadLevelEntities();
 
             PickupItem pickupItem = new PickupItem(content); //test item
