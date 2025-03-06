@@ -18,7 +18,7 @@ namespace Sprint0
                 {"Quit", new GameCommands.QuitCommand(game)},
                 {"Reset", new GameCommands.ResetCommand(game)},
                 {"StartGame", new GameCommands.StartGameCommand()},
-                {"ShowStartMenu", new GameCommands.ShowStartMenuCommand()},
+                {"ShowPauseMenu", new GameCommands.ShowPauseMenuCommand()},
 
                 {"Static", new GraphicCommands.DisplayStaticGameCommand()},
                 {"Animated", new GraphicCommands.DisplayAnimatedGameCommand()},

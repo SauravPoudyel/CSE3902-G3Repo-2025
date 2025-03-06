@@ -25,6 +25,7 @@ namespace Sprint0
         private PlayerData playerData;
         public PlayerInventory playerInventory { get; private set; }
         private bool gameStarted;
+        private bool gamePaused;
 
         public bool GameStarted
         {
@@ -32,6 +33,16 @@ namespace Sprint0
             set
             {
                 gameStarted = value;
+                UpdateActiveScreen();
+            }
+        }
+
+        public bool GamePaused
+        {
+            get { return gamePaused; }
+            set
+            {
+                gamePaused = value;
                 UpdateActiveScreen();
             }
         }
@@ -106,6 +117,9 @@ namespace Sprint0
             if (!gameStarted)
             {
                 activeScreen = new StartMenu(content, Game.GraphicsDevice, Game);
+                blockingScreen = activeScreen;
+            } else if (gamePaused) {
+                activeScreen = new PauseMenu(content, Game.GraphicsDevice, Game);
                 blockingScreen = activeScreen;
             }
             else

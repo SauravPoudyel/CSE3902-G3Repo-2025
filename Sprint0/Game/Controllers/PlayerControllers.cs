@@ -35,7 +35,7 @@ namespace Sprint0
                 { Keys.I, "CycleItemNext" },
                 { Keys.O, "CycleEnemyPrev" },
                 { Keys.P, "CycleEnemyNext" },
-                { Keys.Escape, "ShowStartMenu" }
+                { Keys.Escape, "ShowPauseMenu" }
             };
         }
 
