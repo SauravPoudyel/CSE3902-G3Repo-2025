@@ -6,17 +6,17 @@ using System.Collections.Generic;
 
 namespace Sprint0
 {
-    public class BombProjectile : Projectile
+    public class MineProjectile : Projectile
     {
         private float explosionTimer;
         private const float ExplosionDelay = 2f;
         private const float FrameTime = 0.25f;
 
-        public BombProjectile(ContentManager content, string entityKey, Character owner) : base(content, entityKey, owner)
+        public MineProjectile(ContentManager content, string entityKey, Character owner) : base(content, entityKey, owner)
         {
-            AddSprite("Bomb", new AnimatedSprite(FrameTime, AnimatedSprite.FrameOrientation.Vertical));
-            sprites["Bomb"].LoadContent(content, "TDTanksAllSprites", 1014, 936, 48, 48, 2);
-            SetSprite("Bomb");
+            AddSprite("Mine", new AnimatedSprite(FrameTime, AnimatedSprite.FrameOrientation.Vertical));
+            sprites["Mine"].LoadContent(content, "TDTanksAllSprites", 1014, 936, 48, 48, 2);
+            SetSprite("Mine");
 
             baseSpeed = 0f;
             //Set the maxDistance to a really large number so it will not explode due to distance traveled
@@ -46,7 +46,7 @@ namespace Sprint0
             commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
             var destroyParams = new Dictionary<string, object>
             {
-                {"destroyEntity", entityKey}
+                {"destroyEntity", EntityKey}
             };
             commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
         }

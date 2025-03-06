@@ -14,7 +14,7 @@ namespace Sprint0
 
     public class StaticSprite : ISprite
     {
-        private Texture2D spriteSheet;
+        public Texture2D spriteSheet {get; set;}
         private Rectangle frame;
 
         public void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
@@ -29,7 +29,7 @@ namespace Sprint0
         {
             // Use the center of the frame as the default origin.
             Vector2 origin = pivot ?? new Vector2(frame.Width / 2f, frame.Height / 2f);
-
+            
             spriteBatch.Draw(
                 spriteSheet,
                 position,
@@ -43,12 +43,30 @@ namespace Sprint0
             );
         }
 
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, float scale = 1f, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null)
+        {
+            // Use the center of the frame as the default origin.
+            Vector2 origin = pivot ?? new Vector2(frame.Width / 2f, frame.Height / 2f);
+            
+            spriteBatch.Draw(
+                spriteSheet,
+                position,
+                frame,
+                color ?? Color.White,
+                rotation, 
+                origin, 
+                scale,
+                effects,
+                0f
+            );
+        }
+
         }
 
 
     public class AnimatedSprite : ISprite
     {
-        private Texture2D spriteSheet;
+        public Texture2D spriteSheet {get; set;}
         private List<Rectangle> frames;
         private int currentFrame;
         private float frameTime;

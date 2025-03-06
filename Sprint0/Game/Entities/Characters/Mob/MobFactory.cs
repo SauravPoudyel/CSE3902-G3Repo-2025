@@ -1,16 +1,11 @@
+using System;
 using Microsoft.Xna.Framework.Content;
 
 namespace Sprint0
 {
     public static class MobFactory
     {
-        private static MobType[] allMobTypes = { MobType.BossTank, MobType.SmallEnemy, MobType.ExplodingTank, MobType.Turret, MobType.TurningTank, MobType.Plane };
         private static int currentIndex = 0;
-
-        public static Mob CreateMob(ContentManager content)
-        {
-            return CreateMob(allMobTypes[currentIndex], content);
-        }
 
         public static Mob CreateMob(MobType type, ContentManager content)
         {
@@ -18,33 +13,39 @@ namespace Sprint0
             {
                 case MobType.BossTank: return new BossTank(content);
                 case MobType.SmallEnemy: return new SmallEnemy(content);
-                case MobType.ExplodingTank: return new ExplodingTank(content);
                 case MobType.Turret: return new Turret(content);
-                case MobType.TurningTank: return new TurningTank(content);
                 case MobType.Plane: return new Plane(content);
+                case MobType.ShieldTank: return new ShieldTank(content);
+                case MobType.SwarmingTank: return new SwarmingTank(content);
+                case MobType.HoveringTank: return new HoveringTank(content);
+                case MobType.StealthTank: return new StealthTank(content);
+                case MobType.HealerTank: return new HealerTank(content);
                 default: return new BossTank(content);
             }
         }
 
-        public static void CycleNextMob(GameManager gm)
+        public static void CycleNextMob(GameManager gameManager)
         {
-            currentIndex = (currentIndex + 1) % allMobTypes.Length;
-            ReplaceMob(gm);
+            currentIndex = (currentIndex + 1) % Enum.GetNames(typeof(MobType)).Length;
+            ReplaceMob(gameManager);
         }
 
-        public static void CyclePreviousMob(GameManager gm)
+        public static void CyclePreviousMob(GameManager gameManager)
         {
-            currentIndex = (currentIndex - 1 + allMobTypes.Length) % allMobTypes.Length;
-            ReplaceMob(gm);
+            currentIndex = (currentIndex - 1 + Enum.GetNames(typeof(MobType)).Length) % Enum.GetNames(typeof(MobType)).Length;
+            ReplaceMob(gameManager);
         }
 
-        private static void ReplaceMob(GameManager gm)
+        private static void ReplaceMob(GameManager gameManager)
         {
-            if (gm.GetEntity("mob") != null)
-                gm.RemoveEntity("mob");
-            var newMob = CreateMob(allMobTypes[currentIndex], gm.GetContent());
+            if (gameManager.GetEntity("mob") != null)
+                gameManager.RemoveEntity("mob");
+
+            var mobTypes = (MobType[])Enum.GetValues(typeof(MobType));
+            var newMob = CreateMob(mobTypes[currentIndex], gameManager.GetContent());
+
             newMob.SetPosition(new Microsoft.Xna.Framework.Vector2(Globals.SCREENWIDTH / 2 + 100, 400));
-            gm.SetEntity("mob", newMob);
+            gameManager.SetEntity("mob", newMob);
         }
     }
 }

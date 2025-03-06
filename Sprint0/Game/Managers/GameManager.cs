@@ -16,25 +16,30 @@ namespace Sprint0
         private CollisionManager collisionManager;
         private SpriteManager spriteManager;
         private ContentManager content;
+        private LevelManager levelManager;
         public EventManager eventManager { get; private set; }
-        private List<IScreen> screens;
         public Game1 Game { get; private set; }
-
-        // Persistent player data and HUD overlay
+        private List<IScreen> screens;
+        private IScreen activeScreen;
+        private IScreen blockingScreen;
         private PlayerData playerData;
-        private PlayerInventory playerInventory;
-
-        // Flag to indicate if the game has started (i.e. start menu dismissed)
+        public PlayerInventory playerInventory { get; private set; }
         private bool gameStarted;
+
         public bool GameStarted
         {
             get { return gameStarted; }
-            set { gameStarted = value; }
+            set
+            {
+                gameStarted = value;
+                UpdateActiveScreen();
+            }
         }
 
-        // Allow external initialization of gameStarted (default is false)
         public GameManager(Game1 game, bool started = false)
         {
+            AudioManager.LoadContent();
+            AudioManager.PlayMusic(AudioManager.MusicKey.Background);
             Instance = this;
             Game = game;
             gameStarted = started;
@@ -43,6 +48,7 @@ namespace Sprint0
             collisionManager = new CollisionManager();
             spriteManager = new SpriteManager();
             eventManager = new EventManager(game, this);
+            levelManager = new LevelManager();
             screens = new List<IScreen>();
         }
 
@@ -58,7 +64,11 @@ namespace Sprint0
 
         public Entity GetEntity(string entityKey)
         {
-            return entities.ContainsKey(entityKey) ? entities[entityKey] : null;
+            if (entities.ContainsKey(entityKey))
+            {
+                return entities[entityKey];
+            }
+            return null;
         }
 
         public void SetEntity(string key, Entity entity)
@@ -79,167 +89,149 @@ namespace Sprint0
             content = contentManager;
             Globals.LoadGlobalSprites(content);
             Globals.LoadGlobalFonts(content);
-            Globals.LoadPlayerData(); 
+            Globals.LoadPlayerData();
             InitializeTiles();
             InitializeEntities();
 
             // Load persistent player data from CSV (located in Data\playerData.csv)
-            string playerDataFile = Path.Combine("Data", "playerData.csv");
+            string playerDataFile = Path.Combine(Globals.projectDirectory, "\\Data\\playerDataFile.csv");
             playerData = PlayerData.LoadData(playerDataFile);
-
-            // Create and load the player inventory HUD overlay (nonblocking)
             playerInventory = new PlayerInventory(content);
+            UpdateActiveScreen();
+        }
 
-            // Only add the Start Menu if the game has not yet started.
+        private void UpdateActiveScreen()
+        {
+            screens.Clear();
             if (!gameStarted)
             {
-                StartMenu startMenu = new StartMenu(content, Game.GraphicsDevice, Game);
-                screens.Insert(0, startMenu);
+                activeScreen = new StartMenu(content, Game.GraphicsDevice, Game);
+                blockingScreen = activeScreen;
             }
+            else
+            {
+                activeScreen = playerInventory;
+                blockingScreen = null;
+            }
+            screens.Add(activeScreen);
         }
 
         private void InitializeTiles()
         {
-            int tileSize = 128;
-            int rows = (Globals.SCREENHEIGHT / tileSize) + 1;
-            int cols = (Globals.SCREENWIDTH / tileSize) + 1;
-
-            for (int y = 0; y < rows; y++)
-            {
-                for (int x = 0; x < cols; x++)
-                {
-                    Tile.TileType type = Tile.TileType.Grass;
-                    tiles.Add(new Tile(content, type, new Vector2(x * tileSize, y * tileSize)));
-                }
-            }
+            levelManager.LoadContent(content);
+            tiles = levelManager.LoadLevelTiles();
         }
 
         private void InitializeEntities()
         {
-            Entity player = new Player(content);
-            player.SetPosition(new Vector2(Globals.SCREENWIDTH / 2, 300));
-            entities.Add("player", player);
+            levelManager.LoadContent(content);
+            entities = levelManager.LoadLevelEntities();
 
-            Mob mob = MobFactory.CreateMob(content);
-            mob.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 + 100, 400));
-            entities.Add("mob", mob);
-
-            PickupItem pickupItem = new PickupItem(content);
-            pickupItem.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 + 170, 180));
-            entities.Add("pickupItem", pickupItem);
-
-            Blocks blocks = new Blocks(content);
-            blocks.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 - 300, 480));
-            entities.Add("blocks", blocks);
-
-            // Create different block types at various positions
-            List<BaseBlock> levelBlocks = new List<BaseBlock>();
-
-            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.Tree, content, new Vector2(200, 800), 0.3f));
-            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.Box, content, new Vector2(400, 800), 0.3f));
-            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.OilBarrel_Red, content, new Vector2(600, 800), 0.3f));
-            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.OilBarrel_Black, content, new Vector2(800, 800), 0.3f));
-            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.BarbedFence, content, new Vector2(1000, 800), 0.3f));
-            levelBlocks.Add(BlockFactory.CreateBlock(BlockSpriteKey.Oil, content, new Vector2(1200, 800), 0.3f));
-
-            // Add blocks to entities dictionary
-            int blockIndex = 0;
-            foreach (var block in levelBlocks)
-            {
-                if (block is FlammableBlock flammable)
-                {
-                    string key = $"flammable_{Guid.NewGuid().ToString("N")}";
-                    flammable.SetEntityKey(key);
-                    entities.Add(key, flammable);
-                }
-                else
-                {
-                    entities.Add($"block_{blockIndex++}", block);
-                }
-            }
-
+            PickupItem pickupItem = new PickupItem(content); //test item
+            pickupItem.SetPosition(new Vector2(200, 700));
+            pickupItem.EntityKey = "pickupItem";
+            entities.Add(pickupItem.EntityKey, pickupItem);
+            
             ProjectileFactory.Initialize(content);
         }
 
         public void Update()
         {
-            // If the game has started, update entities normally.
-            if (gameStarted)
+            if (blockingScreen != null && blockingScreen.BlocksInput)
             {
-                foreach (var entity in entities.Values)
-                {
-                    entity.Update();
-                    eventManager.CollectCommandRequests(entity.GetCommandQueue());
-                }
-                collisionManager.Update(entities);
-                spriteManager.Update();
-                eventManager.ProcessCommandRequests();
-                if (!screens.Contains(playerInventory))
-                {
-                    screens.Add(playerInventory);
-                }
+                blockingScreen.Update();
+                return;
             }
-            // Otherwise, if the game hasn't started, update entities only if no blocking screen is present.
-            else
+            foreach (Entity entity in entities.Values)
             {
-                if (GetActiveScreen() == null)
-                {
-                    foreach (var entity in entities.Values)
-                    {
-                        entity.Update();
-                        eventManager.CollectCommandRequests(entity.GetCommandQueue());
-                    }
-                    collisionManager.Update(entities);
-                    spriteManager.Update();
-                    eventManager.ProcessCommandRequests();
-                }
+                entity.Update();
+                eventManager.CollectCommandRequests(entity.GetCommandQueue());
             }
-
-            // Always update all screens (HUD and menus).
-            foreach (var screen in screens)
-                screen.Update();
+            collisionManager.Update(entities);
+            spriteManager.Update();
+            playerInventory.Update();
+            eventManager.ProcessCommandRequests();
+            if (activeScreen != null)
+            {
+                activeScreen.Update();
+            }
+            int j;
+            for (j = 0; j < screens.Count; j++)
+            {
+                screens[j].Update();
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            // Draw background tiles.
-            foreach (var tile in tiles)
-                tile.Draw(spriteBatch);
-
-            // Draw game entities.
-            foreach (var entity in entities.Values)
+            int i;
+            for (i = 0; i < tiles.Count; i++)
+            {
+                tiles[i].Draw(spriteBatch);
+            }
+            foreach (Entity entity in entities.Values)
+            {
                 entity.Draw(spriteBatch);
-
+            }
             spriteManager.Draw(spriteBatch);
-
-            // Draw overlay screens (e.g., HUD, menus).
-            foreach (var screen in screens)
-                screen.Draw(spriteBatch);
+            if (activeScreen != null)
+            {
+                activeScreen.Draw(spriteBatch);
+            }
+            if (blockingScreen != null)
+            {
+                blockingScreen.Draw(spriteBatch);
+            }
+            int j;
+            for (j = 0; j < screens.Count; j++)
+            {
+                screens[j].Draw(spriteBatch);
+            }
         }
 
         public void AddScreen(IScreen screen)
         {
-            screens.Add(screen);
+            if (!screens.Contains(screen))
+            {
+                screens.Add(screen);
+                activeScreen = screen;
+            }
         }
 
         public void RemoveScreen(IScreen screen)
         {
-            screens.Remove(screen);
+            if (screens.Contains(screen))
+            {
+                screens.Remove(screen);
+                if (screens.Count > 0)
+                {
+                    activeScreen = screens[screens.Count - 1];
+                }
+                else
+                {
+                    activeScreen = null;
+                }
+            }
         }
 
         public IScreen GetActiveScreen()
         {
-            return screens.Count > 0 ? screens[0] : null;
+            return activeScreen;
         }
 
         public IScreen GetBlockingScreen()
         {
-            foreach (var screen in screens)
-            {
-                if (screen.BlocksInput)
-                    return screen;
-            }
-            return null;
+            return blockingScreen;
+        }
+
+        public void SetBlockingScreen(IScreen screen)
+        {
+            blockingScreen = screen;
+        }
+
+        public void ClearBlockingScreen()
+        {
+            blockingScreen = null;
         }
     }
 }

@@ -43,11 +43,14 @@ namespace Sprint0
                 {"PlayerAction", new ActionCommands.PlayerActionCommand()},
                 {"RequestPlayerPosition", new ActionCommands.RequestPlayerPositionCommand() },
                 {"Damage", new ActionCommands.DamageCommand()},
+                {"HealRadius", new ActionCommands.HealRadiusCommand()},
 
                 {"CollisionPush", new CollisionCommands.CollisionPushCommand()},
                 {"CollisionStop", new CollisionCommands.CollisionStopCommand()},
                 {"CollisionPickUp", new CollisionCommands.CollisionPickUpCommand()},
-                {"CollisionProjectileDestroy", new CollisionCommands.CollisionProjectileDestroy()},
+                {"CollisionHurt", new CollisionCommands.CollisionHurtCommand()},
+                {"CollisionProjectileDestroy", new CollisionCommands.CollisionProjectileDestroyCommand()},
+                {"CollisionProjectileReflect", new CollisionCommands.CollisionProjectileReflectCommand()},
                 {"DestroyFlammableCommand", new CollisionCommands.DestroyFlammableCommand()},
                 {"AutoDestroy", new ActionCommands.AutoDestroyCommand()}
 

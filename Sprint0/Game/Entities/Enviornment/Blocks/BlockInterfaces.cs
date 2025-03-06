@@ -15,6 +15,7 @@ namespace Sprint0
     }
     public interface IFlammable 
     {
+        bool IsIgnited { get; }
         void Ignite();
     }
 }
