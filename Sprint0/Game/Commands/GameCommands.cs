@@ -75,7 +75,10 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    gameManager.LevelNumber++;
+                    if(gameManager.LevelNumber<99) {
+                        gameManager.LevelNumber++;
+                        gameManager.UpdateLevel();
+                    }
                 }
             }
         }
@@ -86,7 +89,10 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    if(gameManager.LevelNumber>1) gameManager.LevelNumber--;
+                    if(gameManager.LevelNumber>1) {
+                        gameManager.LevelNumber--;
+                        gameManager.UpdateLevel();
+                    }
                 }
             }
         }

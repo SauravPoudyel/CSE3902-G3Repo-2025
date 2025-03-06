@@ -12,10 +12,11 @@ namespace Sprint0
         public LevelManager() {
             level = new Level();
         }
-        public void LoadContent(ContentManager content) {
-
-            string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\Sprint3FuncLevelParse.csv"); //Sprint0\Data\LevelParseTest2.csv
-            string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\LevelTilesParseTest3.csv");
+        public void LoadContent(ContentManager content, string levelName) {
+            //string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\Sprint3FuncLevelParse.csv"); //Sprint0\Data\LevelParseTest2.csv
+            //string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\LevelTilesParseTest3.csv");
+            string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\" + levelName + "_Entities.csv");
+            string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\" + levelName + "_Tiles.csv");
             level = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
         }
         

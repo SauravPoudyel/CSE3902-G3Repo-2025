@@ -114,6 +114,7 @@ namespace Sprint0
             Globals.LoadGlobalSprites(content);
             Globals.LoadGlobalFonts(content);
             Globals.LoadPlayerData();
+            LoadLevelContent();
             InitializeTiles();
             InitializeEntities();
 
@@ -142,23 +143,22 @@ namespace Sprint0
             }
             screens.Add(activeScreen);
         }
-
+        public void UpdateLevel(){
+            LoadLevelContent();
+            InitializeTiles();
+            InitializeEntities();
+        }
+        private void LoadLevelContent() {
+            levelManager.LoadContent(content, "Level"+levelNumber.ToString());
+        }
         private void InitializeTiles()
         {
-            levelManager.LoadContent(content, "Level1");
             tiles = levelManager.LoadLevelTiles();
         }
 
         private void InitializeEntities()
         {
-            levelManager.LoadContent(content, "Level1");
             entities = levelManager.LoadLevelEntities();
-
-            PickupItem pickupItem = new PickupItem(content); //test item
-            pickupItem.SetPosition(new Vector2(200, 700));
-            pickupItem.EntityKey = "pickupItem";
-            entities.Add(pickupItem.EntityKey, pickupItem);
-            
             ProjectileFactory.Initialize(content);
         }
 
