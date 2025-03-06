@@ -1,2 +1,2 @@
-2/27/25 - 
-- Keyboard & Mouse: Will likely want to change having multiple buttons, each for a projectile. To having one button to shoot, and a way to cycle or change projectile type. Will eventually need to change the key mappings to not cycle through blocks but that’s closer to the end of the project
+Payton, 2/27/25 - 
+- PlayerControllers.cs: Will likely want to change having multiple buttons, each for a projectile. To having one button to shoot, and a way to cycle or change projectile type. Will eventually need to change the key mappings to not cycle through blocks but that’s closer to the end of the project

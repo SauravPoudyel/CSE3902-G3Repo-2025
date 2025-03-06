@@ -1,4 +1,5 @@
-2/27/25 - 
-- Action Commands: The system for create projectile and create entity are kinda flawed in that the ownership system is a little unintuitive
+Harry, 2/27/25 - 
+- Action Commands.cs: The system for create projectile and create entity are kinda flawed in that the ownership system is a little unintuitive
 
-- Commands for moveable blocks are kinda complicated and should be made easier. The command has to be used across multiple classes to make sure it works and it's easy to forget what's already been done. 
+Daoping, 2/27/25 - 
+- GameCommands.cs, CommandRequest.cs, MovementCommands.cs: Commands for moveable blocks are kinda complicated and should be made easier. The command has to be used across multiple classes to make sure it works and it's easy to forget what's already been done. 
