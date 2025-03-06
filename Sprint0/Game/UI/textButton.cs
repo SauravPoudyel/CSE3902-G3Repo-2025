@@ -22,7 +22,7 @@ namespace Sprint0
         override public void Update()
         {
             mouseState = Mouse.GetState();
-            if (IsClicked())
+            if (IsClicked() && command != null)
             {
                 command.Execute(parameters);
             }
