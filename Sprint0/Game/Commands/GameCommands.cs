@@ -46,21 +46,47 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    gameManager.GameStarted = true; // This will automatically switch to Player Inventory screen
+                    if(!gameManager.GameStarted) {
+                        gameManager.GameStarted = true; // This will automatically switch to Player Inventory screen
+                    } else if(gameManager.GamePaused) {
+                        gameManager.GamePaused = false;
+                    }
                 }
             }
         }
 
-        public class ShowStartMenuCommand : ICommand
+        public class ShowPauseMenuCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    if (!gameManager.GameStarted)
+                    if (gameManager.GameStarted)
                     {
-                        gameManager.GameStarted = false; // Ensures Start Menu is the only screen if game hasn't started
+                        gameManager.GamePaused = true;
                     }
+                }
+            }
+        }
+
+        public class IncreaseLevelCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    gameManager.LevelNumber++;
+                }
+            }
+        }
+
+        public class DecreaseLevelCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    if(gameManager.LevelNumber>1) gameManager.LevelNumber--;
                 }
             }
         }

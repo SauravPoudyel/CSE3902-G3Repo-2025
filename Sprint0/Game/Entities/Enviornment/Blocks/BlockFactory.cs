@@ -18,6 +18,18 @@ namespace Sprint0
             blockCreators.Add(BlockSpriteKey.OilBarrel_Red, CreateFlammableBlock);
             blockCreators.Add(BlockSpriteKey.OilBarrel_Black, CreateFlammableBlock);
             blockCreators.Add(BlockSpriteKey.Oil, CreateFlammableBlock);
+            blockCreators.Add(BlockSpriteKey.RockPile, CreateRigidBlock);
+            blockCreators.Add(BlockSpriteKey.Factory, CreateRigidBlock);
+            blockCreators.Add(BlockSpriteKey.RockPileVar1, CreateRigidBlock);
+            blockCreators.Add(BlockSpriteKey.RockPileVar2, CreateRigidBlock);
+            blockCreators.Add(BlockSpriteKey.Hosue, CreateRigidBlock);
+            blockCreators.Add(BlockSpriteKey.House2, CreateRigidBlock);
+            blockCreators.Add(BlockSpriteKey.SmallTree, CreateRigidBlock);
+            blockCreators.Add(BlockSpriteKey.Fence, CreateRigidBlock);
+            blockCreators.Add(BlockSpriteKey.DeadTree, CreateRigidBlock);
+            blockCreators.Add(BlockSpriteKey.Garage, CreateRigidBlock);
+            blockCreators.Add(BlockSpriteKey.CoconutTree, CreateRigidBlock);
+            blockCreators.Add(BlockSpriteKey.SmallBarrel, CreateFlammableBlock);
         }
 
         public static BaseBlock CreateBlock(BlockSpriteKey spriteKey, ContentManager content, Vector2 position, float frameTime)

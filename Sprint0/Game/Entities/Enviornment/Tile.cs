@@ -22,10 +22,20 @@ namespace Sprint0
             SandCrossroad,
             VerticalGrassRoad,
             VerticalSandRoad,
+            TopGrassBottomSandRoad,
+            BottomGrassTopSandRoad,
             LeftGrassRightSandRoad,
             RightGrassLeftSandRoad,
             HorizontalGrassRoad,
-            HorizontalSandRoad
+            HorizontalSandRoad,
+            TopRightGrassCurve,
+            TopLeftGrassCurve,
+            BottomRightGrassCurve,
+            BottomLeftGrassCurve,
+            Forest,
+            SandShipWreckage,
+            Water,
+            ItemSpawn,
         }
 
         private TileType tileType;
@@ -99,6 +109,36 @@ namespace Sprint0
                     break;
                 case TileType.VerticalSandRoad:
                     sprite.LoadContent(content, "TDTanksAllSprites", 2 * 128, 6 * 128, 128, 128, 1);
+                    break;
+                case TileType.TopGrassBottomSandRoad:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 4 * 128, 7 * 128, 128, 128, 1);
+                    break;
+                case TileType.BottomGrassTopSandRoad:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 4 * 128, 3 * 128, 128, 128, 1);
+                    break;
+                case TileType.TopRightGrassCurve:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 0 * 128, 4 * 128, 128, 128, 1);
+                    break;
+                case TileType.TopLeftGrassCurve:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 0 * 128, 5 * 128, 128, 128, 1);
+                    break;
+                case TileType.BottomRightGrassCurve:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 1 * 128, 2 * 128, 128, 128, 1);
+                    break;
+                case TileType.BottomLeftGrassCurve:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 1 * 128, 3 * 128, 128, 128, 1);
+                    break;
+                case TileType.Forest:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 512, 1640, 128, 128, 1);
+                    break;
+                case TileType.SandShipWreckage:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 0, 2872, 128, 128, 1);
+                    break;
+                case TileType.Water:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 1024, 2744, 128, 128, 1);
+                    break;
+                case TileType.ItemSpawn:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 384, 1512, 128, 128, 1);
                     break;
             }
         }
