@@ -35,7 +35,7 @@ namespace Sprint0
                 { Keys.I, "CycleItemNext" },
                 { Keys.O, "CycleEnemyPrev" },
                 { Keys.P, "CycleEnemyNext" },
-                { Keys.Escape, "ShowStartMenu" }
+                { Keys.Escape, "ShowPauseMenu" }
             };
         }
 
@@ -117,13 +117,18 @@ namespace Sprint0
 
     public class MouseController : IController
     {
+        private MouseState previousMouseState;
+        public MouseController()
+        {
+            previousMouseState = new MouseState();
+        }
         public void Update(Game1 game)
         {
             MouseState state = Mouse.GetState();
             // If a blocking screen is active, let it handle clicks.
             if (game.GameManager.GetBlockingScreen() != null)
             {
-                if (state.LeftButton == ButtonState.Pressed)
+                if (state.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton != ButtonState.Pressed)
                 {
                     Point clickPos = new Point(state.X, state.Y);
                 }
@@ -145,6 +150,7 @@ namespace Sprint0
                     game.GameManager.eventManager.ExecuteCommand("UpdateCannon", parameters);
                 }
             }
+            previousMouseState = state;
         }
     }
 }
