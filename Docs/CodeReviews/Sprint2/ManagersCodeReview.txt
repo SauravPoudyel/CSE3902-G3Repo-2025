@@ -1,0 +1,9 @@
+Author of the code review: Payton Yaffe
+Date of the code review: Feb, 27, 2025
+Sprint number: 3
+Name of the .cs file being reviewed: GameManager.cs, EventManagers.cs, SpriteManager.cs
+Author of the .cs file being reviewed: Saurav, Payton, Daoping
+Specific comments on code quality:
+
+- Game Manager: The InitializeTiles method will almost certainly need to be changed when we implement level loading, because it just makes a grass field with no features. Similarly, the InitializeEntities method is hard coded to spawn enemies in a set pattern for the test demo. Also the add/remove screen methods seem redundant but that's not really a big issue. Besides that it looks good. 
+- Sprite Manager: The extract frames method is pretty limited and only works when all the sprites are formatted in a specific way, it does work well but we may need to implement a more usable method for getting frames from a sprite sheet
