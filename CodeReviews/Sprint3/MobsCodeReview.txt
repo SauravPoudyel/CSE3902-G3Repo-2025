@@ -10,3 +10,13 @@ Update() is overloaded with too many responsibilities; should be modularized.
 AI pathfinding logic blocks the main thread; should use asynchronous updates.
 Target acquisition logic needs optimization for efficiency.
 Mobs lack a fallback behavior when stuck; should include a recovery mechanism.
+
+Mob Behavior
+Review Author: Harry Manzler
+3/7/2025
+Sprint 3 
+Mob.cs
+Code Author(s): Saurav, Payton
+Comments: 
+The mob behavior code is well-structured, with clear method separation and a consistent approach to handling movement and targeting. The use of encapsulated methods like FollowPlayer and PointCannonPlayer helps with readability and maintainability. However, some conditionals could be streamlined, especially in FollowPlayer, where repeated patterns for velocity setting and firing checks could be refactored into helper methods to reduce redundancy.
+The handling of aggression states is structured well, but the asynchronous nature of SwitchNeutralState introduces some complexity. The await Task.Delay approach is functional but could benefit from more explicit task management. The cannon aiming logic in PointCannonPlayer is solid, accounting for maximum rotation speed. One tweak we could make is adjusting lastKnownPlayerPosition, as resetting it when the player hasn't been seen for 0.8 seconds might cause mobs to lose track of the player too quickly.

@@ -1,0 +1,8 @@
+Player Controls
+Review Author: Harry Manzler
+3/7/2025
+Sprint 3 
+PlayerController.cs
+Code Author(s): Saurav
+Comments: 
+The KeyboardController and MouseController classes are well-structured and handle input effectively. The keyMappings dictionary is a great way to manage key-to-command mappings, but I wonder if the PlayerAction keys could be mapped directly to the action type?  The movement logic looks good. The MouseController class is straightforward and effectively updates the player's cannon direction based on mouse movement. 
