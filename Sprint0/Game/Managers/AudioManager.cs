@@ -67,7 +67,8 @@ namespace Sprint0
 
                 if (!File.Exists(musicFile))
                 {
-                    throw new FileNotFoundException("Music file not found", musicFile);
+                    Console.WriteLine("Music file not found", musicFile);
+                    return; 
                 }
 
                 musicTracks[MusicKey.Background] = Song.FromUri("Background", new Uri(musicFile, UriKind.Absolute));

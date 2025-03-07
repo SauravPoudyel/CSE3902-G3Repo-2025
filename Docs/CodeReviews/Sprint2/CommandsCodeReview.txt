@@ -9,3 +9,4 @@ Specific comments on code quality:
 - Commands for moveable blocks are kinda complicated and should be made easier. The command has to be used across multiple classes to make sure it works and it's easy to forget what's already been done. 
 - CreateProjectile and CreateEntity methods have unclear ownership logic, leading to confusion.
 - A centralized ownership system or factory method would improve maintainability.
+

@@ -133,7 +133,7 @@ namespace Sprint0
             commandQueue.Enqueue(new CommandRequest("SpawnEffect", new Dictionary<string, object>
             {
                 { "spawnPosition", position },
-                { "effectType", "explosion" }
+                { "effectType", EntityKeys.EffectType.Explosion }
             }));
             int coinCount = Globals.random.Next(2, 5);
             Rectangle r = GetBounds();

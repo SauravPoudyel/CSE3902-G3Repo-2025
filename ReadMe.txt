@@ -35,6 +35,7 @@ Plane: Flies in an orbital pattern and shoots bullets.
 Above and beyond:
 Extensive rotational calculations ensure that not only the cannons but also the enemy body sprites (notably in the Plane and TurningTank) are properly oriented.
 Ray tracing for enemy AI has been implemented so enemies can track the player effectively.
+All characters (mobs and player) have a tracktrail that follows them around for more dynamic sprite animations
 
 Collision Response:
 
@@ -67,12 +68,20 @@ The game uses CSV parsing to load both level data and player data:
 Level CSV files are read to place entities (players, enemies, items, blocks) into the game world.
 Player data CSV files store permanent and temporary player stats (health, ammo, shield, coins, etc.).
 Data is loaded during initialization and can be saved, ensuring persistent player progress.
+You can reset levels by just going back and forth through them
 
 UI / Player Inventory:
 
 The Player Inventory UI displays HUD elements (shield, health, ammo, coins) on the left side.
 This UI is connected to player data, reflecting any pickups or changes in stats.
 Inventory management is integrated into the overall game state and updates in real time.
+Above and Beyond: 
+The inventory slots shift and move accordingly once a slot is empty
+
+Sounds:
+
+We have sounds for: firing, explosions, picking up items, and background music
+
 
 Areas in Progress / Future Work
 Collision Interactions:
@@ -104,7 +113,12 @@ Menus pause entity updates and have an overlay that clearly distinguishes them f
 Detailed CSV Parsing:
 
 Our CSV parser efficiently loads level configurations and player data, ensuring a seamless integration of external data.
-Known Bugs
+
+Known Bugs:
 The projectile reflection may pass through the blocks sometimes
 At certain angles and rarely collisions may not work as intended, that's just because the precise angle
 offsets for adjustments gets miscalculated at certain angles
+THE SOUND HAS ISSUES ON MAC. We are trying to debug it but, the program itself may not run correctly on Mac, we just figured it out close to submission date, so 
+we didn't have time to debug it
+
+All Relavent Documents are in the DOCS folder

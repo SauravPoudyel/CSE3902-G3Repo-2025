@@ -18,8 +18,8 @@ namespace Sprint0
             previousKeyboardState = new KeyboardState();
             keyMappings = new Dictionary<Keys, string>
             {
-                { Keys.Q, "Quit" },
-                { Keys.R, "Reset" },
+                // { Keys.Q, "Quit" },
+                // { Keys.R, "Reset" },
                 { Keys.D1, "PlayerAction" },
                 { Keys.D2, "PlayerAction" },
                 { Keys.D3, "PlayerAction" },

@@ -7,3 +7,10 @@ Specific Comments on code quality:
 
 - CreateProjectile and CreateEntity methods have unclear ownership logic, leading to confusion.
 - A centralized ownership system or factory method would improve maintainability.
+
+Review Author: Harry Manzler
+3/1/2025
+Sprint 2
+Projectile.cs, ProjectileFactory.cs
+Code Author(s): Saurav, Payton
+Comments: Overall, Projectile.cs looks good. I only wonder if Projectile.cs doesn’t have too many fields. For example, could colorIndex or colorChangeTimer be condensed? Is Boolean startPositionSet necessary? And Projectile has its own unique Owner field which overwrites Entity class’s Owner field which it inherits. This seems redundant, and either Projectile or Entity’s could be removed (does any other Entity type use the Owner field?)
