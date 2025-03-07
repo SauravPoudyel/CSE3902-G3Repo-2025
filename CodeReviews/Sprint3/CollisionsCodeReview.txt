@@ -13,3 +13,46 @@ Missing a collision layer system to allow for efficient filtering.
 Collision Commands:
 Collision handling for movable blocks is overcomplicated; should be streamlined.
 Some commands are tightly coupled to specific entities instead of being generic.
+
+Author of Review: Payton Yaffe
+Date: 3/5/25
+Sprint 3
+CollisionCommands.cs
+Author of file: Saurav, Payton, Daoping
+Comments: File is definitely too long. We can probably split it up into files based on block or player, or projectiles. Projectiles has a lot of other methods associated with it, so it seems out of place compared to the other collision methods. File overall seems unorganized and sporadic. 
+
+Author of Review: Payton Yaffe
+Date: 3/5/25
+Sprint 3
+CollisionManager.cs
+Author of file: Saurav
+Comments: It seems weird to also have a resolve collision method in this file, since there is one in the collisioncommands.cs, maybe a different name to be more specific can help.
+
+Author of Review: Payton Yaffe
+Date: 3/5/25
+Sprint 3
+CollisionResponse.cs
+Author of file: Saurav
+Comments: In the GetResponseCommand, can we just have one foreach loop and have two if statements, one to check the normal order between subject and target, and then another to reverse them. So there’s not two foreach loops. The responseMap also seems a little disorganized. I think finding a more universal organizing system for collisions can help. 
+
+Mobs:
+Author of Review: Payton Yaffe
+Date: 3/5/25
+Sprint 3
+HealerTank.cs, HoveringTank.cs, ShieldTank.cs, StealthTank.cs, SwarmingTank.cs
+Author of file: Saurav
+Comments: All the files are relatively similar, minus the tank’s respective ability. I think the agressionLevel variable is very interesting and adds a cool layer to the mob activity.
+
+Review Author: Harry Manzler
+3/6/2025
+Sprint 3 
+CollisionResponse.cs
+Code Author(s): Saurav, Payton
+Comments: Overall, the CollisionResponse class is well-structured in terms of maintainability and reusability and seems to effectively maps collision interactions.  However, I think the organization of response pairs and response command retrieval could be improved. Right now, GetResponseCommand loops through the entire dictionary checking types. Perhaps if we implemented a nested dictionary with one higher priority type we could have direct dictionary lookup?
+
+Review Author: Harry Manzler
+3/6/2025
+Sprint 3 
+CollisionCommands.cs
+Code Author(s): Saurav, Daoping, Payton
+The CollisionPickUpCommand method is logically solid and consistent with the other commands. I only wonder if we can’t refactor the hierarchy of the Item and PickupItem classes to share their EntityKeys and GetItemType methods, since the code for each type is essentially identical.
