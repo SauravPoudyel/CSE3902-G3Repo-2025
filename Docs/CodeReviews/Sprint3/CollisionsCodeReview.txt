@@ -1,0 +1,15 @@
+Author of the code review: Daoping Huang
+Date of the code review: March 3, 2025
+Sprint number: 2
+Files Reviewed: CollisionSystem.cs, CollisionCommands.cs
+Author of the reviewed files: Daoping Huang, Payton Yaffe, Saurav
+Specific comments on code quality:
+
+Collision System:
+Quadtree implementation lacks rebalancing, which impacts collision efficiency.
+Broad-phase collision checks are inefficient and need optimization.
+Entity bounds updates occur too frequently, causing unnecessary processing overhead.
+Missing a collision layer system to allow for efficient filtering.
+Collision Commands:
+Collision handling for movable blocks is overcomplicated; should be streamlined.
+Some commands are tightly coupled to specific entities instead of being generic.

@@ -1,0 +1,13 @@
+Author of the code review: Harry 
+Date of the code review: March 4, 2025
+Sprint number: 3
+Name of the .cs file being reviewed: Entity Folder/
+Author of the .cs file being reviewed: Saurav, Payton, Daoping
+Specific comments on code quality:
+
+- Mob: The Update method is very overloaded and should be simplified if possible
+- Player: the fire projectile method is kinda hard to understand and is unintuitive. 
+- Entity: Pretty good overall, but there's a method called predict future bomb that's incomplete and the bomb class may not work correctly
+- Block: BaseBlock feels unnecessary. Can we take its methods and move them to Blocks or BlockFactory. Can IObtuse be a parameter we pass in, instead of an interface? All three block types implement IObtuse currently.  Also I feel like for every block currently, the line of sight is already blocked, so maybe we make it a default thing? Unless we want to make a block see through. 
+- Pickup Item: I don’t think anything needs to be changed. Needs to be completed still, but the file is set up well to be able to easily add the rest of the item logic. Plus the effect factory looks good to be able to reset the item abilities.
+- Projectile: The logic is pretty solid overall, the color shading is just kinda weirdly implemented and may be better used as a dictionary. Additionally, the Projectile ownership system might need to be reworked. 
