@@ -18,7 +18,7 @@ namespace Sprint0
         private ContentManager content;
         private float timer;
         private PickupItemType itemType;
-        private const float PickupRadius = 150f;
+        private float PickupRadius = 150f;
         private const float Acceleration = 300f;
         protected AnimatedSprite animatedSprite;
         protected float frameTime = 0.15f;
@@ -109,6 +109,7 @@ namespace Sprint0
 
         public override void Update()
         {
+            PickupRadius = PowerUpFactory.NormalPickUpRadius;
             position += velocity * Globals.FRAMETIME;
             bounds = new Rectangle((int)position.X, (int)position.Y, 40, 40);
             sprite.Update();

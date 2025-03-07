@@ -85,7 +85,7 @@ namespace Sprint0
             bodyRotation += rotationInput * turnSpeed * Globals.PLAYERFRAMETIME;
 
             Vector2 forwardDirection = new Vector2((float)Math.Sin(bodyRotation), -(float)Math.Cos(bodyRotation));
-            float forwardSpeed = -velocity.Y;
+            float forwardSpeed = velocity.Y; // Use velocity.Y directly for both forward and backward movement
             position += forwardDirection * forwardSpeed * speedMultiplier * Globals.PLAYERFRAMETIME;
 
             CalculateBounds(74, 76);

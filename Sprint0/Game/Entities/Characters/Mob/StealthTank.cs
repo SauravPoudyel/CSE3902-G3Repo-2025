@@ -74,11 +74,10 @@ namespace Sprint0
         {
             if (isInvisibilityTaskRunning) return;
             isInvisibilityTaskRunning = true;
-            Random random = new Random();
 
             while (true) // Optionally condition this on enemy health or existence
             {
-                int delay = random.Next(3000, 6000); // Wait 3-5 seconds
+                int delay = Globals.random.Next(3000, 6000); // Wait 3-5 seconds
                 await Task.Delay(delay);
 
                 // Go invisible: increase speed and switch aggression
@@ -90,7 +89,7 @@ namespace Sprint0
 
                 if (cannon != null)
                     cannon.SetSprite(Globals.NULLSPRITE_S);
-                int delay2 = random.Next(4000, 5500); // Wait 4-5.5 seconds
+                int delay2 = Globals.random.Next(4000, 5500); // Wait 4-5.5 seconds
                 await Task.Delay(delay2);
 
                 // Revert to visible state

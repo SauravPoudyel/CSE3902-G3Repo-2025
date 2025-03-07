@@ -17,6 +17,8 @@ namespace Sprint0
         HoveringTank,
         StealthTank, 
         HealerTank, 
+        ShipVertical, 
+        ShipHorizontal
         
     }
 
@@ -119,32 +121,82 @@ namespace Sprint0
         {
             if (lastKnownPlayerPosition != Vector2.Zero)
             {
-                Vector2 dirToPlayer = lastKnownPlayerPosition - position;
-                if (dirToPlayer != Vector2.Zero)
-                    dirToPlayer.Normalize();
-
-                float trackingTurnRate = MathHelper.ToRadians(90) * Globals.FRAMETIME;
-                float desiredAngle = (float)Math.Atan2(dirToPlayer.Y, dirToPlayer.X) - MathHelper.PiOver2;
-                float angleDiff = MathHelper.WrapAngle(desiredAngle - bodyRotation);
-
-                if (Math.Abs(angleDiff) > trackingTurnRate)
-                    angleDiff = Math.Sign(angleDiff) * trackingTurnRate;
-                bodyRotation += angleDiff;
-
-                float movementMultiplier = 1f;
-                if (aggression.Equals("Passive"))
-                    movementMultiplier = -1f;
-                else if (aggression.Equals("Neutral"))
+                if (aggression.Equals("FollowX-Axis"))
                 {
-                    if (!isNeutralTaskRunning)
+                    float deltaX = lastKnownPlayerPosition.X - position.X;
+                    // Move along X only if the difference is significant.
+                    if (Math.Abs(deltaX) > 5f)
                     {
-                        isNeutralTaskRunning = true;
-                        SwitchNeutralState();
+                        velocity = new Vector2(Math.Sign(deltaX) * defaultMovementSpeed, 0);
                     }
-                    movementMultiplier = neutralToggle ? 1f : -1f;
+                    else
+                    {
+                        velocity = Vector2.Zero;
+                        if (firingTimer >= firingInterval)
+                        {
+                            FireProjectile();
+                            firingTimer = 0f;
+                        }
+                    }
+                    // Face right (0 rad) if player is to the right, left (PI) if to the left.
+                    bodyRotation = (deltaX >= 0) ? 0f : MathHelper.Pi;
                 }
+                else if (aggression.Equals("FollowY-Axis"))
+                {
+                    // Calculate difference in Y between the player and the enemy.
+                    float deltaY = lastKnownPlayerPosition.Y - position.Y;
+                    
+                    // If the difference is larger than a small threshold, move toward the player's Y.
+                    if (Math.Abs(deltaY) > 5f)
+                    {
+                        // Set velocity only in the Y direction.
+                        velocity = new Vector2(0, Math.Sign(deltaY) * defaultMovementSpeed);
+                    }
+                    else
+                    {
+                        // Close enough on Y-axis: stop moving and fire if possible.
+                        velocity = Vector2.Zero;
+                        if (firingTimer >= firingInterval)
+                        {
+                            FireProjectile();
+                            firingTimer = 0f;
+                        }
+                    }
+                    
+                    // Set the facing: if player is below, face down (Pi/2); if above, face up (-Pi/2).
+                    bodyRotation = (deltaY >= 0) ? MathHelper.PiOver2 : -MathHelper.PiOver2;
+                }
+                else
+                {
+                    // Default behavior for aggression levels such as "Aggressive", "Passive", "Neutral"
+                    Vector2 dirToPlayer = lastKnownPlayerPosition - position;
+                    if (dirToPlayer != Vector2.Zero)
+                        dirToPlayer.Normalize();
 
-                velocity = new Vector2(0, defaultMovementSpeed * movementMultiplier);
+                    float trackingTurnRate = MathHelper.ToRadians(90) * Globals.FRAMETIME;
+                    float desiredAngle = (float)Math.Atan2(dirToPlayer.Y, dirToPlayer.X) - MathHelper.PiOver2;
+                    float angleDiff = MathHelper.WrapAngle(desiredAngle - bodyRotation);
+
+                    if (Math.Abs(angleDiff) > trackingTurnRate)
+                        angleDiff = Math.Sign(angleDiff) * trackingTurnRate;
+                    bodyRotation += angleDiff;
+
+                    float movementMultiplier = 1f;
+                    if (aggression.Equals("Passive"))
+                        movementMultiplier = -1f;
+                    else if (aggression.Equals("Neutral"))
+                    {
+                        if (!isNeutralTaskRunning)
+                        {
+                            isNeutralTaskRunning = true;
+                            SwitchNeutralState();
+                        }
+                        movementMultiplier = neutralToggle ? 1f : -1f;
+                    }
+
+                    // In the default case we move along the Y-axis.
+                    velocity = new Vector2(0, defaultMovementSpeed * movementMultiplier);
+                }
             }
             else
             {

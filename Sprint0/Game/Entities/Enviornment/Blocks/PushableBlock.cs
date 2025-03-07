@@ -24,7 +24,7 @@ namespace Sprint0
             {
                 case BlockSpriteKey.Box:
                     animatedSprite.LoadContent(content, "TDTanksAllSprites", 960, 753, 56, 56, 1);
-                    bounds = new Rectangle((int)position.X, (int)position.Y, 50, 50);
+                    bounds = new Rectangle((int)position.X, (int)position.Y, 45, 45);
                     break;
 
                 default:

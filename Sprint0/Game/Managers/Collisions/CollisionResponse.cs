@@ -16,18 +16,18 @@ namespace Sprint0
             {
                 // Stop Interactions
                 { new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionStop" },
-                { new Tuple<Type, Type>(typeof(Player), typeof(RigidBlock)), "CollisionStop" },
+                { new Tuple<Type, Type>(typeof(Player), typeof(IRigid)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(Player), typeof(Mob)), "CollisionStop" },
-                { new Tuple<Type, Type>(typeof(PushableBlock), typeof(RigidBlock)), "CollisionStop" },
-                { new Tuple<Type, Type>(typeof(Mob), typeof(RigidBlock)), "CollisionStop" },
+                { new Tuple<Type, Type>(typeof(IPushable), typeof(IRigid)), "CollisionStop" },
+                { new Tuple<Type, Type>(typeof(Mob), typeof(IRigid)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(Mob), typeof(Mob)), "CollisionStop" },
-                { new Tuple<Type, Type>(typeof(PushableBlock), typeof(PushableBlock)), "CollisionStop" },
-                { new Tuple<Type, Type>(typeof(PushableBlock), typeof(Mob)), "CollisionStop" },
+                { new Tuple<Type, Type>(typeof(IPushable), typeof(IPushable)), "CollisionStop" },
+                { new Tuple<Type, Type>(typeof(IPushable), typeof(Mob)), "CollisionStop" },
 
                 { new Tuple<Type, Type>(typeof(Player), typeof(PushableBlock)), "CollisionPush" },
 
-                { new Tuple<Type, Type>(typeof(Projectile), typeof(FlammableBlock)), "DestroyFlammableCommand" },
-                { new Tuple<Type, Type>(typeof(Projectile), typeof(RigidBlock)), "CollisionProjectileReflect" },
+                { new Tuple<Type, Type>(typeof(Projectile), typeof(IFlammable)), "DestroyFlammableCommand" },
+                { new Tuple<Type, Type>(typeof(Projectile), typeof(IRigid)), "CollisionProjectileReflect" },
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(Blocks)), "CollisionProjectileReflect" },
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(Mob)), "CollisionProjectileDestroy"},
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(Player)), "CollisionProjectileDestroy"},

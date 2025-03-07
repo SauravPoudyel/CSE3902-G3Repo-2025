@@ -46,9 +46,9 @@ namespace Sprint0
             // Only use W/S for forward/backward movement.
             Vector2 playerVelocity = Vector2.Zero;
             if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
-                playerVelocity.Y -= 50;
-            if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
                 playerVelocity.Y += 50;
+            if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
+                playerVelocity.Y -= 50;
 
             bool playerMoving = (playerVelocity != Vector2.Zero);
             if (game.GameManager.GetBlockingScreen() == null)

@@ -128,17 +128,20 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("create") && parameters["create"] is Projectile entity &&
+                    parameters.ContainsKey("create") && parameters["create"] is Entity entity &&
                     parameters.ContainsKey("entityName") && parameters["entityName"] is string entityName &&
                     parameters.ContainsKey("position") && parameters["position"] is Vector2 position &&
-                    parameters.ContainsKey("velocity") && parameters["velocity"] is Vector2 velocity &&
-                    parameters.ContainsKey("owner") && parameters["owner"] is Character owner)
+                    parameters.ContainsKey("velocity") && parameters["velocity"] is Vector2 velocity)
                 {
                     gameManager.GetEntities().Add(entityName, entity);
                     gameManager.GetEntities()[entityName].SetPosition(position);
                     gameManager.GetEntities()[entityName].SetVelocity(velocity);
 
-                    gameManager.GetEntities()[entityName].Owner = owner;
+                    if(parameters.ContainsKey("owner") && parameters["owner"] is Character owner)
+                    {
+                        gameManager.GetEntities()[entityName].Owner = owner;
+                    }
+
                 }
             }
         }

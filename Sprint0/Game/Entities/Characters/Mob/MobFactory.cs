@@ -20,6 +20,8 @@ namespace Sprint0
                 case MobType.HoveringTank: return new HoveringTank(content);
                 case MobType.StealthTank: return new StealthTank(content);
                 case MobType.HealerTank: return new HealerTank(content);
+                // case MobType.ShipVertical: return new Ship(content, true);
+                // case MobType.ShipHorizontal: return new Ship(content, false);
                 default: return new BossTank(content);
             }
         }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Sprint0
 {
-    public class FlammableBlock : BaseBlock, IObtuse, IFlammable, IDestructible
+    public class FlammableBlock : BaseBlock, IObtuse, IFlammable, IDestructible, IRigid
     {
         public bool IsDestroyed { get; private set; }
 

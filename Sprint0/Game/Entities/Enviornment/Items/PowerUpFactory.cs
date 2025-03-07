@@ -7,6 +7,7 @@ namespace Sprint0
     public static class PowerUpFactory
     {
         public static Dictionary<PickupItemType, float> EffectTimers = new Dictionary<PickupItemType, float>();
+        public static float NormalPickUpRadius = 150f;
         private static readonly Dictionary<PickupItemType, Action<Player>> expireActions = new()
         {
             { PickupItemType.SpeedBoost, ResetSpeed },
@@ -14,13 +15,15 @@ namespace Sprint0
             { PickupItemType.FireRateIncrease, ResetFireRate },
             { PickupItemType.TimeSlow, ResetTimeSlow },
             { PickupItemType.Cloak, ResetPlayerInvis },
-            { PickupItemType.Fly, ResetPlayerFly }
+            { PickupItemType.Fly, ResetPlayerFly }, 
+            { PickupItemType.Magnet, ResetMagnet }
         };
 
         private static void ResetSpeed(Player player) { player.speedMultiplier = 1f; } 
         private static void DeactivateShield(Player player) { player.shieldActive = false; } 
         private static void ResetFireRate(Player player) { player.currentShootInterval = player.baseShootInterval; } 
         private static void ResetTimeSlow(Player player) { Globals.FRAMETIME = 1f / 60f; }
+        private static void ResetMagnet(Player player) { NormalPickUpRadius = 150f;}
 
         private static void ResetPlayerInvis(Player player)
         {
@@ -94,7 +97,8 @@ namespace Sprint0
                     Globals.PlayerData.TemporaryAmmoMine++;
                     break;
                 case PickupItemType.Magnet:
-                    EffectTimers[PickupItemType.Magnet] = 5f;
+                    NormalPickUpRadius = 450; 
+                    EffectTimers[PickupItemType.Magnet] = 8f;
                     break;
                 case PickupItemType.FireRateIncrease:
                     player.currentShootInterval = player.baseShootInterval * 0.3f;
@@ -124,10 +128,10 @@ namespace Sprint0
                     EffectTimers[PickupItemType.Cloak] = 5f;
                     break;
                 case PickupItemType.SilverTag:
-                    Globals.PlayerData.TemporaryCoins += 100;
+                    Globals.PlayerData.TemporaryCoins += 50;
                     break;
                 case PickupItemType.GoldTag:
-                    Globals.PlayerData.TemporaryCoins += 500;
+                    Globals.PlayerData.TemporaryCoins += 100;
                     break;
                 case PickupItemType.Teleporter:
                     break;
