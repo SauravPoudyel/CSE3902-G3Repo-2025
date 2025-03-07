@@ -28,3 +28,10 @@ any useful information until the start of sprint 3. With Sprint 3, however, the 
 code reviews and metrics, which allowed the team to implement changes based on the information gathered.
 This change also reduced the crunch the team experienced in the final week of sprint 2, as in sprint 3, 
 the team was able to spread the workload more evenly across the duration of the sprint. 
+
+    The team plans to take the changes and improvements to their process into the following sprints, 
+and to continuously improve this process as problems arise. Now that these reforms have been made and 
+tested, the team plans on taking advantage of the improved process while also looking for new possible 
+improvements. 
+
+    A burndown chart is included in this repo in the same folder as this .txt
