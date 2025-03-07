@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using static Sprint0.EntityKeys;
+using static Sprint0.Globals;
 
 namespace Sprint0
 {
@@ -38,19 +40,19 @@ namespace Sprint0
             // Set the source rectangle based on the projectile type.
             switch (projectileType)
             {
-                case "Sniper":
+                case nameof(ProjectileTypeEnum.Sniper):
                     ammoSourceRect = new Rectangle(0, 160, 40, 40);
                     break;
-                case "Rocket":
+                case nameof(ProjectileTypeEnum.Rocket):
                     ammoSourceRect = new Rectangle(0, 200, 40, 40);
                     break;
-                case "Shotgun":
+                case nameof(ProjectileTypeEnum.Shotgun):
                     ammoSourceRect = new Rectangle(0, 120, 40, 40);
                     break;
-                case "Mine":
+                case nameof(ProjectileTypeEnum.Mine):
                     ammoSourceRect = new Rectangle(0, 280, 40, 40);
                     break;
-                case "Teleporter":
+                case nameof(ProjectileTypeEnum.Teleporter):
                     ammoSourceRect = new Rectangle(0, 680, 40, 40);
                     break;
                 default:
@@ -78,7 +80,7 @@ namespace Sprint0
             {
                 spriteToDraw = Globals.NULLSPRITE_S.spriteSheet;
                 // For empty, fill the slot with the null sprite stretched to the slot dimensions.
-                sourceRect = new Rectangle(0, 0, SlotWidth, SlotHeight);
+                sourceRect = new Rectangle(2800, 2800, SlotWidth, SlotHeight);
             }
 
             // Draw the ammo (or null) sprite centered in the slot.

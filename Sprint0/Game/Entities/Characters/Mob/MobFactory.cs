@@ -1,38 +1,42 @@
 using System;
 using Microsoft.Xna.Framework.Content;
 
+
 namespace Sprint0
 {
     public static class MobFactory
     {
         private static int currentIndex = 0;
 
-        public static Mob CreateMob(MobType type, ContentManager content)
+        public static Mob CreateMob(EntityKeys.MobType type, ContentManager content)
         {
             switch (type)
             {
-                case MobType.BossTank: return new BossTank(content);
-                case MobType.SmallEnemy: return new SmallEnemy(content);
-                case MobType.Turret: return new Turret(content);
-                case MobType.Plane: return new Plane(content);
-                case MobType.ShieldTank: return new ShieldTank(content);
-                case MobType.SwarmingTank: return new SwarmingTank(content);
-                case MobType.HoveringTank: return new HoveringTank(content);
-                case MobType.StealthTank: return new StealthTank(content);
-                case MobType.HealerTank: return new HealerTank(content);
+
+                case EntityKeys.MobType.BossTank: return new BossTank(content);
+                case EntityKeys.MobType.SmallEnemy: return new SmallEnemy(content);
+                case EntityKeys.MobType.Turret: return new Turret(content);
+                case EntityKeys.MobType.Plane: return new Plane(content);
+                case EntityKeys.MobType.ShieldTank: return new ShieldTank(content);
+                case EntityKeys.MobType.SwarmingTank: return new SwarmingTank(content);
+                case EntityKeys.MobType.HoveringTank: return new HoveringTank(content);
+                case EntityKeys.MobType.HealerTank: return new HealerTank(content);
+                case EntityKeys.MobType.StealthTank: return new StealthTank(content);
+                // case EntityKeys.MobType.StealthTank: return new StealthTank(content);
+                // case EntityKeys.MobType.HealerTank: return new HealerTank(content);
                 default: return new BossTank(content);
             }
         }
 
         public static void CycleNextMob(GameManager gameManager)
         {
-            currentIndex = (currentIndex + 1) % Enum.GetNames(typeof(MobType)).Length;
+            currentIndex = (currentIndex + 1) % Enum.GetNames(typeof(EntityKeys.MobType)).Length;
             ReplaceMob(gameManager);
         }
 
         public static void CyclePreviousMob(GameManager gameManager)
         {
-            currentIndex = (currentIndex - 1 + Enum.GetNames(typeof(MobType)).Length) % Enum.GetNames(typeof(MobType)).Length;
+            currentIndex = (currentIndex - 1 + Enum.GetNames(typeof(EntityKeys.MobType)).Length) % Enum.GetNames(typeof(EntityKeys.MobType)).Length;
             ReplaceMob(gameManager);
         }
 
@@ -41,7 +45,7 @@ namespace Sprint0
             if (gameManager.GetEntity("mob") != null)
                 gameManager.RemoveEntity("mob");
 
-            var mobTypes = (MobType[])Enum.GetValues(typeof(MobType));
+            var mobTypes = (EntityKeys.MobType[])Enum.GetValues(typeof(EntityKeys.MobType));
             var newMob = CreateMob(mobTypes[currentIndex], gameManager.GetContent());
 
             newMob.SetPosition(new Microsoft.Xna.Framework.Vector2(Globals.SCREENWIDTH / 2 + 100, 400));

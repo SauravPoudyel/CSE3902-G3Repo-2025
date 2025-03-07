@@ -24,7 +24,7 @@ namespace Sprint0
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.StealthTank; // Use ShieldTank to represent the stealth enemy
+            currentMobType = EntityKeys.MobType.StealthTank; // Use ShieldTank to represent the stealth enemy
             defaultMovementSpeed = 50f;
             normalSpeed = defaultMovementSpeed;
             aggressiveSpeed = normalSpeed * 1.7f;
@@ -59,7 +59,7 @@ namespace Sprint0
             }
         }
 
-        protected override void ChangeMobType(MobType type)
+        protected override void ChangeMobType(EntityKeys.MobType type)
         {
             currentMobType = type;
             InitializeMob();
@@ -74,11 +74,10 @@ namespace Sprint0
         {
             if (isInvisibilityTaskRunning) return;
             isInvisibilityTaskRunning = true;
-            Random random = new Random();
 
             while (true) // Optionally condition this on enemy health or existence
             {
-                int delay = random.Next(3000, 6000); // Wait 3-5 seconds
+                int delay = Globals.random.Next(3000, 6000); // Wait 3-5 seconds
                 await Task.Delay(delay);
 
                 // Go invisible: increase speed and switch aggression
@@ -90,7 +89,7 @@ namespace Sprint0
 
                 if (cannon != null)
                     cannon.SetSprite(Globals.NULLSPRITE_S);
-                int delay2 = random.Next(4000, 5500); // Wait 4-5.5 seconds
+                int delay2 = Globals.random.Next(4000, 5500); // Wait 4-5.5 seconds
                 await Task.Delay(delay2);
 
                 // Revert to visible state

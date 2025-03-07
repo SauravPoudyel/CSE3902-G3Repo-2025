@@ -4,7 +4,7 @@ Block,Tree,6,0
 Item,SpeedBoost,10,0
 Item,Shield,2,1
 Block,Box,5,1
-//Enemy,Turret,9,1
+Enemy,Turret,9,1
 Item,FireRateIncrease,12,1
 Item,MedStrong,3,2
 Block,OilBarrel_Red,7,2

@@ -1,0 +1,15 @@
+Author of the code review: Alexander Nistor
+Date of the code review: February 27, 2025
+Sprint number: 3
+Files Reviewed: PlayerUI.cs, StartMenu.cs
+Author of the reviewed files: Leo Chen
+Specific comments on code quality:
+
+Player UI:
+Health bar updates cause GC spikes; should implement UI element pooling.
+UI element positions are hardcoded, making it non-scalable for different screen resolutions.
+Text rendering does not use sprite batching, impacting performance.
+Start Menu:
+Menu navigation lacks controller support.
+Screen transitions cause frame drops; should be optimized.
+Resource loading blocks menu responsiveness, affecting user experience.

@@ -22,7 +22,7 @@ namespace Sprint0
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.Plane;
+            currentMobType = EntityKeys.MobType.Plane;
             firingInterval = 2f;
             currentProjectileVariables["projectileType"] = "Default";
             orbitCenter = new Vector2(Globals.SCREENWIDTH / 2, Globals.SCREENHEIGHT / 2);
@@ -70,7 +70,7 @@ namespace Sprint0
             commandQueue.Enqueue(new CommandRequest("CreateProjectile", p));
         }
 
-        protected override void ChangeMobType(MobType type)
+        protected override void ChangeMobType(EntityKeys.MobType type)
         {
             currentMobType = type;
             InitializeMob();

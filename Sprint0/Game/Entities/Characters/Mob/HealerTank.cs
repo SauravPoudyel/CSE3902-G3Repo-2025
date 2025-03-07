@@ -23,7 +23,7 @@ namespace Sprint0
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.ShieldTank; 
+            currentMobType = EntityKeys.MobType.ShieldTank; 
             defaultMovementSpeed = 30f; 
             firingInterval = 0f; 
             
@@ -46,7 +46,7 @@ namespace Sprint0
             FollowPlayer(aggressionLevel);
         }
 
-        protected override void ChangeMobType(MobType type)
+        protected override void ChangeMobType(EntityKeys.MobType type)
         {
             currentMobType = type;
             InitializeMob();
@@ -59,10 +59,9 @@ namespace Sprint0
 
         private async void StartHealingCycle()
         {
-            Random random = new Random();
             while (true)
             {
-                int delay = random.Next(3000, 5000);
+                int delay = Globals.random.Next(3000, 5000);
                 await Task.Delay(delay);
 
                 // kind of a stinky way of flashing the sprites but it works

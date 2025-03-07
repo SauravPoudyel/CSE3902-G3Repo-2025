@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System;
 
+
 namespace Sprint0
 {
     public class SmallEnemy : Mob
@@ -20,7 +21,7 @@ namespace Sprint0
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.SmallEnemy;
+            currentMobType = EntityKeys.MobType.SmallEnemy;
             defaultMovementSpeed = 80f;
             firingInterval = 1.4f;
             phaseTimer = 0f;
@@ -48,7 +49,7 @@ namespace Sprint0
             PointCannonPlayer();
         }
 
-        protected override void ChangeMobType(MobType type)
+        protected override void ChangeMobType(EntityKeys.MobType type)
         {
             currentMobType = type;
             InitializeMob();

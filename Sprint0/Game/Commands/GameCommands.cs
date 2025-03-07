@@ -12,31 +12,19 @@ namespace Sprint0
     {
         public class QuitCommand : ICommand
         {
-            private Game1 game;
-
-            public QuitCommand(Game1 game)
-            {
-                this.game = game;
-            }
-
             public void Execute(Dictionary<string, object> parameters)
             {
-                game.Exit();
+                if (parameters.ContainsKey("game") && parameters["game"] is Game1 game)
+                    game.Exit();
             }
         }
 
         public class ResetCommand : ICommand
         {
-            private Game1 game;
-
-            public ResetCommand(Game1 game)
-            {
-                this.game = game;
-            }
-
             public void Execute(Dictionary<string, object> parameters)
             {
-                game.ResetGame();
+                if (parameters.ContainsKey("game") && parameters["game"] is Game1 game)
+                    game.ResetGame();
             }
         }
 
@@ -46,20 +34,52 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    gameManager.GameStarted = true; // This will automatically switch to Player Inventory screen
+                    if(!gameManager.GameStarted) {
+                        gameManager.GameStarted = true; // This will automatically switch to Player Inventory screen
+                    } else if(gameManager.GamePaused) {
+                        gameManager.GamePaused = false;
+                    }
                 }
             }
         }
 
-        public class ShowStartMenuCommand : ICommand
+        public class ShowPauseMenuCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    if (!gameManager.GameStarted)
+                    if (gameManager.GameStarted)
                     {
-                        gameManager.GameStarted = false; // Ensures Start Menu is the only screen if game hasn't started
+                        gameManager.GamePaused = true;
+                    }
+                }
+            }
+        }
+
+        public class IncreaseLevelCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    if(gameManager.LevelNumber<99) {
+                        gameManager.LevelNumber++;
+                        gameManager.UpdateLevel();
+                    }
+                }
+            }
+        }
+
+        public class DecreaseLevelCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    if(gameManager.LevelNumber>1) {
+                        gameManager.LevelNumber--;
+                        gameManager.UpdateLevel();
                     }
                 }
             }

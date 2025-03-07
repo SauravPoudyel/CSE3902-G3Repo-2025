@@ -7,55 +7,56 @@ namespace Sprint0
 {
     public static class BlockFactory
     {
-        private static Dictionary<BlockSpriteKey, Func<ContentManager, BlockSpriteKey, float, BaseBlock>> blockCreators;
+        private static readonly Dictionary<EntityKeys.BlockType, Func<ContentManager, EntityKeys.BlockType, float, BaseBlock>> blockCreators;
 
         static BlockFactory()
         {
-            blockCreators = new Dictionary<BlockSpriteKey, Func<ContentManager, BlockSpriteKey, float, BaseBlock>>();
-            blockCreators.Add(BlockSpriteKey.Tree, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.BarbedFence, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.Box, CreatePushableBlock);
-            blockCreators.Add(BlockSpriteKey.OilBarrel_Red, CreateFlammableBlock);
-            blockCreators.Add(BlockSpriteKey.OilBarrel_Black, CreateFlammableBlock);
-            blockCreators.Add(BlockSpriteKey.Oil, CreateFlammableBlock);
-            blockCreators.Add(BlockSpriteKey.RockPile, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.Factory, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.RockPileVar1, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.RockPileVar2, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.Hosue, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.House2, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.SmallTree, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.Fence, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.DeadTree, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.Garage, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.CoconutTree, CreateRigidBlock);
-            blockCreators.Add(BlockSpriteKey.SmallBarrel, CreateFlammableBlock);
+            blockCreators = new Dictionary<EntityKeys.BlockType, Func<ContentManager, EntityKeys.BlockType, float, BaseBlock>>
+            {
+                // Rigid Blocks
+                { EntityKeys.BlockType.Tree, CreateRigidBlock },
+                { EntityKeys.BlockType.BarbedFence, CreateRigidBlock },
+                { EntityKeys.BlockType.RockPile, CreateRigidBlock },
+                { EntityKeys.BlockType.Factory, CreateRigidBlock },
+                { EntityKeys.BlockType.RockPileVar1, CreateRigidBlock },
+                { EntityKeys.BlockType.RockPileVar2, CreateRigidBlock },
+                { EntityKeys.BlockType.House, CreateRigidBlock },
+                { EntityKeys.BlockType.House2, CreateRigidBlock },
+                { EntityKeys.BlockType.SmallTree, CreateRigidBlock },
+                { EntityKeys.BlockType.Fence, CreateRigidBlock },
+                { EntityKeys.BlockType.DeadTree, CreateRigidBlock },
+                { EntityKeys.BlockType.Garage, CreateRigidBlock },
+                { EntityKeys.BlockType.CoconutTree, CreateRigidBlock },
+
+                // Pushable Blocks
+                { EntityKeys.BlockType.Box, CreatePushableBlock },
+                { EntityKeys.BlockType.SmallBarrel, CreatePushableBlock },
+
+                // Flammable Blocks
+                { EntityKeys.BlockType.Barrel, CreateFlammableBlock },
+                { EntityKeys.BlockType.RedBarrel, CreateFlammableBlock },
+                { EntityKeys.BlockType.Oil, CreateFlammableBlock }
+            };
         }
 
-        public static BaseBlock CreateBlock(BlockSpriteKey spriteKey, ContentManager content, Vector2 position, float frameTime)
+        public static BaseBlock CreateBlock(EntityKeys.BlockType blockType, ContentManager content, Vector2 position, float frameTime)
         {
-            if (blockCreators.ContainsKey(spriteKey))
+            if (blockCreators.ContainsKey(blockType))
             {
-                BaseBlock block = blockCreators[spriteKey](content, spriteKey, frameTime);
+                BaseBlock block = blockCreators[blockType](content, blockType, frameTime);
                 block.SetPosition(position);
                 return block;
             }
             return null;
         }
 
-        private static BaseBlock CreateRigidBlock(ContentManager content, BlockSpriteKey spriteKey, float frameTime)
-        {
-            return new RigidBlock(content, spriteKey, frameTime);
-        }
+        private static BaseBlock CreateRigidBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime) =>
+            new RigidBlock(content, blockType, frameTime);
 
-        private static BaseBlock CreatePushableBlock(ContentManager content, BlockSpriteKey spriteKey, float frameTime)
-        {
-            return new PushableBlock(content, spriteKey, frameTime);
-        }
+        private static BaseBlock CreatePushableBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime) =>
+            new PushableBlock(content, blockType, frameTime);
 
-        private static BaseBlock CreateFlammableBlock(ContentManager content, BlockSpriteKey spriteKey, float frameTime)
-        {
-            return new FlammableBlock(content, spriteKey, frameTime);
-        }
+        private static BaseBlock CreateFlammableBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime) =>
+            new FlammableBlock(content, blockType, frameTime);
     }
 }
