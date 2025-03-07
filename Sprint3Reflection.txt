@@ -1,0 +1,30 @@
+    The team really started coming into its own on this sprint, we were able to work much more 
+productively independently of each other, while also working together better. This was the 
+result of being familiar with the code base laid out in the previous sprint, as well as 
+more established team dynamics and improved organizational processes. 
+
+    A result of this was that the team implemented a lot of new content in this sprint. The 
+previous sprint saw the bare minimum in terms of enemies, weapons, items, and levels. Since the 
+team was more familiar with the tools they had been using, as well as the development of new tools, 
+such as the level csv parser, the team was able to implement considerably more content. This sprint 
+saw the introduction of multiple new levels with more defined layouts; dozens of new items with more 
+creative effects, such as invisibility; many new enemies, including a stalker enemy which turns 
+invisible and must be tracked by following the treads left behind; and new weapons, including a 
+teleporter which moves the player to the location of a projectile. 
+
+    During this sprint, the team also experimented with new organizational tools, such as Jira and 
+Github projects. The team spent a few days debating which of the two were a better platform, but 
+ultimately settled on Github projects, as it had a better pipeline into the teams Github repository. 
+Because of how long the decision on platform took, this change was implemented a bit late into this 
+sprint, which meant that the tasking system was a bit messy and hurried. This wasn't a big deal in 
+the end and the team was able to adapt in time, though the team will make sure to keep the tasking 
+system cleaner from the start on the upcoming sprints. 
+
+    Another big change in the teams process during sprint 3 was the regular use of code reviews and
+code metrics. In the previous sprint, this wasn't considered until the end of the sprint, and so the 
+team only did one batch of code reviews and wasn't able to act on those reviews until after the end 
+of sprint 2. Similarly, the team only ran code metrics near the end of sprint 2, and it didn't provide 
+any useful information until the start of sprint 3. With Sprint 3, however, the team regularly used 
+code reviews and metrics, which allowed the team to implement changes based on the information gathered.
+This change also reduced the crunch the team experienced in the final week of sprint 2, as in sprint 3, 
+the team was able to spread the workload more evenly across the duration of the sprint. 
