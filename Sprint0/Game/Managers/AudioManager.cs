@@ -31,10 +31,23 @@ namespace Sprint0
 
             public void LoadContent()
             {
-                soundEffects[SoundKey.Shoot] = SoundEffect.FromFile(Path.Combine(soundPath, "default_fire.wav"));
-                soundEffects[SoundKey.Explosion] = SoundEffect.FromFile(Path.Combine(soundPath, "explosion.wav"));
-                soundEffects[SoundKey.PowerUp] = SoundEffect.FromFile(Path.Combine(soundPath, "powerup.wav"));
-                soundEffects[SoundKey.SniperFire] = SoundEffect.FromFile(Path.Combine(soundPath, "sniper_fire.wav"));
+                LoadSound(SoundKey.Shoot, "default_fire.wav");
+                LoadSound(SoundKey.Explosion, "explosion.wav");
+                LoadSound(SoundKey.PowerUp, "powerup.wav");
+                LoadSound(SoundKey.SniperFire, "sniper_fire.wav");
+            }
+
+            private void LoadSound(SoundKey key, string fileName)
+            {
+                string fullPath = Path.Combine(soundPath, fileName);
+                if (File.Exists(fullPath))
+                {
+                    soundEffects[key] = SoundEffect.FromFile(fullPath);
+                }
+                else
+                {
+                    Console.WriteLine($"Warning: Sound file missing - {fullPath}");
+                }
             }
 
             public void Play(SoundKey key)
