@@ -10,26 +10,33 @@ namespace Sprint0
         private const float Friction = 0.9f;
         private const float PushForce = 256f;
 
-        public PushableBlock(ContentManager content, BlockSpriteKey spriteKey, float frameTime = 0.3f)
+        public PushableBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime = 0.3f)
         {
-            LoadBlockContent(content, spriteKey);
+            animatedSprite = new AnimatedSprite(frameTime);
+            LoadBlockContent(content, blockType);
             SetFrameTime(frameTime);
         }
 
-        public override void LoadBlockContent(ContentManager content, BlockSpriteKey spriteKey)
+        public override void LoadBlockContent(ContentManager content, EntityKeys.BlockType blockType)
         {
-            animatedSprite = new AnimatedSprite(frameTime);
+            if (animatedSprite == null)
+                animatedSprite = new AnimatedSprite(frameTime);
 
-            switch (spriteKey)
+            var (x, y, width, height) = GetSpriteCoords(blockType);
+            animatedSprite.LoadContent(content, "TDTanksAllSprites", x, y, width, height, 1);
+            spriteHeight = height;
+            spriteWidth = width;
+            UpdateBounds(); 
+        }
+
+        private (int x, int y, int width, int height) GetSpriteCoords(EntityKeys.BlockType blockType)
+        {
+            return blockType switch
             {
-                case BlockSpriteKey.Box:
-                    animatedSprite.LoadContent(content, "TDTanksAllSprites", 960, 753, 56, 56, 1);
-                    bounds = new Rectangle((int)position.X, (int)position.Y, 45, 45);
-                    break;
-
-                default:
-                    throw new System.ArgumentException($"Invalid BlockSpriteKey: {spriteKey}");
-            }
+                EntityKeys.BlockType.Box => (960, 753, 56, 56),
+                EntityKeys.BlockType.SmallBarrel => (1016, 510, 40, 56),
+                _ => throw new System.ArgumentException($"Invalid BlockSpriteKey: {blockType}")
+            };
         }
 
         public void Push(Vector2 direction)

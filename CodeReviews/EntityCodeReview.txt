@@ -1,4 +1,10 @@
-2/27/25 - 
+Author of the code review: Harry 
+Date of the code review: Feb, 27, 2025
+Sprint number: 3
+Name of the .cs file being reviewed: Entity Folder/
+Author of the .cs file being reviewed: Saurav, Payton, Daoping
+Specific comments on code quality:
+
 - Mob: The Update method is very overloaded and should be simplified if possible
 - Player: the fire projectile method is kinda hard to understand and is unintuitive. 
 - Entity: Pretty good overall, but there's a method called predict future bomb that's incomplete and the bomb class may not work correctly

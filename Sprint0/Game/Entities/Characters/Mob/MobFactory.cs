@@ -20,6 +20,8 @@ namespace Sprint0
                 case EntityKeys.MobType.ShieldTank: return new ShieldTank(content);
                 case EntityKeys.MobType.SwarmingTank: return new SwarmingTank(content);
                 case EntityKeys.MobType.HoveringTank: return new HoveringTank(content);
+                case EntityKeys.MobType.HealerTank: return new HealerTank(content);
+                case EntityKeys.MobType.StealthTank: return new StealthTank(content);
                 // case EntityKeys.MobType.StealthTank: return new StealthTank(content);
                 // case EntityKeys.MobType.HealerTank: return new HealerTank(content);
                 default: return new BossTank(content);

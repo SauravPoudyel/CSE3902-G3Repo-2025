@@ -12,40 +12,67 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
-                    ((parameters.ContainsKey("target") && parameters["target"] is IRigid) ||
-                     (parameters.ContainsKey("target") && parameters["target"] is Mob)))
+                // Ensure we have both actor and target.
+                if (!parameters.ContainsKey("actor") || !parameters.ContainsKey("target"))
+                    return;
+
+                Entity actor = (Entity)parameters["actor"];
+                Entity target = (Entity)parameters["target"];
+
+                //Actor is a Player
+                if (actor is Player player)
                 {
-                    // Get collision direction based on relative positions
-                    Vector2 playerPos = player.GetPosition();
-                    Vector2 targetPos = ((Entity)parameters["target"]).GetPosition();
-                    Vector2 diff = playerPos - targetPos;
-                    
-                    // Normalize the difference vector
-                    Vector2 bounceDir;
-                    if (diff != Vector2.Zero)
+                    if(player.isFly) 
+                        return; 
+                    if (target is IRigid || target is Mob)
                     {
-                        diff.Normalize();
-                        bounceDir = diff;
-                    }
-                    else
-                    {
-                        // Fallback if entities are at the same position
-                        bounceDir = new Vector2((float)Math.Sin(player.bodyRotation), -(float)Math.Cos(player.bodyRotation));
-                    }
+                        Vector2 playerPos = player.GetPosition();
+                        Vector2 targetPos = target.GetPosition();
+                        Vector2 diff = playerPos - targetPos;
+                        Vector2 bounceDir = diff != Vector2.Zero ? Vector2.Normalize(diff)
+                                                                 : new Vector2((float)Math.Sin(player.bodyRotation), -(float)Math.Cos(player.bodyRotation));
+                        float bounceOffset = BounceSpeed * Globals.FRAMETIME;
+                        player.SetPosition(playerPos + bounceDir * bounceOffset);
+                        player.SetVelocity(Vector2.Zero);
 
-                    float bounceOffset = BounceSpeed * Globals.FRAMETIME;
-                    player.SetPosition(playerPos + bounceDir * bounceOffset);
-                    player.SetVelocity(Vector2.Zero);
-
-                    if (parameters.ContainsKey("target") && parameters["target"] is Mob mob &&
-                        !(mob is Plane || mob is HoveringTank))
-                    {
-                        ResolveCollision(mob, player);
-                        mob.SetVelocity(Vector2.Zero);
+                        // If target is a Mob (and not a Plane or HoveringTank), resolve both ways.
+                        if (target is Mob mob && !(mob is Plane || mob is HoveringTank))
+                        {
+                            ResolveCollision(mob, player);
+                            mob.SetVelocity(Vector2.Zero);
+                        }
                     }
                 }
-                
+                // Actor is a Mob (but not a Plane)
+                else if (actor is Mob mobActor && !(actor is Plane || actor is HoveringTank))
+                {
+                    if (target is IRigid || target is Blocks || (target is Mob mobTarget && !(mobTarget is Plane || mobTarget is HoveringTank)))
+                    {
+                        ResolveCollision(mobActor, target);
+                        mobActor.SetVelocity(Vector2.Zero);
+
+                        // If both are mobs, resolve collision in both directions.
+                        if (target is Mob mobOther && !(mobOther is Plane))
+                        {
+                            ResolveCollision(mobOther, mobActor);
+                            mobOther.SetVelocity(Vector2.Zero);
+                        }
+                    }
+                }
+                // Actor is a PushableBlock
+                else if (actor is PushableBlock pushableBlock)
+                {
+                    if (target is IRigid || target is Mob)
+                    {
+                        ResolveCollision(pushableBlock, target);
+                        pushableBlock.SetVelocity(Vector2.Zero);
+                        if (target is Mob mob && !(mob is Plane || mob is HoveringTank))
+                        {
+                            ResolveCollision(mob, pushableBlock);
+                            mob.SetVelocity(Vector2.Zero);
+                        }
+                    }
+                }
             }
 
             private void ResolveCollision(Entity movingEntity, Entity otherEntity)
@@ -54,8 +81,10 @@ namespace Sprint0
                 Rectangle boundsB = otherEntity.GetBounds();
                 Rectangle intersect = Rectangle.Intersect(boundsA, boundsB);
 
-                if (intersect.IsEmpty) return;
+                if (intersect.IsEmpty)
+                    return;
 
+                // Choose the axis of minimal penetration.
                 Vector2 displacement = (intersect.Width < intersect.Height)
                     ? new Vector2(boundsA.Center.X < boundsB.Center.X ? -intersect.Width : intersect.Width, 0)
                     : new Vector2(0, boundsA.Center.Y < boundsB.Center.Y ? -intersect.Height : intersect.Height);
@@ -187,7 +216,7 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
                     parameters.ContainsKey("target") && parameters["target"] is Effect effect &&
-                    effect.effectType.Equals("explosion") && !effect.didDamage)
+                    effect.effectType == EntityKeys.EffectType.Explosion && !effect.didDamage)
                 {
                     player.ChangeHealth(-50);
                     effect.didDamage = true;

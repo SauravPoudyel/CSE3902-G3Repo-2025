@@ -19,9 +19,22 @@ namespace Sprint0
                     {
                         case "fire":
                             if (!player.CanFire) return;
-                            player.SetProjectileType("Default");
-                            player.FireProjectile();
+                            
+                            string projectileType = "Default";
+                            player.SetProjectileType(projectileType);
+                            
+                            // Ensure default ammo is decremented properly
+                            if (Globals.PlayerData.TemporaryAmmoDefault > 0)
+                            {
+                                Globals.PlayerData.TemporaryAmmoDefault--;
+                                player.FireProjectile();
+                            }
+                            else
+                            {
+                                System.Console.WriteLine("Out of default ammo!");
+                            }
                             break;
+
                         case "item1":
                         case "item2":
                         case "item3":
@@ -40,10 +53,11 @@ namespace Sprint0
                             if (!player.CanFire) return;
 
                             InventorySlot slot = gameManager.playerInventory.inventorySlots[slotIndex];
-                            string projectileType = slot.ProjectileType;
+                            projectileType = slot.ProjectileType;
+
                             if (slot.AmmoCount <= 0) return;
 
-                            // Decrement ammo based on the projectile type.
+                            // Decrement correct ammo type
                             switch (projectileType)
                             {
                                 case "Sniper":
@@ -61,8 +75,11 @@ namespace Sprint0
                                 case "Teleporter":
                                     Globals.PlayerData.TemporaryAmmoTeleporter--;
                                     break;
-                                default:
+                                case "Default":  // Ensure default ammo decrements properly here too
                                     Globals.PlayerData.TemporaryAmmoDefault--;
+                                    break;
+                                default:
+                                    System.Console.WriteLine("Error: Invalid projectile type.");
                                     break;
                             }
 
@@ -74,15 +91,15 @@ namespace Sprint0
                                 gameManager.playerInventory.ShiftEmptySlot(slotIndex);
                             }
                             break;
+
                         default:
-                            System.Console.WriteLine("Error: invalid actionType.");
+                            System.Console.WriteLine("Error: Invalid actionType.");
                             break;
                     }
                 }
             }
         }
 
-    
         public class DamageCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)

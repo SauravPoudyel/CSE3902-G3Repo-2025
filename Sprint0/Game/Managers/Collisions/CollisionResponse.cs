@@ -25,7 +25,8 @@ namespace Sprint0
                 { new Tuple<Type, Type>(typeof(IPushable), typeof(IPushable)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(IPushable), typeof(Mob)), "CollisionStop" },
 
-                { new Tuple<Type, Type>(typeof(Player), typeof(PushableBlock)), "CollisionPush" },
+                { new Tuple<Type, Type>(typeof(Player), typeof(IPushable)), "CollisionPush" },
+                { new Tuple<Type, Type>(typeof(Mob), typeof(IPushable)), "CollisionStop" },
 
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(IFlammable)), "DestroyFlammableCommand" },
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(IRigid)), "CollisionProjectileReflect" },

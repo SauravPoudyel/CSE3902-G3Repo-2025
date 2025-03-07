@@ -41,19 +41,7 @@ namespace Sprint0
         protected override void UpdateMobBehavior()
         {
             velocity = Vector2.Zero;
-
-            if (lastKnownPlayerPosition != Vector2.Zero)
-            {
-                Vector2 directionToPlayer = lastKnownPlayerPosition - position;
-                float targetRotation = (float)Math.Atan2(directionToPlayer.Y, directionToPlayer.X) - MathHelper.PiOver2;
-                float angleDifference = MathHelper.WrapAngle(targetRotation - cannon.Rotation);
-                float maxTurnAmount = turretRotationSpeed * Globals.FRAMETIME;
-
-                if (Math.Abs(angleDifference) > maxTurnAmount)
-                    angleDifference = Math.Sign(angleDifference) * maxTurnAmount;
-
-                cannon.Rotation += angleDifference;
-            }
+            PointCannonPlayer();
         }
 
         protected override void ChangeMobType(EntityKeys.MobType type)

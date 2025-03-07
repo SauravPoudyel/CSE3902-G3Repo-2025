@@ -6,25 +6,24 @@ namespace Sprint0
 {
     public static class PowerUpFactory
     {
-        public static Dictionary<PickupItemType, float> EffectTimers = new Dictionary<PickupItemType, float>();
+        public static Dictionary<EntityKeys.ItemType, float> EffectTimers = new Dictionary<EntityKeys.ItemType, float>();
         public static float NormalPickUpRadius = 150f;
-        private static readonly Dictionary<PickupItemType, Action<Player>> expireActions = new()
+        private static readonly Dictionary<EntityKeys.ItemType, Action<Player>> expireActions = new()
         {
-            { PickupItemType.SpeedBoost, ResetSpeed },
-            { PickupItemType.Shield, DeactivateShield },
-            { PickupItemType.FireRateIncrease, ResetFireRate },
-            { PickupItemType.TimeSlow, ResetTimeSlow },
-            { PickupItemType.Cloak, ResetPlayerInvis },
-            { PickupItemType.Fly, ResetPlayerFly }, 
-            { PickupItemType.Magnet, ResetMagnet }
+            { EntityKeys.ItemType.SpeedBoost, ResetSpeed },
+            { EntityKeys.ItemType.Shield, DeactivateShield },
+            { EntityKeys.ItemType.FireRateIncrease, ResetFireRate },
+            { EntityKeys.ItemType.TimeSlow, ResetTimeSlow },
+            { EntityKeys.ItemType.Cloak, ResetPlayerInvis },
+            { EntityKeys.ItemType.Fly, ResetPlayerFly },
+            { EntityKeys.ItemType.Magnet, ResetMagnet }
         };
 
-        private static void ResetSpeed(Player player) { player.speedMultiplier = 1f; } 
-        private static void DeactivateShield(Player player) { player.shieldActive = false; } 
-        private static void ResetFireRate(Player player) { player.currentShootInterval = player.baseShootInterval; } 
+        private static void ResetSpeed(Player player) { player.speedMultiplier = 1f; }
+        private static void DeactivateShield(Player player) { player.shieldActive = false; }
+        private static void ResetFireRate(Player player) { player.currentShootInterval = player.baseShootInterval; }
         private static void ResetTimeSlow(Player player) { Globals.FRAMETIME = 1f / 60f; }
-        private static void ResetMagnet(Player player) { NormalPickUpRadius = 150f;}
-
+        private static void ResetMagnet(Player player) { NormalPickUpRadius = 150f; }
         private static void ResetPlayerInvis(Player player)
         {
             player.SetSprite("TankBody");
@@ -32,7 +31,6 @@ namespace Sprint0
                 player.cannon.SetSprite("default");
             player.isInvis = false;
         }
-
         private static void ResetPlayerFly(Player player)
         {
             player.SetSprite("TankBody");
@@ -42,15 +40,9 @@ namespace Sprint0
             player.TrackTrailsEnabled = true;
         }
         
-        private static void ResetCannonAngularVelocity(Player player) 
-        { 
-            if (player.cannon != null) 
-                player.cannon.AngularVelocity = 30f; 
-        } 
-
         public static void UpdateEffects(Player player)
         {
-            var effects = new List<PickupItemType>(EffectTimers.Keys);
+            var effects = new List<EntityKeys.ItemType>(EffectTimers.Keys);
 
             foreach (var effect in effects)
             {
@@ -65,75 +57,75 @@ namespace Sprint0
             }
         }
 
-
-        public static void ApplyPickupEffect(Player player, PickupItemType type)
+        public static void ApplyPickupEffect(Player player, EntityKeys.ItemType type)
         {
             switch (type)
             {
-                case PickupItemType.SpeedBoost:
+                case EntityKeys.ItemType.SpeedBoost:
                     player.speedMultiplier = 2.2f;
-                    EffectTimers[PickupItemType.SpeedBoost] = 5f;
+                    EffectTimers[EntityKeys.ItemType.SpeedBoost] = 5f;
                     break;
-                case PickupItemType.Shield:
+                case EntityKeys.ItemType.Shield:
                     player.shieldActive = true;
-                    EffectTimers[PickupItemType.Shield] = 5f;
+                    EffectTimers[EntityKeys.ItemType.Shield] = 5f;
                     break;
-                case PickupItemType.Ammo_default:
+                case EntityKeys.ItemType.Ammo_default:
                     Globals.PlayerData.TemporaryAmmoDefault++;
                     break;
-                case PickupItemType.Ammo_shotgun:
+                case EntityKeys.ItemType.Ammo_shotgun:
                     Globals.PlayerData.TemporaryAmmoShotgun++;
                     break;
-                case PickupItemType.Ammo_sniper:
+                case EntityKeys.ItemType.Ammo_sniper:
                     Globals.PlayerData.TemporaryAmmoSniper++;
                     break;
-                case PickupItemType.Ammo_rocket:
+                case EntityKeys.ItemType.Ammo_rocket:
                     Globals.PlayerData.TemporaryAmmoRocket++;
                     break;
-                case PickupItemType.Ammo_Laser:
+                case EntityKeys.ItemType.Ammo_Laser:
                     Globals.PlayerData.TemporaryAmmoLaser++;
                     break;
-                case PickupItemType.Ammo_Mine:
+                case EntityKeys.ItemType.Ammo_Mine:
                     Globals.PlayerData.TemporaryAmmoMine++;
                     break;
-                case PickupItemType.Magnet:
-                    NormalPickUpRadius = 450; 
-                    EffectTimers[PickupItemType.Magnet] = 8f;
+                case EntityKeys.ItemType.Magnet:
+                    NormalPickUpRadius = 450;
+                    EffectTimers[EntityKeys.ItemType.Magnet] = 8f;
                     break;
-                case PickupItemType.FireRateIncrease:
+                case EntityKeys.ItemType.FireRateIncrease:
                     player.currentShootInterval = player.baseShootInterval * 0.3f;
-                    EffectTimers[PickupItemType.FireRateIncrease] = 5f;
+                    EffectTimers[EntityKeys.ItemType.FireRateIncrease] = 5f;
                     break;
-                case PickupItemType.MedStrong:
+                case EntityKeys.ItemType.MedStrong:
                     player.ChangeHealth(50);
                     break;
-                case PickupItemType.MedWeak:
+                case EntityKeys.ItemType.MedWeak:
                     player.ChangeHealth(25);
                     break;
-                case PickupItemType.TimeSlow:
+                case EntityKeys.ItemType.TimeSlow:
                     Globals.FRAMETIME = 1f / 150f;
-                    EffectTimers[PickupItemType.TimeSlow] = 5f;
+                    EffectTimers[EntityKeys.ItemType.TimeSlow] = 5f;
                     break;
-                case PickupItemType.Fly:
+                case EntityKeys.ItemType.Fly:
                     player.isFly = true;
                     player.SetSprite("FlyingTankBody");
                     player.TrackTrailsEnabled = false;
-                    EffectTimers[PickupItemType.Fly] = 5f;
+                    EffectTimers[EntityKeys.ItemType.Fly] = 5f;
                     break;
-                case PickupItemType.Cloak:
+                case EntityKeys.ItemType.Cloak:
                     player.isInvis = true;
                     player.SetSprite("InvisTankBody");
                     if (player.cannon != null)
                         player.cannon.SetSprite("InvisTankCannon");
-                    EffectTimers[PickupItemType.Cloak] = 5f;
+                    EffectTimers[EntityKeys.ItemType.Cloak] = 5f;
                     break;
-                case PickupItemType.SilverTag:
+                case EntityKeys.ItemType.SilverTag:
                     Globals.PlayerData.TemporaryCoins += 50;
                     break;
-                case PickupItemType.GoldTag:
+                case EntityKeys.ItemType.GoldTag:
                     Globals.PlayerData.TemporaryCoins += 100;
                     break;
-                case PickupItemType.Teleporter:
+                case EntityKeys.ItemType.Teleporter:
+                    // Teleporter logic here if needed.
                     break;
             }
         }

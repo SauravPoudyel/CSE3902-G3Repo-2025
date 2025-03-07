@@ -1,0 +1,24 @@
+Author of the code review: Payton Yaffe
+Date of the code review: February 27, 2025
+Sprint number: 2
+Files Reviewed: Blocks.cs, BlockFactory.cs
+Author of the reviewed files: Daoping Huang
+Specific comments on code quality:
+
+- BaseBlock.cs is unnecessary; its logic should be merged into Blocks or BlockFactory.
+- IObtuse should be a parameter instead of an interface since all three block types currently implement it.
+- Line-of-sight should be blocked by default, unless transparent blocks are planned for the future.
+
+Saurav Additional Comments: 
+- The BlockSpriteKey enum now includes all block types (Tree, Box, OilBarrel_Red, OilBarrel_Black, BarbedFence, Oil, RockPile, Factory, RockPileVar1, RockPileVar2, Hosue, House2, SmallTree, Fence, DeadTree, Garage, CoconutTree, SmallBarrel).
+- The abstraction provided by BaseBlock is minimal; consider whether its functionality should be merged into concrete block classes or delegated to BlockFactory.
+- The update and draw methods are straightforward but could be optimized by reducing redundant bounds recalculation.
+- Block creation is handled via a dictionary mapping from BlockSpriteKey to creation functions.
+- The mapping now “spreads” block types across their proper categories:
+- Rigid (IRigid): Tree, BarbedFence, RockPile, Factory, RockPileVar1, RockPileVar2, Hosue, House2, SmallTree, Fence, DeadTree, Garage, CoconutTree.
+- Pushable (IPushable): Box.
+- Flammable (IFlammable): OilBarrel_Red, OilBarrel_Black, Oil, SmallBarrel.
+- This design makes adding new block types easier and centralizes instantiation logic.
+- The interfaces IRigid, IPushable, IObtuse, IDestructible, and IFlammable are clearly defined.
+- Using interfaces instead of concrete classes improves flexibility in collision handling and block behavior.
+- Consider whether IObtuse is best implemented as an interface or a parameter since all block types implement it.

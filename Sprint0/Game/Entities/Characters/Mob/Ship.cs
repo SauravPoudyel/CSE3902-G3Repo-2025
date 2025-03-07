@@ -17,7 +17,7 @@ namespace Sprint0
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.ShipVertical;
+            currentMobType = EntityKeys.MobType.ShipVertical;
             defaultMovementSpeed = 120f;
             firingInterval = 1.5f;
             currentProjectileVariables["projectileType"] = "Default";
@@ -55,7 +55,7 @@ namespace Sprint0
             }
         }
 
-        protected override void ChangeMobType(MobType type)
+        protected override void ChangeMobType(EntityKeys.MobType type)
         {
             currentMobType = type;
             InitializeMob();
@@ -74,6 +74,7 @@ namespace Sprint0
                 position = new Vector2(-50, Globals.SCREENHEIGHT / 2);
             }
         }
+
 
         public override void FireProjectile()
         {

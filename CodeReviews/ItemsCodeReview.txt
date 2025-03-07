@@ -1,0 +1,9 @@
+Author of the code review: Payton Yaffe
+Date of the code review: February 27, 2025
+Sprint number: 2
+Files Reviewed: PickupItem.cs
+Author of the reviewed files: Saurav, Harry
+Specific comments on code quality:
+
+- File is well-structured and easily extendable for adding item logic.
+- Effect Factory integration is good, allowing for clean ability resets.

@@ -1,0 +1,14 @@
+Author of the code review: Alexander Nistor
+Date of the code review: February 27, 2025
+Sprint number: 2
+Files Reviewed: GameManager.cs, Game.cs, CSVParser.cs
+Author of the reviewed files: Saurav Poudyel, Harry Manzler
+Specific comments on code quality:
+
+Game Manager:
+InitializeTiles() and InitializeEntities() need rework for dynamic level loading.
+Enemy spawn patterns are hardcoded; should be data-driven.
+AddScreen() and RemoveScreen() methods are redundant.
+CSV Level Parser:
+Lacks proper validation for CSV inputs, making it prone to errors.
+Error handling is weak; should gracefully recover from corrupt data.

@@ -130,12 +130,12 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
                     parameters.ContainsKey("spawnPosition") && parameters["spawnPosition"] is Vector2 spawnPosition &&
-                    parameters.ContainsKey("effectType") && parameters["effectType"] is string effectType)
+                    parameters.ContainsKey("effectType") && parameters["effectType"] is EntityKeys.EffectType effectType)
                 {
                     string effectKey = "effect_" + Guid.NewGuid().ToString();
                     Effect effect = new Effect(gameManager.GetContent(), spawnPosition, effectKey, effectType);
                     gameManager.GetEntities().Add(effectKey, effect);
-                    if(effectType == "explosion")
+                    if(effectType == EntityKeys.EffectType.Explosion)
                         AudioManager.PlaySound(AudioManager.SoundKey.Explosion);
                 }
             }

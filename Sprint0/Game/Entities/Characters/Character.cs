@@ -83,7 +83,7 @@ namespace Sprint0
         {
             float dt = Globals.FRAMETIME;
             Vector2 forward = new Vector2((float)Math.Sin(bodyRotation), -(float)Math.Cos(bodyRotation));
-            position += forward * velocity.Y * speedMultiplier * dt;
+            position += -forward * velocity.Y * speedMultiplier * dt;
             if (TrackTrailsEnabled)
                 TrackTrail.UpdateTrackTrails(trackTrailList, dt, position, bodyRotation, trackTrailSprite, ref trackTrailSpawnTimer, trackTrailSpawnInterval);
             if (sprite != null)
@@ -143,7 +143,7 @@ namespace Sprint0
                 int coinY = Globals.random.Next(r.Top, r.Bottom);
                 Vector2 coinPos = new Vector2(coinX, coinY);
                 // Create coin using Item as a base class
-                Item coin = new Item(content, PickupItemType.GoldTag);
+                Item coin = new Item(content, EntityKeys.ItemType.GoldTag);
                 coin.EntityKey = "coin_" + i + Guid.NewGuid().ToString();
                 commandQueue.Enqueue(new CommandRequest("CreateEntity", new Dictionary<string, object>
                 {

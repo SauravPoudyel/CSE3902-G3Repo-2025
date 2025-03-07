@@ -76,7 +76,7 @@ namespace Sprint0
             int spacing = 10;
             int totalWidth = slotCount * slotWidth + (slotCount - 1) * spacing;
             int startX = (Globals.SCREENWIDTH - totalWidth) / 2;
-            int y = Globals.SCREENHEIGHT - slotHeight - 20;
+            int y = Globals.SCREENHEIGHT - slotHeight - 50;
 
             for (int i = 0; i < inventorySlots.Count; i++)
             {
