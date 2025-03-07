@@ -17,7 +17,7 @@ namespace Sprint0
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.Turret;
+            currentMobType = EntityKeys.MobType.Turret;
             defaultMovementSpeed = 0f;
             firingInterval = 2.5f; // Shoots every 2.5 seconds
             turretRotationSpeed = MathHelper.ToRadians(40);
@@ -56,7 +56,7 @@ namespace Sprint0
             }
         }
 
-        protected override void ChangeMobType(MobType type)
+        protected override void ChangeMobType(EntityKeys.MobType type)
         {
             currentMobType = type;
             InitializeMob();

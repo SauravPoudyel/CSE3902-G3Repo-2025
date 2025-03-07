@@ -128,7 +128,7 @@ namespace Sprint0
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            animatedSprite.Draw(spriteBatch, position, SpriteEffects.None, 0f);
+            animatedSprite.Draw(spriteBatch, position, SpriteEffects.None, 0, null, null, 1.5f);
         }
     }
 }

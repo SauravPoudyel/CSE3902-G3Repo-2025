@@ -1,0 +1,4 @@
+2/27/25 - 
+- Static Sprites: Kinda redundant, it's easier to implement a static sprite as an animated sprite with only one frame. Should integrate into one universal sprite class which helps with inheritance. 
+- Animated Sprite: Extract Frames isn't always very useful, it only works when all the frames are in one line. It's easier to manually add each frame since it doesn't take too long. Also the implementation of damaged sprites should be changed to just be a color filter layered oevr top instead of a different sprite. Also the Draw function is pretty overloaded and should be pared down, has too many parameters. 
+- Text Sprite: Outdated and should be made more useful. Should implement new fonts so that it can beused later. 

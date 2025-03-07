@@ -8,6 +8,5 @@ namespace Sprint0
         bool BlocksInput { get; }
         void Update();
         void Draw(SpriteBatch spriteBatch);
-        void HandleClick(Point clickLocation);
     }
 }

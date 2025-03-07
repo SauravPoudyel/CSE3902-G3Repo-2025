@@ -19,7 +19,7 @@ namespace Sprint0
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.BossTank;
+            currentMobType = EntityKeys.MobType.BossTank;
             defaultMovementSpeed = 40f;
             firingInterval = 4f;
             currentProjectileVariables["projectileType"] = "Shotgun";
@@ -45,7 +45,7 @@ namespace Sprint0
             PointCannonPlayer();
         }
 
-        protected override void ChangeMobType(MobType type)
+        protected override void ChangeMobType(EntityKeys.MobType type)
         {
             currentMobType = type;
             InitializeMob();

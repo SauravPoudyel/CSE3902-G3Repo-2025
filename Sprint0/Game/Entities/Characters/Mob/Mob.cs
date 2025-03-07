@@ -3,28 +3,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
+using static Sprint0.EntityKeys;
+
 
 namespace Sprint0
 {
-    public enum MobType
-    {
-        BossTank,
-        SmallEnemy,
-        SwarmingTank,
-        Turret,
-        Plane,
-        ShieldTank,
-        HoveringTank,
-        StealthTank, 
-        HealerTank, 
-        ShipVertical, 
-        ShipHorizontal
-        
-    }
 
     public abstract class Mob : Character
     {
-        protected MobType currentMobType;
+        protected EntityKeys.MobType currentMobType;
         protected float defaultMovementSpeed;
         protected float firingTimer;
         protected float firingInterval;

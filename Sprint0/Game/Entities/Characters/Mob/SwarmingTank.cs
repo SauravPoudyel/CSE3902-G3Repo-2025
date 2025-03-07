@@ -19,7 +19,7 @@ namespace Sprint0
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.SwarmingTank;
+            currentMobType = EntityKeys.MobType.SwarmingTank;
             defaultMovementSpeed = 120f; // Runs much faster towards the player.
             firingInterval = 0f; // Doesn't shoot.
             inExplosionState = false;
@@ -51,7 +51,7 @@ namespace Sprint0
             base.OnDeath(); 
         }
 
-        protected override void ChangeMobType(MobType type)
+        protected override void ChangeMobType(EntityKeys.MobType type)
         {
             currentMobType = type;
             InitializeMob();

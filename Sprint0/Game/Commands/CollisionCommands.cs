@@ -45,6 +45,7 @@ namespace Sprint0
                         mob.SetVelocity(Vector2.Zero);
                     }
                 }
+                
             }
 
             private void ResolveCollision(Entity movingEntity, Entity otherEntity)

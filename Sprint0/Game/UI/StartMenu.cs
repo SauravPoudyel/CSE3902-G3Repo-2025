@@ -12,62 +12,34 @@ namespace Sprint0
         private Texture2D backgroundTexture;
         private Color overlayColor;
         private ContentManager content;
-        private GraphicsDevice graphicsDevice;
-
+        Dictionary<string, object> paramters;
         // StartMenu should block game input.
         public bool BlocksInput => true;
 
-        public StartMenu(ContentManager content, GraphicsDevice graphicsDevice, Game1 game)
+        public StartMenu(Game1 game)
         {
-            this.content = content;
-            this.graphicsDevice = graphicsDevice;
+            this.content = game.Content;
             buttons = new List<Button>();
             overlayColor = new Color(0, 0, 0, 180);
-            backgroundTexture = content.Load<Texture2D>("StartMenu");
-
-            SpriteFont font = content.Load<SpriteFont>("Arial");
-            Texture2D buttonTexture = new Texture2D(graphicsDevice, 1, 1);
-            buttonTexture.SetData(new Color[] { Color.Gray });
-
-            Dictionary<string, object> restartParams = new Dictionary<string, object>
+            backgroundTexture = content.Load<Texture2D>("UI/StartMenu");
+            paramters = new Dictionary<string, object>
             {
                 { "gameManager", game.GameManager },
-                { "game", game }
+                { "game", game}
             };
-            Button restartButton = new Button(buttonTexture, font,
-                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 20, 150, 40),
-                "Restart", new GameCommands.ResetCommand(game), restartParams);
+            Texture2D backgroundButton = content.Load<Texture2D>("UI/ButtonBackground1");
+            int xCenter = (Globals.SCREENWIDTH - backgroundButton.Width) / 2;
+            buttons.Add(new StartButton(content.Load<Texture2D>("UI/PlayButton"), backgroundButton, new(xCenter-200,500), paramters));
+            buttons.Add(new RestartButton(content.Load<Texture2D>("UI/RestartButton"), backgroundButton, new(xCenter,500), paramters));
+            buttons.Add(new ExitGameButton(content.Load<Texture2D>("UI/ExitGameButton"), backgroundButton, new(xCenter+200, 500), paramters));
 
-            Dictionary<string, object> quitParams = new Dictionary<string, object>
-            {
-                { "gameManager", game.GameManager },
-                { "game", game }
-            };
-            Button quitButton = new Button(buttonTexture, font,
-                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 + 40, 150, 40),
-                "Quit", new GameCommands.QuitCommand(game), quitParams);
-
-            Dictionary<string, object> startParams = new Dictionary<string, object>
-            {
-                { "gameManager", game.GameManager },
-                { "screen", this }
-            };
-            // Note: The Start button uses "StartGameCommand" to remove the start menu.
-            Button startButton = new Button(buttonTexture, font,
-                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 80, 150, 40),
-                "Start", new GameCommands.StartGameCommand(), startParams);
-
-            buttons.Add(restartButton);
-            buttons.Add(quitButton);
-            buttons.Add(startButton);
         }
 
         public void Update()
         {
-            MouseState mouseState = Mouse.GetState();
             foreach (Button button in buttons)
             {
-                button.Update(mouseState);
+                button.Update();
             }
         }
 
@@ -77,17 +49,6 @@ namespace Sprint0
             foreach (Button button in buttons)
             {
                 button.Draw(spriteBatch);
-            }
-        }
-
-        public void HandleClick(Point clickLocation)
-        {
-            foreach (Button button in buttons)
-            {
-                if (button.ContainsPoint(clickLocation))
-                {
-                    button.Click();
-                }
             }
         }
     }

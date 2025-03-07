@@ -25,6 +25,8 @@ namespace Sprint0
         private PlayerData playerData;
         public PlayerInventory playerInventory { get; private set; }
         private bool gameStarted;
+        private bool gamePaused;
+        private int levelNumber;
 
         public bool GameStarted
         {
@@ -36,6 +38,26 @@ namespace Sprint0
             }
         }
 
+        public bool GamePaused
+        {
+            get { return gamePaused; }
+            set
+            {
+                gamePaused = value;
+                UpdateActiveScreen();
+            }
+        }
+
+        public int LevelNumber
+        {
+            get { return levelNumber; }
+            set
+            {
+                levelNumber = value;
+                UpdateActiveScreen();
+            }
+        }
+
         public GameManager(Game1 game, bool started = false)
         {
             AudioManager.LoadContent();
@@ -43,6 +65,8 @@ namespace Sprint0
             Instance = this;
             Game = game;
             gameStarted = started;
+            gamePaused = false;
+            levelNumber = 1;
             entities = new Dictionary<string, Entity>();
             tiles = new List<Tile>();
             collisionManager = new CollisionManager();
@@ -90,6 +114,7 @@ namespace Sprint0
             Globals.LoadGlobalSprites(content);
             Globals.LoadGlobalFonts(content);
             Globals.LoadPlayerData();
+            LoadLevelContent();
             InitializeTiles();
             InitializeEntities();
 
@@ -105,7 +130,10 @@ namespace Sprint0
             screens.Clear();
             if (!gameStarted)
             {
-                activeScreen = new StartMenu(content, Game.GraphicsDevice, Game);
+                activeScreen = new StartMenu(Game);
+                blockingScreen = activeScreen;
+            } else if (gamePaused) {
+                activeScreen = new PauseMenu(content, Game.GraphicsDevice, Game);
                 blockingScreen = activeScreen;
             }
             else
@@ -115,23 +143,22 @@ namespace Sprint0
             }
             screens.Add(activeScreen);
         }
-
+        public void UpdateLevel(){
+            LoadLevelContent();
+            InitializeTiles();
+            InitializeEntities();
+        }
+        private void LoadLevelContent() {
+            levelManager.LoadContent(content, "Level"+levelNumber.ToString());
+        }
         private void InitializeTiles()
         {
-            levelManager.LoadContent(content);
             tiles = levelManager.LoadLevelTiles();
         }
 
         private void InitializeEntities()
         {
-            levelManager.LoadContent(content);
             entities = levelManager.LoadLevelEntities();
-
-            PickupItem pickupItem = new PickupItem(content); //test item
-            pickupItem.SetPosition(new Vector2(200, 700));
-            pickupItem.EntityKey = "pickupItem";
-            entities.Add(pickupItem.EntityKey, pickupItem);
-            
             ProjectileFactory.Initialize(content);
         }
 
