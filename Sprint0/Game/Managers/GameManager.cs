@@ -130,7 +130,7 @@ namespace Sprint0
             screens.Clear();
             if (!gameStarted)
             {
-                activeScreen = new StartMenu(content, Game.GraphicsDevice, Game);
+                activeScreen = new StartMenu(Game);
                 blockingScreen = activeScreen;
             } else if (gamePaused) {
                 activeScreen = new PauseMenu(content, Game.GraphicsDevice, Game);

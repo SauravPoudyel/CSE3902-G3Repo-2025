@@ -12,31 +12,19 @@ namespace Sprint0
     {
         public class QuitCommand : ICommand
         {
-            private Game1 game;
-
-            public QuitCommand(Game1 game)
-            {
-                this.game = game;
-            }
-
             public void Execute(Dictionary<string, object> parameters)
             {
-                game.Exit();
+                if (parameters.ContainsKey("game") && parameters["game"] is Game1 game)
+                    game.Exit();
             }
         }
 
         public class ResetCommand : ICommand
         {
-            private Game1 game;
-
-            public ResetCommand(Game1 game)
-            {
-                this.game = game;
-            }
-
             public void Execute(Dictionary<string, object> parameters)
             {
-                game.ResetGame();
+                if (parameters.ContainsKey("game") && parameters["game"] is Game1 game)
+                    game.ResetGame();
             }
         }
 
