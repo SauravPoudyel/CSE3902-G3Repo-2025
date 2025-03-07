@@ -18,6 +18,7 @@ namespace Sprint0
                 { new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(Player), typeof(RigidBlock)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(Player), typeof(Mob)), "CollisionStop" },
+                { new Tuple<Type, Type>(typeof(Player), typeof(FlammableBlock)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(PushableBlock), typeof(RigidBlock)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(Mob), typeof(RigidBlock)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(Mob), typeof(Mob)), "CollisionStop" },

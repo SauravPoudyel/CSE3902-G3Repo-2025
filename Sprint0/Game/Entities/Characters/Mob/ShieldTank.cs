@@ -22,7 +22,7 @@ namespace Sprint0
 
         protected override void InitializeMob()
         {
-            currentMobType = MobType.ShieldTank;
+            currentMobType = EntityKeys.MobType.ShieldTank;
             defaultMovementSpeed = 30f;
             firingInterval = 0f;
             currentProjectileVariables["projectileType"] = "Default";
@@ -40,7 +40,7 @@ namespace Sprint0
             FollowPlayer(aggressionLevel);
         }
 
-        protected override void ChangeMobType(MobType type)
+        protected override void ChangeMobType(EntityKeys.MobType type)
         {
             currentMobType = type;
             InitializeMob();
