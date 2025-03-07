@@ -1,5 +1,5 @@
 Author of the code review: Harry Manzler
-Date of the code review: February 27, 2025
+Date of the code review: February 25, 2025
 Sprint number: 2
 Files Reviewed: Projectile.cs, RocketProjectile.cs, SniperProjectile.cs, ShotgunProjectile.cs
 Author of the reviewed files: Payton Yaffe
