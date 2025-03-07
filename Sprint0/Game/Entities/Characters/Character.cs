@@ -15,13 +15,12 @@ namespace Sprint0
         public float bodyRotation { get; set; }
         protected float speedMultiplier = 1f;
         protected List<TrackTrail> trackTrailList;
-        protected float trackTrailSpawnTimer;
-        protected float trackTrailSpawnInterval = 0.2f;
+        protected float trackTrailSpawnTimer, trackTrailSpawnInterval = 0.2f;
         public bool TrackTrailsEnabled { get; set; } = true;
         protected ISprite trackTrailSprite;
         public float health = 100f;
         public bool isDead = false, isDamaged = false, isHealed = false;
-        protected Color? changeIndicator = null; // for sprite color change when damaged or healed
+        protected Color? changeIndicator = null;
 
         public Character(ContentManager content) : base()
         {
@@ -48,16 +47,13 @@ namespace Sprint0
             bodyRotation += angleDiff;
         }
 
-        public void SetCannonRotation(float rotation) 
-        {
-            cannon.Rotation = rotation; 
-        }
+        public void SetCannonRotation(float rotation) { cannon.Rotation = rotation; }
 
         public virtual void FireProjectile()
         {
             if (cannon == null)
                 return;
-    
+
             Vector2 tip = cannon.GetTipPosition();
             var parameters = new Dictionary<string, object>
             {
@@ -72,11 +68,9 @@ namespace Sprint0
                 parameters["numberOfProjectiles"] = 3;
             }
             commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
-
             cannon.TriggerFiringEffect();
             AudioManager.PlaySound(AudioManager.SoundKey.Shoot);
         }
-
 
         public void SetProjectileType(string newType)
         {
@@ -87,52 +81,43 @@ namespace Sprint0
 
         public override void Update()
         {
-            float deltaTime = Globals.FRAMETIME;
+            float dt = Globals.FRAMETIME;
             Vector2 forward = new Vector2((float)Math.Sin(bodyRotation), -(float)Math.Cos(bodyRotation));
-            position += forward * -velocity.Y * speedMultiplier * deltaTime;
-
-            // Update track trails.
+            position += -forward * velocity.Y * speedMultiplier * dt;
             if (TrackTrailsEnabled)
-                TrackTrail.UpdateTrackTrails(trackTrailList, deltaTime, position, bodyRotation, trackTrailSprite, ref trackTrailSpawnTimer, trackTrailSpawnInterval);
-
+                TrackTrail.UpdateTrackTrails(trackTrailList, dt, position, bodyRotation, trackTrailSprite, ref trackTrailSpawnTimer, trackTrailSpawnInterval);
             if (sprite != null)
             {
                 sprite.Update();
                 CalculateBounds(spriteWidth, spriteHeight);
             }
-
             if (health <= 0 && !isDead)
             {
                 isDead = true;
                 OnDeath();
             }
             prevPosition = position;
-
-            cannon.Update(); 
+            cannon.Update();
         }
 
         protected void CalculateBounds(float spriteWidth, float spriteHeight)
         {
-            float halfWidth = spriteWidth * 0.5f;
-            float halfHeight = spriteHeight * 0.5f;
-            float cosAngle = (float)Math.Cos(bodyRotation);
-            float sinAngle = (float)Math.Sin(bodyRotation);
+            float halfW = spriteWidth * 0.5f, halfH = spriteHeight * 0.5f;
+            float cosA = (float)Math.Cos(bodyRotation), sinA = (float)Math.Sin(bodyRotation);
             Vector2[] corners = new Vector2[4]
             {
-                new Vector2(-halfWidth, -halfHeight),
-                new Vector2(halfWidth, -halfHeight),
-                new Vector2(halfWidth, halfHeight),
-                new Vector2(-halfWidth, halfHeight)
+                new Vector2(-halfW, -halfH),
+                new Vector2(halfW, -halfH),
+                new Vector2(halfW, halfH),
+                new Vector2(-halfW, halfH)
             };
             for (int i = 0; i < 4; i++)
             {
-                float x = corners[i].X;
-                float y = corners[i].Y;
-                corners[i].X = x * cosAngle - y * sinAngle + position.X;
-                corners[i].Y = x * sinAngle + y * cosAngle + position.Y;
+                float x = corners[i].X, y = corners[i].Y;
+                corners[i].X = x * cosA - y * sinA + position.X;
+                corners[i].Y = x * sinA + y * cosA + position.Y;
             }
-            float minX = corners[0].X, maxX = corners[0].X;
-            float minY = corners[0].Y, maxY = corners[0].Y;
+            float minX = corners[0].X, maxX = corners[0].X, minY = corners[0].Y, maxY = corners[0].Y;
             for (int i = 1; i < 4; i++)
             {
                 if (corners[i].X < minX) minX = corners[i].X;
@@ -145,18 +130,33 @@ namespace Sprint0
 
         public virtual void OnDeath()
         {
-            var effectParams = new Dictionary<string, object>
+            commandQueue.Enqueue(new CommandRequest("SpawnEffect", new Dictionary<string, object>
             {
                 { "spawnPosition", position },
                 { "effectType", "explosion" }
-            };
-            commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
-
-            var parameters2 = new Dictionary<string, object>()
+            }));
+            int coinCount = Globals.random.Next(2, 5);
+            Rectangle r = GetBounds();
+            for (int i = 0; i < coinCount; i++)
             {
-                {"destroyEntity", EntityKey}
-            };
-            commandQueue.Enqueue(new CommandRequest("DestroyEntity", parameters2));
+                int coinX = Globals.random.Next(r.Left, r.Right);
+                int coinY = Globals.random.Next(r.Top, r.Bottom);
+                Vector2 coinPos = new Vector2(coinX, coinY);
+                // Create coin using Item as a base class
+                Item coin = new Item(content, EntityKeys.ItemType.GoldTag);
+                coin.EntityKey = "coin_" + i + Guid.NewGuid().ToString();
+                commandQueue.Enqueue(new CommandRequest("CreateEntity", new Dictionary<string, object>
+                {
+                    { "create", coin },
+                    { "entityName", coin.EntityKey },
+                    { "position", coinPos },
+                    { "velocity", Vector2.Zero }
+                }));
+            }
+            commandQueue.Enqueue(new CommandRequest("DestroyEntity", new Dictionary<string, object>
+            {
+                { "destroyEntity", EntityKey }
+            }));
         }
 
         public virtual void ChangeHealth(int change)
@@ -166,23 +166,14 @@ namespace Sprint0
             {
                 isDamaged = true;
                 changeIndicator = Color.Red;
-                Task.Delay(450).ContinueWith(_ =>
-                {
-                    isDamaged = false;
-                    changeIndicator = null;
-                });
+                Task.Delay(450).ContinueWith(_ => { isDamaged = false; changeIndicator = null; });
             }
-            else if(change > 0)
+            else if (change > 0)
             {
                 isHealed = true;
                 changeIndicator = Color.Green;
-                Task.Delay(450).ContinueWith(_ =>
-                {
-                    isHealed = false;
-                    changeIndicator = null;
-                });
+                Task.Delay(450).ContinueWith(_ => { isHealed = false; changeIndicator = null; });
             }
-
             if (health <= 0 && !isDead)
             {
                 isDead = true;
@@ -190,16 +181,12 @@ namespace Sprint0
             }
         }
 
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             foreach (var trail in trackTrailList)
                 trail.Draw(spriteBatch);
-
             sprite?.Draw(spriteBatch, position, SpriteEffects.None, bodyRotation, null, changeIndicator);
-
             cannon?.Draw(spriteBatch);
         }
     }
-
 }

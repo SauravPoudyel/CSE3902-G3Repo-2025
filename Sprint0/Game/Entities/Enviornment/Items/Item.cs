@@ -1,29 +1,21 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Sprint0
 {
-    public enum PickupItemType
-    { 
-        SpeedBoost, Shield, Ammo_default, Ammo_shotgun, Ammo_sniper, Ammo_rocket,
-        Ammo_Laser, Ammo_Mine, Magnet, FireRateIncrease, MedStrong, MedWeak, TimeSlow,
-        Fly, Cloak, SilverTag, GoldTag, Teleporter
-    }
-
     public class Item : Entity
     {
         private ContentManager content;
         private float timer;
-        private PickupItemType itemType;
-        private const float PickupRadius = 150f;
+        private EntityKeys.ItemType itemType;
+        private float PickupRadius = 150f;
         private const float Acceleration = 300f;
         protected AnimatedSprite animatedSprite;
         protected float frameTime = 0.15f;
 
-        public Item(ContentManager content, PickupItemType type)
+        public Item(ContentManager content, EntityKeys.ItemType type)
         {
             this.content = content;
             this.itemType = type;
@@ -31,81 +23,80 @@ namespace Sprint0
             SetItemType(type);
         }
 
-        public void LoadItemContent(ContentManager content, PickupItemType type)
+        public void LoadItemContent(ContentManager content, EntityKeys.ItemType type)
         {
             animatedSprite = new AnimatedSprite(frameTime);
+
             switch (type)
             {
-                case PickupItemType.SpeedBoost:
+                case EntityKeys.ItemType.SpeedBoost:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 0, 40, 40, 10);
                     break;
-                case PickupItemType.Shield:
+                case EntityKeys.ItemType.Shield:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 40, 40, 40, 10);
                     break;
-                case PickupItemType.Ammo_default:
+                case EntityKeys.ItemType.Ammo_default:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 80, 40, 40, 10);
                     break;
-                case PickupItemType.Ammo_shotgun:
+                case EntityKeys.ItemType.Ammo_shotgun:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 120, 40, 40, 10);
                     break;
-                case PickupItemType.Ammo_sniper:
+                case EntityKeys.ItemType.Ammo_sniper:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 160, 40, 40, 10);
                     break;
-                case PickupItemType.Ammo_rocket:
+                case EntityKeys.ItemType.Ammo_rocket:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 200, 40, 40, 10);
                     break;
-                case PickupItemType.Ammo_Laser:
+                case EntityKeys.ItemType.Ammo_Laser:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 240, 40, 40, 10);
                     break;
-                case PickupItemType.Ammo_Mine:
+                case EntityKeys.ItemType.Ammo_Mine:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 280, 40, 40, 10);
                     break;
-                case PickupItemType.Magnet:
+                case EntityKeys.ItemType.Magnet:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 320, 40, 40, 10);
                     break;
-                case PickupItemType.FireRateIncrease:
+                case EntityKeys.ItemType.FireRateIncrease:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 360, 40, 40, 10);
                     break;
-                case PickupItemType.MedStrong:
+                case EntityKeys.ItemType.MedStrong:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 400, 40, 40, 10);
                     break;
-                case PickupItemType.MedWeak:
+                case EntityKeys.ItemType.MedWeak:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 440, 40, 40, 10);
                     break;
-                case PickupItemType.TimeSlow:
+                case EntityKeys.ItemType.TimeSlow:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 480, 40, 40, 10);
                     break;
-                case PickupItemType.Fly:
+                case EntityKeys.ItemType.Fly:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 520, 40, 40, 10);
                     break;
-                case PickupItemType.Cloak:
+                case EntityKeys.ItemType.Cloak:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 560, 40, 40, 10);
                     break;
-                case PickupItemType.SilverTag:
+                case EntityKeys.ItemType.SilverTag:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 600, 40, 40, 10);
                     break;
-                case PickupItemType.GoldTag:
+                case EntityKeys.ItemType.GoldTag:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 640, 40, 40, 10);
                     break;
-                case PickupItemType.Teleporter:
+                case EntityKeys.ItemType.Teleporter:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 680, 40, 40, 10);
                     break;
                 default:
-                    break;
+                    throw new ArgumentException($"Invalid ItemType: {type}");
             }
+
             SetSprite(animatedSprite);
         }
 
-        public void SetItemType(PickupItemType type)
+        public void SetItemType(EntityKeys.ItemType type)
         {
             this.itemType = type;
             SetSprite(animatedSprite);
         }
 
-        public PickupItemType GetItemType()
-        {
-            return itemType;
-        }
+        public EntityKeys.ItemType GetItemType() => itemType;
 
         public override void Update()
         {
@@ -113,6 +104,7 @@ namespace Sprint0
             bounds = new Rectangle((int)position.X, (int)position.Y, 40, 40);
             sprite.Update();
             timer += Globals.FRAMETIME;
+
             if (Player.Instance != null)
             {
                 Vector2 toPlayer = Player.Instance.GetPosition() - position;
@@ -127,7 +119,7 @@ namespace Sprint0
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            animatedSprite.Draw(spriteBatch, position, SpriteEffects.None, 0, null, null, 1.5f);
+            animatedSprite.Draw(spriteBatch, position, SpriteEffects.None, 0, null, null, 1.1f);
         }
     }
 }

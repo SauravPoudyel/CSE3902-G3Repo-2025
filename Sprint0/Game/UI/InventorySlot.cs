@@ -80,7 +80,7 @@ namespace Sprint0
             {
                 spriteToDraw = Globals.NULLSPRITE_S.spriteSheet;
                 // For empty, fill the slot with the null sprite stretched to the slot dimensions.
-                sourceRect = new Rectangle(0, 0, SlotWidth, SlotHeight);
+                sourceRect = new Rectangle(2800, 2800, SlotWidth, SlotHeight);
             }
 
             // Draw the ammo (or null) sprite centered in the slot.

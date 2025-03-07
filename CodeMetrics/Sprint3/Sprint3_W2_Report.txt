@@ -1,0 +1,781 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Roslynator>
+  <CodeAnalysis>
+    <Summary>
+      <Diagnostic Id="CA1061" Title="Do not hide base class methods" Count="1">
+        <Description>A method in a base type is hidden by an identically named method in a derived type when the parameter signature of the derived method differs only by types that are more weakly derived than the corresponding types in the parameter signature of the base method.</Description>
+        <HelpLink>https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1061</HelpLink>
+      </Diagnostic>
+      <Diagnostic Id="CA1806" Title="Do not ignore method results" Count="1">
+        <Description>A new object is created but never used; or a method that creates and returns a new string is called and the new string is never used; or a COM or P/Invoke method returns an HRESULT or error code that is never used.</Description>
+        <HelpLink>https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1806</HelpLink>
+      </Diagnostic>
+      <Diagnostic Id="CA1822" Title="Mark members as static" Count="8">
+        <Description>Members that do not access instance data or call instance methods can be marked as static. After you mark the methods as static, the compiler will emit nonvirtual call sites to these members. This can give you a measurable performance gain for performance-sensitive code.</Description>
+        <HelpLink>https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1822</HelpLink>
+      </Diagnostic>
+      <Diagnostic Id="CA1853" Title="Unnecessary call to 'Dictionary.ContainsKey(key)'" Count="1">
+        <Description>Do not guard 'Dictionary.Remove(key)' with 'Dictionary.ContainsKey(key)'. The former already checks whether the key exists, and will not throw if it does not.</Description>
+        <HelpLink>https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1853</HelpLink>
+      </Diagnostic>
+      <Diagnostic Id="CA1854" Title="Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method" Count="86">
+        <Description>Prefer a 'TryGetValue' call over a Dictionary indexer access guarded by a 'ContainsKey' check. 'ContainsKey' and the indexer both would lookup the key under the hood, so using 'TryGetValue' removes the extra lookup.</Description>
+        <HelpLink>https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1854</HelpLink>
+      </Diagnostic>
+      <Diagnostic Id="CA1859" Title="Use concrete types when possible for improved performance" Count="7">
+        <Description>Using concrete types avoids virtual or interface call overhead and enables inlining.</Description>
+        <HelpLink>https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1859</HelpLink>
+      </Diagnostic>
+      <Diagnostic Id="CA1868" Title="Unnecessary call to 'Contains(item)'" Count="1">
+        <Description>Do not guard 'Add(item)' or 'Remove(item)' with 'Contains(item)' for the set. The former two already check whether the item exists and will return if it was added or removed.</Description>
+        <HelpLink>https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1868</HelpLink>
+      </Diagnostic>
+      <Diagnostic Id="CA2211" Title="Non-constant fields should not be visible" Count="8">
+        <Description>Static fields that are neither constants nor read-only are not thread-safe. Access to such a field must be carefully controlled and requires advanced programming techniques to synchronize access to the class object.</Description>
+        <HelpLink>https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2211</HelpLink>
+      </Diagnostic>
+      <Diagnostic Id="CS0108" Title="Member hides inherited member; missing new keyword" Count="4">
+        <Description>A variable was declared with the same name as a variable in a base type. However, the new keyword was not used. This warning informs you that you should use new; the variable is declared as if new had been used in the declaration.</Description>
+        <HelpLink>https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&amp;k=k(CS0108)</HelpLink>
+      </Diagnostic>
+      <Diagnostic Id="CS0169" Title="Field is never used" Count="1">
+        <HelpLink>https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&amp;k=k(CS0169)</HelpLink>
+      </Diagnostic>
+      <Diagnostic Id="CS0414" Title="Field is assigned but its value is never used" Count="3">
+        <HelpLink>https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&amp;k=k(CS0414)</HelpLink>
+      </Diagnostic>
+    </Summary>
+    <Projects>
+      <Project Name="Sprint0" FilePath="C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Sprint0.csproj">
+        <Diagnostics>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="14" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="15" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="16" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="107" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="122" Character="17" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="123" Character="17" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="124" Character="17" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="125" Character="17" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="126" Character="17" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="131" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="133" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="135" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="147" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="148" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="149" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="150" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="151" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="157" Character="24" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="170" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="171" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="182" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="183" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="228" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="229" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="230" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\ActionCommands.cs</FilePath>
+            <Location Line="231" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1822">
+            <Severity>Info</Severity>
+            <Message>Mark members as static</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="78" Character="26" />
+          </Diagnostic>
+          <Diagnostic Id="CA1822">
+            <Severity>Info</Severity>
+            <Message>Mark members as static</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="173" Character="29" />
+          </Diagnostic>
+          <Diagnostic Id="CA1822">
+            <Severity>Info</Severity>
+            <Message>Mark members as static</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="249" Character="29" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="16" Character="22" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="16" Character="58" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="100" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="101" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="102" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="134" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="135" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="195" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="196" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="217" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="218" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="231" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="232" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\CollisionCommands.cs</FilePath>
+            <Location Line="259" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GameCommands.cs</FilePath>
+            <Location Line="17" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GameCommands.cs</FilePath>
+            <Location Line="26" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GameCommands.cs</FilePath>
+            <Location Line="35" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GameCommands.cs</FilePath>
+            <Location Line="50" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GameCommands.cs</FilePath>
+            <Location Line="64" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GameCommands.cs</FilePath>
+            <Location Line="78" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="14" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="27" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="40" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="41" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="52" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="53" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="64" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="75" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="87" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="98" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="109" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="120" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="131" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="132" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\GraphicCommands.cs</FilePath>
+            <Location Line="133" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\MovementCommands.cs</FilePath>
+            <Location Line="14" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\MovementCommands.cs</FilePath>
+            <Location Line="26" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\MovementCommands.cs</FilePath>
+            <Location Line="45" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Commands\MovementCommands.cs</FilePath>
+            <Location Line="46" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1806">
+            <Severity>Info</Severity>
+            <Message>Do not ignore method results</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVLevelParser.cs</FilePath>
+            <Location Line="121" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVLevelParser.cs</FilePath>
+            <Location Line="35" Character="30" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVLevelParser.cs</FilePath>
+            <Location Line="36" Character="30" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVLevelParser.cs</FilePath>
+            <Location Line="47" Character="29" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVLevelParser.cs</FilePath>
+            <Location Line="58" Character="29" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVLevelParser.cs</FilePath>
+            <Location Line="69" Character="29" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVPlayerParser.cs</FilePath>
+            <Location Line="66" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVPlayerParser.cs</FilePath>
+            <Location Line="79" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVPlayerParser.cs</FilePath>
+            <Location Line="81" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVPlayerParser.cs</FilePath>
+            <Location Line="83" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVPlayerParser.cs</FilePath>
+            <Location Line="85" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVPlayerParser.cs</FilePath>
+            <Location Line="91" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVPlayerParser.cs</FilePath>
+            <Location Line="93" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVPlayerParser.cs</FilePath>
+            <Location Line="95" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Data parsing\CSVPlayerParser.cs</FilePath>
+            <Location Line="97" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CS0108">
+            <Severity>Warning</Severity>
+            <Message>Member hides inherited member; missing new keyword</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Characters\Cannon.cs</FilePath>
+            <Location Line="10" Character="26" />
+          </Diagnostic>
+          <Diagnostic Id="CA1859">
+            <Severity>Info</Severity>
+            <Message>Use concrete types when possible for improved performance</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Characters\Mob\HealerTank.cs</FilePath>
+            <Location Line="11" Character="25" />
+          </Diagnostic>
+          <Diagnostic Id="CA1859">
+            <Severity>Info</Severity>
+            <Message>Use concrete types when possible for improved performance</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Characters\Mob\HealerTank.cs</FilePath>
+            <Location Line="12" Character="25" />
+          </Diagnostic>
+          <Diagnostic Id="CS0414">
+            <Severity>Warning</Severity>
+            <Message>Field is assigned but its value is never used</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Characters\Mob\SmallEnemy.cs</FilePath>
+            <Location Line="10" Character="23" />
+          </Diagnostic>
+          <Diagnostic Id="CS0414">
+            <Severity>Warning</Severity>
+            <Message>Field is assigned but its value is never used</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Characters\Mob\SmallEnemy.cs</FilePath>
+            <Location Line="11" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CS0414">
+            <Severity>Warning</Severity>
+            <Message>Field is assigned but its value is never used</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Characters\Mob\SmallEnemy.cs</FilePath>
+            <Location Line="12" Character="32" />
+          </Diagnostic>
+          <Diagnostic Id="CA1859">
+            <Severity>Info</Severity>
+            <Message>Use concrete types when possible for improved performance</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Characters\Player.cs</FilePath>
+            <Location Line="47" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1859">
+            <Severity>Info</Severity>
+            <Message>Use concrete types when possible for improved performance</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Characters\Player.cs</FilePath>
+            <Location Line="52" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CS0108">
+            <Severity>Warning</Severity>
+            <Message>Member hides inherited member; missing new keyword</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Characters\Player.cs</FilePath>
+            <Location Line="12" Character="22" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Entity.cs</FilePath>
+            <Location Line="102" Character="17" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Enviornment\Blocks\BlockFactory.cs</FilePath>
+            <Location Line="44" Character="17" />
+          </Diagnostic>
+          <Diagnostic Id="CA1822">
+            <Severity>Info</Severity>
+            <Message>Mark members as static</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Enviornment\Blocks\FlammableBlock.cs</FilePath>
+            <Location Line="31" Character="84" />
+          </Diagnostic>
+          <Diagnostic Id="CA1822">
+            <Severity>Info</Severity>
+            <Message>Mark members as static</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Enviornment\Blocks\PushableBlock.cs</FilePath>
+            <Location Line="32" Character="55" />
+          </Diagnostic>
+          <Diagnostic Id="CS0108">
+            <Severity>Warning</Severity>
+            <Message>Member hides inherited member; missing new keyword</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Enviornment\Blocks\PushableBlock.cs</FilePath>
+            <Location Line="9" Character="25" />
+          </Diagnostic>
+          <Diagnostic Id="CA1822">
+            <Severity>Info</Severity>
+            <Message>Mark members as static</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Enviornment\Blocks\RigidBlocks.cs</FilePath>
+            <Location Line="26" Character="68" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Enviornment\Items\PowerUpFactory.cs</FilePath>
+            <Location Line="52" Character="25" />
+          </Diagnostic>
+          <Diagnostic Id="CA2211">
+            <Severity>Info</Severity>
+            <Message>Non-constant fields should not be visible</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Enviornment\Items\PowerUpFactory.cs</FilePath>
+            <Location Line="9" Character="62" />
+          </Diagnostic>
+          <Diagnostic Id="CA2211">
+            <Severity>Info</Severity>
+            <Message>Non-constant fields should not be visible</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Enviornment\Items\PowerUpFactory.cs</FilePath>
+            <Location Line="10" Character="29" />
+          </Diagnostic>
+          <Diagnostic Id="CA1859">
+            <Severity>Info</Severity>
+            <Message>Use concrete types when possible for improved performance</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Misc\Effect.cs</FilePath>
+            <Location Line="14" Character="25" />
+          </Diagnostic>
+          <Diagnostic Id="CA1061">
+            <Severity>Info</Severity>
+            <Message>Do not hide base class methods</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Projectiles\Projectile.cs</FilePath>
+            <Location Line="22" Character="45" />
+          </Diagnostic>
+          <Diagnostic Id="CS0108">
+            <Severity>Warning</Severity>
+            <Message>Member hides inherited member; missing new keyword</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Entities\Projectiles\Projectile.cs</FilePath>
+            <Location Line="22" Character="24" />
+          </Diagnostic>
+          <Diagnostic Id="CA1859">
+            <Severity>Info</Severity>
+            <Message>Use concrete types when possible for improved performance</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Game1.cs</FilePath>
+            <Location Line="13" Character="29" />
+          </Diagnostic>
+          <Diagnostic Id="CA1859">
+            <Severity>Info</Severity>
+            <Message>Use concrete types when possible for improved performance</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Game1.cs</FilePath>
+            <Location Line="14" Character="29" />
+          </Diagnostic>
+          <Diagnostic Id="CA2211">
+            <Severity>Info</Severity>
+            <Message>Non-constant fields should not be visible</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Globals.cs</FilePath>
+            <Location Line="12" Character="36" />
+          </Diagnostic>
+          <Diagnostic Id="CA2211">
+            <Severity>Info</Severity>
+            <Message>Non-constant fields should not be visible</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Globals.cs</FilePath>
+            <Location Line="13" Character="38" />
+          </Diagnostic>
+          <Diagnostic Id="CA2211">
+            <Severity>Info</Severity>
+            <Message>Non-constant fields should not be visible</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Globals.cs</FilePath>
+            <Location Line="14" Character="29" />
+          </Diagnostic>
+          <Diagnostic Id="CA2211">
+            <Severity>Info</Severity>
+            <Message>Non-constant fields should not be visible</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Globals.cs</FilePath>
+            <Location Line="17" Character="34" />
+          </Diagnostic>
+          <Diagnostic Id="CA2211">
+            <Severity>Info</Severity>
+            <Message>Non-constant fields should not be visible</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Globals.cs</FilePath>
+            <Location Line="18" Character="30" />
+          </Diagnostic>
+          <Diagnostic Id="CA2211">
+            <Severity>Info</Severity>
+            <Message>Non-constant fields should not be visible</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Globals.cs</FilePath>
+            <Location Line="19" Character="30" />
+          </Diagnostic>
+          <Diagnostic Id="CA1822">
+            <Severity>Info</Severity>
+            <Message>Mark members as static</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Managers\AudioManager.cs</FilePath>
+            <Location Line="73" Character="25" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Managers\AudioManager.cs</FilePath>
+            <Location Line="42" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Managers\AudioManager.cs</FilePath>
+            <Location Line="65" Character="21" />
+          </Diagnostic>
+          <Diagnostic Id="CA1822">
+            <Severity>Info</Severity>
+            <Message>Mark members as static</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Managers\Collisions\CollisionManager.cs</FilePath>
+            <Location Line="31" Character="22" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Managers\EventManager.cs</FilePath>
+            <Location Line="87" Character="17" />
+          </Diagnostic>
+          <Diagnostic Id="CA1853">
+            <Severity>Info</Severity>
+            <Message>Unnecessary call to 'Dictionary.ContainsKey(key)'</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Managers\GameManager.cs</FilePath>
+            <Location Line="105" Character="17" />
+          </Diagnostic>
+          <Diagnostic Id="CA1854">
+            <Severity>Info</Severity>
+            <Message>Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Managers\GameManager.cs</FilePath>
+            <Location Line="91" Character="17" />
+          </Diagnostic>
+          <Diagnostic Id="CA1868">
+            <Severity>Info</Severity>
+            <Message>Unnecessary call to 'Contains(item)'</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\Managers\GameManager.cs</FilePath>
+            <Location Line="230" Character="17" />
+          </Diagnostic>
+          <Diagnostic Id="CS0169">
+            <Severity>Warning</Severity>
+            <Message>Field is never used</Message>
+            <FilePath>C:\Users\saura\OneDrive - The Ohio State University\Documents\OHIO STATE DOCS\SP 2025\CSE3902-G3Repo-2025\Sprint0\Game\UI\PauseMenu.cs</FilePath>
+            <Location Line="14" Character="32" />
+          </Diagnostic>
+        </Diagnostics>
+      </Project>
+    </Projects>
+  </CodeAnalysis>
+</Roslynator>

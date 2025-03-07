@@ -1,0 +1,12 @@
+Author of the code review: Payton Yaffe
+Date of the code review: Feb, 27, 2025
+Sprint number: 3
+Name of the .cs file being reviewed: PlayerControllers.cs, 
+Author of the .cs file being reviewed: Saurav, Harry
+Specific comments on code quality:
+
+- Keyboard & Mouse: Will likely want to change having multiple buttons, each for a projectile. 
+To having one button to shoot, and a way to cycle or change projectile type. Will eventually need to change the key mappings to not cycle through blocks but 
+that’s closer to the end of the project
+- Shooting controls should be updated to use one button to fire with a way to cycle projectile types instead of separate buttons.
+- Key mappings should be reworked to remove cycling through blocks in later sprints.

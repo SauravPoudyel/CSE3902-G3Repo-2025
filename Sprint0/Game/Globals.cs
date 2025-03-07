@@ -16,6 +16,7 @@ namespace Sprint0
         private static PlayerData playerData;
         public static SpriteFont FONT;
         public static string projectDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\"));
+        public static Random random = new Random();
 
         public static PlayerData PlayerData
         {

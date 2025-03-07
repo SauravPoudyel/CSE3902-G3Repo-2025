@@ -17,5 +17,6 @@ namespace Sprint0
     {
         bool IsIgnited { get; }
         void Ignite();
+        void Destroy();
     }
 }

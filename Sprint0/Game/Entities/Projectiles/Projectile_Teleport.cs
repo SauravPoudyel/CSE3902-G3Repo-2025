@@ -49,14 +49,14 @@ namespace Sprint0
                 var effectParams = new Dictionary<string, object>
                 {
                     { "spawnPosition", originalPosition },
-                    { "effectType", "teleportOut" }
+                    { "effectType", EntityKeys.EffectType.TeleportOut }
                 };
                 commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
 
                 var effectParams2 = new Dictionary<string, object>
                 {
                     { "spawnPosition", position },
-                    { "effectType", "teleportIn" }
+                    { "effectType", EntityKeys.EffectType.TeleportIn }
                 };
                 commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams2));
                 player.SetPosition(this.position);

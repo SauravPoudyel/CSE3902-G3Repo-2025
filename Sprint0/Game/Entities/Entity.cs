@@ -17,7 +17,6 @@ namespace Sprint0
         void Draw(SpriteBatch spriteBatch);
         void SetSprite(string key);
         ISprite GetSprite();
-        void OnCollide(Entity actedUpon);
     }
 
     public class Entity : IEntity
@@ -26,12 +25,12 @@ namespace Sprint0
         protected Vector2 prevPosition;
         protected Vector2 velocity;
         protected ISprite sprite;
-        protected int spriteHeight, spriteWidth; // use if neccesary for collision detection
+        protected int spriteHeight, spriteWidth; // Used for collision detection
         protected bool hasSprite = true;
         protected Dictionary<string, ISprite> sprites;
         protected Rectangle bounds;
         protected Queue<CommandRequest> commandQueue;
-        public Entity Owner {get; set;}
+        public Entity Owner { get; set; }
 
         // Unique key for this entity.
         public string EntityKey { get; set; }
@@ -59,6 +58,7 @@ namespace Sprint0
         public virtual void SetPosition(Vector2 position)
         {
             this.position = position;
+            UpdateBounds();
         }
 
         public Vector2 GetVelocity()
@@ -89,6 +89,7 @@ namespace Sprint0
         public void SetSprite(ISprite sprite)
         {
             this.sprite = sprite;
+            UpdateBounds();
         }
 
         public void AddSprite(string key, ISprite sprite)
@@ -101,6 +102,7 @@ namespace Sprint0
             if (sprites.ContainsKey(key))
             {
                 sprite = sprites[key];
+                UpdateBounds();
             }
         }
 
@@ -112,7 +114,18 @@ namespace Sprint0
         public Rectangle PredictFutureBounds()
         {
             Vector2 nextPos = position + velocity * Globals.FRAMETIME;
-            return new Rectangle((int)nextPos.X, (int)nextPos.Y, bounds.Width, bounds.Height);
+            return new Rectangle((int)(nextPos.X - spriteWidth / 2), (int)(nextPos.Y - spriteHeight / 2), spriteWidth, spriteHeight);
+        }
+
+        public void UpdateBounds()
+        {
+
+            bounds = new Rectangle(
+                (int)(position.X - spriteWidth / 2),
+                (int)(position.Y - spriteHeight / 2),
+                spriteWidth,
+                spriteHeight
+            );
         }
 
         public virtual void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
@@ -122,10 +135,15 @@ namespace Sprint0
                 throw new System.NullReferenceException("Sprite is not initialized. Call SetSprite before LoadContent.");
             }
             sprite.LoadContent(content, assetName, startX, startY, frameWidth, frameHeight, frameCount);
+            UpdateBounds();
         }
 
         public virtual void Update()
         {
+            prevPosition = position;
+            position += velocity * Globals.FRAMETIME;
+            UpdateBounds();
+
             if (hasSprite && sprite != null)
             {
                 sprite.Update();
@@ -139,10 +157,6 @@ namespace Sprint0
                 sprite.Draw(spriteBatch, position);
             }
         }
-
-        public virtual void OnCollide(Entity actedUpon)
-        {
-            // Default: do nothing.
-        }
     }
 }
+  

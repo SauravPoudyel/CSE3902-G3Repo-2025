@@ -16,10 +16,10 @@ namespace Sprint0
         private bool hasSentDestroyCommand;
         private ContentManager content;
         public bool IsFinished { get; private set; }
-        public string effectType; 
+        public EntityKeys.EffectType effectType; 
         public bool didDamage = false; 
 
-        public Effect(ContentManager content, Vector2 spawnPosition, string entityKey, string effectType)
+        public Effect(ContentManager content, Vector2 spawnPosition, string entityKey, EntityKeys.EffectType effectType)
         {
             this.content = content;
             this.position = spawnPosition;
@@ -35,28 +35,28 @@ namespace Sprint0
             float cycleSpeed = 0.8f; 
             switch(effectType)
             {
-                case nameof(EffectType.Explosion):
+                case EntityKeys.EffectType.Explosion: 
                     rowY = 0;
                     frames = 8; 
                     cycleSpeed = 0.08f; 
                     break;
                 //The fire effect here is a placeholder, might need a new spritesheet for it
-                case nameof(EffectType.Fire):
+                case EntityKeys.EffectType.Fire:
                     rowY = 0;
                     frames = 1;
                     cycleSpeed = 3.2f;
                     break;
-                case  nameof(EffectType.Shield):
+                case  EntityKeys.EffectType.Shield:
                     rowY = 128;
                     frames = 12; 
                     cycleSpeed = 0.08f;
                     break;
-                case  nameof(EffectType.TeleportOut):
+                case EntityKeys.EffectType.TeleportOut:
                     rowY = 256;
                     frames = 12; 
                     cycleSpeed = 0.03f;  
                     break;
-                case  nameof(EffectType.TeleportIn):
+                case  EntityKeys.EffectType.TeleportIn:
                     rowY = 384;
                     frames = 12; 
                     cycleSpeed = 0.07f;

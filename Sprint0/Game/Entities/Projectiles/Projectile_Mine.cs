@@ -41,7 +41,7 @@ namespace Sprint0
              var effectParams = new Dictionary<string, object>
             {
                 { "spawnPosition", position },
-                { "effectType", "explosion" }
+                { "effectType", EntityKeys.EffectType.Explosion }
             };
             commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
             var destroyParams = new Dictionary<string, object>

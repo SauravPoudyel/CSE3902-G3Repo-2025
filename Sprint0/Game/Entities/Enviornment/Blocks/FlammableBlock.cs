@@ -5,15 +5,39 @@ using System.Collections.Generic;
 
 namespace Sprint0
 {
-    public class FlammableBlock : BaseBlock, IObtuse, IFlammable, IDestructible
+    public class FlammableBlock : BaseBlock, IObtuse, IFlammable, IDestructible, IRigid
     {
         public bool IsDestroyed { get; private set; }
-
         public bool IsIgnited { get; private set; }
 
-        public FlammableBlock(ContentManager content, BlockSpriteKey spriteKey, float frameTime = 0.3f)
+        public FlammableBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime = 0.3f)
         {
-            LoadBlockContent(content, spriteKey);
+            LoadBlockContent(content, blockType);
+        }
+
+        public override void LoadBlockContent(ContentManager content, EntityKeys.BlockType blockType)
+        {
+            animatedSprite = new AnimatedSprite(frameTime);
+
+            var (x, y, width, height, texture, scale) = GetSpriteCoords(blockType);
+            Scale = scale; // this gets aplied in draw
+            animatedSprite.LoadContent(content, texture, x, y, width, height, 1);
+
+            spriteWidth = width;
+            spriteHeight = height;
+            UpdateBounds();
+        }
+
+        private (int x, int y, int width, int height, string texture, float scale) GetSpriteCoords(EntityKeys.BlockType blockType)
+        {
+            return blockType switch
+            {
+                EntityKeys.BlockType.Barrel => (485, 1523, 80, 99, "2DTanksSprites", 0.7f),
+                EntityKeys.BlockType.RedBarrel => (485, 1622, 80, 99, "2DTanksSprites", 0.7f),
+                EntityKeys.BlockType.Oil => (524, 1024, 100, 100, "TDTanksAllSprites", 0.7f),
+                EntityKeys.BlockType.SmallBarrel => (1016, 510, 40, 56, "TDTanksAllSprites", 1f),
+                _ => throw new System.ArgumentException($"Invalid BlockSpriteKey: {blockType}")
+            };
         }
 
         public void Destroy()
@@ -24,7 +48,7 @@ namespace Sprint0
             var effectParams = new Dictionary<string, object>
             {
                 { "spawnPosition", position },
-                { "effectType", "explosion" },
+                { "effectType", EntityKeys.EffectType.Explosion },
             };
             commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
 
@@ -34,52 +58,23 @@ namespace Sprint0
             }));
         }
 
-        public override void LoadBlockContent(ContentManager content, BlockSpriteKey spriteKey)
-        {
-            animatedSprite = new AnimatedSprite(frameTime);
-
-            switch (spriteKey)
-            {
-                case BlockSpriteKey.OilBarrel_Red:
-                    animatedSprite.LoadContent(content, "2DTanksSprites", 485, 1523, 80, 99, 1);
-                    bounds = new Rectangle((int)position.X, (int)position.Y, 80, 99);
-                    break;
-
-                case BlockSpriteKey.OilBarrel_Black:
-                    animatedSprite.LoadContent(content, "2DTanksSprites", 485, 1622, 80, 99, 1);
-                    bounds = new Rectangle((int)position.X, (int)position.Y, 100, 100);
-                    break;
-
-                case BlockSpriteKey.Oil:
-                    animatedSprite.LoadContent(content, "TDTanksAllSprites", 524, 1024, 100, 100, 1);
-                    bounds = new Rectangle((int)position.X, (int)position.Y, 100, 100);
-                    break;
-
-                default:
-                    throw new System.ArgumentException($"Invalid BlockSpriteKey: {spriteKey}");
-            }
-        }
-
         public void Ignite()
         {
-
             if (IsIgnited || string.IsNullOrEmpty(EntityKey)) return;
             IsIgnited = true;
 
-             var effectParams = new Dictionary<string, object>
+            var effectParams = new Dictionary<string, object>
             {
                 { "spawnPosition", position },
-                { "effectType", "explosion" },
+                { "effectType", EntityKeys.EffectType.Explosion },
             };
             commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams));
 
             var effectParams2 = new Dictionary<string, object>
-
             {
                 { "spawnPosition", position },
                 { "effectType", "fire" },
             };
-
             commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams2));
 
             commandQueue.Enqueue(new CommandRequest("DestroyEntity", new Dictionary<string, object>
