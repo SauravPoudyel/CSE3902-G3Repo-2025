@@ -6,90 +6,57 @@ namespace Sprint0
 {
     public class CollisionCommands
     {
-        private const float BounceSpeed = 70f;
-
         public class CollisionStopCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                // Ensure we have both actor and target.
-                if (!parameters.ContainsKey("actor") || !parameters.ContainsKey("target"))
-                    return;
-
-                Entity actor = (Entity)parameters["actor"];
-                Entity target = (Entity)parameters["target"];
-
-                //Actor is a Player
-                if (actor is Player player)
+                if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
+                    parameters.ContainsKey("target") && parameters["target"] is Entity target)
                 {
-                    if(player.isFly) 
-                        return; 
+                    // Only process if target is IRigid or a Mob.
                     if (target is IRigid || target is Mob)
                     {
-                        Vector2 playerPos = player.GetPosition();
-                        Vector2 targetPos = target.GetPosition();
-                        Vector2 diff = playerPos - targetPos;
-                        Vector2 bounceDir = diff != Vector2.Zero ? Vector2.Normalize(diff)
-                                                                 : new Vector2((float)Math.Sin(player.bodyRotation), -(float)Math.Cos(player.bodyRotation));
-                        float bounceOffset = BounceSpeed * Globals.FRAMETIME;
-                        player.SetPosition(playerPos + bounceDir * bounceOffset);
+                        Vector2 bounceDir = CollisionHandler.CalculateBounceDirection(player, target, player.bodyRotation);
+                        float bounceOffset = 70f * Globals.FRAMETIME;
+                        player.SetPosition(player.GetPosition() + bounceDir * bounceOffset);
                         player.SetVelocity(Vector2.Zero);
 
-                        // If target is a Mob (and not a Plane or HoveringTank), resolve both ways.
                         if (target is Mob mob && !(mob is Plane || mob is HoveringTank))
                         {
-                            ResolveCollision(mob, player);
+                            CollisionHandler.ResolveCollision(mob, player);
                             mob.SetVelocity(Vector2.Zero);
                         }
                     }
                 }
-                // Actor is a Mob (but not a Plane)
-                else if (actor is Mob mobActor && !(actor is Plane || actor is HoveringTank))
+                else if (parameters.ContainsKey("actor") && parameters["actor"] is Mob mobActor &&
+                         parameters.ContainsKey("target") && parameters["target"] is Entity target2)
                 {
-                    if (target is IRigid || target is Blocks || (target is Mob mobTarget && !(mobTarget is Plane || mobTarget is HoveringTank)))
+                    if (target2 is IRigid || target2 is Blocks ||
+                        (target2 is Mob mobTarget && !(mobTarget is Plane || mobTarget is HoveringTank)))
                     {
-                        ResolveCollision(mobActor, target);
+                        CollisionHandler.ResolveCollision(mobActor, target2);
                         mobActor.SetVelocity(Vector2.Zero);
-
-                        // If both are mobs, resolve collision in both directions.
-                        if (target is Mob mobOther && !(mobOther is Plane))
+                        if (target2 is Mob mobOther && !(mobOther is Plane))
                         {
-                            ResolveCollision(mobOther, mobActor);
+                            CollisionHandler.ResolveCollision(mobOther, mobActor);
                             mobOther.SetVelocity(Vector2.Zero);
                         }
                     }
                 }
-                // Actor is a PushableBlock
-                else if (actor is PushableBlock pushableBlock)
+                else if (parameters.ContainsKey("actor") && parameters["actor"] is PushableBlock pushableBlock &&
+                         parameters.ContainsKey("target") && parameters["target"] is Entity target3)
                 {
-                    if (target is IRigid || target is Mob)
+                    if (target3 is IRigid || target3 is Mob)
                     {
-                        ResolveCollision(pushableBlock, target);
+                        CollisionHandler.ResolveCollision(pushableBlock, target3);
                         pushableBlock.SetVelocity(Vector2.Zero);
-                        if (target is Mob mob && !(mob is Plane || mob is HoveringTank))
+                        if (target3 is Mob mob && !(mob is Plane || mob is HoveringTank))
                         {
-                            ResolveCollision(mob, pushableBlock);
+                            CollisionHandler.ResolveCollision(mob, pushableBlock);
                             mob.SetVelocity(Vector2.Zero);
                         }
                     }
                 }
-            }
-
-            private void ResolveCollision(Entity movingEntity, Entity otherEntity)
-            {
-                Rectangle boundsA = movingEntity.GetBounds();
-                Rectangle boundsB = otherEntity.GetBounds();
-                Rectangle intersect = Rectangle.Intersect(boundsA, boundsB);
-
-                if (intersect.IsEmpty)
-                    return;
-
-                // Choose the axis of minimal penetration.
-                Vector2 displacement = (intersect.Width < intersect.Height)
-                    ? new Vector2(boundsA.Center.X < boundsB.Center.X ? -intersect.Width : intersect.Width, 0)
-                    : new Vector2(0, boundsA.Center.Y < boundsB.Center.Y ? -intersect.Height : intersect.Height);
-
-                movingEntity.SetPosition(movingEntity.GetPosition() + displacement);
             }
         }
 
@@ -101,28 +68,7 @@ namespace Sprint0
                     parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
                     parameters.ContainsKey("target"))
                 {
-                    if (parameters["target"] is Mob mob)
-                    {
-                        if (projectile.Owner is Player player)
-                        {
-                            if (mob is ShieldTank shieldedTank)
-                                shieldedTank.ShieldedDamage(projectile.damage, player.GetPosition());
-                            else
-                            {
-                                mob.ChangeHealth(-projectile.damage);
-                                projectile.OnDeath();
-                            }
-                        }
-                    }
-                    else if (parameters["target"] is Player player && projectile.Owner != player)
-                    {
-                        player.ChangeHealth(-projectile.damage);
-                        projectile.OnDeath();
-                    }
-                    else if (parameters["target"] is IRigid)
-                    {
-                        projectile.OnDeath();
-                    }
+                    CollisionHandler.HandleProjectileDestroy(projectile, (Entity)parameters["target"]);
                 }
             }
         }
@@ -132,59 +78,10 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("actor") && parameters["actor"] is Projectile projectile &&
-                    parameters.ContainsKey("target") && parameters["target"] is IRigid)
+                    parameters.ContainsKey("target") && parameters["target"] is Entity target)
                 {
-                    if (projectile.ReflectCooldown > 0) return;
-
-                    if (projectile is IRicochet ricochetProj)
-                    {
-                        Vector2 normal = GetPenetrationNormal(projectile, (Entity)parameters["target"]);
-                        if (normal == Vector2.Zero)
-                        {
-                            Vector2 diff = projectile.GetPosition() - ((Entity)parameters["target"]).GetPosition();
-                            normal = (diff != Vector2.Zero) ? Vector2.Normalize(diff) : new Vector2(0, -1);
-                        }
-
-                        Vector2 reflected = RayTracer.ReflectVector(projectile.GetVelocity(), normal);
-                        projectile.SetVelocity(reflected);
-
-                        Vector2 newPos = projectile.GetPosition();
-                        float margin = 10f;
-
-                        if (normal == new Vector2(0, -1)) newPos.Y -= margin;
-                        else if (normal == new Vector2(0, 1)) newPos.Y += margin;
-                        else if (normal == new Vector2(-1, 0)) newPos.X -= margin;
-                        else if (normal == new Vector2(1, 0)) newPos.X += margin;
-
-                        projectile.SetPosition(newPos);
-                        ricochetProj.RicochetCount--;
-                        projectile.ReflectCooldown = 0.2f;
-
-                        if (ricochetProj.RicochetCount <= 0)
-                            projectile.OnDeath();
-                    }
-                    else
-                    {
-                        projectile.OnDeath();
-                    }
+                    CollisionHandler.HandleProjectileReflect(projectile, target);
                 }
-            }
-
-            private Vector2 GetPenetrationNormal(Projectile projectile, Entity target)
-            {
-                Rectangle projBounds = projectile.GetBounds();
-                Rectangle targetBounds = target.GetBounds();
-                Rectangle intersection = Rectangle.Intersect(projBounds, targetBounds);
-
-                if (intersection.IsEmpty) return Vector2.Zero;
-
-                Vector2 projCenter = new Vector2(projBounds.Center.X, projBounds.Center.Y);
-                Vector2 targetCenter = new Vector2(targetBounds.Center.X, targetBounds.Center.Y);
-                Vector2 diff = projCenter - targetCenter;
-
-                return (intersection.Width < intersection.Height)
-                    ? new Vector2(diff.X < 0 ? -1 : 1, 0)
-                    : new Vector2(0, diff.Y < 0 ? -1 : 1);
             }
         }
 
@@ -193,19 +90,11 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
-                    parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                    parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("target"))
                 {
-                    if (parameters["target"] is PickupItem pickupItem)
-                    {
-                        PowerUpFactory.ApplyPickupEffect(player, pickupItem.GetItemType());
-                        gameManager.RemoveEntity(pickupItem.EntityKey);
-                    }
-                    else if (parameters["target"] is Item item)
-                    {
-                        PowerUpFactory.ApplyPickupEffect(player, item.GetItemType());
-                        gameManager.RemoveEntity(item.EntityKey);
-                    }
-                    AudioManager.PlaySound(AudioManager.SoundKey.PowerUp);
+                    // Since collision handler is static, passing gameManager as a parameter still keeps our singelton design concept
+                    CollisionHandler.HandlePickup(player, parameters["target"], gameManager);
                 }
             }
         }
@@ -231,24 +120,8 @@ namespace Sprint0
                 if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
                     parameters.ContainsKey("target") && parameters["target"] is IPushable pushable)
                 {
-                    Vector2 direction = CalculatePushDirection(player);
-                    pushable.Push(direction);
-
-                    if (pushable is Entity pushableEntity && pushableEntity.GetVelocity() == Vector2.Zero)
-                    {
-                        Vector2 backwardDir = new Vector2((float)Math.Sin(player.bodyRotation), -(float)Math.Cos(player.bodyRotation));
-                        backwardDir.Normalize();
-
-                        float bounceOffset = BounceSpeed * Globals.FRAMETIME;
-                        player.SetPosition(player.GetPosition() + backwardDir * bounceOffset);
-                        player.SetVelocity(new Vector2(0, BounceSpeed));
-                    }
+                    CollisionHandler.HandlePush(player, pushable);
                 }
-            }
-
-            private Vector2 CalculatePushDirection(Player player)
-            {
-                return new Vector2(-(float)Math.Sin(player.bodyRotation), (float)Math.Cos(player.bodyRotation));
             }
         }
 
@@ -257,7 +130,9 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("target") && parameters["target"] is IFlammable flammableBlock)
+                {
                     flammableBlock.Destroy();
+                }
             }
         }
     }
