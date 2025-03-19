@@ -111,8 +111,11 @@ namespace Sprint0
                 float distance = toPlayer.Length();
                 if (distance < PickupRadius && distance > 0)
                 {
+                    PickupRadius = 600; 
                     Vector2 accel = Vector2.Normalize(toPlayer) * Acceleration;
-                    velocity += accel * Globals.FRAMETIME;
+                    velocity = accel; 
+                } else {
+                    velocity = Vector2.Zero; 
                 }
             }
         }

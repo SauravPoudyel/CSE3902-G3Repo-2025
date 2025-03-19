@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace Sprint0
 {
+    /* 
+     * THIS CLASS IS JUST FOR DEBUG PURPOSES. IT CYCLES THROUGH ALL THE PICKUP ITEMS, it is not intended to be in the game itself
+    */
     public class PickupItem : Entity
     {
         private ContentManager content;
