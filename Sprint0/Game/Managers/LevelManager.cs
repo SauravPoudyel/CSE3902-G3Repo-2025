@@ -36,8 +36,15 @@ namespace Sprint0
                     level.Complete = false;
                 }
             }
-            if(level.Complete) {
-                Console.WriteLine("LEVEL COMPLETE");
+            if(entities.ContainsKey("player")) {
+                Player player = (Player)entities["player"];
+                if(level.Complete && player.GetPosition().X > 1920) {
+                    player.SetPosition(new Vector2(0,player.GetPosition().Y));
+                    player.MoveLevel(1);
+                } else if(player.GetPosition().X<0) {
+                    player.SetPosition(new Vector2(1920,player.GetPosition().Y));
+                    player.MoveLevel(-1);
+                }
             }
         }
     }

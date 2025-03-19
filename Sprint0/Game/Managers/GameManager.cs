@@ -158,7 +158,14 @@ namespace Sprint0
 
         private void InitializeEntities()
         {
+            Player player = null;
+            if(entities.ContainsKey("player")) {
+                player = (Player)entities["player"];
+            }
             entities = levelManager.LoadLevelEntities();
+            if(player!=null && entities.ContainsKey("player")) {
+                entities["player"] = player;
+            }
             ProjectileFactory.Initialize(content);
         }
 
