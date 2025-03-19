@@ -25,8 +25,20 @@ namespace Sprint0
         }
 
         public List<Tile> LoadLevelTiles() {
-
             return level.GetLevelTiles;
+        }
+
+        public void Update(Dictionary<string, Entity> entities) {
+            level.Complete = true;
+            foreach (Entity entity in entities.Values)
+            {
+                if(entity is Mob) {
+                    level.Complete = false;
+                }
+            }
+            if(level.Complete) {
+                Console.WriteLine("LEVEL COMPLETE");
+            }
         }
     }
 }

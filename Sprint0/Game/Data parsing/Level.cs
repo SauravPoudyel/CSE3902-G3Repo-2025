@@ -9,15 +9,27 @@ namespace Sprint0 {
     public class Level
     {
         public int tileSize = 120;
+        private bool complete;
         private List<Tile> tilesList;
         private Dictionary<string, Entity> entities;
         private List<BaseBlock> blocksList;
         private Player player;
         private List<Item> itemsList;
         private List<Mob> enemiesList;
+        public Dictionary<string, Entity> Entities 
+        {
+            get { return entities; }
+            set { entities = value; }
+        }
+        public bool Complete   
+        {
+            get { return complete; }
+            set { complete = value; }
+        }
 
         public Level()
         {
+            complete = false;
             tilesList = new List<Tile>();
             entities = new Dictionary<string, Entity>();
             blocksList = new List<BaseBlock>();
@@ -26,8 +38,8 @@ namespace Sprint0 {
         }
 
         public Dictionary<string, Entity> GetLevelEntities() => entities;
+        public List<Mob> GetLevelEnemies() => enemiesList;
         public List<Tile> GetLevelTiles => tilesList;
-
         public void AddTile(ContentManager content, Tile.TileType tileType, Vector2 position)
         {
             tilesList.Add(new Tile(content, tileType, (position * tileSize) + new Vector2(tileSize / 2, tileSize / 2)));

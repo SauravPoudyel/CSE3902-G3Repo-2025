@@ -176,6 +176,7 @@ namespace Sprint0
             }
             collisionManager.Update(entities);
             spriteManager.Update();
+            levelManager.Update(entities);
             playerInventory.Update();
             eventManager.ProcessCommandRequests();
             if (activeScreen != null)
