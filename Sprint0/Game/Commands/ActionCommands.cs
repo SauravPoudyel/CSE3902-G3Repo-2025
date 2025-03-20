@@ -20,7 +20,7 @@ namespace Sprint0
                         case "fire":
                             if (!player.CanFire) return;
                             
-                            string projectileType = "Default";
+                            string projectileType = EntityKeys.ProjectileTypeEnum.Laser.ToString();
                             player.SetProjectileType(projectileType);
                             
                             // Ensure default ammo is decremented properly

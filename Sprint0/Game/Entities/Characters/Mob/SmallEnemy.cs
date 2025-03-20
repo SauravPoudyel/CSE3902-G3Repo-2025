@@ -24,8 +24,6 @@ namespace Sprint0
             currentMobType = EntityKeys.MobType.SmallEnemy;
             defaultMovementSpeed = 80f;
             firingInterval = 1.4f;
-            phaseTimer = 0f;
-            phase = 0;
             currentProjectileVariables["projectileType"] = "Default";
 
             var bodySprite = new AnimatedSprite(0.3f);
@@ -37,8 +35,6 @@ namespace Sprint0
             cannon = new Cannon(content, cannonSprite, this, new Vector2(14, 10), 50f, new Vector2(12, 70),
                                 0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
 
-            // Starting position and initial velocity.
-            position = new Vector2(Globals.SCREENWIDTH / 2, 150);
             velocity = new Vector2(defaultMovementSpeed, 0f);
             bodyRotation = 0f;
         }

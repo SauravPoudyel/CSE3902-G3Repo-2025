@@ -10,7 +10,7 @@ namespace Sprint0
         private float turretRotationSpeed;
 
         public Turret(ContentManager content) : base(content) {
-            TrackTrailsEnabled = true; 
+            TrackTrailsEnabled = false; 
             spriteWidth = 104;
             spriteHeight = 104;
         }

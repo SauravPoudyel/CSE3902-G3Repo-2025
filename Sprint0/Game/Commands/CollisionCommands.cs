@@ -13,24 +13,27 @@ namespace Sprint0
                 if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
                     parameters.ContainsKey("target") && parameters["target"] is Entity target)
                 {
-                    // Only process if target is IRigid or a Mob.
-                    if (target is IRigid || target is Mob)
+                    if (target is IRigid || (target is Mob mob && !(mob is Plane || mob is HoveringTank)))
                     {
                         Vector2 bounceDir = CollisionHandler.CalculateBounceDirection(player, target, player.bodyRotation);
                         float bounceOffset = 70f * Globals.FRAMETIME;
                         player.SetPosition(player.GetPosition() + bounceDir * bounceOffset);
                         player.SetVelocity(Vector2.Zero);
 
-                        if (target is Mob mob && !(mob is Plane || mob is HoveringTank))
+                        if (target is Mob mobTarget && !(mobTarget is Plane || mobTarget is HoveringTank))
                         {
-                            CollisionHandler.ResolveCollision(mob, player);
-                            mob.SetVelocity(Vector2.Zero);
+                            CollisionHandler.ResolveCollision(mobTarget, player);
+                            mobTarget.SetVelocity(Vector2.Zero);
                         }
                     }
                 }
                 else if (parameters.ContainsKey("actor") && parameters["actor"] is Mob mobActor &&
-                         parameters.ContainsKey("target") && parameters["target"] is Entity target2)
+                        parameters.ContainsKey("target") && parameters["target"] is Entity target2)
                 {
+                    // Ignore Plane collisions with blocks, rigid entities, or other mobs
+                    if (mobActor is Plane)
+                        return; 
+
                     if (target2 is IRigid || target2 is Blocks ||
                         (target2 is Mob mobTarget && !(mobTarget is Plane || mobTarget is HoveringTank)))
                     {
@@ -44,7 +47,7 @@ namespace Sprint0
                     }
                 }
                 else if (parameters.ContainsKey("actor") && parameters["actor"] is PushableBlock pushableBlock &&
-                         parameters.ContainsKey("target") && parameters["target"] is Entity target3)
+                        parameters.ContainsKey("target") && parameters["target"] is Entity target3)
                 {
                     if (target3 is IRigid || target3 is Mob)
                     {
@@ -58,6 +61,7 @@ namespace Sprint0
                     }
                 }
             }
+
         }
 
         public class CollisionProjectileDestroyCommand : ICommand
