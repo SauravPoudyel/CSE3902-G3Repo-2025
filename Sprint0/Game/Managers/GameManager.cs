@@ -26,6 +26,7 @@ namespace Sprint0
         public PlayerInventory playerInventory { get; private set; }
         private bool gameStarted;
         private bool gamePaused;
+        private bool gameLoading;
         private int levelNumber;
 
         public bool GameStarted
@@ -37,13 +38,21 @@ namespace Sprint0
                 UpdateActiveScreen();
             }
         }
-
         public bool GamePaused
         {
             get { return gamePaused; }
             set
             {
                 gamePaused = value;
+                UpdateActiveScreen();
+            }
+        }
+        public bool GameLoading
+        {
+            get { return gameLoading; }
+            set
+            {
+                gameLoading = value;
                 UpdateActiveScreen();
             }
         }
@@ -135,6 +144,8 @@ namespace Sprint0
             } else if (gamePaused) {
                 activeScreen = new PauseMenu(content, Game.GraphicsDevice, Game);
                 blockingScreen = activeScreen;
+            } else if (gameLoading) {
+                activeScreen = new LoadingScreen(Game);
             }
             else
             {
