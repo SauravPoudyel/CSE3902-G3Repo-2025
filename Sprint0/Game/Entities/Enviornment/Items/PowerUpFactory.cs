@@ -69,22 +69,22 @@ namespace Sprint0
                     player.shieldActive = true;
                     EffectTimers[EntityKeys.ItemType.Shield] = 5f;
                     break;
-                case EntityKeys.ItemType.Ammo_default:
+                case EntityKeys.ItemType.AmmoDefault:
                     Globals.PlayerData.TemporaryAmmoDefault++;
                     break;
-                case EntityKeys.ItemType.Ammo_shotgun:
+                case EntityKeys.ItemType.AmmoShotgun:
                     Globals.PlayerData.TemporaryAmmoShotgun++;
                     break;
-                case EntityKeys.ItemType.Ammo_sniper:
+                case EntityKeys.ItemType.AmmoSniper:
                     Globals.PlayerData.TemporaryAmmoSniper++;
                     break;
-                case EntityKeys.ItemType.Ammo_rocket:
+                case EntityKeys.ItemType.AmmoRocket:
                     Globals.PlayerData.TemporaryAmmoRocket++;
                     break;
-                case EntityKeys.ItemType.Ammo_Laser:
+                case EntityKeys.ItemType.AmmoLaser:
                     Globals.PlayerData.TemporaryAmmoLaser++;
                     break;
-                case EntityKeys.ItemType.Ammo_Mine:
+                case EntityKeys.ItemType.AmmoMine:
                     Globals.PlayerData.TemporaryAmmoMine++;
                     break;
                 case EntityKeys.ItemType.Magnet:

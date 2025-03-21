@@ -58,9 +58,11 @@ namespace Sprint0 {
             entities.Add(newEnemy.EntityKey, newEnemy);
         }
 
-        public void AddBlock(ContentManager content, Vector2 position, BlockType blockType)
+        public void AddBlock(ContentManager content, Vector2 position, BlockType blockType, float rotation)
         {
-            BaseBlock newBlock = BlockFactory.CreateBlock(blockType, content, (position * tileSize) + new Vector2(tileSize / 2, tileSize / 2), 0.3f);
+            Vector2 worldPosition = (position * tileSize) + new Vector2(tileSize / 2, tileSize / 2);
+            BaseBlock newBlock = BlockFactory.CreateBlock(blockType, content, worldPosition, 0.3f);
+            newBlock.Rotation = rotation;
             newBlock.EntityKey = "block_" + blocksList.Count + "_" + blockType.ToString();
             blocksList.Add(newBlock);
             entities.Add(newBlock.EntityKey, newBlock);

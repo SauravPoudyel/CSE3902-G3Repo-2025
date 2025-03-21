@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Numerics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using static Sprint0.CSVParser;
 
@@ -19,73 +18,125 @@ namespace Sprint0
 
         private static void ParseEntities(string filePath, Level level, ContentManager content)
         {
-            List<Dictionary<string, string>> rows = ParseFile(filePath);
-            Console.WriteLine("Parsed " + rows.Count + " rows from CSV file: " + filePath);
+            string[,] grid = ParseEntityGridFile(filePath);
+            int rows = grid.GetLength(0);
+            int cols = grid.GetLength(1);
+            Console.WriteLine("Parsed " + (rows * cols) + " cells from CSV file: " + filePath);
 
-            for (int i = 0; i < rows.Count; i++)
+            for (int y = 0; y < rows; y++)
             {
-                Dictionary<string, string> currentRow = rows[i];
-
-                if (!currentRow.ContainsKey("Type"))
+                for (int x = 0; x < cols; x++)
                 {
-                    Console.WriteLine("Skipping row due to missing Type: " + string.Join(",", currentRow.Values));
-                    continue;
-                }
+                    string cell = grid[y, x];
+                    if (string.IsNullOrWhiteSpace(cell))
+                        continue;
 
-                float xPos = currentRow.ContainsKey("X") && float.TryParse(currentRow["X"], out float tempX) ? tempX : 0;
-                float yPos = currentRow.ContainsKey("Y") && float.TryParse(currentRow["Y"], out float tempY) ? tempY : 0;
-                Vector2 position = new Vector2(xPos, yPos);
+                    // Each cell is structured as: ParentType_Subtype or for blocks: Block_Subtype_Rotation
+                    string[] parts = cell.Split('_');
+                    if (parts.Length == 0)
+                        continue;
+                    string parentType = parts[0];
 
-                string entityType = currentRow["Type"];
-                switch (entityType)
-                {
-                    case "Player":
-                        level.AddPlayer(content, position);
-                        break;
+                    // Calculate the position based on grid coordinates.
+                    // Level.Add* methods already adjust for tile size.
+                    Vector2 position = new Microsoft.Xna.Framework.Vector2(x, y);
 
-                    case "Enemy":
-                        if (currentRow.ContainsKey("Subtype") && Enum.TryParse(currentRow["Subtype"], out EntityKeys.MobType mobType))
-                        {
-                            level.AddEnemy(content, mobType, position);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Unknown Enemy Subtype at position ({xPos}, {yPos}). Skipping row.");
-                        }
-                        break;
+                    switch (parentType)
+                    {
+                        case "Player":
+                            level.AddPlayer(content, position);
+                            break;
 
-                    case "Item":
-                        if (currentRow.ContainsKey("Subtype") && Enum.TryParse(currentRow["Subtype"], out EntityKeys.ItemType itemType))
-                        {
-                            level.AddItem(content, position, itemType);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Unknown Item Subtype at position ({xPos}, {yPos}). Skipping row.");
-                        }
-                        break;
+                        case "Enemy":
+                            if (parts.Length >= 2 && Enum.TryParse(parts[1], out EntityKeys.MobType mobType))
+                            {
+                                level.AddEnemy(content, mobType, position);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Unknown Enemy subtype in cell: " + cell);
+                            }
+                            break;
 
-                    case "Block":
-                        if (currentRow.ContainsKey("Subtype") && Enum.TryParse(currentRow["Subtype"], out EntityKeys.BlockType blockType))
-                        {
-                            level.AddBlock(content, position, blockType);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Unknown Block Subtype at position ({xPos}, {yPos}). Skipping row.");
-                        }
-                        break;
+                        case "Item":
+                            if (parts.Length >= 2 && Enum.TryParse(parts[1], out EntityKeys.ItemType itemType))
+                            {
+                                level.AddItem(content, position, itemType);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Unknown Item subtype in cell: " + cell);
+                            }
+                            break;
 
-                    default:
-                        Console.WriteLine($"Unknown Type '{entityType}' at position ({xPos}, {yPos}). Skipping row.");
-                        break;
+                        case "Block":
+                            if (parts.Length >= 2)
+                            {
+                                if (Enum.TryParse(parts[1], out EntityKeys.BlockType blockType))
+                                {
+                                    float rotation = 0f;
+                                    if (parts.Length >= 3)
+                                    {
+                                        if (float.TryParse(parts[2], out float deg))
+                                        {
+                                            // Convert degrees to radians
+                                            rotation = MathHelper.ToRadians(deg);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Invalid rotation value in cell: " + cell);
+                                        }
+                                    }
+                                    level.AddBlock(content, position, blockType, rotation);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Unknown Block subtype in cell: " + cell);
+                                }
+                            }
+                            break;
+
+                        default:
+                            Console.WriteLine("Unknown entity type in cell: " + cell);
+                            break;
+                    }
                 }
             }
         }
 
+        private static string[,] ParseEntityGridFile(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine($"File path does not exist: {filePath}");
+                return new string[0, 0];
+            }
+
+            string[] lines = File.ReadAllLines(filePath);
+            if (lines.Length == 0)
+            {
+                Console.WriteLine($"Zero lines read: {filePath}");
+                return new string[0, 0];
+            }
+
+            int rows = lines.Length;
+            int cols = lines[0].Split(',').Length;
+            string[,] grid = new string[rows, cols];
+
+            for (int y = 0; y < rows; y++)
+            {
+                string[] currentRow = lines[y].Split(',');
+                for (int x = 0; x < cols; x++)
+                {
+                    grid[y, x] = x < currentRow.Length ? currentRow[x].Trim() : "";
+                }
+            }
+            return grid;
+        }
+
         private static string[,] ParseTileFile(string filePath)
         {
-            string[,] tileArray = new string[9, 16]; // hardcoded; adjust as needed
+            string[,] tileArray = new string[9, 16]; 
             if (!File.Exists(filePath))
             {
                 Console.WriteLine($"File path does not exist: {filePath}");

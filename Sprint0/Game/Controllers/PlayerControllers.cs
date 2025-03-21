@@ -123,6 +123,7 @@ namespace Sprint0
         public MouseController()
         {
             previousMouseState = new MouseState();
+            Mouse.SetCursor(MouseCursor.Crosshair); // temporary mouse
         }
         public void Update(Game1 game)
         {

@@ -8,6 +8,7 @@ namespace Sprint0
     {
         protected AnimatedSprite animatedSprite;
         protected float frameTime = 0.3f;
+        public float Rotation {get; set;} = 0f; 
         public float Scale { get; set; } = 1.0f;
 
         public void SetFrameTime(float newFrameTime)
@@ -28,7 +29,7 @@ namespace Sprint0
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            animatedSprite?.Draw(spriteBatch, position, SpriteEffects.None, 0f, null, null, Scale);
+            animatedSprite?.Draw(spriteBatch, position, SpriteEffects.None, Rotation, null, null, Scale);
         }
     }
 }

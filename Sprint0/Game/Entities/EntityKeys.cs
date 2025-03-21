@@ -26,7 +26,7 @@ namespace Sprint0
 
         public enum ItemType
         {
-            SpeedBoost, Shield, Ammo_default, Ammo_shotgun, Ammo_sniper, Ammo_rocket, Ammo_Laser, Ammo_Mine,
+            SpeedBoost, Shield, AmmoDefault, AmmoShotgun, AmmoSniper, AmmoRocket, AmmoLaser, AmmoMine,
             Magnet, FireRateIncrease, MedStrong, MedWeak, TimeSlow, Fly, Cloak, SilverTag, GoldTag, Teleporter
         }
     }
