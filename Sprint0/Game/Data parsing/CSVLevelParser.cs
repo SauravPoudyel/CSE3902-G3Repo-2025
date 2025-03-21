@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using static Sprint0.CSVParser;
 
 namespace Sprint0
 {
@@ -79,7 +78,6 @@ namespace Sprint0
                                     {
                                         if (float.TryParse(parts[2], out float deg))
                                         {
-                                            // Convert degrees to radians
                                             rotation = MathHelper.ToRadians(deg);
                                         }
                                         else

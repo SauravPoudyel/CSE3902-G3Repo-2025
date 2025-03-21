@@ -6,7 +6,7 @@ namespace Sprint0
     {
         public enum ProjectileTypeEnum
         {
-            Sniper, Rocket, Shotgun, Mine, Teleporter, Laser
+            Sniper, Rocket, Shotgun, Mine, Teleporter, Laser, Default
         }
 
         public enum BlockType

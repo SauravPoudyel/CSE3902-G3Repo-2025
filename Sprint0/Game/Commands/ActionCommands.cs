@@ -20,13 +20,13 @@ namespace Sprint0
                         case "fire":
                             if (!player.CanFire) return;
                             
-                            string projectileType = EntityKeys.ProjectileTypeEnum.Laser.ToString();
+                            string projectileType = EntityKeys.ProjectileTypeEnum.Default.ToString(); 
                             player.SetProjectileType(projectileType);
                             
                             // Ensure default ammo is decremented properly
-                            if (Globals.PlayerData.TemporaryAmmoDefault > 0)
+                            if (Globals.PlayerData.GetInt("AmmoDefault") > 0)
                             {
-                                Globals.PlayerData.TemporaryAmmoDefault--;
+                                Globals.PlayerData.UpdateVariable("AmmoDefault", -1); 
                                 player.FireProjectile();
                             }
                             else
@@ -61,22 +61,22 @@ namespace Sprint0
                             switch (projectileType)
                             {
                                 case "Sniper":
-                                    Globals.PlayerData.TemporaryAmmoSniper--;
+                                    Globals.PlayerData.UpdateVariable("AmmoSniper", -1); 
                                     break;
                                 case "Rocket":
-                                    Globals.PlayerData.TemporaryAmmoRocket--;
+                                    Globals.PlayerData.UpdateVariable("AmmoRocket", -1); 
                                     break;
                                 case "Shotgun":
-                                    Globals.PlayerData.TemporaryAmmoShotgun--;
+                                    Globals.PlayerData.UpdateVariable("AmmoShotgun", -1); 
                                     break;
                                 case "Mine":
-                                    Globals.PlayerData.TemporaryAmmoMine--;
+                                    Globals.PlayerData.UpdateVariable("AmmoMine", -1); 
                                     break;
                                 case "Teleporter":
-                                    Globals.PlayerData.TemporaryAmmoTeleporter--;
+                                    Globals.PlayerData.UpdateVariable("AmmoTeleporter", -1); 
                                     break;
                                 case "Default":  // Ensure default ammo decrements properly here too
-                                    Globals.PlayerData.TemporaryAmmoDefault--;
+                                    Globals.PlayerData.UpdateVariable("AmmoDefault", -1); 
                                     break;
                                 default:
                                     System.Console.WriteLine("Error: Invalid projectile type.");

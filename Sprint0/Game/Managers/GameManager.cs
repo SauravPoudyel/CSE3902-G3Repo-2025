@@ -118,9 +118,6 @@ namespace Sprint0
             InitializeTiles();
             InitializeEntities();
 
-            // Load persistent player data from CSV (located in Data\playerData.csv)
-            string playerDataFile = Path.Combine(Globals.projectDirectory, "\\Data\\playerDataFile.csv");
-            playerData = PlayerData.LoadData(playerDataFile);
             playerInventory = new PlayerInventory(content);
             UpdateActiveScreen();
         }

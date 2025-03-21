@@ -17,7 +17,7 @@ namespace Sprint0
         {
             this.icon = texture;
             this.playerData = Globals.PlayerData;
-            this.maxHealth = playerData.PermanentHealth;
+            this.maxHealth = playerData.GetInt("Health");
 
             // Initialize textures for health bar
             gray = new Texture2D(texture.GraphicsDevice, 1, 1);
@@ -32,26 +32,26 @@ namespace Sprint0
         public void Update()
         {
             // Update health bar based on player health
-            this.currentHealth = playerData.TemporaryHealth;
+            this.currentHealth = playerData.GetInt("Health");
 
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             // Draw the health icon and health bar
-            spriteBatch.Draw(icon, new Rectangle(10, 900, 50, 50), Color.White);
-            spriteBatch.Draw(gray, new Rectangle(61, 900, maxHealth * 3, 50), Color.White * 0.5f);
+            spriteBatch.Draw(icon, new Rectangle(10, 950, 50, 50), Color.White);
+            spriteBatch.Draw(gray, new Rectangle(61, 950, maxHealth * 3, 50), Color.White * 0.5f);
             if ((double)currentHealth / maxHealth > 0.5)
             {
-                spriteBatch.Draw(green, new Rectangle(61, 900, currentHealth * 3, 50), Color.White);
+                spriteBatch.Draw(green, new Rectangle(61, 950, currentHealth * 3, 50), Color.White);
             }
             else if ((double)currentHealth / maxHealth > 0.25)
             {
-                spriteBatch.Draw(yellow, new Rectangle(61, 900, currentHealth * 3, 50), Color.White);
+                spriteBatch.Draw(yellow, new Rectangle(61, 950, currentHealth * 3, 50), Color.White);
             }
             else
             {
-                spriteBatch.Draw(red, new Rectangle(61, 900, currentHealth * 3, 50), Color.White);
+                spriteBatch.Draw(red, new Rectangle(61, 950, currentHealth * 3, 50), Color.White);
 
             }
         }

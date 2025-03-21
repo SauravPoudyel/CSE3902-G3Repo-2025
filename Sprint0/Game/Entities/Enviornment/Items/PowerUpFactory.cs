@@ -70,22 +70,25 @@ namespace Sprint0
                     EffectTimers[EntityKeys.ItemType.Shield] = 5f;
                     break;
                 case EntityKeys.ItemType.AmmoDefault:
-                    Globals.PlayerData.TemporaryAmmoDefault++;
+                    Globals.PlayerData.UpdateVariable("AmmoDefault"); 
                     break;
                 case EntityKeys.ItemType.AmmoShotgun:
-                    Globals.PlayerData.TemporaryAmmoShotgun++;
+                    Globals.PlayerData.UpdateVariable("AmmoShotgun"); 
                     break;
                 case EntityKeys.ItemType.AmmoSniper:
-                    Globals.PlayerData.TemporaryAmmoSniper++;
+                    Globals.PlayerData.UpdateVariable("AmmoSniper"); 
                     break;
                 case EntityKeys.ItemType.AmmoRocket:
-                    Globals.PlayerData.TemporaryAmmoRocket++;
+                    Globals.PlayerData.UpdateVariable("AmmoRocket"); 
                     break;
                 case EntityKeys.ItemType.AmmoLaser:
-                    Globals.PlayerData.TemporaryAmmoLaser++;
+                    Globals.PlayerData.UpdateVariable("AmmoLaser"); 
                     break;
                 case EntityKeys.ItemType.AmmoMine:
-                    Globals.PlayerData.TemporaryAmmoMine++;
+                    Globals.PlayerData.UpdateVariable("AmmoMine"); 
+                    break;
+                case EntityKeys.ItemType.Teleporter:
+                    Globals.PlayerData.UpdateVariable("AmmoTeleporter"); 
                     break;
                 case EntityKeys.ItemType.Magnet:
                     NormalPickUpRadius = 450;
@@ -119,13 +122,10 @@ namespace Sprint0
                     EffectTimers[EntityKeys.ItemType.Cloak] = 5f;
                     break;
                 case EntityKeys.ItemType.SilverTag:
-                    Globals.PlayerData.TemporaryCoins += 50;
+                    Globals.PlayerData.UpdateVariable("Coins", 50); 
                     break;
                 case EntityKeys.ItemType.GoldTag:
-                    Globals.PlayerData.TemporaryCoins += 100;
-                    break;
-                case EntityKeys.ItemType.Teleporter:
-                    // Teleporter logic here if needed.
+                    Globals.PlayerData.UpdateVariable("Coins", 100);
                     break;
             }
         }
