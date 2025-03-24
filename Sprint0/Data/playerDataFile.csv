@@ -1,3 +1,13 @@
-Type,PermanentHealth,PermanentAmmoDefault,PermanentAmmoShotgun,PermanentAmmoSniper,PermanentAmmoRocket,PermanentAmmoLaser,PermanentAmmoMine,PermanentShield,PermanentCoins
-Permanent,100,50,10,10,5,20,5,25,0
-Temporary,100,50,10,10,5,20,5,25,0
+Name, AmazingTankSlayer2000
+Health, 100
+AmmoDefault, 48
+AmmoSniper, 10
+AmmoRocket, 10
+AmmoShotgun, 10
+AmmoMine, 4
+AmmoLaser, 0
+AmmoTeleporter, 4
+Coins, 0
+XP, 2000
+SmallEnemysKilled, 0
+PlanesKilled, 2

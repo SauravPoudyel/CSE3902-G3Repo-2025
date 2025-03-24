@@ -14,8 +14,10 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("game") && parameters["game"] is Game1 game)
+                if (parameters.ContainsKey("game") && parameters["game"] is Game1 game) {
+                    Globals.SavePlayerData(); 
                     game.Exit();
+                }
             }
         }
 

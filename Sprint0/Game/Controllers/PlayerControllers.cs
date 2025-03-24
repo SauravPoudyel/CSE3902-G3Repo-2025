@@ -35,7 +35,9 @@ namespace Sprint0
                 { Keys.I, "CycleItemNext" },
                 { Keys.O, "CycleEnemyPrev" },
                 { Keys.P, "CycleEnemyNext" },
-                { Keys.Escape, "ShowPauseMenu" }
+                { Keys.Escape, "ShowPauseMenu" },
+                { Keys.OemPlus, "AudioIncrease" },
+                { Keys.OemMinus, "AudioDecrease" },
             };
         }
 
@@ -121,6 +123,7 @@ namespace Sprint0
         public MouseController()
         {
             previousMouseState = new MouseState();
+            Mouse.SetCursor(MouseCursor.Crosshair); // temporary mouse
         }
         public void Update(Game1 game)
         {

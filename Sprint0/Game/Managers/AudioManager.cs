@@ -13,12 +13,18 @@ namespace Sprint0
 
         private static SoundEffectPlayer soundEffectPlayer = new SoundEffectPlayer();
         private static MusicPlayer musicPlayer = new MusicPlayer();
+        public static float Volume {get; private set;} = 1f; 
         private static readonly string soundPath = Path.Combine(Globals.projectDirectory, "Content", "Sounds");
 
         public static void LoadContent()
         {
             soundEffectPlayer.LoadContent();
             musicPlayer.LoadContent();
+        }
+
+        public static void setVolume(float volume) {
+            Volume = Math.Clamp(volume, 0f, 1f);
+            MediaPlayer.Volume = volume;  // Update MediaPlayer Volume instantly
         }
 
         public static void PlaySound(SoundKey key) => soundEffectPlayer.Play(key);
@@ -52,8 +58,9 @@ namespace Sprint0
 
             public void Play(SoundKey key)
             {
-                if (soundEffects.ContainsKey(key))
-                    soundEffects[key].Play();
+                if (soundEffects.ContainsKey(key)) {
+                    soundEffects[key].Play(Volume, 0f, 0f);
+                }
             }
         }
 
@@ -79,7 +86,6 @@ namespace Sprint0
                 if (musicTracks.ContainsKey(key))
                 {
                     MediaPlayer.IsRepeating = true;
-                    MediaPlayer.Volume = 0.5f;
                     MediaPlayer.Play(musicTracks[key]);
                 }
             }

@@ -67,7 +67,7 @@ namespace Sprint0
                 isDamaged = true;
             else
                 isHealed = true;
-            Globals.PlayerData.TemporaryHealth += change; 
+            Globals.PlayerData.UpdateVariable("Health", change); 
         }
 
         public override void OnDeath()

@@ -69,23 +69,26 @@ namespace Sprint0
                     player.shieldActive = true;
                     EffectTimers[EntityKeys.ItemType.Shield] = 5f;
                     break;
-                case EntityKeys.ItemType.Ammo_default:
-                    Globals.PlayerData.TemporaryAmmoDefault++;
+                case EntityKeys.ItemType.AmmoDefault:
+                    Globals.PlayerData.UpdateVariable("AmmoDefault"); 
                     break;
-                case EntityKeys.ItemType.Ammo_shotgun:
-                    Globals.PlayerData.TemporaryAmmoShotgun++;
+                case EntityKeys.ItemType.AmmoShotgun:
+                    Globals.PlayerData.UpdateVariable("AmmoShotgun"); 
                     break;
-                case EntityKeys.ItemType.Ammo_sniper:
-                    Globals.PlayerData.TemporaryAmmoSniper++;
+                case EntityKeys.ItemType.AmmoSniper:
+                    Globals.PlayerData.UpdateVariable("AmmoSniper"); 
                     break;
-                case EntityKeys.ItemType.Ammo_rocket:
-                    Globals.PlayerData.TemporaryAmmoRocket++;
+                case EntityKeys.ItemType.AmmoRocket:
+                    Globals.PlayerData.UpdateVariable("AmmoRocket"); 
                     break;
-                case EntityKeys.ItemType.Ammo_Laser:
-                    Globals.PlayerData.TemporaryAmmoLaser++;
+                case EntityKeys.ItemType.AmmoLaser:
+                    Globals.PlayerData.UpdateVariable("AmmoLaser"); 
                     break;
-                case EntityKeys.ItemType.Ammo_Mine:
-                    Globals.PlayerData.TemporaryAmmoMine++;
+                case EntityKeys.ItemType.AmmoMine:
+                    Globals.PlayerData.UpdateVariable("AmmoMine"); 
+                    break;
+                case EntityKeys.ItemType.Teleporter:
+                    Globals.PlayerData.UpdateVariable("AmmoTeleporter"); 
                     break;
                 case EntityKeys.ItemType.Magnet:
                     NormalPickUpRadius = 450;
@@ -119,13 +122,10 @@ namespace Sprint0
                     EffectTimers[EntityKeys.ItemType.Cloak] = 5f;
                     break;
                 case EntityKeys.ItemType.SilverTag:
-                    Globals.PlayerData.TemporaryCoins += 50;
+                    Globals.PlayerData.UpdateVariable("Coins", 50); 
                     break;
                 case EntityKeys.ItemType.GoldTag:
-                    Globals.PlayerData.TemporaryCoins += 100;
-                    break;
-                case EntityKeys.ItemType.Teleporter:
-                    // Teleporter logic here if needed.
+                    Globals.PlayerData.UpdateVariable("Coins", 100);
                     break;
             }
         }

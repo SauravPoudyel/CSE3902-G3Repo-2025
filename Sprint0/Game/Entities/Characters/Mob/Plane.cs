@@ -15,9 +15,10 @@ namespace Sprint0
 
         public Plane(ContentManager content) : base(content) 
         {
-            TrackTrailsEnabled = true; 
+            TrackTrailsEnabled = false; 
             spriteWidth = 100;
             spriteHeight = 113;
+            health = 100;
         }
 
         protected override void InitializeMob()
@@ -34,7 +35,7 @@ namespace Sprint0
             SetSprite(planeBodySprite);
 
             cannon = new Cannon(content, Globals.NULLSPRITE_A, this, new Vector2(14, 10), 30f, new Vector2(0, 0),
-                    0f, 0f, 0f, 0f);
+                    0f, MathHelper.ToRadians(20), 0f, 0f);
             velocity = Vector2.Zero;
             bodyRotation = 0f;
         }
@@ -42,32 +43,33 @@ namespace Sprint0
         protected override void UpdateMobBehavior()
         {
             float elap = Globals.FRAMETIME;
-            orbitAngle += MathHelper.ToRadians(25) * elap * orbitSpeedFactor;
-            orbitAngle %= MathHelper.TwoPi;
-            position = orbitCenter + new Vector2((float)Math.Cos(orbitAngle), (float)Math.Sin(orbitAngle)) * orbitRadius;
+            // Instead of instantly setting orbitCenter to lastKnownPlayerPosition,
+            // gradually move orbitCenter toward it.
             if (lastKnownPlayerPosition != Vector2.Zero)
             {
-                Vector2 dir = lastKnownPlayerPosition - position;
-                float desired = (float)Math.Atan2(dir.Y, dir.X) - MathHelper.PiOver2;
-                float diff = MathHelper.WrapAngle(desired - bodyRotation);
-                float turnRate = MathHelper.ToRadians(50) * elap;
-                if (Math.Abs(diff) > turnRate)
-                    diff = Math.Sign(diff) * turnRate;
-                bodyRotation += diff;
+                float accelerationFactor = 0.5f; // Adjust this value for faster or slower acceleration
+                orbitCenter = Vector2.Lerp(orbitCenter, lastKnownPlayerPosition, accelerationFactor * elap);
             }
+            orbitAngle += MathHelper.ToRadians(25) * elap * orbitSpeedFactor;
+            orbitAngle %= MathHelper.TwoPi;
+            // Set the plane's position based on the current orbit center.
+            position = orbitCenter + new Vector2((float)Math.Cos(orbitAngle), (float)Math.Sin(orbitAngle)) * orbitRadius;
+            PointCannonPlayer();
         }
 
         public override void FireProjectile()
         {
             Vector2 spawnPos = GetPosition();
-            var p = new Dictionary<string, object>
+            var parameters = new Dictionary<string, object>
             {
                 { "projectileType", currentProjectileVariables["projectileType"] },
                 { "spawnPosition", spawnPos },
-                { "cannonRotation", cannon.Rotation },
-                { "speedModifier", -200f }
+                { "cannonRotation", cannon.Rotation},
+                { "speedModifier", -200f },
+                { "owner", this }
             };
-            commandQueue.Enqueue(new CommandRequest("CreateProjectile", p));
+            commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
+            AudioManager.PlaySound(AudioManager.SoundKey.Shoot);
         }
 
         protected override void ChangeMobType(EntityKeys.MobType type)

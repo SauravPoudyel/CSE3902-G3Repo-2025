@@ -1,55 +1,40 @@
 using System;
+using System.Collections.Generic;
 
 namespace Sprint0
 {
     public class PlayerData
     {
-        // Permanent data.
-        public int PermanentHealth { get; set; } = 100;
-        public int PermanentAmmoDefault { get; set; } = 50;
-        public int PermanentAmmoShotgun { get; set; } = 10;
-        public int PermanentAmmoSniper { get; set; } = 5;
-        public int PermanentAmmoRocket { get; set; } = 5;
-        public int PermanentAmmoLaser { get; set; } = 20;
-        public int PermanentAmmoMine { get; set; } = 5;
-        public int PermanentAmmoTeleporter { get; set; } = 5;
-        public int PermanentShield { get; set; } = 25;
-        public int PermanentCoins { get; set; } = 0;
+        // The dictionary holds all stored variables.
+        // Keys can be "Name", "Health", "ammo", "coins", "XP", "SmallEnemy Killed", etc.
+        public Dictionary<string, string> Variables { get; private set; }
 
-        // Temporary data.
-        public int TemporaryHealth { get; set; } = 100;
-        public int TemporaryAmmoDefault { get; set; } = 50;
-        public int TemporaryAmmoShotgun { get; set; } = 10;
-        public int TemporaryAmmoSniper { get; set; } = 5;
-        public int TemporaryAmmoRocket { get; set; } = 5;
-        public int TemporaryAmmoLaser { get; set; } = 20;
-        public int TemporaryAmmoMine { get; set; } = 5;
-        public int TemporaryAmmoTeleporter { get; set; } = 5;
-        public int TemporaryShield { get; set; } = 25;
-        public int TemporaryCoins { get; set; } = 0;
-
-        public void ResetTemporaryData()
+        public PlayerData()
         {
-            TemporaryHealth = PermanentHealth;
-            TemporaryAmmoDefault = PermanentAmmoDefault;
-            TemporaryAmmoShotgun = PermanentAmmoShotgun;
-            TemporaryAmmoSniper = PermanentAmmoSniper;
-            TemporaryAmmoRocket = PermanentAmmoRocket;
-            TemporaryAmmoLaser = PermanentAmmoLaser;
-            TemporaryAmmoMine = PermanentAmmoMine;
-            TemporaryAmmoTeleporter = PermanentAmmoTeleporter;
-            TemporaryShield = PermanentShield;
-            TemporaryCoins = 0;
+            Variables = new Dictionary<string, string>();
         }
 
-        public void SaveData(string filePath)
+        public string GetString(string key, string defaultValue = "")
         {
-            CSVParser.SavePlayerData(filePath, this);
+            return Variables.ContainsKey(key) ? Variables[key] : defaultValue;
         }
 
-        public static PlayerData LoadData(string filePath)
+        public int GetInt(string key, int defaultValue = 0)
         {
-            return CSVParser.ParsePlayerData(filePath);
+            if (Variables.ContainsKey(key) && int.TryParse(Variables[key], out int value))
+                return value;
+            return defaultValue;
+        }
+
+        public void UpdateVariable(string key, int amount = 1)
+        {
+            int current = GetInt(key, 0);
+            Set(key, (current + amount).ToString());
+        }
+
+        public void Set(string key, string value)
+        {
+            Variables[key] = value;
         }
     }
 }

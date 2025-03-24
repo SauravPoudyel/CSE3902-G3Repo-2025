@@ -1,58 +1,56 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Sprint0
 {
     public class Ship : Mob
     {
         private bool vertical;
+        private float fixedY; // For horizontal ships, this stores the constant Y coordinate.
 
-        // Constructor: Pass in the ContentManager and a flag for vertical orientation.
         public Ship(ContentManager content, bool isVertical) : base(content)
         {
+            TrackTrailsEnabled = false;
+            spriteWidth = 94;
+            spriteHeight = 140;
             vertical = isVertical;
-            InitializeMob();
+            health = 200;
+            InitializeMob(); // this needs to be called here after the base constructor to pass isVertical
         }
 
         protected override void InitializeMob()
         {
-            currentMobType = EntityKeys.MobType.ShipVertical;
-            defaultMovementSpeed = 120f;
-            firingInterval = 1.5f;
+            // Set the mob type based on orientation.
+            currentMobType = vertical ? EntityKeys.MobType.ShipVertical : EntityKeys.MobType.ShipHorizontal;
+            defaultMovementSpeed = 80f;
+            firingInterval = 2f;
             currentProjectileVariables["projectileType"] = "Default";
 
             AnimatedSprite shipSprite = new AnimatedSprite(0.3f);
-            if (vertical)
-            {
-                shipSprite.LoadContent(content, "TDTanksAllSprites", 1135, 841, 70, 120, 1);
-                bodyRotation = MathHelper.PiOver2;
-            }
-            else
-            {
-                shipSprite.LoadContent(content, "TDTanksAllSprites", 1135, 841, 70, 120, 1);
-                bodyRotation = 0f;
-            }
+            // For this example we use the same sprite for both; adjust if needed.
+            shipSprite.LoadContent(content, "TDTanksAllSprites", 1135, 840, 68, 116, 1);
+            // Set the initial rotation.
+            bodyRotation = vertical ? 0f : -MathHelper.PiOver2;
             SetSprite(shipSprite);
 
             Vector2 cannonOffset = vertical ? new Vector2(25, 60) : new Vector2(60, 25);
             cannon = new Cannon(content, Globals.NULLSPRITE_A, this, cannonOffset, 30f, new Vector2(0, 0),
-                                0f, 0f, 0f, 0f);
+                                0f, MathHelper.ToRadians(20), 0f, 0f);
 
             ResetMobPosition();
         }
 
         protected override void UpdateMobBehavior()
         {
-            // Use the new axis-specific following behavior.
-            if (vertical)
+            FollowPlayer("Follow-Axis");
+            // For horizontal ships, re-lock the Y coordinate.
+            if (currentMobType == EntityKeys.MobType.ShipHorizontal)
             {
-                FollowPlayer("FollowY-Axis");
+                position.Y = fixedY;
             }
-            else
-            {
-                FollowPlayer("FollowX-Axis");
-            }
+            PointCannonPlayer(); 
         }
 
         protected override void ChangeMobType(EntityKeys.MobType type)
@@ -64,29 +62,36 @@ namespace Sprint0
         protected override void ResetMobPosition()
         {
             if (vertical)
-            {
-                // Start off-screen at the top center.
                 position = new Vector2(Globals.SCREENWIDTH / 2, -50);
-            }
             else
             {
-                // Start off-screen at the left center.
                 position = new Vector2(-50, Globals.SCREENHEIGHT / 2);
+                fixedY = position.Y; // Lock the Y coordinate for horizontal movement.
             }
         }
-
 
         public override void FireProjectile()
         {
             Vector2 spawnPos = GetPosition();
-            var p = new Dictionary<string, object>
+            var parameters = new Dictionary<string, object>
             {
                 { "projectileType", currentProjectileVariables["projectileType"] },
                 { "spawnPosition", spawnPos },
                 { "cannonRotation", cannon.Rotation },
-                { "speedModifier", -200f }
+                { "speedModifier", -200f }, 
+                { "owner", this }
             };
-            commandQueue.Enqueue(new CommandRequest("CreateProjectile", p));
+            commandQueue.Enqueue(new CommandRequest("CreateProjectile", parameters));
+
+            AudioManager.PlaySound(AudioManager.SoundKey.Shoot);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (var trail in trackTrailList)
+                trail.Draw(spriteBatch);
+            sprite?.Draw(spriteBatch, position, SpriteEffects.None, bodyRotation, null, changeIndicator, 1.5f);
+            cannon?.Draw(spriteBatch);
         }
     }
 }

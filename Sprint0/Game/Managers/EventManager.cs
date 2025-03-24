@@ -52,8 +52,11 @@ namespace Sprint0
                 {"CollisionProjectileDestroy", new CollisionCommands.CollisionProjectileDestroyCommand()},
                 {"CollisionProjectileReflect", new CollisionCommands.CollisionProjectileReflectCommand()},
                 {"DestroyFlammableCommand", new CollisionCommands.DestroyFlammableCommand()},
-                {"AutoDestroy", new ActionCommands.AutoDestroyCommand()}
+                {"AutoDestroy", new ActionCommands.AutoDestroyCommand()},
 
+                {"AudioMute", new AudioCommands.AudioMuteCommand()},
+                {"AudioIncrease", new AudioCommands.AudioIncreaseCommand()},
+                {"AudioDecrease", new AudioCommands.AudioDecreaseCommand()}
             };
 
             commandRequests = new List<CommandRequest>();

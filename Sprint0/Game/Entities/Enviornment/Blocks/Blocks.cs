@@ -11,6 +11,9 @@ using static Sprint0.EntityKeys;
 
 namespace Sprint0
 {
+    /* 
+     * THIS CLASS IS JUST FOR DEBUG PURPOSES. IT CYCLES THROUGH ALL THE BLOCKS, it is not intended to be in the game itself
+    */
     public class Blocks : Entity
     {
         enum BlockType
