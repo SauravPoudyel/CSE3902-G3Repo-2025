@@ -27,6 +27,10 @@ namespace Sprint0
         public List<Tile> LoadLevelTiles() {
             return level.GetLevelTiles;
         }
+        public void UpdateLevel() {
+            // tiles = levelManager.LoadLevelTiles();
+            // entities = levelManager.LoadLevelEntities();
+        }
 
         public void Update(Dictionary<string, Entity> entities) {
             level.Complete = true;

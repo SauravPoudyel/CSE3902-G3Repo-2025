@@ -146,6 +146,7 @@ namespace Sprint0
                 blockingScreen = activeScreen;
             } else if (gameLoading) {
                 activeScreen = new LoadingScreen(Game);
+                blockingScreen = activeScreen;
             }
             else
             {

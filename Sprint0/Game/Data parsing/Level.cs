@@ -8,7 +8,10 @@ using static Sprint0.EntityKeys;
 namespace Sprint0 {
     public class Level
     {
+        public enum Direction { Top, Bottom, Left, Right }  
+        private Dictionary<Direction, Level> connectedLevels;  
         public int tileSize = 120;
+        private bool unlocked;
         private bool complete;
         private List<Tile> tilesList;
         private Dictionary<string, Entity> entities;
@@ -16,6 +19,7 @@ namespace Sprint0 {
         private Player player;
         private List<Item> itemsList;
         private List<Mob> enemiesList;
+        
         public Dictionary<string, Entity> Entities 
         {
             get { return entities; }
@@ -26,7 +30,11 @@ namespace Sprint0 {
             get { return complete; }
             set { complete = value; }
         }
-
+        public bool Unlocked   
+        {
+            get { return unlocked; }
+            set { unlocked = value; }
+        }
         public Level()
         {
             complete = false;
@@ -35,11 +43,26 @@ namespace Sprint0 {
             blocksList = new List<BaseBlock>();
             itemsList = new List<Item>();
             enemiesList = new List<Mob>();
+            connectedLevels = new Dictionary<Direction, Level>();
         }
-
         public Dictionary<string, Entity> GetLevelEntities() => entities;
         public List<Mob> GetLevelEnemies() => enemiesList;
         public List<Tile> GetLevelTiles => tilesList;
+        public void AddConnectedLevel(Direction direction, Level level)
+        {
+            if (level != null)
+            {
+                connectedLevels[direction] = level;
+            }
+        }
+        public Level GetConnectedLevel(Direction direction)
+        {
+            return connectedLevels.ContainsKey(direction) ? connectedLevels[direction] : null;
+        }
+        public bool HasConnectedLevel(Direction direction)
+        {
+            return connectedLevels.ContainsKey(direction);
+        }
         public void AddTile(ContentManager content, Tile.TileType tileType, Vector2 position)
         {
             tilesList.Add(new Tile(content, tileType, (position * tileSize) + new Vector2(tileSize / 2, tileSize / 2)));
