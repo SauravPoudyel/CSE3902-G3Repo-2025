@@ -11,6 +11,7 @@ namespace Sprint0 {
         public enum Direction { Top, Bottom, Left, Right }  
         private Dictionary<Direction, Level> connectedLevels;  
         public int tileSize = 120;
+        private int levelNumber;
         private bool unlocked;
         private bool complete;
         private List<Tile> tilesList;
@@ -38,6 +39,8 @@ namespace Sprint0 {
         public Level()
         {
             complete = false;
+            unlocked = true;
+            levelNumber = 1;
             tilesList = new List<Tile>();
             entities = new Dictionary<string, Entity>();
             blocksList = new List<BaseBlock>();
@@ -45,6 +48,7 @@ namespace Sprint0 {
             enemiesList = new List<Mob>();
             connectedLevels = new Dictionary<Direction, Level>();
         }
+        public int GetLevelNumber() => levelNumber;
         public Dictionary<string, Entity> GetLevelEntities() => entities;
         public List<Mob> GetLevelEnemies() => enemiesList;
         public List<Tile> GetLevelTiles => tilesList;

@@ -8,47 +8,67 @@ using System.IO;
 namespace Sprint0
 {
     public class LevelManager {
-        private Level level;
+        private Level activeLevel;
+        private Dictionary<string, Level> levels;
         public LevelManager() {
-            level = new Level();
+            activeLevel = new Level();
+            levels = new Dictionary<string, Level>();
         }
         public void LoadContent(ContentManager content, string levelName) {
-            //string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\Sprint3FuncLevelParse.csv"); //Sprint0\Data\LevelParseTest2.csv
-            //string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\LevelTilesParseTest3.csv");
             string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\" + levelName + "_Entities.csv");
             string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\" + levelName + "_Tiles.csv");
-            level = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
+            if(!levels.ContainsKey(levelName)) {
+                levels.Add(levelName, CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content));
+            }
+            activeLevel = levels[levelName];
         }
-        
         public Dictionary<string, Entity> LoadLevelEntities() {
-            return level.GetLevelEntities();
+            return activeLevel.GetLevelEntities();
         }
-
         public List<Tile> LoadLevelTiles() {
-            return level.GetLevelTiles;
+            return activeLevel.GetLevelTiles;
         }
-        public void UpdateLevel() {
-            // tiles = levelManager.LoadLevelTiles();
-            // entities = levelManager.LoadLevelEntities();
+        public void SwitchLevel(Level.Direction direction) {
+            if(activeLevel.HasConnectedLevel(direction)) {
+                activeLevel = activeLevel.GetConnectedLevel(direction);
+            }
+        }
+        public void UpdateLevelEntities(Dictionary<string, Entity> entities) {
+            activeLevel.Entities = entities;
         }
 
         public void Update(Dictionary<string, Entity> entities) {
-            level.Complete = true;
+            UpdateLevelEntities(entities);
+            activeLevel.Complete = true;
             foreach (Entity entity in entities.Values)
             {
                 if(entity is Mob) {
-                    level.Complete = false;
+                    activeLevel.Complete = false;
                 }
             }
             if(entities.ContainsKey("player")) {
                 Player player = (Player)entities["player"];
-                if(level.Complete && player.GetPosition().X > 1920) {
+                if(activeLevel.Complete && player.GetPosition().X > 1920) {
                     player.SetPosition(new Vector2(0,player.GetPosition().Y));
                     player.MoveLevel(1);
                 } else if(player.GetPosition().X<0) {
                     player.SetPosition(new Vector2(1920,player.GetPosition().Y));
                     player.MoveLevel(-1);
                 }
+                /* 
+                if(player.GetPosition().X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right)) {
+                    player.SetPosition(new Vector2(0,player.GetPosition().Y));
+                    player.MoveLevel(activeLevel.GetLevelNumber()+1); // Placeholder! just increments activeLevel number
+                } else if(player.GetPosition().X < 0 && activeLevel.HasConnectedLevel(Level.Direction.Left)) {
+                    player.SetPosition(new Vector2(1920,player.GetPosition().Y));
+                    player.MoveLevel(activeLevel.GetLevelNumber()+1);
+                } else if(player.GetPosition().Y > 1080 && activeLevel.HasConnectedLevel(Level.Direction.Bottom)) {
+                    player.SetPosition(new Vector2(player.GetPosition().X, 0));
+                    player.MoveLevel(activeLevel.GetLevelNumber()+1);
+                } else if(player.GetPosition().Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top)) {
+                    player.SetPosition(new Vector2(player.GetPosition().X, 1080));
+                    player.MoveLevel(activeLevel.GetLevelNumber()+1);
+                } */
             }
         }
     }

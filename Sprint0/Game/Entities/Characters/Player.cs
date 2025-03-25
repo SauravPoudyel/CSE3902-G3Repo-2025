@@ -79,11 +79,8 @@ namespace Sprint0
 
         public void MoveLevel(int levelNum) {
             var parameters2 = new Dictionary<string, object>();
-            if(levelNum>0) {
-                commandQueue.Enqueue(new CommandRequest("IncreaseLevel", parameters2));
-            } else {
-                commandQueue.Enqueue(new CommandRequest("DecreaseLevel", parameters2));
-            }
+            parameters2.Add("level", levelNum);
+            commandQueue.Enqueue(new CommandRequest("SetLevel", parameters2));
         }
 
         public override void Update()

@@ -87,5 +87,19 @@ namespace Sprint0
                 }
             }
         }
+
+        public class SetLevelCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager 
+                && parameters.ContainsKey("level") && parameters["level"] is int levelNum)
+                {
+                    gameManager.LevelNumber = levelNum;
+                    gameManager.UpdateLevel();
+                    // gameManager.GameLoading = true;
+                }
+            }
+        }
     }
 }
