@@ -9,5 +9,10 @@ AmmoLaser, 0
 AmmoTeleporter, 4
 Coins, 0
 XP, 2000
+SpeedModifier, 1
+FireRateModifier, 1
+MaxHealth, 100
 SmallEnemysKilled, 0
 PlanesKilled, 2
+BossesKilled, 0
+OtherMobsKilled, 0

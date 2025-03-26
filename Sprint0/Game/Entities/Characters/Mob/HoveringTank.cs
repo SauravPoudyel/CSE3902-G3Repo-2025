@@ -12,6 +12,7 @@ namespace Sprint0
             spriteWidth = 86;
             spriteHeight = 92;
             aggressionLevel = "Neutral";
+            MobXP = 20;
         }
 
         protected override void InitializeMob()

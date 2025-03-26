@@ -22,6 +22,7 @@ namespace Sprint0
         protected string aggressionLevel = "Aggressive";
         private bool neutralToggle = true; 
         private bool isNeutralTaskRunning = false; // for thread task management
+        public int MobXP;
 
         public Mob(ContentManager content) : base(content)
         {
@@ -221,7 +222,7 @@ namespace Sprint0
         public override void OnDeath()
         {
             base.OnDeath();
-            Globals.PlayerData.UpdateVariable("XP", MobXP)
+            Globals.PlayerData.UpdateVariable("XP", MobXP);
         }
 
     }
