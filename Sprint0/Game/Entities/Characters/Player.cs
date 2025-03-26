@@ -9,11 +9,11 @@ namespace Sprint0
     public class Player : Character
     {
         // effect fields
-        public float speedMultiplier = 1f;
+        public float speedMultiplier = 1f;   
         public bool shieldActive = false, 
                     isInvis = false, 
                     isFly = false;
-        public float baseShootInterval = 1.2f;    
+        public float baseShootInterval = 1.2f;
         public float currentShootInterval;   
         ISprite effectSprite = new StaticSprite(); 
         public float rotationInput = 0f;
@@ -81,13 +81,16 @@ namespace Sprint0
         {
             prevPosition = position;
             timeSinceLastShot += Globals.PLAYERFRAMETIME;
+            currentShootInterval = currentShootInterval / Globals.PlayerData.GetInt("FireRateModifier");
 
             // Use dedicated rotation input
             float turnSpeed = 1.5f; // Tweak for responsiveness
             bodyRotation += rotationInput * turnSpeed * Globals.PLAYERFRAMETIME;
 
             Vector2 forwardDirection = new Vector2((float)Math.Sin(bodyRotation), -(float)Math.Cos(bodyRotation));
-            float forwardSpeed = velocity.Y; // Use velocity.Y directly for both forward and backward movement
+            float forwardSpeed = velocity.Y * Globals.PlayerData.GetInt("SpeedModifier"); // Use velocity.Y directly for both forward and backward movement
+
+
             position += forwardDirection * forwardSpeed * speedMultiplier * Globals.PLAYERFRAMETIME;
 
             CalculateBounds(spriteWidth, spriteHeight);
