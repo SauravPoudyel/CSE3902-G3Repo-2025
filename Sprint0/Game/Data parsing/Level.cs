@@ -14,6 +14,7 @@ namespace Sprint0 {
         private int levelNumber;
         private bool unlocked;
         private bool complete;
+        private bool loaded;
         private List<Tile> tilesList;
         private Dictionary<string, Entity> entities;
         private List<BaseBlock> blocksList;
@@ -41,10 +42,21 @@ namespace Sprint0 {
             get { return unlocked; }
             set { unlocked = value; }
         }
+        public bool Loaded   
+        {
+            get { return loaded; }
+            set { loaded = value; }
+        }
+        public Dictionary<Direction, Level> ConnectedLevels   
+        {
+            get { return connectedLevels; }
+            set { connectedLevels = value; }
+        }
         public Level()
         {
             complete = false;
             unlocked = true;
+            loaded = false;
             levelNumber = 1;
             tilesList = new List<Tile>();
             entities = new Dictionary<string, Entity>();

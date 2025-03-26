@@ -1,9 +1,9 @@
 Name, TankSlayer10
 Health, 100
-AmmoDefault, 48
+AmmoDefault, 49
 AmmoSniper, 10
 AmmoRocket, 10
-AmmoShotgun, 10
+AmmoShotgun, 12
 AmmoMine, 4
 AmmoLaser, 0
 AmmoTeleporter, 4
