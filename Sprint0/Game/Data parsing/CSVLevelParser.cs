@@ -29,6 +29,7 @@ namespace Sprint0
                 string levelName = currentRow[0];
                 if(!levelDict.ContainsKey(levelName)) {
                     levelDict.Add(levelName, new Level());
+                    levelDict[levelName].LevelNumber = int.Parse(currentRow[1]);
                 }
             }
             for (int i = 1; i < lines.Length; i++) // Now connect levels
@@ -36,8 +37,8 @@ namespace Sprint0
                 string[] currentRow = lines[i].Split(',');
                 string levelName = currentRow[0];
                 if(levelDict.ContainsKey(levelName)) {
-                    for(int j=0; j<3; j++){ // iterate through 4 directions (0-3 are their equiv. values)
-                        string connectedLevelName = currentRow[j];
+                    for(int j=0; j<4; j++){ // iterate through 4 directions (0-3 are their equiv. values)
+                        string connectedLevelName = currentRow[j+2]; // first two rows are name and number
                         if(levelDict.ContainsKey(connectedLevelName)) {
                             levelDict[levelName].AddConnectedLevel((Level.Direction)j, levelDict[connectedLevelName]);
                         }
