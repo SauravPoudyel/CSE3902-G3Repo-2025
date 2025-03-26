@@ -67,7 +67,7 @@ namespace Sprint0
                 isDamaged = true;
             else
                 isHealed = true;
-            Globals.PlayerData.TemporaryHealth += change; 
+            Globals.PlayerData.UpdateVariable("Health", change); 
         }
 
         public override void OnDeath()
@@ -75,6 +75,12 @@ namespace Sprint0
             base.OnDeath();
             var parameters2 = new Dictionary<string, object>();
             commandQueue.Enqueue(new CommandRequest("Reset", parameters2));
+        }
+
+        public void MoveLevel(int levelNum) {
+            var parameters2 = new Dictionary<string, object>();
+            parameters2.Add("level", levelNum);
+            commandQueue.Enqueue(new CommandRequest("SetLevel", parameters2));
         }
 
         public override void Update()

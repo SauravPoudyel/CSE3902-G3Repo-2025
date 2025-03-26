@@ -45,10 +45,11 @@ namespace Sprint0
 
         public static void LoadPlayerData()
         {
-            string playerDataFile = Path.Combine("Data", "playerDataFile.csv");
+            string playerDataFile = Path.Combine(projectDirectory, "Data//playerDataFile.csv");
             if (File.Exists(playerDataFile))
             {
-                playerData = PlayerData.LoadData(playerDataFile);
+                playerData = CSVPlayerParser.ParsePlayerData(playerDataFile);
+                PlayerData.Set("Health", "100"); 
             }
             else
             {
@@ -58,8 +59,8 @@ namespace Sprint0
 
         public static void SavePlayerData()
         {
-            string playerDataFile = Path.Combine("Data", "playerDataFile.csv");
-            CSVParser.SavePlayerData(playerDataFile, playerData);
+            string playerDataFile = Path.Combine(projectDirectory, "Data//playerDataFile.csv");
+            CSVPlayerParser.SavePlayerData(playerDataFile, playerData);
         }
 
     }

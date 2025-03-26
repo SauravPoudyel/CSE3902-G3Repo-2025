@@ -19,6 +19,9 @@ namespace Sprint0
                 {"Reset", new GameCommands.ResetCommand()},
                 {"StartGame", new GameCommands.StartGameCommand()},
                 {"ShowPauseMenu", new GameCommands.ShowPauseMenuCommand()},
+                {"IncreaseLevel", new GameCommands.IncreaseLevelCommand()},
+                {"DecreaseLevel", new GameCommands.DecreaseLevelCommand()},
+                {"SetLevel", new GameCommands.SetLevelCommand()},
 
                 {"Static", new GraphicCommands.DisplayStaticGameCommand()},
                 {"Animated", new GraphicCommands.DisplayAnimatedGameCommand()},
@@ -52,8 +55,11 @@ namespace Sprint0
                 {"CollisionProjectileDestroy", new CollisionCommands.CollisionProjectileDestroyCommand()},
                 {"CollisionProjectileReflect", new CollisionCommands.CollisionProjectileReflectCommand()},
                 {"DestroyFlammableCommand", new CollisionCommands.DestroyFlammableCommand()},
-                {"AutoDestroy", new ActionCommands.AutoDestroyCommand()}
+                {"AutoDestroy", new ActionCommands.AutoDestroyCommand()},
 
+                {"AudioMute", new AudioCommands.AudioMuteCommand()},
+                {"AudioIncrease", new AudioCommands.AudioIncreaseCommand()},
+                {"AudioDecrease", new AudioCommands.AudioDecreaseCommand()}
             };
 
             commandRequests = new List<CommandRequest>();

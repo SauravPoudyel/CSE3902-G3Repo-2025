@@ -17,7 +17,10 @@ namespace Sprint0
         private ContentManager content;
         public bool IsFinished { get; private set; }
         public EntityKeys.EffectType effectType; 
-        public bool didDamage = false; 
+        public bool didDamage = false;
+
+        private int _totalLoops;
+        private int _remainingLoops;
 
         public Effect(ContentManager content, Vector2 spawnPosition, string entityKey, EntityKeys.EffectType effectType)
         {
@@ -27,51 +30,84 @@ namespace Sprint0
             this.hasSentDestroyCommand = false;
             this.timer = 0f;
             this.IsFinished = false;
-            this.effectType = effectType; 
+            this.effectType = effectType;
 
-            // Determine starting Y coordinate based on the effect type.
-            int rowY = 0;
-            int frames = 0; 
-            float cycleSpeed = 0.8f; 
-            switch(effectType)
+            switch (effectType)
             {
-                case EntityKeys.EffectType.Explosion: 
-                    rowY = 0;
-                    frames = 8; 
-                    cycleSpeed = 0.08f; 
+                case EffectType.Fire:
+                    _totalLoops = 8;
+                    InitializeFireEffect();
                     break;
-                //The fire effect here is a placeholder, might need a new spritesheet for it
-                case EntityKeys.EffectType.Fire:
-                    rowY = 0;
-                    frames = 1;
-                    cycleSpeed = 3.2f;
+
+                case EffectType.Explosion:
+                    InitializeEffect(0, 8, 0.08f, 128, 128);
                     break;
-                case  EntityKeys.EffectType.Shield:
-                    rowY = 128;
-                    frames = 12; 
-                    cycleSpeed = 0.08f;
+
+                case EffectType.Shield:
+                    InitializeEffect(128, 12, 0.08f, 128, 128);
                     break;
-                case EntityKeys.EffectType.TeleportOut:
-                    rowY = 256;
-                    frames = 12; 
-                    cycleSpeed = 0.03f;  
+
+                case EffectType.TeleportOut:
+                    InitializeEffect(256, 12, 0.03f, 128, 128);
                     break;
-                case  EntityKeys.EffectType.TeleportIn:
-                    rowY = 384;
-                    frames = 12; 
-                    cycleSpeed = 0.07f;
+
+                case EffectType.TeleportIn:
+                    InitializeEffect(384, 12, 0.07f, 128, 128);
                     break;
+
                 default:
-                    rowY = 0;
-                    effectDuration = 1f; 
+                    _totalLoops = 1;
+                    InitializeDefaultEffect();
                     break;
             }
 
-            effectDuration = cycleSpeed * frames;
+            _remainingLoops = _totalLoops;
+            bounds = new Rectangle((int)position.X, (int)position.Y, 128, 128);
+        }
 
+        private void InitializeFireEffect()
+        {
+            const string FireSheetName = "Fire";
+            const int FrameWidth = 32;
+            const int FrameHeight = 32;
+            const int TotalFrames = 8;
+            const float FrameTime = 0.04f;
+            const float FireScale = 4.0f;
+
+            effectSprite = new AnimatedSprite(FrameTime);
+            effectSprite.LoadContent(
+                content,
+                FireSheetName,
+                0,
+                0,
+                FrameWidth,
+                FrameHeight,
+                TotalFrames
+            );
+
+            int scaledWidth = (int)(FrameWidth * FireScale);
+            int scaledHeight = (int)(FrameHeight * FireScale);
+
+            position = new Vector2(position.X - (scaledWidth / 2), position.Y - (scaledHeight / 2));
+
+            bounds = new Rectangle((int)position.X, (int)position.Y, scaledWidth, scaledHeight);
+
+            effectDuration = FrameTime * TotalFrames;
+        }
+
+        private void InitializeEffect(int rowY, int frames, float cycleSpeed, int width, int height)
+        {
+            effectDuration = cycleSpeed * frames;
             effectSprite = new AnimatedSprite(cycleSpeed);
-            effectSprite.LoadContent(content, "EffectSprites", 0, rowY, 128, 128, frames);
-            sprite = effectSprite;
+            effectSprite.LoadContent(content, "EffectSprites", 0, rowY, width, height, frames);
+        }
+
+        private void InitializeDefaultEffect()
+        {
+            const float DefaultDuration = 1f;
+            effectDuration = DefaultDuration;
+            effectSprite = new StaticSprite();
+            effectSprite.LoadContent(content, "EffectSprites", 0, 0, 128, 128, 1);
         }
 
         public override void Update()
@@ -80,19 +116,31 @@ namespace Sprint0
 
             timer += Globals.FRAMETIME;
             effectSprite.Update();
-            bounds = new Rectangle((int)position.X, (int)position.Y, 128, 128);
-            // Once the animation has played completely, enqueue a destroy command.
+
             if (timer >= effectDuration)
             {
-                IsFinished = true;
-                if (!hasSentDestroyCommand)
+                _remainingLoops--;
+
+                if (_remainingLoops > 0)
                 {
-                    hasSentDestroyCommand = true;
-                    var destroyParams = new Dictionary<string, object>
+                    timer = 0f;
+                    if (effectSprite is AnimatedSprite animatedSprite)
+                    {
+                        animatedSprite.ResetAnimation();
+                    }
+                }
+                else
+                {
+                    IsFinished = true;
+                    if (!hasSentDestroyCommand)
+                    {
+                        hasSentDestroyCommand = true;
+                        var destroyParams = new Dictionary<string, object>
                     {
                         { "destroyEntity", entityKey }
                     };
-                    commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
+                        commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
+                    }
                 }
             }
         }
@@ -101,8 +149,43 @@ namespace Sprint0
         {
             if (!IsFinished)
             {
-                effectSprite.Draw(spriteBatch, position, SpriteEffects.None, 0f);
+                switch (effectType)
+                {
+                    case EffectType.Fire:
+                        DrawFire(spriteBatch);
+                        break;
+                    default:
+                        DrawDefault(spriteBatch);
+                        break;
+                }
             }
+        }
+
+        private void DrawFire(SpriteBatch spriteBatch)
+        {
+            const int OriginalWidth = 32;
+            const int OriginalHeight = 32;
+            const float Scale = 4f;
+            const int scaledWidth = (int) (OriginalWidth * Scale);
+            const int scaledHeight = (int)(OriginalWidth * Scale);
+
+            effectSprite.Draw(
+        spriteBatch,
+        position + new Vector2(scaledWidth / 2, scaledHeight / 2),
+        effects: SpriteEffects.None,
+        scale: Scale,
+        pivot: new Vector2(OriginalWidth / 2, OriginalHeight / 2)
+    );
+        }
+
+        private void DrawDefault(SpriteBatch spriteBatch)
+        {
+            effectSprite.Draw(
+                spriteBatch,
+                position,
+                effects: SpriteEffects.None,
+                scale: 1f
+            );
         }
     }
 }

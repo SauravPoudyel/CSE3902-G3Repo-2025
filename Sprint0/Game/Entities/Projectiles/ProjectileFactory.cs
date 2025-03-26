@@ -89,6 +89,10 @@ namespace Sprint0
             {
                 return new TeleportProjectile(content, entityName, owner);
             }
+            else if (projectileType == ProjectileTypeEnum.Laser.ToString())
+            {
+                return new LaserProjectile(content, entityName, owner);
+            }
             else
             {
                 return new Projectile(content, entityName, owner);

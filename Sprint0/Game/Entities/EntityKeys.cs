@@ -6,12 +6,12 @@ namespace Sprint0
     {
         public enum ProjectileTypeEnum
         {
-            Sniper, Rocket, Shotgun, Mine, Teleporter
+            Sniper, Rocket, Shotgun, Mine, Teleporter, Laser, Default
         }
 
         public enum BlockType
         {
-            Tree, Box, Barrel, RedBarrel, BarbedFence, Oil, RockPile, Factory, RockPileVar1, RockPileVar2, House, House2, SmallTree, Fence, DeadTree, Garage, CoconutTree, SmallBarrel
+            Tree, Box, Barrel, RedBarrel, BarbedFence, Oil, RockPile, Factory, RockPileVar1, RockPileVar2, House, House2, SmallTree, Fence, DeadTree, Garage, CoconutTree, SmallBarrel, Boarder, Tree1, Tree2
         }
 
         public enum MobType
@@ -26,7 +26,7 @@ namespace Sprint0
 
         public enum ItemType
         {
-            SpeedBoost, Shield, Ammo_default, Ammo_shotgun, Ammo_sniper, Ammo_rocket, Ammo_Laser, Ammo_Mine,
+            SpeedBoost, Shield, AmmoDefault, AmmoShotgun, AmmoSniper, AmmoRocket, AmmoLaser, AmmoMine,
             Magnet, FireRateIncrease, MedStrong, MedWeak, TimeSlow, Fly, Cloak, SilverTag, GoldTag, Teleporter
         }
     }

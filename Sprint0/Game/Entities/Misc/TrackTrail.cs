@@ -32,10 +32,10 @@ namespace Sprint0
                 alpha = 0f;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, float scale = 1f)
         {
             if (alpha > 0f && sprite != null)
-                sprite.Draw(spriteBatch, position, SpriteEffects.None, rotation, null, Color.White * alpha);
+                sprite.Draw(spriteBatch, position, SpriteEffects.None, rotation, null, Color.White * alpha, scale);
         }
 
         public static void UpdateTrackTrails(List<TrackTrail> trails, float deltaTime, Vector2 position, float rotation, ISprite sprite, ref float trackTrailSpawnTimer, float spawnInterval)

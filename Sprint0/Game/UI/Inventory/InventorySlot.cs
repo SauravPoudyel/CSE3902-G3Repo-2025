@@ -105,17 +105,17 @@ namespace Sprint0
             switch (ProjectileType)
             {
                 case "Sniper":
-                    return Globals.PlayerData.TemporaryAmmoSniper;
+                    return Globals.PlayerData.GetInt("AmmoSniper");
                 case "Rocket":
-                    return Globals.PlayerData.TemporaryAmmoRocket;
+                    return Globals.PlayerData.GetInt("AmmoRocket");
                 case "Shotgun":
-                    return Globals.PlayerData.TemporaryAmmoShotgun;
+                    return Globals.PlayerData.GetInt("AmmoShotgun");
                 case "Mine":
-                    return Globals.PlayerData.TemporaryAmmoMine;
+                    return Globals.PlayerData.GetInt("AmmoMine");
                 case "Teleporter":
-                    return Globals.PlayerData.TemporaryAmmoTeleporter;
+                    return Globals.PlayerData.GetInt("AmmoTeleporter");
                 default:
-                    return Globals.PlayerData.TemporaryAmmoDefault;
+                    return Globals.PlayerData.GetInt("AmmoDefault");
             }
         }
 

@@ -37,15 +37,16 @@ namespace Sprint0
                 color ?? Color.White,
                 rotation, 
                 origin, 
-                1f,
+                scale,    // Use the passed scale
                 effects,
-                scale
+                0f        // Set layerDepth to 0 (or as needed)
             );
         }
     }
 
 
     public class AnimatedSprite : ISprite
+    
     {
         public Texture2D spriteSheet {get; set;}
         private List<Rectangle> frames;

@@ -36,6 +36,7 @@ namespace Sprint0
             SandShipWreckage,
             Water,
             ItemSpawn,
+            PineForest,
         }
 
         private TileType tileType;
@@ -139,6 +140,9 @@ namespace Sprint0
                     break;
                 case TileType.ItemSpawn:
                     sprite.LoadContent(content, "TDTanksAllSprites", 384, 1512, 128, 128, 1);
+                    break;
+                case TileType.PineForest:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 128, 1640, 128, 128, 1);
                     break;
             }
         }

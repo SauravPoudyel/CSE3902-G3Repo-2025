@@ -17,8 +17,8 @@ namespace Sprint0
         {
             this.icon = texture;
             playerData = Globals.PlayerData;
-            maxCoin = playerData.PermanentCoins;
-            currentCoin = playerData.TemporaryCoins;
+            maxCoin = playerData.GetInt("Coins");
+            currentCoin = playerData.GetInt("Coins");
 
             // Initialize source rectangles for coin icon
             sourceRectangle = new List<Rectangle>();
@@ -36,7 +36,7 @@ namespace Sprint0
         public void Update()
         {
             timer += Globals.FRAMETIME*5;
-            currentCoin = playerData.TemporaryCoins;
+            currentCoin = playerData.GetInt("Coins");
         }
         public void Draw(SpriteBatch spriteBatch)
         {

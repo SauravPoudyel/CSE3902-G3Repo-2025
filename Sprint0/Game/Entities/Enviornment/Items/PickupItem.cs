@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace Sprint0
 {
+    /* 
+     * THIS CLASS IS JUST FOR DEBUG PURPOSES. IT CYCLES THROUGH ALL THE PICKUP ITEMS, it is not intended to be in the game itself
+    */
     public class PickupItem : Entity
     {
         private ContentManager content;
@@ -35,22 +38,22 @@ namespace Sprint0
                 case EntityKeys.ItemType.Shield:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 40, 40, 40, 10);
                     break;
-                case EntityKeys.ItemType.Ammo_default:
+                case EntityKeys.ItemType.AmmoDefault:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 80, 40, 40, 10);
                     break;
-                case EntityKeys.ItemType.Ammo_shotgun:
+                case EntityKeys.ItemType.AmmoShotgun:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 120, 40, 40, 10);
                     break;
-                case EntityKeys.ItemType.Ammo_sniper:
+                case EntityKeys.ItemType.AmmoSniper:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 160, 40, 40, 10);
                     break;
-                case EntityKeys.ItemType.Ammo_rocket:
+                case EntityKeys.ItemType.AmmoRocket:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 200, 40, 40, 10);
                     break;
-                case EntityKeys.ItemType.Ammo_Laser:
+                case EntityKeys.ItemType.AmmoLaser:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 240, 40, 40, 10);
                     break;
-                case EntityKeys.ItemType.Ammo_Mine:
+                case EntityKeys.ItemType.AmmoMine:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 280, 40, 40, 10);
                     break;
                 case EntityKeys.ItemType.Magnet:

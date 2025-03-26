@@ -117,5 +117,17 @@ namespace Sprint0
 
             return true; // All sample points were clear
         }
+        public static float DistanceFromPointToLineSegment(Vector2 point, Vector2 segmentStart, Vector2 segmentEnd)
+        {
+            Vector2 segmentVector = segmentEnd - segmentStart;
+            float segmentLengthSquared = segmentVector.LengthSquared();
+            if (segmentLengthSquared == 0)
+                return Vector2.Distance(point, segmentStart);
+            
+            float projectionFactor = Vector2.Dot(point - segmentStart, segmentVector) / segmentLengthSquared;
+            projectionFactor = MathHelper.Clamp(projectionFactor, 0f, 1f);
+            Vector2 closestPoint = segmentStart + projectionFactor * segmentVector;
+            return Vector2.Distance(point, closestPoint);
+        }
     }
 }

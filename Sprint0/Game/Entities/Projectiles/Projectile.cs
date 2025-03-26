@@ -47,7 +47,7 @@ namespace Sprint0
             }
         }
 
-        public float GetBaseSpeed()
+        public virtual float GetBaseSpeed()
         {
             return baseSpeed;
         }

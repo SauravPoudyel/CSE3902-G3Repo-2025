@@ -15,9 +15,9 @@ namespace Sprint0
         public float bodyRotation { get; set; }
         protected float speedMultiplier = 1f;
         protected List<TrackTrail> trackTrailList;
-        protected float trackTrailSpawnTimer, trackTrailSpawnInterval = 0.2f;
+        protected float trackTrailSpawnTimer, trackTrailSpawnInterval = 0.4f;
         public bool TrackTrailsEnabled { get; set; } = true;
-        protected ISprite trackTrailSprite;
+        protected ISprite trackTrailSprite = new StaticSprite();
         public float health = 100f;
         public bool isDead = false, isDamaged = false, isHealed = false;
         protected Color? changeIndicator = null;
@@ -33,7 +33,6 @@ namespace Sprint0
             };
             trackTrailList = new List<TrackTrail>();
             trackTrailSpawnTimer = 0f;
-            trackTrailSprite = new StaticSprite();
             trackTrailSprite.LoadContent(content, "TDTanksAllSprites", 953, 665, 73, 88, 1);
             bodyRotation = 0f;
         }
@@ -75,7 +74,8 @@ namespace Sprint0
         public void SetProjectileType(string newType)
         {
             if (newType == "Default" || newType == "Sniper" || newType == "Rocket" ||
-                newType == "Shotgun" || newType == "Mine" || newType == "Teleporter")
+                newType == "Shotgun" || newType == "Mine" || newType == "Teleporter" || 
+                newType == "Laser")
                 currentProjectileVariables["projectileType"] = newType;
         }
 
@@ -183,8 +183,9 @@ namespace Sprint0
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            float scaleFactor = (spriteWidth / 73f + spriteHeight / 88f) / 2f; // scale the track trail to match the sprite size
             foreach (var trail in trackTrailList)
-                trail.Draw(spriteBatch);
+                trail.Draw(spriteBatch, scaleFactor); 
             sprite?.Draw(spriteBatch, position, SpriteEffects.None, bodyRotation, null, changeIndicator);
             cannon?.Draw(spriteBatch);
         }

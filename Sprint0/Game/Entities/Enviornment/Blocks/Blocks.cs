@@ -11,6 +11,9 @@ using static Sprint0.EntityKeys;
 
 namespace Sprint0
 {
+    /* 
+     * THIS CLASS IS JUST FOR DEBUG PURPOSES. IT CYCLES THROUGH ALL THE BLOCKS, it is not intended to be in the game itself
+    */
     public class Blocks : Entity
     {
         enum BlockType
@@ -33,6 +36,7 @@ namespace Sprint0
             Garage,
             CoconutTree,
             SmallBarrel,
+            Boarder,
         }
         private ContentManager content;
         private float timer;
@@ -96,6 +100,15 @@ namespace Sprint0
 
             AddSprite("SmallBarrel", new AnimatedSprite(0.3f));
             sprites["SmallBarrel"].LoadContent(content, "TDTanksAllSprites", 1016, 510, 40, 56, 1);
+
+            AddSprite("Boarder", new AnimatedSprite(0.3f));
+            sprites["Boarder"].LoadContent(content, "TDTanksAllSprites", 2872, 0, 128, 128, 1);
+
+            AddSprite("Tree1", new AnimatedSprite(0.3f));
+            sprites["Tree1"].LoadContent(content, "TDTanksAllSprites", 1023, 1128, 52, 89, 1);
+
+            AddSprite("Tree2", new AnimatedSprite(0.3f));
+            sprites["Tree2"].LoadContent(content, "TDTanksAllSprites", 1075, 1125, 29, 60, 1);
 
             SetSprite(sprites[this.blocktype.ToString()]);
         }
