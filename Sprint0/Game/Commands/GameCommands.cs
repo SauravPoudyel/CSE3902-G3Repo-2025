@@ -38,8 +38,9 @@ namespace Sprint0
                 {
                     if(!gameManager.GameStarted) {
                         gameManager.GameStarted = true; // This will automatically switch to Player Inventory screen
-                    } else if(gameManager.GamePaused) {
+                    } else if(gameManager.GamePaused || gameManager.GameLoading) {
                         gameManager.GamePaused = false;
+                        gameManager.GameLoading = false;
                     }
                 }
             }
@@ -68,6 +69,7 @@ namespace Sprint0
                     if(gameManager.LevelNumber<99) {
                         gameManager.LevelNumber++;
                         gameManager.UpdateLevel();
+                        gameManager.GameLoading = true;
                     }
                 }
             }
@@ -82,7 +84,22 @@ namespace Sprint0
                     if(gameManager.LevelNumber>1) {
                         gameManager.LevelNumber--;
                         gameManager.UpdateLevel();
+                        gameManager.GameLoading = true;
                     }
+                }
+            }
+        }
+
+        public class SetLevelCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager 
+                && parameters.ContainsKey("level") && parameters["level"] is int levelNum)
+                {
+                    gameManager.LevelNumber = levelNum;
+                    gameManager.UpdateLevel();
+                    // gameManager.GameLoading = true;
                 }
             }
         }

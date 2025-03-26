@@ -26,6 +26,7 @@ namespace Sprint0
         public PlayerInventory playerInventory { get; private set; }
         private bool gameStarted;
         private bool gamePaused;
+        private bool gameLoading;
         private int levelNumber;
 
         public bool GameStarted
@@ -37,13 +38,21 @@ namespace Sprint0
                 UpdateActiveScreen();
             }
         }
-
         public bool GamePaused
         {
             get { return gamePaused; }
             set
             {
                 gamePaused = value;
+                UpdateActiveScreen();
+            }
+        }
+        public bool GameLoading
+        {
+            get { return gameLoading; }
+            set
+            {
+                gameLoading = value;
                 UpdateActiveScreen();
             }
         }
@@ -132,6 +141,9 @@ namespace Sprint0
             } else if (gamePaused) {
                 activeScreen = new PauseMenu(content, Game.GraphicsDevice, Game);
                 blockingScreen = activeScreen;
+            } else if (gameLoading) {
+                activeScreen = new LoadingScreen(Game);
+                blockingScreen = activeScreen;
             }
             else
             {
@@ -146,7 +158,7 @@ namespace Sprint0
             InitializeEntities();
         }
         private void LoadLevelContent() {
-            levelManager.LoadContent(content, "Level"+levelNumber.ToString());
+            levelManager.LoadContent(content, levelNumber);
         }
         private void InitializeTiles()
         {
@@ -155,7 +167,14 @@ namespace Sprint0
 
         private void InitializeEntities()
         {
+            Player player = null;
+            if(entities.ContainsKey("player")) {
+                player = (Player)entities["player"];
+            }
             entities = levelManager.LoadLevelEntities();
+            if(player!=null && entities.ContainsKey("player")) {
+                entities["player"] = player;
+            }
             ProjectileFactory.Initialize(content);
         }
 
@@ -173,6 +192,7 @@ namespace Sprint0
             }
             collisionManager.Update(entities);
             spriteManager.Update();
+            levelManager.Update(entities);
             playerInventory.Update();
             eventManager.ProcessCommandRequests();
             if (activeScreen != null)
