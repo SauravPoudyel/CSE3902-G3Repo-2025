@@ -52,7 +52,7 @@ namespace Sprint0
 
                             if (!player.CanFire) return;
 
-                            InventorySlot slot = gameManager.playerInventory.inventorySlots[slotIndex];
+                            InventorySlot slot = gameManager.screenManager.playerInventory.inventorySlots[slotIndex];
                             projectileType = slot.ProjectileType;
 
                             if (slot.AmmoCount <= 0) return;
@@ -88,7 +88,7 @@ namespace Sprint0
 
                             if (slot.AmmoCount <= 0)
                             {
-                                gameManager.playerInventory.ShiftEmptySlot(slotIndex);
+                                gameManager.screenManager.playerInventory.ShiftEmptySlot(slotIndex);
                             }
                             break;
 
