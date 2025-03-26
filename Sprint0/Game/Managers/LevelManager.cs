@@ -12,17 +12,23 @@ namespace Sprint0
         private Dictionary<string, Level> levels;
         public LevelManager() {
             activeLevel = new Level();
-            levels = new Dictionary<string, Level>();
+            levels = CSVLevelParser.ParseLevelIndex();
         }
         public void LoadContent(ContentManager content, int levelNum) {
-            string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Entities.csv");
-            string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Tiles.csv");
-            Level newLevel = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
-            newLevel.LevelNumber = levelNum;
-            if(!levels.ContainsKey("Level" + levelNum)) {
-                levels.Add("Level" + levelNum, newLevel);
-            }
-            activeLevel = levels["Level" + levelNum];
+            string levelName = "Level" + levelNum;
+            if(!levels.ContainsKey(levelName)) { // if level isn't in dictionary
+                levels.Add(levelName, new Level());
+            }  
+            if(!levels[levelName].Loaded) { // if level hasn't been loaded
+                    string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Entities.csv");
+                    string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Tiles.csv");
+                    Level loadedLevel = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
+                    loadedLevel.ConnectedLevels = levels[levelName].ConnectedLevels; // Unfortunately, current methods require this awkward handoff
+                    levels[levelName] = loadedLevel;
+                    levels[levelName].LevelNumber = levelNum;
+                    levels[levelName].Loaded = true;
+            }          
+            activeLevel = levels[levelName];
         }
         public Dictionary<string, Entity> LoadLevelEntities() {
             return activeLevel.Entities;
@@ -57,7 +63,7 @@ namespace Sprint0
                     player.SetPosition(new Vector2(1920,player.GetPosition().Y));
                     player.MoveLevel(activeLevel.LevelNumber-1);
                 }
-                /* 
+                /*
                 if(player.GetPosition().X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right)) {
                     player.SetPosition(new Vector2(0,player.GetPosition().Y));
                     player.MoveLevel(activeLevel.GetLevelNumber()+1); // Placeholder! just increments activeLevel number

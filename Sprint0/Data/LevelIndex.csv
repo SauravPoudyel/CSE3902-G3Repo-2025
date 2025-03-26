@@ -1,0 +1,6 @@
+﻿LevelName,Top,Bottom,Left,Right,Prereq
+Tutorial,,,,,
+Level1,,Level4,Level2,,
+Level2,,Level3,,Level1,
+Level3,Level2,,,Level4,
+Level4,Level1,,Level3,,

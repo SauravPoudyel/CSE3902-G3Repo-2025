@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -14,7 +15,37 @@ namespace Sprint0
             ParseTiles(tileFilePath, level, content);
             return level;
         }
-
+        public static Dictionary<string, Level> ParseLevelIndex(){
+            Dictionary<string, Level> levelDict = new Dictionary<string, Level>();
+            string indexPath = Path.Combine(Globals.projectDirectory, "Data\\LevelIndex.csv");
+            string[,] grid = ParseEntityGridFile(indexPath);
+            if (!File.Exists(indexPath))
+                Console.WriteLine($"File path does not exist: {indexPath}");
+            string[] lines = File.ReadAllLines(indexPath);
+            if (lines.Length == 0)
+                Console.WriteLine($"Zero lines read: {indexPath}");
+            for (int i = 1; i < lines.Length; i++) { // Must add all levels (skip header line) to Dictionary before connecting them
+                string[] currentRow = lines[i].Split(',');
+                string levelName = currentRow[0];
+                if(!levelDict.ContainsKey(levelName)) {
+                    levelDict.Add(levelName, new Level());
+                }
+            }
+            for (int i = 1; i < lines.Length; i++) // Now connect levels
+            {
+                string[] currentRow = lines[i].Split(',');
+                string levelName = currentRow[0];
+                if(levelDict.ContainsKey(levelName)) {
+                    for(int j=0; j<3; j++){ // iterate through 4 directions (0-3 are their equiv. values)
+                        string connectedLevelName = currentRow[j];
+                        if(levelDict.ContainsKey(connectedLevelName)) {
+                            levelDict[levelName].AddConnectedLevel((Level.Direction)j, levelDict[connectedLevelName]);
+                        }
+                    }
+                }
+            }
+            return levelDict;
+        }
         private static void ParseEntities(string filePath, Level level, ContentManager content)
         {
             string[,] grid = ParseEntityGridFile(filePath);
