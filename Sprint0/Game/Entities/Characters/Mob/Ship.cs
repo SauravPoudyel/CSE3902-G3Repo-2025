@@ -17,6 +17,7 @@ namespace Sprint0
             spriteHeight = 140;
             vertical = isVertical;
             health = 200;
+            MobXP = 50;
             InitializeMob(); // this needs to be called here after the base constructor to pass isVertical
         }
 

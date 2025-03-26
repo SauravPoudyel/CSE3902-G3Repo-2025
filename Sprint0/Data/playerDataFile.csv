@@ -9,7 +9,19 @@ AmmoLaser, 0
 AmmoTeleporter, 4
 Coins, 0
 XP, 2000
-SmallEnemysKilled, 0
-PlanesKilled, 2
+SpeedModifier, 5
+FireRateModifier, 5
+MaxHealth, 100
+BossTankKilled, 0
+HealerTankKilled, 0
+HoveringTankKilled, 0
+PlaneKilled, 2
+ShieldTankKilled, 0
+ShipKilled, 0
+SmallEnemyKilled, 0
+StealthTanksKileld, 0
+SwarmingTankKilled, 0
+TurretKilled, 0
 HasSeenTutorial, 0
 HasSeenShopTutorial, 0
+

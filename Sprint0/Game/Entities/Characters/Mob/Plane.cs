@@ -19,6 +19,7 @@ namespace Sprint0
             spriteWidth = 100;
             spriteHeight = 113;
             health = 100;
+            MobXP = 50;
         }
 
         protected override void InitializeMob()
