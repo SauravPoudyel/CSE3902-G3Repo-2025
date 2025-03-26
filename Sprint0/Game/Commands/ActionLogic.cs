@@ -16,9 +16,9 @@ namespace Sprint0
                     player.SetProjectileType(projectileType);
                     
                     // Ensure default ammo is decremented properly
-                    if (Globals.PlayerData.TemporaryAmmoDefault > 0)
+                    if (Globals.PlayerData.GetInt("AmmoDefault") > 0)
                     {
-                        Globals.PlayerData.TemporaryAmmoDefault--;
+                        Globals.PlayerData.UpdateVariable("AmmoDefault", -1); 
                         player.FireProjectile();
                     }
                     else
@@ -44,7 +44,7 @@ namespace Sprint0
 
                     if (!player.CanFire) return;
 
-                    InventorySlot slot = gameManager.playerInventory.inventorySlots[slotIndex];
+                    InventorySlot slot = gameManager.screenManager.playerInventory.inventorySlots[slotIndex];
                     projectileType = slot.ProjectileType;
 
                     if (slot.AmmoCount <= 0) return;
@@ -53,22 +53,22 @@ namespace Sprint0
                     switch (projectileType)
                     {
                         case "Sniper":
-                            Globals.PlayerData.TemporaryAmmoSniper--;
+                            Globals.PlayerData.UpdateVariable("AmmoSniper");
                             break;
                         case "Rocket":
-                            Globals.PlayerData.TemporaryAmmoRocket--;
+                            Globals.PlayerData.UpdateVariable("AmmoRocket");
                             break;
                         case "Shotgun":
-                            Globals.PlayerData.TemporaryAmmoShotgun--;
+                            Globals.PlayerData.UpdateVariable("AmmoShotgun");
                             break;
                         case "Mine":
-                            Globals.PlayerData.TemporaryAmmoMine--;
+                            Globals.PlayerData.UpdateVariable("AmmoMine");
                             break;
                         case "Teleporter":
-                            Globals.PlayerData.TemporaryAmmoTeleporter--;
+                            Globals.PlayerData.UpdateVariable("Teleporter");
                             break;
                         case "Default":  // Ensure default ammo decrements properly here too
-                            Globals.PlayerData.TemporaryAmmoDefault--;
+                            Globals.PlayerData.UpdateVariable("AmmoDefault");
                             break;
                         default:
                             System.Console.WriteLine("Error: Invalid projectile type.");
@@ -80,7 +80,7 @@ namespace Sprint0
 
                     if (slot.AmmoCount <= 0)
                     {
-                        gameManager.playerInventory.ShiftEmptySlot(slotIndex);
+                        gameManager.screenManager.playerInventory.ShiftEmptySlot(slotIndex);
                     }
                     break;
 

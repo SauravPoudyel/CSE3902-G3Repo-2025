@@ -27,7 +27,7 @@ namespace Sprint0
         private bool gamePaused;
 
         private int levelNumber = 1;
-
+        private bool gameLoading;
 
         public bool GameStarted
         {
@@ -116,10 +116,16 @@ namespace Sprint0
             InitializeEntities();
         }
 
+        private void UpdateActiveScreen()
+        {
+            screenManager.LevelNumber = levelNumber;
+            screenManager.GameStarted = gameStarted;
+            screenManager.IsPaused = gamePaused;
+        }
 
         private void LoadLevelContent()
         {
-            levelManager.LoadContent(content, $"Level{levelNumber}");
+            levelManager.LoadContent(content, levelNumber);
  
         }
 
@@ -143,9 +149,7 @@ namespace Sprint0
 
         public void Update()
         {
-            screenManager.LevelNumber = levelNumber;
-            screenManager.IsPaused = gamePaused;
-            screenManager.GameStarted = gameStarted;
+            UpdateActiveScreen();
 
             screenManager.Update();
 
