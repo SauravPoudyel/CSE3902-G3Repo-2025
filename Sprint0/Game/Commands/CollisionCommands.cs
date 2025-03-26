@@ -136,6 +136,7 @@ namespace Sprint0
                 if (parameters.ContainsKey("target") && parameters["target"] is IFlammable flammableBlock)
                 {
                     flammableBlock.Destroy();
+                    flammableBlock.Ignite();
                 }
             }
         }

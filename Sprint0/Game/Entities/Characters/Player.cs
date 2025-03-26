@@ -77,6 +77,12 @@ namespace Sprint0
             commandQueue.Enqueue(new CommandRequest("Reset", parameters2));
         }
 
+        public void MoveLevel(int levelNum) {
+            var parameters2 = new Dictionary<string, object>();
+            parameters2.Add("level", levelNum);
+            commandQueue.Enqueue(new CommandRequest("SetLevel", parameters2));
+        }
+
         public override void Update()
         {
             prevPosition = position;

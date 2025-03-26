@@ -27,6 +27,9 @@ namespace Sprint0
                 { EntityKeys.BlockType.DeadTree, CreateRigidBlock },
                 { EntityKeys.BlockType.Garage, CreateRigidBlock },
                 { EntityKeys.BlockType.CoconutTree, CreateRigidBlock },
+                { EntityKeys.BlockType.Boarder, CreateRigidBlock },
+                { EntityKeys.BlockType.Tree1, CreateRigidBlock },
+                { EntityKeys.BlockType.Tree2, CreateRigidBlock },
 
                 // Pushable Blocks
                 { EntityKeys.BlockType.Box, CreatePushableBlock },

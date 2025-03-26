@@ -25,18 +25,28 @@ namespace Sprint0
 
         private bool gameStarted;
         private bool gamePaused;
+
         private int levelNumber = 1;
+
 
         public bool GameStarted
         {
             get { return gameStarted; }
             set { gameStarted = value; }
         }
-
         public bool GamePaused
         {
             get { return gamePaused; }
             set { gamePaused = value; }
+        }
+        public bool GameLoading
+        {
+            get { return gameLoading; }
+            set
+            {
+                gameLoading = value;
+                UpdateActiveScreen();
+            }
         }
 
         public int LevelNumber
@@ -100,14 +110,17 @@ namespace Sprint0
 
         public void UpdateLevel()
         {
+
             LoadLevelContent();
             InitializeTiles();
             InitializeEntities();
         }
 
+
         private void LoadLevelContent()
         {
             levelManager.LoadContent(content, $"Level{levelNumber}");
+ 
         }
 
         private void InitializeTiles()
@@ -117,7 +130,14 @@ namespace Sprint0
 
         private void InitializeEntities()
         {
+            Player player = null;
+            if(entities.ContainsKey("player")) {
+                player = (Player)entities["player"];
+            }
             entities = levelManager.LoadLevelEntities();
+            if(player!=null && entities.ContainsKey("player")) {
+                entities["player"] = player;
+            }
             ProjectileFactory.Initialize(content);
         }
 
