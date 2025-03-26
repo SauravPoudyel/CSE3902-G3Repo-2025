@@ -15,87 +15,7 @@ namespace Sprint0
                     parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
                     parameters.ContainsKey("actionType") && parameters["actionType"] is string actionType)
                 {
-                    switch (actionType)
-                    {
-                        case "fire":
-                            if (!player.CanFire) return;
-                            
-                            string projectileType = EntityKeys.ProjectileTypeEnum.Default.ToString(); 
-                            player.SetProjectileType(projectileType);
-                            
-                            // Ensure default ammo is decremented properly
-                            if (Globals.PlayerData.GetInt("AmmoDefault") > 0)
-                            {
-                                Globals.PlayerData.UpdateVariable("AmmoDefault", -1); 
-                                player.FireProjectile();
-                            }
-                            else
-                            {
-                                System.Console.WriteLine("Out of default ammo!");
-                            }
-                            break;
-
-                        case "item1":
-                        case "item2":
-                        case "item3":
-                        case "item4":
-                        case "item5":
-                            int slotIndex = actionType switch
-                            {
-                                "item1" => 0,
-                                "item2" => 1,
-                                "item3" => 2,
-                                "item4" => 3,
-                                "item5" => 4,
-                                _ => 0
-                            };
-
-                            if (!player.CanFire) return;
-
-                            InventorySlot slot = gameManager.screenManager.playerInventory.inventorySlots[slotIndex];
-                            projectileType = slot.ProjectileType;
-
-                            if (slot.AmmoCount <= 0) return;
-
-                            // Decrement correct ammo type
-                            switch (projectileType)
-                            {
-                                case "Sniper":
-                                    Globals.PlayerData.UpdateVariable("AmmoSniper", -1); 
-                                    break;
-                                case "Rocket":
-                                    Globals.PlayerData.UpdateVariable("AmmoRocket", -1); 
-                                    break;
-                                case "Shotgun":
-                                    Globals.PlayerData.UpdateVariable("AmmoShotgun", -1); 
-                                    break;
-                                case "Mine":
-                                    Globals.PlayerData.UpdateVariable("AmmoMine", -1); 
-                                    break;
-                                case "Teleporter":
-                                    Globals.PlayerData.UpdateVariable("AmmoTeleporter", -1); 
-                                    break;
-                                case "Default":  // Ensure default ammo decrements properly here too
-                                    Globals.PlayerData.UpdateVariable("AmmoDefault", -1); 
-                                    break;
-                                default:
-                                    System.Console.WriteLine("Error: Invalid projectile type.");
-                                    break;
-                            }
-
-                            player.SetProjectileType(projectileType);
-                            player.FireProjectile();
-
-                            if (slot.AmmoCount <= 0)
-                            {
-                                gameManager.screenManager.playerInventory.ShiftEmptySlot(slotIndex);
-                            }
-                            break;
-
-                        default:
-                            System.Console.WriteLine("Error: Invalid actionType.");
-                            break;
-                    }
+                    ActionCommands_Logic.HandlePlayerAction(player, gameManager, actionType);
                 }
             }
         }
@@ -125,17 +45,7 @@ namespace Sprint0
                 parameters.ContainsKey("cannonRotation") && parameters["cannonRotation"] is float cannonRotation &&
                 parameters.ContainsKey("owner") && parameters["owner"] is Character owner)
             {
-                int numberOfProjectiles = 1;
-                float spreadAngle = 0f;
-                float speedModifer = 0f;
-                if (parameters.ContainsKey("numberOfProjectiles") && parameters["numberOfProjectiles"] is int num)
-                    numberOfProjectiles = num;
-                if (parameters.ContainsKey("spreadAngle") && parameters["spreadAngle"] is float angle)
-                    spreadAngle = angle;
-                if (parameters.ContainsKey("speedModifier") && parameters["speedModifier"] is float speedMod)
-                    speedModifer = speedMod;
-                ProjectileFactory.CalculateProjectiles(owner, projectileType, spawnPosition, cannonRotation, spreadAngle, numberOfProjectiles, speedModifer);
-                ProjectileFactory.SpawnProjectiles(gameManager, owner);
+                ActionCommands_Logic.HandleCreateProjectileCommand(parameters, owner, projectileType, spawnPosition, cannonRotation, gameManager);
             }
         }
     }
@@ -150,15 +60,7 @@ namespace Sprint0
                     parameters.ContainsKey("position") && parameters["position"] is Vector2 position &&
                     parameters.ContainsKey("velocity") && parameters["velocity"] is Vector2 velocity)
                 {
-                    gameManager.GetEntities().Add(entityName, entity);
-                    gameManager.GetEntities()[entityName].SetPosition(position);
-                    gameManager.GetEntities()[entityName].SetVelocity(velocity);
-
-                    if(parameters.ContainsKey("owner") && parameters["owner"] is Character owner)
-                    {
-                        gameManager.GetEntities()[entityName].Owner = owner;
-                    }
-
+                    ActionCommands_Logic.HandleCreateEntityCommand(parameters, gameManager, entityName, entity, position, velocity);
                 }
             }
         }
@@ -182,29 +84,7 @@ namespace Sprint0
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
                     parameters.ContainsKey("mob") && parameters["mob"] is Mob mob)
                 {
-                    if (gameManager.GetEntity("player") is Player player)
-                    {
-                        if(player.isInvis)
-                            return; 
-                        
-                        Vector2 playerPos = player.GetPosition();
-                        Rectangle playerBounds = player.GetBounds();
-
-                        List<Entity> blocks = new List<Entity>();
-                        foreach (var entity in gameManager.GetEntities().Values)
-                        {
-                            if (entity is IObtuse)
-                                blocks.Add(entity);
-                        }
-
-                        // Use the new RayTracer function to determine full exposure
-                        bool fullyVisible = RayTracer.IsPlayerFullyExposed(mob.GetPosition(), playerBounds, blocks);
-
-                        if (fullyVisible)
-                        {
-                            mob.UpdateKnownPlayerPosition(playerPos);
-                        }
-                    }
+                    ActionCommands_Logic.HandleRequestPlayerPositionCommand(gameManager, mob);
                 }
             }
         }
@@ -230,26 +110,7 @@ namespace Sprint0
                     parameters.ContainsKey("healRadius") && parameters["healRadius"] is float healRadius &&
                     parameters.ContainsKey("healAmount") && parameters["healAmount"] is int healAmount)
                 {
-                    foreach (var entity in gameManager.GetEntities().Values)
-                    {
-                        if (entity is Mob mob)
-                        {
-                            if (Vector2.Distance(origin, mob.GetPosition()) <= healRadius)
-                            {
-                                mob.ChangeHealth(healAmount);
-                            }
-                        }
-                        // for testing only, not actually used in the game
-                        // if (entity is Player player)
-                        // {
-                        //     System.Console.WriteLine("Healing player");
-                        //     if (Vector2.Distance(origin, player.GetPosition()) <= healRadius)
-                        //     {
-                        //         System.Console.WriteLine("Healed player");
-                        //         player.ChangeHealth(healAmount);
-                        //     }
-                        // }
-                    }
+                    ActionCommands_Logic.HandleHealRadiusCommand(gameManager, origin, healRadius, healAmount);
                 }
             }
         }
