@@ -223,6 +223,10 @@ namespace Sprint0
         {
             base.OnDeath();
             Globals.PlayerData.UpdateVariable("XP", MobXP);
+            if (currentMobType.ToString() == "ShipVertical" || currentMobType.ToString() == "ShipHorizontal") {
+                Globals.PlayerData.UpdateVariable("ShipKilled", 1);
+            }
+            Globals.PlayerData.UpdateVariable(currentMobType.ToString() + "Killed", 1);
         }
 
     }

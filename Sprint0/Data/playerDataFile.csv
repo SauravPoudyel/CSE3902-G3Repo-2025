@@ -12,7 +12,13 @@ XP, 2000
 SpeedModifier, 1
 FireRateModifier, 1
 MaxHealth, 100
-SmallEnemysKilled, 0
-PlanesKilled, 2
-BossesKilled, 0
-OtherMobsKilled, 0
+BossTankKilled, 0
+HealerTankKilled, 0
+HoveringTankKilled, 0
+PlaneKilled, 2
+ShieldTankKilled, 0
+ShipKilled, 0
+SmallEnemyKilled, 0
+StealthTanksKileld, 0
+SwarmingTankKilled, 0
+TurretKilled, 0
