@@ -1,4 +1,4 @@
-Name, AmazingTankSlayer2000
+Name, TankSlayer10
 Health, 100
 AmmoDefault, 48
 AmmoSniper, 10
@@ -11,3 +11,5 @@ Coins, 0
 XP, 2000
 SmallEnemysKilled, 0
 PlanesKilled, 2
+HasSeenTutorial, 0
+HasSeenShopTutorial, 0

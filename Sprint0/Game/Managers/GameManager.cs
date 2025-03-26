@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -13,39 +12,32 @@ namespace Sprint0
 
         private Dictionary<string, Entity> entities;
         private List<Tile> tiles;
+
         private CollisionManager collisionManager;
         private SpriteManager spriteManager;
         private ContentManager content;
         private LevelManager levelManager;
+
+        public ScreenManager screenManager { get; private set; }
         public EventManager eventManager { get; private set; }
+
         public Game1 Game { get; private set; }
-        private List<IScreen> screens;
-        private IScreen activeScreen;
-        private IScreen blockingScreen;
-        private PlayerData playerData;
-        public PlayerInventory playerInventory { get; private set; }
+
         private bool gameStarted;
         private bool gamePaused;
-        private bool gameLoading;
-        private int levelNumber;
+
+        private int levelNumber = 1;
+
 
         public bool GameStarted
         {
             get { return gameStarted; }
-            set
-            {
-                gameStarted = value;
-                UpdateActiveScreen();
-            }
+            set { gameStarted = value; }
         }
         public bool GamePaused
         {
             get { return gamePaused; }
-            set
-            {
-                gamePaused = value;
-                UpdateActiveScreen();
-            }
+            set { gamePaused = value; }
         }
         public bool GameLoading
         {
@@ -60,11 +52,7 @@ namespace Sprint0
         public int LevelNumber
         {
             get { return levelNumber; }
-            set
-            {
-                levelNumber = value;
-                UpdateActiveScreen();
-            }
+            set { levelNumber = value; }
         }
 
         public GameManager(Game1 game, bool started = false)
@@ -72,37 +60,27 @@ namespace Sprint0
             AudioManager.LoadContent();
             AudioManager.PlayMusic(AudioManager.MusicKey.Background);
             Instance = this;
+
             Game = game;
             gameStarted = started;
             gamePaused = false;
-            levelNumber = 1;
+
             entities = new Dictionary<string, Entity>();
             tiles = new List<Tile>();
+
+            screenManager = new ScreenManager();
             collisionManager = new CollisionManager();
             spriteManager = new SpriteManager();
             eventManager = new EventManager(game, this);
             levelManager = new LevelManager();
-            screens = new List<IScreen>();
         }
 
-        public ContentManager GetContent()
-        {
-            return content;
-        }
+        public ContentManager GetContent() => content;
 
-        public Dictionary<string, Entity> GetEntities()
-        {
-            return entities;
-        }
+        public Dictionary<string, Entity> GetEntities() => entities;
 
-        public Entity GetEntity(string entityKey)
-        {
-            if (entities.ContainsKey(entityKey))
-            {
-                return entities[entityKey];
-            }
-            return null;
-        }
+        public Entity GetEntity(string entityKey) =>
+            entities.ContainsKey(entityKey) ? entities[entityKey] : null;
 
         public void SetEntity(string key, Entity entity)
         {
@@ -112,54 +90,39 @@ namespace Sprint0
         public void RemoveEntity(string key)
         {
             if (entities.ContainsKey(key))
-            {
                 entities.Remove(key);
-            }
         }
 
         public void LoadContent(ContentManager contentManager)
         {
             content = contentManager;
+
             Globals.LoadGlobalSprites(content);
             Globals.LoadGlobalFonts(content);
             Globals.LoadPlayerData();
+
             LoadLevelContent();
             InitializeTiles();
             InitializeEntities();
 
-            playerInventory = new PlayerInventory(content);
-            UpdateActiveScreen();
+            screenManager.Initialize(content, Game);
         }
 
-        private void UpdateActiveScreen()
+        public void UpdateLevel()
         {
-            screens.Clear();
-            if (!gameStarted)
-            {
-                activeScreen = new StartMenu(Game);
-                blockingScreen = activeScreen;
-            } else if (gamePaused) {
-                activeScreen = new PauseMenu(content, Game.GraphicsDevice, Game);
-                blockingScreen = activeScreen;
-            } else if (gameLoading) {
-                activeScreen = new LoadingScreen(Game);
-                blockingScreen = activeScreen;
-            }
-            else
-            {
-                activeScreen = playerInventory;
-                blockingScreen = null;
-            }
-            screens.Add(activeScreen);
-        }
-        public void UpdateLevel(){
+
             LoadLevelContent();
             InitializeTiles();
             InitializeEntities();
         }
-        private void LoadLevelContent() {
-            levelManager.LoadContent(content, levelNumber);
+
+
+        private void LoadLevelContent()
+        {
+            levelManager.LoadContent(content, $"Level{levelNumber}");
+ 
         }
+
         private void InitializeTiles()
         {
             tiles = levelManager.LoadLevelTiles();
@@ -180,102 +143,36 @@ namespace Sprint0
 
         public void Update()
         {
-            if (blockingScreen != null && blockingScreen.BlocksInput)
-            {
-                blockingScreen.Update();
+            screenManager.LevelNumber = levelNumber;
+            screenManager.IsPaused = gamePaused;
+            screenManager.GameStarted = gameStarted;
+
+            screenManager.Update();
+
+            if (screenManager.IsInputBlocked())
                 return;
-            }
+
             foreach (Entity entity in entities.Values)
             {
                 entity.Update();
                 eventManager.CollectCommandRequests(entity.GetCommandQueue());
             }
+
             collisionManager.Update(entities);
             spriteManager.Update();
-            levelManager.Update(entities);
-            playerInventory.Update();
             eventManager.ProcessCommandRequests();
-            if (activeScreen != null)
-            {
-                activeScreen.Update();
-            }
-            int j;
-            for (j = 0; j < screens.Count; j++)
-            {
-                screens[j].Update();
-            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            int i;
-            for (i = 0; i < tiles.Count; i++)
-            {
-                tiles[i].Draw(spriteBatch);
-            }
-            foreach (Entity entity in entities.Values)
-            {
+            foreach (var tile in tiles)
+                tile.Draw(spriteBatch);
+
+            foreach (var entity in entities.Values)
                 entity.Draw(spriteBatch);
-            }
+
             spriteManager.Draw(spriteBatch);
-            if (activeScreen != null)
-            {
-                activeScreen.Draw(spriteBatch);
-            }
-            if (blockingScreen != null)
-            {
-                blockingScreen.Draw(spriteBatch);
-            }
-            int j;
-            for (j = 0; j < screens.Count; j++)
-            {
-                screens[j].Draw(spriteBatch);
-            }
-        }
-
-        public void AddScreen(IScreen screen)
-        {
-            if (!screens.Contains(screen))
-            {
-                screens.Add(screen);
-                activeScreen = screen;
-            }
-        }
-
-        public void RemoveScreen(IScreen screen)
-        {
-            if (screens.Contains(screen))
-            {
-                screens.Remove(screen);
-                if (screens.Count > 0)
-                {
-                    activeScreen = screens[screens.Count - 1];
-                }
-                else
-                {
-                    activeScreen = null;
-                }
-            }
-        }
-
-        public IScreen GetActiveScreen()
-        {
-            return activeScreen;
-        }
-
-        public IScreen GetBlockingScreen()
-        {
-            return blockingScreen;
-        }
-
-        public void SetBlockingScreen(IScreen screen)
-        {
-            blockingScreen = screen;
-        }
-
-        public void ClearBlockingScreen()
-        {
-            blockingScreen = null;
+            screenManager.Draw(spriteBatch);
         }
     }
 }

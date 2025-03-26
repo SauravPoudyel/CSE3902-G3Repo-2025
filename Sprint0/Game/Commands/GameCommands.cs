@@ -36,11 +36,19 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    if(!gameManager.GameStarted) {
-                        gameManager.GameStarted = true; // This will automatically switch to Player Inventory screen
-                    } else if(gameManager.GamePaused || gameManager.GameLoading) {
+
+                    if (!gameManager.GameStarted)
+                    {
+                        gameManager.GameStarted = true; // switches to gameplay (player inventory)
+                        AudioManager.StopMusic(); 
+                    }
+                    else if (gameManager.GamePaused)
+                    {
                         gameManager.GamePaused = false;
-                        gameManager.GameLoading = false;
+                        // Clear the blocking pause menu so input is unblocked.
+                        gameManager.screenManager.ClearBlockingScreen();
+                        // Optionally, remove the PauseMenu from the screen list:
+                        // gameManager.screenManager.RemoveScreen(gameManager.screenManager.GetBlockingScreen());
                     }
                 }
             }
