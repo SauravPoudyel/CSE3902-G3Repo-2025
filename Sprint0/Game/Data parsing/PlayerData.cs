@@ -26,6 +26,11 @@ namespace Sprint0
             return defaultValue;
         }
 
+        public void SetInt(string key, int value)
+        {
+            Set(key, value.ToString());
+        }
+
         public void UpdateVariable(string key, int amount = 1)
         {
             int current = GetInt(key, 0);
