@@ -161,7 +161,7 @@ namespace Sprint0
             InitializeEntities();
         }
         private void LoadLevelContent() {
-            levelManager.LoadContent(content, "Level"+levelNumber.ToString());
+            levelManager.LoadContent(content, levelNumber);
         }
         private void InitializeTiles()
         {

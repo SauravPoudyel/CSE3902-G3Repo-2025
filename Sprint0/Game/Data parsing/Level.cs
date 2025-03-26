@@ -26,6 +26,11 @@ namespace Sprint0 {
             get { return entities; }
             set { entities = value; }
         }
+        public int LevelNumber
+        {
+            get { return levelNumber; }
+            set { levelNumber = value; }
+        }
         public bool Complete   
         {
             get { return complete; }
@@ -48,8 +53,6 @@ namespace Sprint0 {
             enemiesList = new List<Mob>();
             connectedLevels = new Dictionary<Direction, Level>();
         }
-        public int GetLevelNumber() => levelNumber;
-        public Dictionary<string, Entity> GetLevelEntities() => entities;
         public List<Mob> GetLevelEnemies() => enemiesList;
         public List<Tile> GetLevelTiles => tilesList;
         public void AddConnectedLevel(Direction direction, Level level)

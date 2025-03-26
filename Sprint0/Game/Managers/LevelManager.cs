@@ -14,16 +14,18 @@ namespace Sprint0
             activeLevel = new Level();
             levels = new Dictionary<string, Level>();
         }
-        public void LoadContent(ContentManager content, string levelName) {
-            string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\" + levelName + "_Entities.csv");
-            string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\" + levelName + "_Tiles.csv");
-            if(!levels.ContainsKey(levelName)) {
-                levels.Add(levelName, CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content));
+        public void LoadContent(ContentManager content, int levelNum) {
+            string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Entities.csv");
+            string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Tiles.csv");
+            Level newLevel = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
+            newLevel.LevelNumber = levelNum;
+            if(!levels.ContainsKey("Level" + levelNum)) {
+                levels.Add("Level" + levelNum, newLevel);
             }
-            activeLevel = levels[levelName];
+            activeLevel = levels["Level" + levelNum];
         }
         public Dictionary<string, Entity> LoadLevelEntities() {
-            return activeLevel.GetLevelEntities();
+            return activeLevel.Entities;
         }
         public List<Tile> LoadLevelTiles() {
             return activeLevel.GetLevelTiles;
@@ -50,10 +52,10 @@ namespace Sprint0
                 Player player = (Player)entities["player"];
                 if(activeLevel.Complete && player.GetPosition().X > 1920) {
                     player.SetPosition(new Vector2(0,player.GetPosition().Y));
-                    player.MoveLevel(1);
+                    player.MoveLevel(activeLevel.LevelNumber+1);
                 } else if(player.GetPosition().X<0) {
                     player.SetPosition(new Vector2(1920,player.GetPosition().Y));
-                    player.MoveLevel(-1);
+                    player.MoveLevel(activeLevel.LevelNumber-1);
                 }
                 /* 
                 if(player.GetPosition().X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right)) {
