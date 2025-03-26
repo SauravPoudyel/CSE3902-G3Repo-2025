@@ -217,5 +217,12 @@ namespace Sprint0
             lastKnownPlayerPosition = newPlayerPosition;
             timeSinceLastPlayerSeen = 0f;
         }
+
+        public override void OnDeath()
+        {
+            base.OnDeath();
+            Globals.PlayerData.UpdateVariable("XP", MobXP)
+        }
+
     }
 }
