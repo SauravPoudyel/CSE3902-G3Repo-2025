@@ -32,6 +32,9 @@ namespace Sprint0
                 { "gameManager", game.GameManager },
                 { "game", game }
             };
+            Button restartButton = new textButton(buttonTexture,
+                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 140, 150, 40),
+                "Restart", new GameCommands.resetLevelCommand(), gameParams);
             Button menuButton = new textButton(buttonTexture,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 20, 150, 40),
                 "Main Menu", new GameCommands.ResetCommand(), gameParams);
@@ -60,6 +63,7 @@ namespace Sprint0
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 + 40, 150, 40),
                 "Level: " + game.GameManager.LevelNumber.ToString(), null, screenParams);
 
+            buttons.Add(restartButton);
             buttons.Add(menuButton);
             buttons.Add(quitButton);
             buttons.Add(resumeButton);

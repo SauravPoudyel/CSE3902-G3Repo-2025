@@ -27,6 +27,8 @@ namespace Sprint0
         private bool gameStarted;
         private bool gamePaused;
         private int levelNumber;
+        public bool shopOpen { get; set; }
+        private Shop shop;
 
         public bool GameStarted
         {
@@ -74,6 +76,8 @@ namespace Sprint0
             eventManager = new EventManager(game, this);
             levelManager = new LevelManager();
             screens = new List<IScreen>();
+            shop = new Shop(game);
+            shopOpen = false;
         }
 
         public ContentManager GetContent()
@@ -118,7 +122,8 @@ namespace Sprint0
             InitializeTiles();
             InitializeEntities();
 
-            playerInventory = new PlayerInventory(content);
+            playerInventory = new PlayerInventory(Game);
+            shop.LoadContent();
             UpdateActiveScreen();
         }
 
@@ -166,6 +171,8 @@ namespace Sprint0
                 blockingScreen.Update();
                 return;
             }
+            if(shopOpen)
+                shop.Update();
             foreach (Entity entity in entities.Values)
             {
                 entity.Update();
@@ -188,6 +195,7 @@ namespace Sprint0
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            
             int i;
             for (i = 0; i < tiles.Count; i++)
             {
@@ -211,6 +219,8 @@ namespace Sprint0
             {
                 screens[j].Draw(spriteBatch);
             }
+            if (shopOpen)
+                shop.Draw(spriteBatch);
         }
 
         public void AddScreen(IScreen screen)

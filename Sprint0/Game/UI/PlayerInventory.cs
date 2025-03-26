@@ -8,19 +8,30 @@ namespace Sprint0
     public class PlayerInventory : IScreen
     {
         private List<IHUD> hudElements;
+        private List<Button> buttonElements;
+        Dictionary<string, object> paramters;
         public List<InventorySlot> inventorySlots;
         private ContentManager content;
 
         public bool BlocksInput => false;
 
-        public PlayerInventory(ContentManager content)
+        public PlayerInventory(Game1 game)
         {
-            this.content = content; // Store for later use.
+            this.content = game.Content; // Store for later use.
             hudElements = new List<IHUD>();
             // hudElements.Add(new ShieldHUD(content.Load<Texture2D>("UI/ShieldIcon")));
             hudElements.Add(new HealthHUD(content.Load<Texture2D>("UI/HealthIcon")));
             hudElements.Add(new AmmoHUD(content.Load<Texture2D>("UI/AmmoIcon")));
             hudElements.Add(new CoinHUD(content.Load<Texture2D>("PickupItemSpritesheet2")));
+
+            paramters = new Dictionary<string, object>
+            {
+                { "gameManager", game.GameManager },
+                { "game", game}
+            };
+            buttonElements = new List<Button>();
+            Vector2 shopButtonPos = new Vector2(Globals.SCREENWIDTH - 100, 20);
+            buttonElements.Add(new ShopButton(content.Load<Texture2D>("UI/ShopIcon"), shopButtonPos, paramters));
 
             // Initialize 5 inventory slots.
             inventorySlots = new List<InventorySlot>();
@@ -46,6 +57,8 @@ namespace Sprint0
                 hud.Update();
             foreach (var slot in inventorySlots)
                 slot.Update();
+            foreach (var button in buttonElements)
+                button.Update();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -54,6 +67,8 @@ namespace Sprint0
                 hud.Draw(spriteBatch);
             foreach (var slot in inventorySlots)
                 slot.Draw(spriteBatch);
+            foreach (var button in buttonElements)
+                button.Draw(spriteBatch);
         }
 
         public void SelectSlot(int slotIndex)

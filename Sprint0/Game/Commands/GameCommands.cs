@@ -53,8 +53,20 @@ namespace Sprint0
                 {
                     if (gameManager.GameStarted)
                     {
+                        gameManager.shopOpen = false;
                         gameManager.GamePaused = true;
                     }
+                }
+            }
+        }
+
+        public class  ToggleShopCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    gameManager.shopOpen = !gameManager.shopOpen;
                 }
             }
         }
@@ -82,6 +94,25 @@ namespace Sprint0
                     if(gameManager.LevelNumber>1) {
                         gameManager.LevelNumber--;
                         gameManager.UpdateLevel();
+                    }
+                }
+            }
+        }
+
+        public class resetLevelCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    gameManager.UpdateLevel();
+                    if (!gameManager.GameStarted)
+                    {
+                        gameManager.GameStarted = true; // This will automatically switch to Player Inventory screen
+                    }
+                    else if (gameManager.GamePaused)
+                    {
+                        gameManager.GamePaused = false;
                     }
                 }
             }

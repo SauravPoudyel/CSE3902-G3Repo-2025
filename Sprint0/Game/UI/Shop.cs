@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -11,127 +15,202 @@ namespace Sprint0
         public string Name { get; set; }
         public int Price { get; set; }
         public Texture2D Icon { get; set; }
+        public Rectangle IconRect { get; set; }
         public string Category { get; set; }
-        public int Order { get; set; }
+        public int Amount { get; set; }
 
-        public ShopItem(string name, int price, Texture2D icon, string category, int order)
+        public ShopItem(string name, int price, Texture2D icon, Rectangle rectangle, string category, int amount)
         {
             Name = name;
             Price = price;
             Icon = icon;
+            IconRect = rectangle;
             Category = category;
-            Order = order;
+            Amount = amount;
         }
     }
 
-    class ShopUI
+    class Shop
     {
-        private List<ShopItem> items;
+        Game1 game;
+        private List<ShopItem> shopItems;
+        private List<ShopItem> filteredItems;
+        private List<string> categories;
+        private string selectedCategory;
         private int selectedIndex;
         private SpriteFont font;
         private Texture2D background;
         private Rectangle windowRectangle;
-        private GraphicsDevice graphicsDevice;
-        private KeyboardState previousKeyboardState;
         private MouseState previousMouseState;
 
-        public bool IsOpen { get; set; }
-        public ShopUI(GraphicsDevice graphicsDevice, SpriteFont font, Texture2D background)
+        public Shop(Game1 game)
         {
-            this.graphicsDevice = graphicsDevice;
-            this.font = font;
-            this.background = background;
-            items = new List<ShopItem>();
-            selectedIndex = 0;
-            IsOpen = false;  // Initially closed.
-            LoadShopItems();
-            previousKeyboardState = Keyboard.GetState();
-            previousMouseState = Mouse.GetState();
+            this.game = game;
+            shopItems = new List<ShopItem>();
+            filteredItems = new List<ShopItem>();
+            categories = new List<string> { "All", "Weapons", "Armor", "Consumables" };
+            selectedCategory = "All";
+            selectedIndex = -1;
+            previousMouseState = Mouse.GetState();            
 
-            int width = 400;
-            int height = 300;
-            int x = (graphicsDevice.Viewport.Width - width) / 2;
-            int y = (graphicsDevice.Viewport.Height - height) / 2;
+            int width = Globals.SCREENWIDTH/2;
+            int height = Globals.SCREENHEIGHT/2;
+            int x = (Globals.SCREENWIDTH - width) / 2;
+            int y = (Globals.SCREENHEIGHT - height) / 2;
             windowRectangle = new Rectangle(x, y, width, height);
         }
-        private void LoadShopItems()
+        public void LoadContent()
         {
-            // Add shop items here.
+            ContentManager content = game.Content;
+            GraphicsDevice graphicsDevice = game.GraphicsDevice;
+            font = Globals.FONT;
+            background = new Texture2D(graphicsDevice, 1, 1);
+            background.SetData(new Color[] { Color.LightGray});
+
+            // Load item icons.
+            Texture2D sheet = content.Load<Texture2D>("PickupItemSpritesheet2");
+            Rectangle sniperRect = new Rectangle(0, 160, 40, 40);
+            Rectangle rocketRect = new Rectangle(0, 200, 40, 40);
+            Rectangle shotgunRect = new Rectangle(0, 120, 40, 40);
+            Rectangle teleporterRect = new Rectangle(0, 680, 40, 40);
+            Rectangle mineRect = new Rectangle(0, 280, 40, 40);
+
+            // Add shop items.
+            shopItems.Add(new ShopItem("Sniper Rifle", 100, sheet, sniperRect, "Weapons", 3));
+            shopItems.Add(new ShopItem("Rocket Launcher", 150, sheet, rocketRect, "Weapons", 1));
+            shopItems.Add(new ShopItem("Shotgun", 75, sheet, shotgunRect, "Weapons", 5));
+            shopItems.Add(new ShopItem("Teleporter", 200, sheet, teleporterRect, "Consumables", 1));
+            shopItems.Add(new ShopItem("Mine", 50, sheet, mineRect, "Consumables", 1));
+            shopItems.Sort((a, b) => a.Name.CompareTo(b.Name));
+
+
+            FilterItems();
         }
 
-        public void Update(GameTime gameTime)
+        public void Update()
         {
-            if (!IsOpen)
-                return;
+            
 
             MouseState currentMouseState = Mouse.GetState();
-            KeyboardState currentKeyboardState = Keyboard.GetState();
 
-            // (Optional) Allow keyboard navigation as well.
-            if (currentKeyboardState.IsKeyDown(Keys.Down) && previousKeyboardState.IsKeyUp(Keys.Down))
+            Vector2 categoryPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + 10);
+
+            foreach (string cat in categories)
             {
-                selectedIndex++;
-                if (selectedIndex >= items.Count)
-                    selectedIndex = 0;
+                Vector2 catSize = font.MeasureString(cat);
+                Rectangle catRect = new Rectangle((int)categoryPos.X, (int)categoryPos.Y, (int)catSize.X + 10, (int)catSize.Y + 10);
+                if (catRect.Contains(currentMouseState.Position) &&
+                    currentMouseState.LeftButton == ButtonState.Pressed &&
+                    previousMouseState.LeftButton == ButtonState.Released)
+                {
+                    selectedCategory = cat;
+                    FilterItems();
+                }
+                categoryPos.X += catSize.X + 20;
             }
-            if (currentKeyboardState.IsKeyDown(Keys.Up) && previousKeyboardState.IsKeyUp(Keys.Up))
-            {
-                selectedIndex--;
-                if (selectedIndex < 0)
-                    selectedIndex = items.Count - 1;
-            }
 
-            // Check for mouse hover and clicks on each item.
-            for (int i = 0; i < items.Count; i++)
+            int itemsStartY = windowRectangle.Y + 50;
+            for (int i = 0; i < filteredItems.Count; i++)
             {
-                Vector2 position = new Vector2(windowRectangle.X + 20, windowRectangle.Y + 20 + i * 40);
-                string text = $"{items[i].Name} - ${items[i].Price}";
-                Vector2 textSize = font.MeasureString(text);
-                Rectangle itemRectangle = new Rectangle((int)position.X, (int)position.Y, (int)textSize.X, (int)textSize.Y);
+                Vector2 itemPos = new Vector2(windowRectangle.X + 20, itemsStartY + i * 60);
 
-                // If the mouse is hovering over this item, set it as selected.
-                if (itemRectangle.Contains(currentMouseState.Position))
+                Rectangle iconDetinationRect = new Rectangle((int)itemPos.X, (int)itemPos.Y, 40, 40);
+                // Text rectangle.
+                Vector2 textPos = new Vector2(itemPos.X + 50, itemPos.Y + 10);
+                string itemText = $"{filteredItems[i].Name} - ${filteredItems[i].Price}";
+                Vector2 textSize = font.MeasureString(itemText);
+                Rectangle textRect = new Rectangle((int)textPos.X, (int)textPos.Y, (int)textSize.X, (int)textSize.Y);
+                // Combined hit area.
+                Rectangle combinedRect = Rectangle.Union(iconDetinationRect, textRect);
+
+                if (combinedRect.Contains(currentMouseState.Position))
                 {
                     selectedIndex = i;
-
-                    // If left mouse button clicked, purchase the item.
-                    if (currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
+                    if (currentMouseState.LeftButton == ButtonState.Pressed &&
+                        previousMouseState.LeftButton == ButtonState.Released)
                     {
-                        PurchaseItem(items[i]);
+                        PurchaseItem(filteredItems[i]);
                     }
                 }
             }
 
-            previousKeyboardState = currentKeyboardState;
             previousMouseState = currentMouseState;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (!IsOpen)
-                return;
-
-            spriteBatch.Begin();
-
-            // Draw the pop-up background inside the defined window rectangle.
             spriteBatch.Draw(background, windowRectangle, Color.White);
 
-            // Draw each shop item relative to the pop-up window.
-            for (int i = 0; i < items.Count; i++)
+            Vector2 categoryPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + 10);
+            foreach (string cat in categories)
             {
-                // Highlight the item if it is selected (via keyboard or mouse hover).
-                Color itemColor = (i == selectedIndex) ? Color.Yellow : Color.White;
-                Vector2 position = new Vector2(windowRectangle.X + 20, windowRectangle.Y + 20 + i * 40);
-                string text = $"{items[i].Name} - ${items[i].Price}";
-                spriteBatch.DrawString(font, text, position, itemColor);
+                Color catColor = (cat == selectedCategory) ? Color.Yellow : Color.White;
+                Vector2 catSize = font.MeasureString(cat);
+                Rectangle catRect = new Rectangle((int)categoryPos.X, (int)categoryPos.Y, (int)catSize.X + 10, (int)catSize.Y + 10);
+
+                spriteBatch.Draw(background, catRect, Color.Gray * 0.5f);
+                spriteBatch.DrawString(font, cat, new Vector2(categoryPos.X + 5, categoryPos.Y + 5), catColor);
+                categoryPos.X += catSize.X + 20;
             }
 
-            spriteBatch.End();
+            int itemsStartY = windowRectangle.Y + 50;
+            for (int i = 0; i < filteredItems.Count; i++)
+            {
+                ShopItem item = filteredItems[i];
+                Vector2 itemPos = new Vector2(windowRectangle.X + 20, itemsStartY + i * 60);
+
+                // Draw the item icon.
+                Rectangle iconDetinationRect = new Rectangle((int)itemPos.X, (int)itemPos.Y, 40, 40);
+                spriteBatch.Draw(item.Icon, iconDetinationRect, item.IconRect, Color.White);
+
+                // Draw the item text.
+                Vector2 textPos = new Vector2(itemPos.X + 50, itemPos.Y + 10);
+                string itemText = $"{item.Name} - ${item.Price}";
+                Color textColor = (i == selectedIndex) ? Color.Yellow : Color.White;
+                spriteBatch.DrawString(font, itemText, textPos, textColor);
+            }
+
+
+        }
+
+        private void FilterItems()
+        {
+            if (selectedCategory == "All")
+                filteredItems = new List<ShopItem>(shopItems);
+            else
+                filteredItems = shopItems.Where(item => item.Category == selectedCategory).ToList();
+
+            selectedIndex = (filteredItems.Count > 0) ? 0 : -1;
         }
 
         private void PurchaseItem(ShopItem item)
         {
-           
+            switch (item.Name)
+            {
+                case "Sniper Rifle" when Globals.PlayerData.GetInt("Coins") >= item.Price:
+                    Globals.PlayerData.SetInt("Coins", Globals.PlayerData.GetInt("Coins") - item.Price);
+                    Globals.PlayerData.SetInt("AmmoSniper", Globals.PlayerData.GetInt("AmmoSniper") + item.Amount);
+                    break;
+                case "Rocket Launcher" when Globals.PlayerData.GetInt("Coins") >= item.Price:
+                    Globals.PlayerData.SetInt("Coins", Globals.PlayerData.GetInt("Coins") - item.Price);
+                    Globals.PlayerData.SetInt("AmmoRocket", Globals.PlayerData.GetInt("AmmoRocket") + item.Amount);
+                    break;
+                case "Shotgun" when Globals.PlayerData.GetInt("Coins") >= item.Price:
+                    Globals.PlayerData.SetInt("Coins", Globals.PlayerData.GetInt("Coins") - item.Price);
+                    Globals.PlayerData.SetInt("AmmoShotgun", Globals.PlayerData.GetInt("AmmoShotgun") + item.Amount);
+                    break;
+                case "Teleporter" when Globals.PlayerData.GetInt("Coins") >= item.Price:
+                    Globals.PlayerData.SetInt("Coins", Globals.PlayerData.GetInt("Coins") - item.Price);
+                    Globals.PlayerData.SetInt("AmmoTeleporter", Globals.PlayerData.GetInt("AmmoTeleporter") + item.Amount);
+                    break;
+                case "Mine" when Globals.PlayerData.GetInt("Coins") >= item.Price:
+                    Globals.PlayerData.SetInt("Coins", Globals.PlayerData.GetInt("Coins") - item.Price);
+                    Globals.PlayerData.SetInt("AmmoMine", Globals.PlayerData.GetInt("AmmoMine") + item.Amount);
+                    break;
+                default:
+                    break;
+            }
+                
         }
     }
 }
