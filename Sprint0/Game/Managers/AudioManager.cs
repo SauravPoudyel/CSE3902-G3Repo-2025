@@ -9,7 +9,7 @@ namespace Sprint0
 {
     public static class AudioManager
     {
-        public enum SoundKey { Shoot, Explosion, PowerUp, SniperFire, Dialogue }
+        public enum SoundKey { Shoot, Explosion, PowerUp, SniperFire, Dialogue, Drive }
         public enum MusicKey { Background }
 
         private static SoundEffectPlayer soundEffectPlayer = new SoundEffectPlayer();
@@ -18,6 +18,7 @@ namespace Sprint0
         private static readonly string soundPath = Path.Combine(Globals.projectDirectory, "Content", "Sounds");
 
         private static SoundEffectInstance dialogueInstance;
+        private static SoundEffectInstance driveInstance;
 
         public static void LoadContent()
         {
@@ -25,13 +26,16 @@ namespace Sprint0
             musicPlayer.LoadContent();
         }
 
-        public static void setVolume(float volume)
+        public static void SetVolume(float volume)
         {
             Volume = Math.Clamp(volume, 0f, 1f);
-            MediaPlayer.Volume = volume;
+            MediaPlayer.Volume = Volume;
+
+            if (driveInstance != null)
+                driveInstance.Volume = driveInstance.Volume * Volume;
         }
 
-        public static void PlaySound(SoundKey key)
+        public static void PlaySound(SoundKey key, float volumeMod = 1)
         {
             if (key == SoundKey.Dialogue)
             {
@@ -48,7 +52,7 @@ namespace Sprint0
             }
             else
             {
-                soundEffectPlayer.Play(key);
+                soundEffectPlayer.Play(key, volumeMod);
             }
         }
 
@@ -65,6 +69,40 @@ namespace Sprint0
         public static void PlayMusic(MusicKey key) => musicPlayer.Play(key);
         public static void StopMusic() => musicPlayer.Stop();
 
+        public static void AudioDrive(float currentSpeed, float maxSpeed)
+        {
+            float normalizedVolume = MathHelper.Clamp(currentSpeed / maxSpeed, 0f, 1f) * Volume;
+
+            if (driveInstance == null)
+            {
+                if (soundEffectPlayer.soundEffects.ContainsKey(SoundKey.Drive))
+                {
+                    driveInstance = soundEffectPlayer.soundEffects[SoundKey.Drive].CreateInstance();
+                    driveInstance.IsLooped = true;
+                    driveInstance.Volume = normalizedVolume;
+                    driveInstance.Play();
+                }
+                else
+                {
+                    Console.WriteLine("Drive sound not loaded.");
+                }
+            }
+            else
+            {
+                driveInstance.Volume = normalizedVolume;
+            }
+        }
+
+        public static void StopDriveSound()
+        {
+            if (driveInstance != null)
+            {
+                driveInstance.Stop();
+                driveInstance.Dispose();
+                driveInstance = null;
+            }
+        }
+
         private class SoundEffectPlayer
         {
             public Dictionary<SoundKey, SoundEffect> soundEffects = new Dictionary<SoundKey, SoundEffect>();
@@ -76,6 +114,7 @@ namespace Sprint0
                 LoadSound(SoundKey.PowerUp, "powerup.wav");
                 LoadSound(SoundKey.SniperFire, "sniper_fire.wav");
                 LoadSound(SoundKey.Dialogue, "dialogue.wav");
+                LoadSound(SoundKey.Drive, "driving.wav"); 
             }
 
             private void LoadSound(SoundKey key, string fileName)
@@ -87,15 +126,16 @@ namespace Sprint0
                 }
                 else
                 {
-                    Console.WriteLine($"Warning: Sound file missing - {fullPath}");
+                    Console.WriteLine("Warning: Sound file missing - " + fullPath);
                 }
             }
 
-            public void Play(SoundKey key)
+            public void Play(SoundKey key, float volumeMod = 1)
             {
                 if (soundEffects.ContainsKey(key))
                 {
-                    soundEffects[key].Play(Volume, 0f, 0f);
+                    float playVolume = MathHelper.Clamp(Volume * volumeMod, 0f, 1f);
+                    soundEffects[key].Play(playVolume, 0f, 0f);
                 }
             }
         }

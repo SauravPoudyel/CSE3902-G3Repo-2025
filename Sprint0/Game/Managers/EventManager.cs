@@ -22,6 +22,7 @@ namespace Sprint0
                 {"IncreaseLevel", new GameCommands.IncreaseLevelCommand()},
                 {"DecreaseLevel", new GameCommands.DecreaseLevelCommand()},
                 {"SetLevel", new GameCommands.SetLevelCommand()},
+                {"PlayerDeath", new GameCommands.PlayerDeathCommand()},
 
                 {"Static", new GraphicCommands.DisplayStaticGameCommand()},
                 {"Animated", new GraphicCommands.DisplayAnimatedGameCommand()},
@@ -58,6 +59,7 @@ namespace Sprint0
                 {"AutoDestroy", new ActionCommands.AutoDestroyCommand()},
 
                 {"AudioMute", new AudioCommands.AudioMuteCommand()},
+                {"AudioDrive", new AudioCommands.AudioDriveCommand()},
                 {"AudioIncrease", new AudioCommands.AudioIncreaseCommand()},
                 {"AudioDecrease", new AudioCommands.AudioDecreaseCommand()}
             };

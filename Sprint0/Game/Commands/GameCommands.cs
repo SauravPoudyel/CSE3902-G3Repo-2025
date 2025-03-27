@@ -1,4 +1,6 @@
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using System;
 using System.Collections.Generic;
 
 namespace Sprint0
@@ -121,6 +123,33 @@ namespace Sprint0
                 {
                     gameManager.LevelNumber = levelNum;
                     gameManager.UpdateLevel();
+                }
+            }
+        }
+
+        public class PlayerDeathCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("player") && parameters["player"] is Player player)
+                {
+                    // Change the current level to level 2
+                    gameManager.LevelNumber = 2;
+                    gameManager.UpdateLevel();
+
+                    // Update the player's health to the maximum value
+                    int maxHealth = Globals.PlayerData.GetInt("MaxHealth");
+                    Globals.PlayerData.UpdateVariable("Health", maxHealth);
+
+                    // Set the player's position to (700, 700)
+                    player.SetPosition(new Vector2(700, 700));
+
+                    Console.WriteLine("PlayerDeathCommand executed: Level set to 2, player health reset, position set to (700,700).");
+                }
+                else
+                {
+                    Console.WriteLine("PlayerDeathCommand missing required parameters.");
                 }
             }
         }
