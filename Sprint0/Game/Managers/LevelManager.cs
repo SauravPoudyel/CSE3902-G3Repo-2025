@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Sprint0
 {
@@ -27,6 +28,7 @@ namespace Sprint0
                     levels[levelName] = loadedLevel;
                     levels[levelName].LevelNumber = levelNum;
                     levels[levelName].Loaded = true;
+                    loadedLevel.InitializePerimeter(content);
             }          
             activeLevel = levels[levelName];
         }
@@ -51,6 +53,10 @@ namespace Sprint0
                 foreach(Level level in levels.Values) {
                     if(level.PrereqLevel!=null && level.PrereqLevel.LevelNumber == activeLevel.LevelNumber) 
                         level.Unlocked = true;
+                        if(activeLevel.ConnectedLevels.Values.Contains(level)) {
+                            var direction = activeLevel.ConnectedLevels.FirstOrDefault(x => x.Value == level).Key;
+                            activeLevel.UnlockConnectedLevel(direction);
+                        }
                 }
             }
             // Level moving logic
