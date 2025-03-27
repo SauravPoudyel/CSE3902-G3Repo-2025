@@ -53,7 +53,7 @@ namespace Sprint0
                 playerVelocity.Y += 50;
 
             bool playerMoving = (playerVelocity != Vector2.Zero);
-            if (game.GameManager.GetBlockingScreen() == null)
+            if (!game.GameManager.screenManager.IsInputBlocked())
             {
                 if (playerMoving)
                 {
@@ -129,15 +129,13 @@ namespace Sprint0
         {
             MouseState state = Mouse.GetState();
             // If a blocking screen is active, let it handle clicks.
-            if (game.GameManager.GetBlockingScreen() != null)
+            if (!game.GameManager.screenManager.IsInputBlocked())
             {
                 if (state.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton != ButtonState.Pressed)
                 {
                     Point clickPos = new Point(state.X, state.Y);
                 }
-            }
-            else
-            {
+                
                 Vector2 mousePosition = new Vector2(state.X, state.Y);
                 if (game.GameManager.GetEntity("player") is Player player)
                 {

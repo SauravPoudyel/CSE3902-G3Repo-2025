@@ -14,7 +14,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("game") && parameters["game"] is Game1 game) {
+                if (parameters.ContainsKey("game") && parameters["game"] is Game1 game)
+                {
                     Globals.SavePlayerData(); 
                     game.Exit();
                 }
@@ -36,15 +37,22 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    if(!gameManager.GameStarted) {
-                        gameManager.GameStarted = true; // This will automatically switch to Player Inventory screen
-                    } else if(gameManager.GamePaused || gameManager.GameLoading) {
+                    if (!gameManager.GameStarted)
+                    {
+                        gameManager.GameStarted = true;
+                        AudioManager.StopMusic();
+                        System.Console.WriteLine("[StartGameCommand] GameStarted set to true");
+                    }
+                    else if (gameManager.GamePaused)
+                    {
                         gameManager.GamePaused = false;
-                        gameManager.GameLoading = false;
+                        gameManager.screenManager.ClearBlockingScreen();
+                        System.Console.WriteLine("[StartGameCommand] Resuming game, clearing blocking screen");
                     }
                 }
             }
         }
+
 
         public class ShowPauseMenuCommand : ICommand
         {
@@ -54,8 +62,20 @@ namespace Sprint0
                 {
                     if (gameManager.GameStarted)
                     {
+                        gameManager.screenManager.shopOpen = false;
                         gameManager.GamePaused = true;
                     }
+                }
+            }
+        }
+
+        public class ToggleShopCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    gameManager.screenManager.shopOpen = !gameManager.screenManager.shopOpen;
                 }
             }
         }
@@ -66,7 +86,8 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    if(gameManager.LevelNumber<99) {
+                    if (gameManager.LevelNumber < 99)
+                    {
                         gameManager.LevelNumber++;
                         gameManager.UpdateLevel();
                         gameManager.GameLoading = true;
@@ -81,7 +102,8 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    if(gameManager.LevelNumber>1) {
+                    if (gameManager.LevelNumber > 1)
+                    {
                         gameManager.LevelNumber--;
                         gameManager.UpdateLevel();
                         gameManager.GameLoading = true;
@@ -95,11 +117,10 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager 
-                && parameters.ContainsKey("level") && parameters["level"] is int levelNum)
+                    && parameters.ContainsKey("level") && parameters["level"] is int levelNum)
                 {
                     gameManager.LevelNumber = levelNum;
                     gameManager.UpdateLevel();
-                    // gameManager.GameLoading = true;
                 }
             }
         }

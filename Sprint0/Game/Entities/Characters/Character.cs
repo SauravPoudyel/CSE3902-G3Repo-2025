@@ -157,6 +157,9 @@ namespace Sprint0
             {
                 { "destroyEntity", EntityKey }
             }));
+
+            //Add command for XP increment
+            
         }
 
         public virtual void ChangeHealth(int change)

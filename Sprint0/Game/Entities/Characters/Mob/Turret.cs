@@ -13,6 +13,7 @@ namespace Sprint0
             TrackTrailsEnabled = false; 
             spriteWidth = 104;
             spriteHeight = 104;
+            MobXP = 15;
         }
 
         protected override void InitializeMob()

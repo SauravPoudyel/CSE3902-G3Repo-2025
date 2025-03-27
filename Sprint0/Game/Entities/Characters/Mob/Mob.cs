@@ -22,6 +22,7 @@ namespace Sprint0
         protected string aggressionLevel = "Aggressive";
         private bool neutralToggle = true; 
         private bool isNeutralTaskRunning = false; // for thread task management
+        public int MobXP;
 
         public Mob(ContentManager content) : base(content)
         {
@@ -217,5 +218,16 @@ namespace Sprint0
             lastKnownPlayerPosition = newPlayerPosition;
             timeSinceLastPlayerSeen = 0f;
         }
+
+        public override void OnDeath()
+        {
+            base.OnDeath();
+            Globals.PlayerData.UpdateVariable("XP", MobXP);
+            if (currentMobType.ToString() == "ShipVertical" || currentMobType.ToString() == "ShipHorizontal") {
+                Globals.PlayerData.UpdateVariable("ShipKilled", 1);
+            }
+            Globals.PlayerData.UpdateVariable(currentMobType.ToString() + "Killed", 1);
+        }
+
     }
 }
