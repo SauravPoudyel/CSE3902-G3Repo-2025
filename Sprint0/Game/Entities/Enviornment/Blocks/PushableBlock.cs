@@ -34,7 +34,6 @@ namespace Sprint0
             return blockType switch
             {
                 EntityKeys.BlockType.Box => (960, 753, 56, 56),
-                EntityKeys.BlockType.SmallBarrel => (1016, 510, 40, 56),
                 _ => throw new System.ArgumentException($"Invalid BlockSpriteKey: {blockType}")
             };
         }
