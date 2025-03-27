@@ -79,7 +79,7 @@ namespace Sprint0 {
                     hasEnemies = true;
                 }
             }
-            return false;
+            return hasEnemies;
         }
         public List<Tile> GetLevelTiles => tilesList;
         public void AddConnectedLevel(Direction direction, Level level)

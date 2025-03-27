@@ -46,7 +46,7 @@ namespace Sprint0
         }
         public void Update(Dictionary<string, Entity> entities) {
             UpdateLevelEntities(entities);
-            if(!activeLevel.Complete && activeLevel.Loaded && activeLevel.HasEnemies()) {
+            if(!activeLevel.Complete && activeLevel.Loaded && !activeLevel.HasEnemies()) {
                 activeLevel.Complete = true;
                 foreach(Level level in levels.Values) {
                     if(level.PrereqLevel!=null && level.PrereqLevel.LevelNumber == activeLevel.LevelNumber) 

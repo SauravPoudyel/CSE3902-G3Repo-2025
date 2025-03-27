@@ -99,6 +99,7 @@ public void Update()
         entity.Update();
         eventManager.CollectCommandRequests(entity.GetCommandQueue());
     }
+    levelManager.Update(entities);
     collisionManager.Update(entities);
     spriteManager.Update();
     eventManager.ProcessCommandRequests();

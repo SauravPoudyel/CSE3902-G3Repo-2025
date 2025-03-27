@@ -1,14 +1,14 @@
 Name, TankSlayer10
-Health, 100
-AmmoDefault, 49
+Health, -140
+AmmoDefault, 33
 AmmoSniper, 10
 AmmoRocket, 10
 AmmoShotgun, 12
-AmmoMine, 4
+AmmoMine, 6
 AmmoLaser, 0
 AmmoTeleporter, 4
-Coins, 0
-XP, 2000
+Coins, 1800
+XP, 2060
 SpeedModifier, 1
 FireRateModifier, 1
 MaxHealth, 100
@@ -16,12 +16,11 @@ BossTankKilled, 0
 HealerTankKilled, 0
 HoveringTankKilled, 0
 PlaneKilled, 2
-ShieldTankKilled, 0
+ShieldTankKilled, 1
 ShipKilled, 0
-SmallEnemyKilled, 0
+SmallEnemyKilled, 1
 StealthTanksKileld, 0
 SwarmingTankKilled, 0
-TurretKilled, 0
-HasSeenTutorial, 0
+TurretKilled, 2
+HasSeenTutorial, 1
 HasSeenShopTutorial, 0
-
