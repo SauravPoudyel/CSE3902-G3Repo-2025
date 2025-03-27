@@ -46,26 +46,30 @@ namespace Sprint0
         }
         public void Update(Dictionary<string, Entity> entities) {
             UpdateLevelEntities(entities);
-            activeLevel.Complete = true;
-            foreach (Entity entity in entities.Values)
-            {
-                if(entity is Mob) {
-                    activeLevel.Complete = false;
+            if(!activeLevel.Complete && activeLevel.Loaded && activeLevel.HasEnemies()) {
+                activeLevel.Complete = true;
+                foreach(Level level in levels.Values) {
+                    if(level.PrereqLevel!=null && level.PrereqLevel.LevelNumber == activeLevel.LevelNumber) 
+                        level.Unlocked = true;
                 }
             }
             // Level moving logic
             if(entities.ContainsKey("player")) {
                 Player player = (Player)entities["player"];
-                if(player.GetPosition().Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top)) {
+                if(player.GetPosition().Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top) 
+                && activeLevel.GetConnectedLevel(Level.Direction.Top).Unlocked) {
                     player.SetPosition(new Vector2(player.GetPosition().X, 1080));
                     player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Top).LevelNumber);
-                } else if(player.GetPosition().Y > 1080 && activeLevel.HasConnectedLevel(Level.Direction.Bottom)) {
+                } else if(player.GetPosition().Y > 1080 && activeLevel.HasConnectedLevel(Level.Direction.Bottom) 
+                && activeLevel.GetConnectedLevel(Level.Direction.Bottom).Unlocked) {
                     player.SetPosition(new Vector2(player.GetPosition().X, 0));
                     player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Bottom).LevelNumber);
-                } else if(player.GetPosition().X < 0 && activeLevel.HasConnectedLevel(Level.Direction.Left)) {
+                } else if(player.GetPosition().X < 0 && activeLevel.HasConnectedLevel(Level.Direction.Left) 
+                && activeLevel.GetConnectedLevel(Level.Direction.Left).Unlocked) {
                     player.SetPosition(new Vector2(1920,player.GetPosition().Y));
                     player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Left).LevelNumber);
-                } else if(player.GetPosition().X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right)) {
+                } else if(player.GetPosition().X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right) 
+                && activeLevel.GetConnectedLevel(Level.Direction.Right).Unlocked) {
                     player.SetPosition(new Vector2(0,player.GetPosition().Y));
                     player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Right).LevelNumber);
                 }

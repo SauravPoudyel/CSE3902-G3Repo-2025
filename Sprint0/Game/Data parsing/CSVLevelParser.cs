@@ -43,6 +43,11 @@ namespace Sprint0
                             levelDict[levelName].AddConnectedLevel((Level.Direction)j, levelDict[connectedLevelName]);
                         }
                     }
+                    string preReqLevelName = currentRow[6];
+                    if(levelDict.ContainsKey(preReqLevelName)) {
+                        levelDict[levelName].Unlocked = false;
+                        levelDict[levelName].PrereqLevel = levelDict[preReqLevelName];
+                    }
                 }
             }
             return levelDict;

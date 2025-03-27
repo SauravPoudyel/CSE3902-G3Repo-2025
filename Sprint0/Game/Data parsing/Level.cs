@@ -10,6 +10,7 @@ namespace Sprint0 {
     {
         public enum Direction { Top, Bottom, Left, Right }  
         private Dictionary<Direction, Level> connectedLevels;  
+        private Level prereqLevel;
         public int tileSize = 120;
         private int levelNumber;
         private bool unlocked;
@@ -47,6 +48,11 @@ namespace Sprint0 {
             get { return loaded; }
             set { loaded = value; }
         }
+        public Level PrereqLevel 
+        {
+            get { return prereqLevel; }
+            set { prereqLevel = value; }
+        }
         public Dictionary<Direction, Level> ConnectedLevels   
         {
             get { return connectedLevels; }
@@ -58,6 +64,7 @@ namespace Sprint0 {
             unlocked = true;
             loaded = false;
             levelNumber = 1;
+            prereqLevel = null;
             tilesList = new List<Tile>();
             entities = new Dictionary<string, Entity>();
             blocksList = new List<BaseBlock>();
@@ -65,7 +72,15 @@ namespace Sprint0 {
             enemiesList = new List<Mob>();
             connectedLevels = new Dictionary<Direction, Level>();
         }
-        public List<Mob> GetLevelEnemies() => enemiesList;
+        public bool HasEnemies() {
+            bool hasEnemies = false;
+            foreach(Entity entity in entities.Values) {
+                if(entity is Mob) {
+                    hasEnemies = true;
+                }
+            }
+            return false;
+        }
         public List<Tile> GetLevelTiles => tilesList;
         public void AddConnectedLevel(Direction direction, Level level)
         {
