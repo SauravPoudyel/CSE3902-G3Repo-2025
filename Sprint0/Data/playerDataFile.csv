@@ -1,6 +1,6 @@
 Name, TankSlayer10
-Health, -140
-AmmoDefault, 33
+Health, 100
+AmmoDefault, 35
 AmmoSniper, 10
 AmmoRocket, 10
 AmmoShotgun, 12
