@@ -23,11 +23,10 @@ namespace Sprint0
             timer %= CycleDuration;
         }
 
-        // Returns a value between 0 and MaxOverlayAlpha.
-        // At noon (t=0 or full cycle) returns 0 (no tint), and at midnight (t = CycleDuration/2) returns MaxOverlayAlpha.
         public float GetOverlayAlpha()
         {
-            // Cosine wave: cos(2π(t/CycleDuration - 0.5)) gives 1 at noon, -1 at midnight.
+            // Cosine wave: cos(2π(t/CycleDuration - 0.5)) gives 1 at noon, -1 at midnight. 
+            // math from https://www.reddit.com/r/gamedev/comments/7cti1q/2d_daynight_cycles/
             float normalized = (float)Math.Cos(2 * Math.PI * (timer / CycleDuration - 0.5));
             float alpha = (1f - normalized) / 2f;
             return alpha * MaxOverlayAlpha;
