@@ -6,7 +6,8 @@ using System.Collections.Generic;
 
 namespace Sprint0
 {
-    public static class GraphicCommands {
+    public static class GraphicCommands
+    {
         public class DisplayStaticGameCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
@@ -84,7 +85,7 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 // Implement the logic to cycle to the previous item
-                if (parameters.ContainsKey("pickupItem") && parameters["pickupItem"] is PickupItem pickupItem) 
+                if (parameters.ContainsKey("pickupItem") && parameters["pickupItem"] is PickupItem pickupItem)
                 {
                     pickupItem.CycleItemPrev();
                 }
@@ -95,7 +96,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("pickupItem") && parameters["pickupItem"] is PickupItem pickupItem) 
+                if (parameters.ContainsKey("pickupItem") && parameters["pickupItem"] is PickupItem pickupItem)
                 {
                     pickupItem.CycleItemNext();
                 }
@@ -128,18 +129,73 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("spawnPosition") && parameters["spawnPosition"] is Vector2 spawnPosition &&
-                    parameters.ContainsKey("effectType") && parameters["effectType"] is EntityKeys.EffectType effectType)
+                // Using TryGetValue to safely extract the parameters
+                if (!parameters.TryGetValue("gameManager", out var gmObj) ||
+                    !(gmObj is GameManager gameManager))
                 {
-                    string effectKey = "effect_" + Guid.NewGuid().ToString();
-                    Effect effect = new Effect(gameManager.GetContent(), spawnPosition, effectKey, effectType);
-                    gameManager.GetEntities().Add(effectKey, effect);
-                    if(effectType == EntityKeys.EffectType.Explosion)
-                        AudioManager.PlaySound(AudioManager.SoundKey.Explosion);
+                    return;
+                }
+
+                if (!parameters.TryGetValue("spawnPosition", out var posObj) ||
+                    !(posObj is Vector2 spawnPosition))
+                {
+                    return;
+                }
+
+                if (!parameters.TryGetValue("effectType", out var typeObj) ||
+                    !(typeObj is EntityKeys.EffectType effectType))
+                {
+                    return;
+                }
+
+                string effectKey = "effect_" + Guid.NewGuid().ToString();
+                Effect effect = new Effect(gameManager.GetContent(), spawnPosition, effectKey, effectType);
+                gameManager.GetEntities().Add(effectKey, effect);
+
+                // Play the sound
+                if (effectType == EntityKeys.EffectType.Explosion)
+                {
+                    AudioManager.PlaySound(AudioManager.SoundKey.Explosion);
+                }
+
+                // Mine range detection logic
+                if (parameters.TryGetValue("explosionSource", out var sourceObj) &&
+                    sourceObj as string == "Mine" &&
+                    parameters.TryGetValue("explosionRadius", out var radiusObj) &&
+                    radiusObj is float radius)
+                {
+                    DetectDestructibleBlocks(spawnPosition, radius, gameManager);
                 }
             }
-        }
 
+            private void DetectDestructibleBlocks(Vector2 center, float radius, GameManager gm)
+            {
+                float radiusSquared = radius * radius;
+
+                foreach (var entity in gm.GetEntities().Values)
+                {
+                    if (entity is PushableDestructibleBlock block &&
+                        !block.IsDestroyed &&
+                        IsInExplosionRange(block.GetPosition(), center, radiusSquared))
+                    {
+                        block.Destroy("Mine");
+                    }
+
+                    if (entity is FlammableBlock block1 &&
+                        !block1.IsDestroyed &&
+                        IsInExplosionRange(block1.GetPosition(), center, radiusSquared))
+                    {
+                        block1.Destroy("Mine");
+                        block1.Ignite();
+                    }
+                }
+            }
+
+            private bool IsInExplosionRange(Vector2 blockPos, Vector2 explosionCenter, float radiusSquared)
+            {
+                Vector2 offset = blockPos - explosionCenter;
+                return offset.LengthSquared() <= radiusSquared;
+            }
+        }
     }
 }

@@ -37,6 +37,8 @@ namespace Sprint0
             CoconutTree,
             SmallBarrel,
             Boarder,
+            Tree1,
+            Tree2,
         }
         private ContentManager content;
         private float timer;

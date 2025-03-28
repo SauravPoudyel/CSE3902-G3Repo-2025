@@ -58,6 +58,8 @@ namespace Sprint0
                 {"DestroyFlammableCommand", new CollisionCommands.DestroyFlammableCommand()},
                 {"AutoDestroy", new ActionCommands.AutoDestroyCommand()},
 
+                {"DestroyDestructible", new CollisionCommands.DestroyDestructibleCommand()},
+
                 {"AudioMute", new AudioCommands.AudioMuteCommand()},
                 {"AudioDrive", new AudioCommands.AudioDriveCommand()},
                 {"AudioIncrease", new AudioCommands.AudioIncreaseCommand()},
