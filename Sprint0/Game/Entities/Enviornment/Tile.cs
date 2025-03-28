@@ -37,6 +37,15 @@ namespace Sprint0
             Water,
             ItemSpawn,
             PineForest,
+            RaisedGrassBotLeft, 
+            RaisedGrassBotMid,
+            RaisedGrassBotRight, 
+            RaisedGrassTopLeft, 
+            RaisedGrassTopMid,
+            RaisedGrassTopRight,
+            RaisedGrassMidLeft,
+            RaisedGrassMidMid,
+            RaisedGrassMidRight
         }
 
         private TileType tileType;
@@ -143,6 +152,33 @@ namespace Sprint0
                     break;
                 case TileType.PineForest:
                     sprite.LoadContent(content, "TDTanksAllSprites", 128, 1640, 128, 128, 1);
+                    break;
+                case TileType.RaisedGrassTopLeft:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 1952, 0, 128, 128, 1);
+                    break;
+                case TileType.RaisedGrassTopMid:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 2080, 0, 128, 128, 1);
+                    break;
+                case TileType.RaisedGrassTopRight:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 2208, 0, 128, 128, 1);
+                    break;
+                case TileType.RaisedGrassMidLeft:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 1952, 128, 128, 128, 1);
+                    break;
+                case TileType.RaisedGrassMidMid:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 2080, 128, 128, 128, 1);
+                    break;
+                case TileType.RaisedGrassMidRight:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 2208, 128, 128, 128, 1);
+                    break;
+                case TileType.RaisedGrassBotLeft:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 1952, 256, 128, 128, 1);
+                    break;
+                case TileType.RaisedGrassBotMid:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 2080, 256, 128, 128, 1);
+                    break;
+                case TileType.RaisedGrassBotRight:
+                    sprite.LoadContent(content, "TDTanksAllSprites", 2208, 256, 128, 128, 1);
                     break;
             }
         }

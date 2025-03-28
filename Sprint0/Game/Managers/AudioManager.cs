@@ -9,7 +9,7 @@ namespace Sprint0
 {
     public static class AudioManager
     {
-        public enum SoundKey { Shoot, Explosion, PowerUp, SniperFire, Dialogue, Drive }
+        public enum SoundKey { Shoot, Explosion, PowerUp, SniperFire, Dialogue, Drive, FixDeath }
         public enum MusicKey { Background }
 
         private static SoundEffectPlayer soundEffectPlayer = new SoundEffectPlayer();
@@ -115,6 +115,7 @@ namespace Sprint0
                 LoadSound(SoundKey.SniperFire, "sniper_fire.wav");
                 LoadSound(SoundKey.Dialogue, "dialogue.wav");
                 LoadSound(SoundKey.Drive, "driving.wav"); 
+                LoadSound(SoundKey.FixDeath, "fix_death.wav");
             }
 
             private void LoadSound(SoundKey key, string fileName)
