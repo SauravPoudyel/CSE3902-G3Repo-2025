@@ -4,6 +4,6 @@ Grass,VerticalGrassRoad,Grass,Grass,Grass,Grass,Grass,Grass,VerticalGrassRoad,Gr
 Grass,VerticalGrassRoad,Grass,Grass,Grass,Grass,Grass,Grass,VerticalGrassRoad,Grass,VerticalGrassRoad,LeftGrassRightSand,Sand,Sand,Sand
 Grass,BottomLeftGrassCurve,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,GrassCrossroad,Grass,VerticalGrassRoad,LeftGrassRightSand,Sand,Sand,Sand
 Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,VerticalGrassRoad,Grass,VerticalGrassRoad,LeftGrassRightSand,Sand,Sand,Sand
-Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,VerticalGrassRoad,Grass,VerticalGrassRoad,LeftGrassRightSand,Sand,Sand,Sand
-Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,BottomLeftGrassCurve,HorizontalGrassRoad,BottomRightGrassCurve,LeftGrassRightSand,Sand,Sand,Sand
-Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,LeftGrassRightSand,Sand,Sand,Sand
+Grass,RaisedGrassTopLeft,RaisedGrassTopMid,RaisedGrassTopRight,Grass,Grass,Grass,Grass,VerticalGrassRoad,Grass,VerticalGrassRoad,LeftGrassRightSand,Sand,Sand,Sand
+Grass,RaisedGrassMidLeft,RaisedGrassMidMid,RaisedGrassMidRight,Grass,Grass,Grass,Grass,BottomLeftGrassCurve,HorizontalGrassRoad,BottomRightGrassCurve,LeftGrassRightSand,Sand,Sand,Sand
+Grass,RaisedGrassBotLeft,RaisedGrassBotMid,RaisedGrassBotRight,Grass,Grass,Grass,Grass,Grass,Grass,Grass,LeftGrassRightSand,Sand,Sand,Sand

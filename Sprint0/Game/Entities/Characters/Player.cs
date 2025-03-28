@@ -73,8 +73,8 @@ namespace Sprint0
         public override void OnDeath()
         {
             base.OnDeath();
-            var parameters2 = new Dictionary<string, object>();
-            commandQueue.Enqueue(new CommandRequest("Reset", parameters2));
+            Dictionary<string, object> parameters2 = new Dictionary<string, object>{{ "player", this }};
+            commandQueue.Enqueue(new CommandRequest("PlayerDeath", parameters2));
         }
 
         public void MoveLevel(int levelNum) {
@@ -89,19 +89,25 @@ namespace Sprint0
             timeSinceLastShot += Globals.PLAYERFRAMETIME;
             currentShootInterval = currentShootInterval / Globals.PlayerData.GetInt("FireRateModifier");
 
-            // Use dedicated rotation input
-            float turnSpeed = 1.5f; // Tweak for responsiveness
+            float turnSpeed = 1.5f;
             bodyRotation += rotationInput * turnSpeed * Globals.PLAYERFRAMETIME;
 
             Vector2 forwardDirection = new Vector2((float)Math.Sin(bodyRotation), -(float)Math.Cos(bodyRotation));
-            float forwardSpeed = velocity.Y * Globals.PlayerData.GetInt("SpeedModifier"); // Use velocity.Y directly for both forward and backward movement
-
-
+            float forwardSpeed = velocity.Y * Globals.PlayerData.GetInt("SpeedModifier");
             position += forwardDirection * forwardSpeed * speedMultiplier * Globals.PLAYERFRAMETIME;
 
+            // Enqueue audio drive command
+            float maxSpeed = 100f;
+            Dictionary<string, object> driveParams = new Dictionary<string, object>
+            {
+                { "currentSpeed", Math.Abs(forwardSpeed) },
+                { "maxSpeed", maxSpeed }
+            };
+            commandQueue.Enqueue(new CommandRequest("AudioDrive", driveParams));
+
             CalculateBounds(spriteWidth, spriteHeight);
-            
-            if(TrackTrailsEnabled)
+
+            if (TrackTrailsEnabled)
                 TrackTrail.UpdateTrackTrails(trackTrailList, Globals.PLAYERFRAMETIME, position, bodyRotation, trackTrailSprite, ref trackTrailSpawnTimer, trackTrailSpawnInterval);
 
             if (Math.Abs(forwardSpeed) > 0.1f)
@@ -114,14 +120,14 @@ namespace Sprint0
             }
 
             PowerUpFactory.UpdateEffects(this);
-            cannon.Update(); 
+            cannon.Update();
 
-            if(shieldActive)
-                effectSprite.Update(); 
+            if (shieldActive)
+                effectSprite.Update();
 
-            // Reset rotation input after applying it.
             rotationInput = 0f;
         }
+
 
         public override void FireProjectile()
         {
@@ -155,7 +161,7 @@ namespace Sprint0
                 cannon.TriggerFiringEffect();
                 
             timeSinceLastShot = 0f;
-            AudioManager.PlaySound(AudioManager.SoundKey.Shoot);
+            AudioManager.PlaySound(AudioManager.SoundKey.Shoot, 0.5f);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
