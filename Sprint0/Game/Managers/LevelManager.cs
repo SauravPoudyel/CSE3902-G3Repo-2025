@@ -62,22 +62,23 @@ namespace Sprint0
             // Level moving logic
             if(entities.ContainsKey("player")) {
                 Player player = (Player)entities["player"];
-                if(player.GetPosition().Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top) 
+                Vector2 playerPosition = player.GetPosition();
+                if(playerPosition.Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top) 
                 && activeLevel.GetConnectedLevel(Level.Direction.Top).Unlocked) {
-                    player.SetPosition(new Vector2(player.GetPosition().X, 1080));
                     player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Top).LevelNumber);
-                } else if(player.GetPosition().Y > 1080 && activeLevel.HasConnectedLevel(Level.Direction.Bottom) 
+                    player.SetPosition(new Vector2(playerPosition.X, 1080));
+                } else if(playerPosition.Y > 1080 && activeLevel.HasConnectedLevel(Level.Direction.Bottom) 
                 && activeLevel.GetConnectedLevel(Level.Direction.Bottom).Unlocked) {
-                    player.SetPosition(new Vector2(player.GetPosition().X, 0));
                     player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Bottom).LevelNumber);
-                } else if(player.GetPosition().X < 0 && activeLevel.HasConnectedLevel(Level.Direction.Left) 
+                    player.SetPosition(new Vector2(playerPosition.X, 0));
+                } else if(playerPosition.X < 0 && activeLevel.HasConnectedLevel(Level.Direction.Left) 
                 && activeLevel.GetConnectedLevel(Level.Direction.Left).Unlocked) {
-                    player.SetPosition(new Vector2(1920,player.GetPosition().Y));
                     player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Left).LevelNumber);
-                } else if(player.GetPosition().X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right) 
+                    player.SetPosition(new Vector2(1920,playerPosition.Y));
+                } else if(playerPosition.X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right) 
                 && activeLevel.GetConnectedLevel(Level.Direction.Right).Unlocked) {
-                    player.SetPosition(new Vector2(0,player.GetPosition().Y));
                     player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Right).LevelNumber);
+                    player.SetPosition(new Vector2(0,playerPosition.Y));
                 }
             }
         }

@@ -40,6 +40,7 @@ namespace Sprint0
                 EntityKeys.BlockType.DeadTree => (128, 512, 128, 128, 1f),
                 EntityKeys.BlockType.Garage => (869, 1864, 88, 120, 1.5f),
                 EntityKeys.BlockType.CoconutTree => (774, 2748, 120, 120, 1f),
+                EntityKeys.BlockType.Boarder => (2872, 0, 120, 120, 1f),
                 _ => throw new System.ArgumentException($"Invalid BlockSpriteKey: {blockType}")
             };
         }

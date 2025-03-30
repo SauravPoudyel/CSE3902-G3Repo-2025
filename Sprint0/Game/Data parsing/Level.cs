@@ -100,35 +100,26 @@ namespace Sprint0 {
         }
         public void UnlockConnectedLevel(Direction direction)
         {
-            float halfTile = tileSize / 2f;
-
-            // Find and remove fences based on direction
             List<BaseBlock> fencesToRemove = perimeter.FindAll(fence =>
             {
                 Vector2 pos = fence.GetPosition();
-
                 switch (direction)
                 {
                     case Direction.Top:
-                        return Math.Abs(pos.Y - 0) < halfTile;
+                        return pos.Y < 0;
                     case Direction.Bottom:
-                        return Math.Abs(pos.Y - (9 * tileSize)) < halfTile;
+                        return pos.Y > tileSize * 9;
                     case Direction.Left:
-                        return Math.Abs(pos.X - 0) < halfTile;
+                        return pos.X < 0;
                     case Direction.Right:
-                        return Math.Abs(pos.X - (16 * tileSize)) < halfTile;
+                        return pos.X > tileSize * 16;
                     default:
                         return false;
                 }
             });
-
-            // Remove from perimeter and block list
             foreach (var fence in fencesToRemove)
             {
                 perimeter.Remove(fence);
-                blocksList.Remove(fence);
-                
-                // Remove from entities using the correct entity key
                 if (entities.ContainsKey(fence.EntityKey))
                 {
                     entities.Remove(fence.EntityKey);
@@ -174,34 +165,31 @@ namespace Sprint0 {
             blocksList.Add(newBlock);
             entities.Add(newBlock.EntityKey, newBlock);
         }
-
+        
         public void InitializePerimeter(ContentManager content)
         {
-            float halfTile = tileSize / 2f; // Offset to move fences to the edges
-
-            for (int x = 0; x < 16; x++)
-            {
-                // Top fence (align to the top edge)
-                AddPerimeterBlock(content, new Vector2(x * tileSize + halfTile, 0), 0);
-                // Bottom fence (align to the bottom edge)
-                AddPerimeterBlock(content, new Vector2(x * tileSize + halfTile, 9 * tileSize), 0);
+            perimeter.Clear();
+            for (int x = -1; x < 16; x++) {
+                if(!this.HasConnectedLevel(Direction.Top) || !this.GetConnectedLevel(Direction.Top).Unlocked)
+                    AddPerimeterBlock(content, new Vector2(x, -1));
+                if(!this.HasConnectedLevel(Direction.Bottom) || !this.GetConnectedLevel(Direction.Bottom).Unlocked)
+                    AddPerimeterBlock(content, new Vector2(x, 9));
             }
-            for (int y = 0; y < 9; y++)
-            {
-                // Left fence (align to the left edge)
-                AddPerimeterBlock(content, new Vector2(0, y * tileSize + halfTile), 90);
-                // Right fence (align to the right edge)
-                AddPerimeterBlock(content, new Vector2(16 * tileSize, y * tileSize + halfTile), 90);
+            for (int y = -1; y < 9; y++){
+                if(!this.HasConnectedLevel(Direction.Left) || !this.GetConnectedLevel(Direction.Left).Unlocked)
+                    AddPerimeterBlock(content, new Vector2(-1, y));
+                if(!this.HasConnectedLevel(Direction.Right) || !this.GetConnectedLevel(Direction.Right).Unlocked)
+                    AddPerimeterBlock(content, new Vector2(16, y));
             }
         }
 
-        private void AddPerimeterBlock(ContentManager content, Vector2 position, float rotation)
+        private void AddPerimeterBlock(ContentManager content, Vector2 position)
         {
-            BaseBlock fence = BlockFactory.CreateBlock(BlockType.Fence, content, position, 0.3f);
-            fence.Rotation = MathHelper.ToRadians(rotation);
-            perimeter.Add(fence);
-            blocksList.Add(fence); // Also add to the main block list
-            entities.Add(fence.EntityKey, fence);
+            Vector2 worldPosition = (position * tileSize) + new Vector2(tileSize / 2, tileSize / 2);
+            BaseBlock perimeterBlock = BlockFactory.CreateBlock(BlockType.Boarder, content, worldPosition, 0.3f);
+            perimeter.Add(perimeterBlock);
+            perimeterBlock.EntityKey = "perimeterBlock_" + perimeter.Count;
+            entities.Add(perimeterBlock.EntityKey, perimeterBlock);
         }
     }
 }
