@@ -30,7 +30,7 @@ namespace Sprint0
         }
     }
 
-    public class Shop
+    public class Shop : IScreen
     {
         Game1 game;
         private List<ShopItem> shopItems;
@@ -42,18 +42,19 @@ namespace Sprint0
         private Texture2D background;
         private Rectangle windowRectangle;
         private MouseState previousMouseState;
+        public bool BlocksInput => true; 
 
         public Shop(Game1 game)
         {
             this.game = game;
             shopItems = new List<ShopItem>();
             filteredItems = new List<ShopItem>();
-            categories = new List<string> { "All", "Weapons", "Armor", "Consumables" };
-            selectedCategory = "All";
+            categories = new List<string> { "Ammo", "permanent" };
+            selectedCategory = "Ammo";
             selectedIndex = -1;
             previousMouseState = Mouse.GetState();            
 
-            int width = Globals.SCREENWIDTH/2;
+            int width = Globals.SCREENWIDTH/4;
             int height = Globals.SCREENHEIGHT/2;
             int x = (Globals.SCREENWIDTH - width) / 2;
             int y = (Globals.SCREENHEIGHT - height) / 2;
@@ -76,11 +77,11 @@ namespace Sprint0
             Rectangle mineRect = new Rectangle(0, 280, 40, 40);
 
             // Add shop items.
-            shopItems.Add(new ShopItem("Sniper Rifle", 100, sheet, sniperRect, "Weapons", 3));
-            shopItems.Add(new ShopItem("Rocket Launcher", 150, sheet, rocketRect, "Weapons", 1));
-            shopItems.Add(new ShopItem("Shotgun", 75, sheet, shotgunRect, "Weapons", 5));
-            shopItems.Add(new ShopItem("Teleporter", 200, sheet, teleporterRect, "Consumables", 1));
-            shopItems.Add(new ShopItem("Mine", 50, sheet, mineRect, "Consumables", 1));
+            shopItems.Add(new ShopItem("Sniper Rifle", 100, sheet, sniperRect, "Ammo", 3));
+            shopItems.Add(new ShopItem("Rocket Launcher", 150, sheet, rocketRect, "Ammo", 1));
+            shopItems.Add(new ShopItem("Shotgun", 75, sheet, shotgunRect, "Ammo", 5));
+            shopItems.Add(new ShopItem("Teleporter", 200, sheet, teleporterRect, "Ammo", 1));
+            shopItems.Add(new ShopItem("Mine", 50, sheet, mineRect, "Ammo", 1));
             shopItems.Sort((a, b) => a.Name.CompareTo(b.Name));
 
 

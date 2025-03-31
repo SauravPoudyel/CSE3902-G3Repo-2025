@@ -22,6 +22,5 @@ SmallEnemyKilled, 0
 StealthTanksKileld, 0
 SwarmingTankKilled, 0
 TurretKilled, 0
-HasSeenTutorial, 0
+HasSeenTutorial, 1
 HasSeenShopTutorial, 0
-
