@@ -12,3 +12,6 @@ Level9,9,Level7,,,Level10,
 Level10,10,Level8,,Level9,Level12,
 Level11,11,Level5,Level8,,,
 Level12,12,,,Level10,,
+Level2,2,,Level3,,Level1,Level1
+Level3,3,Level2,,,Level4,Level2
+Level4,4,Level1,,Level3,,Level3

@@ -10,6 +10,7 @@ namespace Sprint0 {
     {
         public enum Direction { Top, Bottom, Left, Right }  
         private Dictionary<Direction, Level> connectedLevels;  
+        private Level prereqLevel;
         public int tileSize = 120;
         private int levelNumber;
         private bool unlocked;
@@ -21,7 +22,7 @@ namespace Sprint0 {
         private Player player;
         private List<Item> itemsList;
         private List<Mob> enemiesList;
-        
+        private List<BaseBlock> perimeter;
         public Dictionary<string, Entity> Entities 
         {
             get { return entities; }
@@ -47,6 +48,11 @@ namespace Sprint0 {
             get { return loaded; }
             set { loaded = value; }
         }
+        public Level PrereqLevel 
+        {
+            get { return prereqLevel; }
+            set { prereqLevel = value; }
+        }
         public Dictionary<Direction, Level> ConnectedLevels   
         {
             get { return connectedLevels; }
@@ -58,14 +64,24 @@ namespace Sprint0 {
             unlocked = true;
             loaded = false;
             levelNumber = 1;
+            prereqLevel = null;
             tilesList = new List<Tile>();
             entities = new Dictionary<string, Entity>();
             blocksList = new List<BaseBlock>();
             itemsList = new List<Item>();
             enemiesList = new List<Mob>();
             connectedLevels = new Dictionary<Direction, Level>();
+            perimeter = new List<BaseBlock>();
         }
-        public List<Mob> GetLevelEnemies() => enemiesList;
+        public bool HasEnemies() {
+            bool hasEnemies = false;
+            foreach(Entity entity in entities.Values) {
+                if(entity is Mob) {
+                    hasEnemies = true;
+                }
+            }
+            return hasEnemies;
+        }
         public List<Tile> GetLevelTiles => tilesList;
         public void AddConnectedLevel(Direction direction, Level level)
         {
@@ -81,6 +97,34 @@ namespace Sprint0 {
         public bool HasConnectedLevel(Direction direction)
         {
             return connectedLevels.ContainsKey(direction);
+        }
+        public void UnlockConnectedLevel(Direction direction)
+        {
+            List<BaseBlock> fencesToRemove = perimeter.FindAll(fence =>
+            {
+                Vector2 pos = fence.GetPosition();
+                switch (direction)
+                {
+                    case Direction.Top:
+                        return pos.Y < 0;
+                    case Direction.Bottom:
+                        return pos.Y > tileSize * 9;
+                    case Direction.Left:
+                        return pos.X < 0;
+                    case Direction.Right:
+                        return pos.X > tileSize * 16;
+                    default:
+                        return false;
+                }
+            });
+            foreach (var fence in fencesToRemove)
+            {
+                perimeter.Remove(fence);
+                if (entities.ContainsKey(fence.EntityKey))
+                {
+                    entities.Remove(fence.EntityKey);
+                }
+            }
         }
         public void AddTile(ContentManager content, Tile.TileType tileType, Vector2 position)
         {
@@ -120,6 +164,32 @@ namespace Sprint0 {
             newBlock.EntityKey = "block_" + blocksList.Count + "_" + blockType.ToString();
             blocksList.Add(newBlock);
             entities.Add(newBlock.EntityKey, newBlock);
+        }
+        
+        public void InitializePerimeter(ContentManager content)
+        {
+            perimeter.Clear();
+            for (int x = -1; x < 16; x++) {
+                if(!this.HasConnectedLevel(Direction.Top) || !this.GetConnectedLevel(Direction.Top).Unlocked)
+                    AddPerimeterBlock(content, new Vector2(x, -1));
+                if(!this.HasConnectedLevel(Direction.Bottom) || !this.GetConnectedLevel(Direction.Bottom).Unlocked)
+                    AddPerimeterBlock(content, new Vector2(x, 9));
+            }
+            for (int y = -1; y < 9; y++){
+                if(!this.HasConnectedLevel(Direction.Left) || !this.GetConnectedLevel(Direction.Left).Unlocked)
+                    AddPerimeterBlock(content, new Vector2(-1, y));
+                if(!this.HasConnectedLevel(Direction.Right) || !this.GetConnectedLevel(Direction.Right).Unlocked)
+                    AddPerimeterBlock(content, new Vector2(16, y));
+            }
+        }
+
+        private void AddPerimeterBlock(ContentManager content, Vector2 position)
+        {
+            Vector2 worldPosition = (position * tileSize) + new Vector2(tileSize / 2, tileSize / 2);
+            BaseBlock perimeterBlock = BlockFactory.CreateBlock(BlockType.Boarder, content, worldPosition, 0.3f);
+            perimeter.Add(perimeterBlock);
+            perimeterBlock.EntityKey = "perimeterBlock_" + perimeter.Count;
+            entities.Add(perimeterBlock.EntityKey, perimeterBlock);
         }
     }
 }
