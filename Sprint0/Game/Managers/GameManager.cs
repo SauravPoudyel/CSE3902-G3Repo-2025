@@ -15,6 +15,10 @@ namespace Sprint0
         private SpriteManager spriteManager;
         private ContentManager content;
         private LevelManager levelManager;
+        public LevelManager LevelManager
+        {
+            get { return levelManager; }
+        }
         public ScreenManager screenManager { get; private set; }
         public EventManager eventManager { get; private set; }
         public Game1 Game { get; private set; }

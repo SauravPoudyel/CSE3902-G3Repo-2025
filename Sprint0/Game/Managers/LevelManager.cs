@@ -10,6 +10,10 @@ namespace Sprint0
 {
     public class LevelManager {
         private Level activeLevel;
+        public Level ActiveLevel
+        {
+            get { return activeLevel; }
+        }
         private Dictionary<string, Level> levels;
         public LevelManager() {
             activeLevel = new Level();

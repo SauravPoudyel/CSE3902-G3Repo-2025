@@ -36,7 +36,7 @@ namespace Sprint0
             SandShipWreckage,
             Water,
             ItemSpawn,
-            PineForest,
+            PineForest
         }
 
         private TileType tileType;

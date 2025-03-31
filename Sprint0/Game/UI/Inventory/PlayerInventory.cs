@@ -23,9 +23,7 @@ namespace Sprint0
             hudElements.Add(new HealthHUD(content.Load<Texture2D>("UI/HealthIcon")));
             hudElements.Add(new AmmoHUD(content.Load<Texture2D>("UI/AmmoIcon")));
             hudElements.Add(new CoinHUD(content.Load<Texture2D>("PickupItemSpritesheet2")));
-            hudElements.Add(new KillCountHUD(game.GameManager, content.Load<Texture2D>("UI/KillCountHUDIcon")));
-
-
+            hudElements.Add(new KillCountHUD(game.GameManager, content.Load<Texture2D>("UI/KillCountHUDIcon"), content.Load<Texture2D>("2DTanksSprites")));
             paramters = new Dictionary<string, object>
             {
                 { "gameManager", game.GameManager },
