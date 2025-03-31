@@ -33,7 +33,9 @@ namespace Sprint0
 
                 // Pushable Blocks
                 { EntityKeys.BlockType.Box, CreatePushableBlock },
-                { EntityKeys.BlockType.SmallBarrel, CreatePushableBlock },
+
+                // PushableDestructible Blocks
+                { EntityKeys.BlockType.SmallBarrel, CreatePushableDestructibleBlock },
 
                 // Flammable Blocks
                 { EntityKeys.BlockType.Barrel, CreateFlammableBlock },
@@ -61,5 +63,8 @@ namespace Sprint0
 
         private static BaseBlock CreateFlammableBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime) =>
             new FlammableBlock(content, blockType, frameTime);
+
+        private static BaseBlock CreatePushableDestructibleBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime) =>
+            new PushableDestructibleBlock(content, blockType, frameTime);
     }
 }

@@ -1,5 +1,9 @@
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Sprint0
 {
@@ -121,6 +125,37 @@ namespace Sprint0
                 {
                     gameManager.LevelNumber = levelNum;
                     gameManager.UpdateLevel();
+                }
+            }
+        }
+
+        public class PlayerDeathCommand : ICommand
+        {
+            public async void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("player") && parameters["player"] is Player player)
+                {
+                    // Fade the screen to black over 2 seconds.
+                    ScreenFader.FadeToBlack(2f);
+                    
+                    await Task.Delay(2000); // Wait 2 seconds to allow fade to complete.
+                    Thread.Sleep(600); //wait an extra 0.6 seconds
+                    gameManager.DayNightCycle.AdvanceDayNightCycle(0.5f);
+                    AudioManager.PlaySound(AudioManager.SoundKey.FixDeath); 
+
+                    gameManager.LevelNumber = 2;
+                    gameManager.UpdateLevel();
+
+                    // Update the player
+                    int maxHealth = Globals.PlayerData.GetInt("MaxHealth");
+                    Globals.PlayerData.UpdateVariable("Health", maxHealth);
+                    player.SetPosition(new Vector2(700, 700));
+
+                    await Task.Delay(1500);
+                    
+                    ScreenFader.FadeToNormal(1.5f);
+     
                 }
             }
         }
