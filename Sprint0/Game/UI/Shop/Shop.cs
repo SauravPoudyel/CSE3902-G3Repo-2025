@@ -75,6 +75,8 @@ namespace Sprint0
             Rectangle shotgunRect = new Rectangle(0, 120, 40, 40);
             Rectangle teleporterRect = new Rectangle(0, 680, 40, 40);
             Rectangle mineRect = new Rectangle(0, 280, 40, 40);
+            Rectangle fireRate = new Rectangle(0, 360, 40, 40);
+            Rectangle speed = new Rectangle(0, 840, 40, 40);
 
             // Add shop items.
             shopItems.Add(new ShopItem("Sniper Rifle", 100, sheet, sniperRect, "Ammo", 3));
@@ -82,6 +84,9 @@ namespace Sprint0
             shopItems.Add(new ShopItem("Shotgun", 75, sheet, shotgunRect, "Ammo", 5));
             shopItems.Add(new ShopItem("Teleporter", 200, sheet, teleporterRect, "Ammo", 1));
             shopItems.Add(new ShopItem("Mine", 50, sheet, mineRect, "Ammo", 1));
+            shopItems.Add(new ShopItem("Fire Rate", 1000, sheet, fireRate, "permanent", 1));
+            shopItems.Add(new ShopItem("Speed", 1000, sheet, speed, "permanent", 1));
+
             shopItems.Sort((a, b) => a.Name.CompareTo(b.Name));
 
 
@@ -207,6 +212,14 @@ namespace Sprint0
                 case "Mine" when Globals.PlayerData.GetInt("Coins") >= item.Price:
                     Globals.PlayerData.SetInt("Coins", Globals.PlayerData.GetInt("Coins") - item.Price);
                     Globals.PlayerData.SetInt("AmmoMine", Globals.PlayerData.GetInt("AmmoMine") + item.Amount);
+                    break;
+                case "Fire Rate" when Globals.PlayerData.GetInt("Coins") >= item.Price:
+                    Globals.PlayerData.SetInt("Coins", Globals.PlayerData.GetInt("Coins") - item.Price);
+                    Globals.PlayerData.SetInt("FireRateModifier", Globals.PlayerData.GetInt("FireRateModifier") + item.Amount);
+                    break;
+                case "Speed" when Globals.PlayerData.GetInt("Coins") >= item.Price:
+                    Globals.PlayerData.SetInt("Coins", Globals.PlayerData.GetInt("Coins") - item.Price);
+                    Globals.PlayerData.SetInt("SpeedModifier", Globals.PlayerData.GetInt("SpeedModifier") + item.Amount);
                     break;
                 default:
                     break;
