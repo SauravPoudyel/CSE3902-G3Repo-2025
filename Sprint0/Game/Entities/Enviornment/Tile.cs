@@ -55,7 +55,6 @@ namespace Sprint0
             RaisedSandMidLeft,
             RaisedSandMidMid,
             RaisedSandMidRight
-
         }
 
         private TileType tileType;
