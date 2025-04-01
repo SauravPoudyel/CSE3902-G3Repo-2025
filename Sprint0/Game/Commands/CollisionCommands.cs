@@ -140,5 +140,16 @@ namespace Sprint0
                 }
             }
         }
+
+        public class DestroyDestructibleCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("target") && parameters["target"] is IDestructible destructibleBlock && parameters.ContainsKey("actor") && parameters["actor"] is MineProjectile mine)
+                {
+                    destructibleBlock.Destroy();
+                }
+            }
+        }
     }
 }

@@ -29,6 +29,11 @@ namespace Sprint0
             previousMouseState = mouseState;
         }
 
+        public void UpdateText(string updateText)
+        {
+            this.text = updateText;
+        }
+
         override public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, bounds, Color.White);

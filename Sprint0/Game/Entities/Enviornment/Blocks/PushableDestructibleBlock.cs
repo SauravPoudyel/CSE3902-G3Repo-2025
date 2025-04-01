@@ -1,30 +1,38 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Sprint0
 {
-    public class FlammableBlock : BaseBlock, IObtuse, IFlammable, IDestructible, IRigid
+    public class PushableDestructibleBlock : BaseBlock, IObtuse, IPushable, IDestructible
     {
+        private Vector2 velocity;
+        private const float Friction = 0.9f;
+        private const float PushForce = 256f;
         public bool IsDestroyed { get; private set; }
-        public bool IsIgnited { get; private set; }
 
-        public FlammableBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime = 0.3f)
+        public PushableDestructibleBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime = 0.3f)
         {
+            animatedSprite = new AnimatedSprite(frameTime);
             LoadBlockContent(content, blockType);
+            SetFrameTime(frameTime);
         }
 
         public override void LoadBlockContent(ContentManager content, EntityKeys.BlockType blockType)
         {
-            animatedSprite = new AnimatedSprite(frameTime);
+            if (animatedSprite == null)
+                animatedSprite = new AnimatedSprite(frameTime);
 
             var (x, y, width, height, texture, scale) = GetSpriteCoords(blockType);
-            Scale = scale; // this gets aplied in draw
+            Scale = scale;
             animatedSprite.LoadContent(content, texture, x, y, width, height, 1);
 
-            spriteWidth = width;
             spriteHeight = height;
+            spriteWidth = width;
             UpdateBounds();
         }
 
@@ -32,9 +40,7 @@ namespace Sprint0
         {
             return blockType switch
             {
-                EntityKeys.BlockType.Barrel => (485, 1523, 80, 99, "2DTanksSprites", 0.7f),
-                EntityKeys.BlockType.RedBarrel => (485, 1622, 80, 99, "2DTanksSprites", 0.7f),
-                EntityKeys.BlockType.Oil => (524, 1024, 100, 100, "TDTanksAllSprites", 0.7f),
+                EntityKeys.BlockType.SmallBarrel => (1016, 510, 40, 56, "TDTanksAllSprites", 1f),
                 _ => throw new System.ArgumentException($"Invalid BlockSpriteKey: {blockType}")
             };
         }
@@ -46,6 +52,8 @@ namespace Sprint0
 
         public void Destroy(string source)
         {
+            if (source != "Mine" && source != null) return;
+
             if (IsDestroyed || string.IsNullOrEmpty(EntityKey)) return;
             IsDestroyed = true;
 
@@ -62,22 +70,31 @@ namespace Sprint0
             }));
         }
 
-        public void Ignite()
+        public void Push(Vector2 direction)
         {
-            if (IsIgnited || string.IsNullOrEmpty(EntityKey)) return;
-            IsIgnited = true;
+            if(IsDestroyed || direction == Vector2.Zero) return;
 
-            var effectParams2 = new Dictionary<string, object>
-            {
-                { "spawnPosition", position },
-                { "effectType", EntityKeys.EffectType.Fire },
-            };
-            commandQueue.Enqueue(new CommandRequest("SpawnEffect", effectParams2));
+            direction.Normalize();
+            velocity = direction * PushForce;
+        }
 
-            commandQueue.Enqueue(new CommandRequest("DestroyEntity", new Dictionary<string, object>
-            {
-                { "destroyEntity", EntityKey }
-            }));
+        public override void Update()
+        {
+            if (IsDestroyed) return;
+
+            base.Update();
+            ApplyMovement();
+        }
+
+        private void ApplyMovement()
+        {
+            position += velocity * Globals.FRAMETIME;
+            velocity *= Friction;
+
+            if (velocity.Length() < 0.5f)
+                velocity = Vector2.Zero;
+
+            bounds.Location = position.ToPoint();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Sprint0
 {
     public class PauseMenu : IScreen
     {
-        private List<Button> buttons;
+        private Dictionary<string, textButton> buttons;
         private Color overlayColor;
         private ContentManager content;
         private GraphicsDevice graphicsDevice;
@@ -20,7 +20,7 @@ namespace Sprint0
         {
             this.content = content;
 
-            buttons = new List<Button>();
+            buttons = new Dictionary<string, textButton>();
             overlayColor = new Color(0, 0, 0, 180);
 
             SpriteFont font = Globals.FONT;
@@ -32,14 +32,14 @@ namespace Sprint0
                 { "gameManager", game.GameManager },
                 { "game", game }
             };
-            Button restartButton = new textButton(buttonTexture,
+            textButton restartButton = new textButton(buttonTexture,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 140, 150, 40),
                 "Restart", new GameCommands.ResetCommand(), gameParams);
-            Button menuButton = new textButton(buttonTexture,
+            textButton menuButton = new textButton(buttonTexture,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 20, 150, 40),
                 "Main Menu", new GameCommands.ResetCommand(), gameParams);
-            Button quitButton = new textButton(buttonTexture,
-                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 + 100, 150, 40),
+            textButton quitButton = new textButton(buttonTexture,
+                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 + 160, 150, 40),
                 "Quit", new GameCommands.QuitCommand(), gameParams);
 
             Dictionary<string, object> screenParams = new Dictionary<string, object>
@@ -48,41 +48,53 @@ namespace Sprint0
                 { "screen", this }
             };
             // Note: The Start button uses "StartGameCommand" to remove the start menu.
-            Button resumeButton = new textButton(buttonTexture,
+            textButton resumeButton = new textButton(buttonTexture,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 80, 150, 40),
                 "Resume", new GameCommands.StartGameCommand(), screenParams);
 
-            Button increaseLevelButton = new textButton(buttonTexture,
+            textButton increaseLevelButton = new textButton(buttonTexture,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75 + 160, Globals.SCREENHEIGHT / 2 + 40, 40, 40),
                 "+", new GameCommands.IncreaseLevelCommand(), screenParams);
-            Button decreaseLevelButton = new textButton(buttonTexture,
+            textButton decreaseLevelButton = new textButton(buttonTexture,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75 - 50, Globals.SCREENHEIGHT / 2 + 40, 40, 40),
                 "-", new GameCommands.DecreaseLevelCommand(), screenParams);
-
-            Button levelButton = new textButton(buttonTexture,
+            textButton levelButton = new textButton(buttonTexture,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 + 40, 150, 40),
                 "Level: " + game.GameManager.LevelNumber.ToString(), null, screenParams);
 
-            buttons.Add(restartButton);
-            buttons.Add(menuButton);
-            buttons.Add(quitButton);
-            buttons.Add(resumeButton);
-            buttons.Add(levelButton);
-            buttons.Add(decreaseLevelButton);
-            buttons.Add(increaseLevelButton);
+            textButton increaseVolumeButton = new textButton(buttonTexture,
+                new Rectangle(Globals.SCREENWIDTH / 2 - 75 + 160, Globals.SCREENHEIGHT / 2 + 100, 40, 40),
+                "+", new AudioCommands.AudioIncreaseCommand(), screenParams);
+            textButton decreaseVolumeButton = new textButton(buttonTexture,
+                new Rectangle(Globals.SCREENWIDTH / 2 - 75 - 50, Globals.SCREENHEIGHT / 2 + 100, 40, 40),
+                "-", new AudioCommands.AudioDecreaseCommand(), screenParams);
+            textButton volumeButton = new textButton(buttonTexture,
+                new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 + 100, 150, 40),
+                "Volume: " + (int)(AudioManager.Volume * 100), new AudioCommands.AudioMuteCommand(), screenParams);
+            buttons.Add("Restart", restartButton);
+            buttons.Add("Menu", menuButton);
+            buttons.Add("Quit", quitButton);
+            buttons.Add("Resume", resumeButton);
+            buttons.Add("Level", levelButton);
+            buttons.Add("DecLevel", decreaseLevelButton);
+            buttons.Add("IncLevel", increaseLevelButton);
+            buttons.Add("Volume", volumeButton);
+            buttons.Add("DecVolume", decreaseVolumeButton);
+            buttons.Add("IncVolume", increaseVolumeButton);
         }
 
         public void Update()
         {
-            foreach (Button button in buttons)
+            foreach (textButton button in buttons.Values)
             {
                 button.Update();
             }
+            buttons.GetValueOrDefault("Volume").UpdateText("Volume: " + (AudioManager.Volume * 100));
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (Button button in buttons)
+            foreach (textButton button in buttons.Values)
             {
                 button.Draw(spriteBatch);
             }

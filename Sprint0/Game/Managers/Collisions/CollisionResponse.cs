@@ -40,6 +40,8 @@ namespace Sprint0
 
                 { new Tuple<Type, Type>(typeof(Player), typeof(Effect)), "CollisionHurt" },
 
+                { new Tuple<Type, Type>(typeof(Projectile), typeof(IDestructible)), "DestroyDestructible" },
+
             };
         }
 

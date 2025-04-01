@@ -53,22 +53,22 @@ namespace Sprint0
                     switch (projectileType)
                     {
                         case "Sniper":
-                            Globals.PlayerData.UpdateVariable("AmmoSniper");
+                            Globals.PlayerData.UpdateVariable("AmmoSniper", -1);
                             break;
                         case "Rocket":
-                            Globals.PlayerData.UpdateVariable("AmmoRocket");
+                            Globals.PlayerData.UpdateVariable("AmmoRocket", -1);
                             break;
                         case "Shotgun":
-                            Globals.PlayerData.UpdateVariable("AmmoShotgun");
+                            Globals.PlayerData.UpdateVariable("AmmoShotgun", -1);
                             break;
                         case "Mine":
-                            Globals.PlayerData.UpdateVariable("AmmoMine");
+                            Globals.PlayerData.UpdateVariable("AmmoMine", -1);
                             break;
                         case "Teleporter":
-                            Globals.PlayerData.UpdateVariable("Teleporter");
+                            Globals.PlayerData.UpdateVariable("Teleporter", -1);
                             break;
                         case "Default":  // Ensure default ammo decrements properly here too
-                            Globals.PlayerData.UpdateVariable("AmmoDefault");
+                            Globals.PlayerData.UpdateVariable("AmmoDefault", -1);
                             break;
                         default:
                             System.Console.WriteLine("Error: Invalid projectile type.");

@@ -21,11 +21,13 @@ namespace Sprint0
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Color tint = default)
         {
+            if (tint == default) tint = Color.White;
+
             if (currentSprite != null)
             {
-                currentSprite.Draw(spriteBatch, Vector2.Zero);
+                currentSprite.Draw(spriteBatch, Vector2.Zero, SpriteEffects.None, 0f, null, tint, 1);
             }
         }
         public static List<Rectangle> ExtractFrames(int startX, int startY, int frameWidth, int frameHeight, int frameCount)
