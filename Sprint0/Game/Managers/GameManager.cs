@@ -104,7 +104,6 @@ namespace Sprint0
             {
                 return;
             }
-
             // Update the day–night cycle using the elapsed time from Game.TargetElapsedTime.
             DayNightCycle.Update(Game.TargetElapsedTime);
 
@@ -113,6 +112,7 @@ namespace Sprint0
                 entity.Update();
                 eventManager.CollectCommandRequests(entity.GetCommandQueue());
             }
+            levelManager.Update(entities);
             collisionManager.Update(entities);
             spriteManager.Update();
             eventManager.ProcessCommandRequests();

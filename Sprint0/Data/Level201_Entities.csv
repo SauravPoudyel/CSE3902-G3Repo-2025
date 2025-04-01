@@ -1,0 +1,9 @@
+Block_Tree_0,,Block_DeadTree_0,,,,,,,,,,,,
+Block_Tree_0,Block_DeadTree_0,,,,,,Block_BarbedFence,,,,,,,
+,,,Block_RockPile_0,,,Block_BarbedFence,Enemy_Turret,,,,Enemy_SmallEnemy,,,
+,,,,Block_RockPileVar2_0,,,Block_BarbedFence,,,,,,,
+,,,,,,,,,,,,,Enemy_ShieldTank,Enemy_HealerTank
+,,,,,,,Block_BarbedFence,,,,,,,
+,,,,,,Block_BarbedFence,Enemy_Turret,,,,Enemy_SmallEnemy,,,
+,Block_DeadTree_0,Block_RockPile_0,,,,,Block_BarbedFence,,,,,,,
+Block_Tree_0,,Block_DeadTree_0,,,,,,,,,,,,

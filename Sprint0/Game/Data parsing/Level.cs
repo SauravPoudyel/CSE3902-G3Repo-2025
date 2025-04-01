@@ -133,10 +133,15 @@ namespace Sprint0 {
 
         public void AddPlayer(ContentManager content, Vector2 position)
         {
+            // Only create a new player if one doesn't already exist in the level
+            if (entities.ContainsKey("player"))
+                return;
+
             player = new Player(content);
-            player.SetPosition((position * tileSize) + new Vector2(tileSize / 2, tileSize / 2));
+            player.SetPosition(position);
             entities.Add("player", player);
         }
+
 
         public void AddItem(ContentManager content, Vector2 position, EntityKeys.ItemType itemType)
         {
