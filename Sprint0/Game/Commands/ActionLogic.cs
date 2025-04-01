@@ -65,7 +65,7 @@ namespace Sprint0
                             Globals.PlayerData.UpdateVariable("AmmoMine", -1);
                             break;
                         case "Teleporter":
-                            Globals.PlayerData.UpdateVariable("Teleporter", -1);
+                            Globals.PlayerData.UpdateVariable("AmmoTeleporter", -1);
                             break;
                         case "Default":  // Ensure default ammo decrements properly here too
                             Globals.PlayerData.UpdateVariable("AmmoDefault", -1);

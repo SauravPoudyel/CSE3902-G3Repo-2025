@@ -20,7 +20,7 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("game") && parameters["game"] is Game1 game)
                 {
-                    Globals.SavePlayerData(); 
+                    Globals.SavePlayerData();
                     game.Exit();
                 }
             }
@@ -64,22 +64,36 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    if (gameManager.GameStarted)
+                    if (gameManager.screenManager.shopOpen)
                     {
                         gameManager.screenManager.shopOpen = false;
+                    }
+                    else if (gameManager.GameStarted)
+                    {
                         gameManager.GamePaused = true;
                     }
                 }
             }
         }
 
-        public class ToggleShopCommand : ICommand
+        public class OpenShopCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    gameManager.screenManager.shopOpen = !gameManager.screenManager.shopOpen;
+                    gameManager.screenManager.shopOpen = true;
+                }
+            }
+        }
+
+        public class CloseShopCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    gameManager.screenManager.shopOpen = false;
                 }
             }
         }
@@ -120,7 +134,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager 
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager
                     && parameters.ContainsKey("level") && parameters["level"] is int levelNum)
                 {
                     gameManager.LevelNumber = levelNum;
@@ -138,11 +152,11 @@ namespace Sprint0
                 {
                     // Fade the screen to black over 2 seconds.
                     ScreenFader.FadeToBlack(2f);
-                    
+
                     await Task.Delay(2000); // Wait 2 seconds to allow fade to complete.
                     Thread.Sleep(600); //wait an extra 0.6 seconds
                     gameManager.DayNightCycle.AdvanceDayNightCycle(0.5f);
-                    AudioManager.PlaySound(AudioManager.SoundKey.FixDeath); 
+                    AudioManager.PlaySound(AudioManager.SoundKey.FixDeath);
 
                     gameManager.LevelNumber = 2;
                     gameManager.UpdateLevel();
@@ -153,9 +167,9 @@ namespace Sprint0
                     player.SetPosition(new Vector2(700, 700));
 
                     await Task.Delay(1500);
-                    
+
                     ScreenFader.FadeToNormal(1.5f);
-     
+
                 }
             }
         }

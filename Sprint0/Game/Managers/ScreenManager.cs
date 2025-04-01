@@ -21,7 +21,6 @@ namespace Sprint0
         private Game1 game;
         public PlayerInventory playerInventory;
         private Shop shop;  
-        private ShopScreenAdapter shopAdapter; // Adapter to wrap Shop
 
         // Persistent instances for core screens:
         private StartMenu startMenu;
@@ -36,7 +35,6 @@ namespace Sprint0
             // Create and load shop content, and its adapter
             shop = new Shop(game);
             shop.LoadContent();
-            shopAdapter = new ShopScreenAdapter(shop);
             dialogueHandler = new DialogueHandler(content, game);
             // Initialize persistent core screens as null; they'll be created on demand.
             startMenu = null;
@@ -51,7 +49,7 @@ namespace Sprint0
             IScreen desired;
             if (shopOpen)
             {
-                desired = shopAdapter;
+                desired = shop;
             }
             else if (!GameStarted)
             {
@@ -91,6 +89,10 @@ namespace Sprint0
             }
 
             coreScreen = desired;
+            if (coreScreen is Shop && !screens.Contains(playerInventory))
+            {
+                screens.Add(playerInventory);
+            }
             bool blocking = (!GameStarted || IsPaused || shopOpen);
             if (!screens.Contains(desired))
             {
@@ -107,6 +109,10 @@ namespace Sprint0
             if (blockingScreen != null && blockingScreen.BlocksInput)
             {
                 blockingScreen.Update();
+                if(blockingScreen is Shop)
+                {
+                    playerInventory.Update();
+                }
             }
             else
             {
