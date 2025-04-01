@@ -38,10 +38,15 @@ namespace Sprint0
                 string levelName = currentRow[0];
                 if(levelDict.ContainsKey(levelName)) {
                     for(int j=0; j<4; j++){ // iterate through 4 directions (0-3 are their equiv. values)
-                        string connectedLevelName = currentRow[j+2]; // first two rows are name and number
+                        string connectedLevelName = currentRow[j+2]; // first two columns are name and number
                         if(levelDict.ContainsKey(connectedLevelName)) {
                             levelDict[levelName].AddConnectedLevel((Level.Direction)j, levelDict[connectedLevelName]);
                         }
+                    }
+                    string preReqLevelName = currentRow[6];
+                    if(levelDict.ContainsKey(preReqLevelName)) {
+                        levelDict[levelName].Unlocked = false;
+                        levelDict[levelName].PrereqLevel = levelDict[preReqLevelName];
                     }
                 }
             }
