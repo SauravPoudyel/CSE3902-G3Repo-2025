@@ -89,6 +89,10 @@ namespace Sprint0
             }
 
             coreScreen = desired;
+            if (coreScreen is Shop && !screens.Contains(playerInventory))
+            {
+                screens.Add(playerInventory);
+            }
             bool blocking = (!GameStarted || IsPaused || shopOpen);
             if (!screens.Contains(desired))
             {
@@ -105,6 +109,10 @@ namespace Sprint0
             if (blockingScreen != null && blockingScreen.BlocksInput)
             {
                 blockingScreen.Update();
+                if(blockingScreen is Shop)
+                {
+                    playerInventory.Update();
+                }
             }
             else
             {
