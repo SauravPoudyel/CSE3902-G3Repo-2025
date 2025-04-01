@@ -1,0 +1,9 @@
+Block_DeadTree,Block_DeadTree,,Block_RockPileVar1,,Block_RockPileVar2,,Block_DeadTree,,Block_BarbedFence,Block_BarbedFence,Block_BarbedFence,Block_BarbedFence,Block_BarbedFence,Block_BarbedFence,Block_BarbedFence
+Block_SmallBarrel,Block_Barrel,,,,,,,,Block_BarbedFence,,,,,,Block_BarbedFence
+Block_SmallBarrel,Block_Barrel,,,,Block_Box,,Block_BarbedFence,,Block_BarbedFence,,,Enemy_ShieldTank,,,Block_BarbedFence
+,Block_Box,,,,Enemy_SmallEnemy,Block_Box,,Enemy_Turret,Block_BarbedFence,,,Block_Barrel,,Block_Barrel,
+,,,,,,,,,,,,,Enemy_BossTank,,
+Block_House2,,,,Block_Barrel,,Block_SmallBarrel,,Enemy_Turret,Block_BarbedFence,,,Block_Barrel,,Block_Barrel,
+Block_House,,,Enemy_SmallEnemy,Block_Box,,Block_Barrel,,,Block_BarbedFence,,,Enemy_ShieldTank,,,Block_BarbedFence
+,Block_Barrel,,,,,Block_Barrel,,,Block_BarbedFence,,,,,,Block_BarbedFence
+Block_DeadTree,Block_DeadTree,,,Block_RockPile,,,Block_DeadTree,,Block_BarbedFence,Block_BarbedFence,Block_BarbedFence,Block_BarbedFence,Block_BarbedFence,Block_BarbedFence,Block_BarbedFence
