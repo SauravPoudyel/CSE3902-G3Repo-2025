@@ -67,6 +67,10 @@ namespace Sprint0
                     if (gameManager.screenManager.shopOpen)
                     {
                         gameManager.screenManager.shopOpen = false;
+                    } 
+                    else if (gameManager.screenManager.statsOpen)
+                    {
+                        gameManager.screenManager.statsOpen = false;
                     }
                     else if (gameManager.GameStarted)
                     {
@@ -98,13 +102,24 @@ namespace Sprint0
             }
         }
 
-        public class ToggleStatsCommand : ICommand
+        public class OpenStatsCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    gameManager.screenManager.statsOpen = !gameManager.screenManager.statsOpen;
+                    gameManager.screenManager.statsOpen = true;
+                }
+            }
+        }
+
+        public class CloseStatsCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    gameManager.screenManager.shopOpen = false;
                 }
             }
         }

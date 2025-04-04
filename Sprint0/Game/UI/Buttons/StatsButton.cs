@@ -20,7 +20,7 @@ namespace Sprint0
             mouseState = Mouse.GetState();
             if (IsClicked())
             {
-                new ToggleStatsCommand().Execute(parameters);
+                new OpenStatsCommand().Execute(parameters);
             }
             previousMouseState = mouseState;
         }

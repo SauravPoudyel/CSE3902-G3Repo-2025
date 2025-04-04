@@ -56,7 +56,7 @@ namespace Sprint0
             }
             if (statsOpen)
             {
-                desired = new StatsScreen(game);
+                desired = statsScreen;
             }
             else if (!GameStarted)
             {
@@ -86,7 +86,7 @@ namespace Sprint0
 
             coreScreen = desired;
             // If desired screen is not already in the list, add it with blocking if needed.
-            bool blocking = (!GameStarted || IsPaused || shopOpen);
+            bool blocking = (!GameStarted || IsPaused || shopOpen || statsOpen);
             if (!screens.Contains(desired))
                 AddScreen(desired, blocking);
         }
