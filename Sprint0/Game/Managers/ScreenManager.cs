@@ -53,8 +53,8 @@ namespace Sprint0
             if (shopOpen)
             {
                 desired = shop;
-            }
-            if (statsOpen)
+            } 
+            else if (statsOpen)
             {
                 desired = statsScreen;
             }
