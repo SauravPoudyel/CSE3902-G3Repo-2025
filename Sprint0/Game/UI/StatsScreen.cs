@@ -66,16 +66,33 @@ namespace Sprint0
             spriteBatch.Draw(backgroundTexture, windowRectangle, Color.White);
             //loop for each mob to draw
             int i = 0;
+            int secondColumn = 0;
             foreach (MobType mob in EntityKeys.MobType.GetValues(typeof (MobType)))
             {
-                Vector2 iconPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + 50 + i * 60);
-                Rectangle iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
-                Vector2 textPos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
-
-                string itemText = mob + " Killed " + Globals.PlayerData.GetInt(mob.ToString() + "killed");
+                Vector2 iconPos;
+                Rectangle iconDestinationRect;
+                Vector2 textPos;
+                string itemText;
+                Vector2 textSize;
+                Rectangle textRect;
+                if (i > 5)
+                {
+                    iconPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + 50 + i * 60);
+                    iconDestinationRect = new Rectangle((int)iconPos.X + 500, (int)iconPos.Y - 350, 40, 40);
+                    textPos = new Vector2(iconPos.X + 50 + 500, iconPos.Y + 10 + 300);
+                    itemText = mob + " Killed " + Globals.PlayerData.GetInt(mob.ToString() + "killed");
+                    textSize = font.MeasureString(itemText);
+                    textRect = new Rectangle((int)textPos.X + 500, (int)textPos.Y, (int)textSize.X, (int)textSize.Y);
+                } else 
+                {
+                    iconPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + 50 + i * 60);
+                    iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
+                    textPos = new Vector2(iconPos.X + 50 + secondColumn, iconPos.Y + 10);
+                    itemText = mob + " Killed " + Globals.PlayerData.GetInt(mob.ToString() + "killed");
+                    textSize = font.MeasureString(itemText);
+                    textRect = new Rectangle((int)textPos.X, (int)textPos.Y, (int)textSize.X, (int)textSize.Y);
+                }
                 
-                Vector2 textSize = font.MeasureString(itemText);
-                Rectangle textRect = new Rectangle((int)textPos.X, (int)textPos.Y, (int)textSize.X, (int)textSize.Y);
                 if ((mob == MobType.Plane) || (mob == MobType.Turret)) 
                 {
                     spriteBatch.Draw(spriteSheet2, iconDestinationRect, mobList[mob.ToString()], Color.White);
