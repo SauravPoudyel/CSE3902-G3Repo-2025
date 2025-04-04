@@ -16,12 +16,14 @@ namespace Sprint0
         public bool IsPaused { get; set; }
         public bool GameStarted { get; set; }
         public bool shopOpen { get; set; }  // When true, shop is active
+        public bool statsOpen { get; set; }
 
         private ContentManager content;
         private Game1 game;
         public PlayerInventory playerInventory;
         private Shop shop;  
         private ShopScreenAdapter shopAdapter; // Adapter to wrap Shop
+        private StatsScreen statsScreen;
 
         // Persistent instances for core screens:
         private StartMenu startMenu;
@@ -38,12 +40,15 @@ namespace Sprint0
             shop.LoadContent();
             shopAdapter = new ShopScreenAdapter(shop);
             dialogueHandler = new DialogueHandler(content, game);
+            statsScreen = new StatsScreen(game);
             // Initialize persistent core screens as null; they'll be created on demand.
             startMenu = null;
             pauseMenu = null;
             GameStarted = false;
             IsPaused = false;
             shopOpen = false;
+            statsOpen = false;
+
         }
 
         private void UpdateCoreScreen()
@@ -52,6 +57,10 @@ namespace Sprint0
             if (shopOpen)
             {
                 desired = shopAdapter;
+            }
+            if (statsOpen)
+            {
+                desired = new StatsScreen(game);
             }
             else if (!GameStarted)
             {
