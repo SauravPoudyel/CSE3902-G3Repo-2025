@@ -1,0 +1,10 @@
+Author of code review: Payton
+4/3/25
+Sprint 4
+Ship.cs
+Author of code: Saurav
+Comments:
+The ship doesn't have an agression level. Maybe it's because it doesn't move, but that could be a cool thing to implement.
+The vertical vs. horizontal ship feels smelly. I know it creates some confusion with data tracking since you have to account for two differently 
+oriented ships but falls under "ship".
+Maybe we could add a different ship that is only horizontal and then a different looking ship that is only vertical?
