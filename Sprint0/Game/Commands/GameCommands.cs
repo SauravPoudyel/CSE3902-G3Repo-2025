@@ -139,6 +139,10 @@ namespace Sprint0
                 {
                     gameManager.LevelNumber = levelNum;
                     gameManager.UpdateLevel();
+
+                    if (gameManager.LevelNumber == 2 && Globals.PlayerData.GetInt("BaseDialogueCount") == 1)
+                        gameManager.screenManager.dialogueHandler.AddDialogueByKey("Base1",  gameManager.screenManager);
+
                 }
             }
         }
@@ -160,15 +164,23 @@ namespace Sprint0
 
                     gameManager.LevelNumber = 2;
                     gameManager.UpdateLevel();
-
+                    
                     // Update the player
+                    gameManager.GetEntity("player").SetPosition(new Vector2(700, 700)); // to respawn at the proper point
+                    gameManager.GetEntity("player").SetVelocity(Vector2.Zero); // Also stop any movement.
+
+                    // Update the player Data
                     int maxHealth = Globals.PlayerData.GetInt("MaxHealth");
                     Globals.PlayerData.UpdateVariable("Health", maxHealth);
-                    player.SetPosition(new Vector2(700, 700));
+    
 
                     await Task.Delay(1500);
-
+                    
                     ScreenFader.FadeToNormal(1.5f);
+
+                    await Task.Delay(1500); // Wait 1.5 seconds to allow fade to complete.
+                    gameManager.screenManager.dialogueHandler.AddDialogueByKey("Death", gameManager.screenManager);
+
 
                 }
             }

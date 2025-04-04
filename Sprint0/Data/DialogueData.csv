@@ -1,0 +1,5 @@
+Key,Character,Text,Trigger
+Death,Commander,"I'm glad we were able to fix you; now get back out there {playerName}!",N/A
+Tutorial2,Player,"Where am I?",TutorialDialogueCount
+Tutorial1,Commander,"We're losing the war {playerName}! Destroy your combatants & recoup at base by using WASD to move and Z to fire. Click to acknowledge.", TutorialDialogueCount
+Base1,Commander,"This is mission central {playerName}. First order of business is to go to the forests on the left and retrieve the shop key so we can start using the coins you've been collecting",BaseDialogueCount

@@ -43,6 +43,7 @@ namespace Sprint0
             if (GameManager.Instance.GetEntities().ContainsKey("player"))
             {
                 Player persistentPlayer = (Player)GameManager.Instance.GetEntities()["player"];
+                persistentPlayer.SetVelocity(Vector2.Zero); // Also stop any movement.
                 loadedEntities["player"] = persistentPlayer;
             }
 
