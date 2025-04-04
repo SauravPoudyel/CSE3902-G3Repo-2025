@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace Sprint0
@@ -12,6 +13,7 @@ namespace Sprint0
         private Color overlayColor;
         private ContentManager content;
         private GraphicsDevice graphicsDevice;
+        private Game1 game;
 
         // PauseMenu should block game input.
         public bool BlocksInput => true;
@@ -19,6 +21,7 @@ namespace Sprint0
         public PauseMenu(ContentManager content, GraphicsDevice graphicsDevice, Game1 game)
         {
             this.content = content;
+            this.game = game;
 
             buttons = new Dictionary<string, textButton>();
             overlayColor = new Color(0, 0, 0, 180);
@@ -29,8 +32,8 @@ namespace Sprint0
 
             Dictionary<string, object> gameParams = new Dictionary<string, object>
             {
-                { "gameManager", game.GameManager },
-                { "game", game }
+                { "gameManager", this.game.GameManager },
+                { "game", this.game }
             };
             textButton restartButton = new textButton(buttonTexture,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 - 140, 150, 40),
@@ -44,7 +47,7 @@ namespace Sprint0
 
             Dictionary<string, object> screenParams = new Dictionary<string, object>
             {
-                { "gameManager", game.GameManager },
+                { "gameManager", this.game.GameManager },
                 { "screen", this }
             };
             // Note: The Start button uses "StartGameCommand" to remove the start menu.
@@ -89,7 +92,8 @@ namespace Sprint0
             {
                 button.Update();
             }
-            buttons.GetValueOrDefault("Volume").UpdateText("Volume: " + (AudioManager.Volume * 100));
+            buttons.GetValueOrDefault("Volume").UpdateText("Volume: " + (int)Math.Ceiling(AudioManager.Volume * 10)*10);
+            buttons.GetValueOrDefault("Level").UpdateText("Level: " + (game.GameManager.LevelNumber.ToString()));
         }
 
         public void Draw(SpriteBatch spriteBatch)

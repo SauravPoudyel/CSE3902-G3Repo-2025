@@ -20,7 +20,7 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("game") && parameters["game"] is Game1 game)
                 {
-                    Globals.SavePlayerData(); 
+                    Globals.SavePlayerData();
                     game.Exit();
                 }
             }
@@ -64,22 +64,36 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    if (gameManager.GameStarted)
+                    if (gameManager.screenManager.shopOpen)
                     {
                         gameManager.screenManager.shopOpen = false;
+                    }
+                    else if (gameManager.GameStarted)
+                    {
                         gameManager.GamePaused = true;
                     }
                 }
             }
         }
 
-        public class ToggleShopCommand : ICommand
+        public class OpenShopCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    gameManager.screenManager.shopOpen = !gameManager.screenManager.shopOpen;
+                    gameManager.screenManager.shopOpen = true;
+                }
+            }
+        }
+
+        public class CloseShopCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                {
+                    gameManager.screenManager.shopOpen = false;
                 }
             }
         }
@@ -131,11 +145,15 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager 
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager
                     && parameters.ContainsKey("level") && parameters["level"] is int levelNum)
                 {
                     gameManager.LevelNumber = levelNum;
                     gameManager.UpdateLevel();
+
+                    if (gameManager.LevelNumber == 2 && Globals.PlayerData.GetInt("BaseDialogueCount") == 1)
+                        gameManager.screenManager.dialogueHandler.AddDialogueByKey("Base1",  gameManager.screenManager);
+
                 }
             }
         }
@@ -149,24 +167,32 @@ namespace Sprint0
                 {
                     // Fade the screen to black over 2 seconds.
                     ScreenFader.FadeToBlack(2f);
-                    
+
                     await Task.Delay(2000); // Wait 2 seconds to allow fade to complete.
                     Thread.Sleep(600); //wait an extra 0.6 seconds
                     gameManager.DayNightCycle.AdvanceDayNightCycle(0.5f);
-                    AudioManager.PlaySound(AudioManager.SoundKey.FixDeath); 
+                    AudioManager.PlaySound(AudioManager.SoundKey.FixDeath);
 
                     gameManager.LevelNumber = 2;
                     gameManager.UpdateLevel();
-
+                    
                     // Update the player
+                    gameManager.GetEntity("player").SetPosition(new Vector2(700, 700)); // to respawn at the proper point
+                    gameManager.GetEntity("player").SetVelocity(Vector2.Zero); // Also stop any movement.
+
+                    // Update the player Data
                     int maxHealth = Globals.PlayerData.GetInt("MaxHealth");
                     Globals.PlayerData.UpdateVariable("Health", maxHealth);
-                    player.SetPosition(new Vector2(700, 700));
+    
 
                     await Task.Delay(1500);
                     
                     ScreenFader.FadeToNormal(1.5f);
-     
+
+                    await Task.Delay(1500); // Wait 1.5 seconds to allow fade to complete.
+                    gameManager.screenManager.dialogueHandler.AddDialogueByKey("Death", gameManager.screenManager);
+
+
                 }
             }
         }

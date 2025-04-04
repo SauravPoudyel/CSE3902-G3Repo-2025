@@ -75,6 +75,7 @@ namespace Sprint0
             base.OnDeath();
             Dictionary<string, object> parameters2 = new Dictionary<string, object>{{ "player", this }};
             commandQueue.Enqueue(new CommandRequest("PlayerDeath", parameters2));
+            this.SetPosition(new Vector2(700, 700)); // to respawn at the proper point
         }
 
         public void MoveLevel(int levelNum) {

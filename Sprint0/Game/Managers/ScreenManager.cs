@@ -11,7 +11,7 @@ namespace Sprint0
         private List<IScreen> screens = new List<IScreen>();
         private IScreen coreScreen;
         private IScreen blockingScreen;
-        private DialogueHandler dialogueHandler;
+        public DialogueHandler dialogueHandler { get; private set; }
         public int LevelNumber { get; set; }
         public bool IsPaused { get; set; }
         public bool GameStarted { get; set; }
@@ -21,11 +21,10 @@ namespace Sprint0
         private ContentManager content;
         private Game1 game;
         public PlayerInventory playerInventory;
-        private Shop shop;  
-        private ShopScreenAdapter shopAdapter; // Adapter to wrap Shop
+        private Shop shop;
         private StatsScreen statsScreen;
 
-        // Persistent instances for core screens:
+        // Persistent core screens
         private StartMenu startMenu;
         private PauseMenu pauseMenu;
 
@@ -33,17 +32,14 @@ namespace Sprint0
         {
             this.content = content;
             this.game = game;
-            // Persist player inventory (already created in Initialize)
+            // Create persistent instances
             playerInventory = new PlayerInventory(game);
-            // Create and load shop content, and its adapter
-            shop = new Shop(game);
+            shop = new Shop(game);   // Shop now implements IScreen
             shop.LoadContent();
-            shopAdapter = new ShopScreenAdapter(shop);
             dialogueHandler = new DialogueHandler(content, game);
             statsScreen = new StatsScreen(game);
-            // Initialize persistent core screens as null; they'll be created on demand.
-            startMenu = null;
-            pauseMenu = null;
+            startMenu = new StartMenu(game);
+            pauseMenu = new PauseMenu(content, game.GraphicsDevice, game);
             GameStarted = false;
             IsPaused = false;
             shopOpen = false;
@@ -56,7 +52,7 @@ namespace Sprint0
             IScreen desired;
             if (shopOpen)
             {
-                desired = shopAdapter;
+                desired = shop;
             }
             if (statsOpen)
             {
@@ -64,48 +60,35 @@ namespace Sprint0
             }
             else if (!GameStarted)
             {
-                if (startMenu == null)
-                {
-                    startMenu = new StartMenu(game);
-                }
                 desired = startMenu;
             }
             else if (IsPaused)
             {
-                if (pauseMenu == null)
-                {
-                    pauseMenu = new PauseMenu(content, game.GraphicsDevice, game);
-                }
                 desired = pauseMenu;
-
             }
             else
             {
                 desired = playerInventory;
             }
 
-            // Remove any core screens that don’t match the desired type (leave overlays intact)
+            // Remove any core screens that do not match the desired type (leave overlays intact)
             foreach (var s in screens.ToList())
             {
                 if (!(s is DialogueToScreenAdapter) && s.GetType() != desired.GetType())
-                {
                     RemoveScreen(s);
-                }
             }
 
-            // Force-remove StartMenu if game has started.
+            // Force-remove StartMenu if the game has started.
             if (GameStarted && coreScreen is StartMenu)
             {
                 RemoveScreen(coreScreen);
             }
 
             coreScreen = desired;
+            // If desired screen is not already in the list, add it with blocking if needed.
             bool blocking = (!GameStarted || IsPaused || shopOpen);
             if (!screens.Contains(desired))
-            {
-
                 AddScreen(desired, blocking);
-            }
         }
 
         public void Update()
@@ -146,9 +129,7 @@ namespace Sprint0
             {
                 screens.Remove(screen);
                 if (screen == blockingScreen)
-                {
                     blockingScreen = null;
-                }
                 if (screen == coreScreen)
                     coreScreen = null;
             }
@@ -164,7 +145,6 @@ namespace Sprint0
         public void ClearBlockingScreen()
         {
             blockingScreen = null;
-            System.Console.WriteLine("[ScreenManager] ClearBlockingScreen() called");
         }
 
         public bool IsInputBlocked() => blockingScreen != null && blockingScreen.BlocksInput;

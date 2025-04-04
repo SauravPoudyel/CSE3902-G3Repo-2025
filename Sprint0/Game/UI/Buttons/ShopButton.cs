@@ -20,7 +20,7 @@ namespace Sprint0
             mouseState = Mouse.GetState();
             if (IsClicked())
             {
-                new ToggleShopCommand().Execute(parameters);
+                new OpenShopCommand().Execute(parameters);
             }
             previousMouseState = mouseState;
         }
