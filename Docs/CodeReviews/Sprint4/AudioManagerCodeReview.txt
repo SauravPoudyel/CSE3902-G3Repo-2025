@@ -1,0 +1,12 @@
+Author of the code review: Daoping Huang
+Date of the code review: April 3, 2025
+Sprint number: 4
+Files Reviewed: AudioManager.cs
+Author of the reviewed files: Saurav Poudyel
+Specific comments on code quality:
+The overall code is good, here are just some of the suggestions.
+CRITICAL
+1. Merge `dialogueInstance`/`driveInstance` → `LoopingSoundController`  
+
+OPTIMIZATION
+- Replace `ContainsKey` with `TryGetValue`  
