@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using static Sprint0.EntityKeys;
 
 namespace Sprint0
 {
@@ -107,15 +108,40 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
-                    parameters.ContainsKey("target") && parameters["target"] is Effect effect &&
-                    effect.effectType == EntityKeys.EffectType.Explosion && !effect.didDamage)
+                if (parameters["target"] is Effect effect &&
+                    parameters["actor"] is Player player)
                 {
-                    player.ChangeHealth(-50);
-                    effect.didDamage = true;
+                    // Explosion damage
+                    if (effect.effectType == EffectType.Explosion && !effect.didDamage)
+                    {
+                        player.ChangeHealth(-50);
+                        effect.didDamage = true;
+                    }
+                    // Fire damage
+                    else if (effect.effectType == EffectType.Fire)
+                    {
+                        if (!player.activeFireEffects.Contains(effect))
+                        {
+                            player.activeFireEffects.Add(effect);
+                        }
+                    }
                 }
             }
         }
+
+        public class FireCollisionExitCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters["target"] is Player player &&
+                    parameters["actor"] is Effect effect &&
+                    effect.effectType == EffectType.Fire)
+                {
+                    player.activeFireEffects.Remove(effect);
+                }
+            }
+        }
+
 
         public class CollisionPushCommand : ICommand
         {
