@@ -33,9 +33,9 @@ namespace Sprint0
             };
             buttonElements = new List<Button>();
             Vector2 shopButtonPos = new Vector2(Globals.SCREENWIDTH - 100, 20);
-            Vector2 statsButtonPos = new Vector2(Globals.SCREENWIDTH - 100, 200);
+            Vector2 statsButtonPos = new Vector2(Globals.SCREENWIDTH - 100, 150);
             buttonElements.Add(new ShopButton(content.Load<Texture2D>("UI/ShopIcon"), shopButtonPos, paramters));
-            buttonElements.Add(new StatsButton(content.Load<Texture2D>("StatsIcon"), statsButtonPos, paramters));
+            buttonElements.Add(new StatsButton(content.Load<Texture2D>("UI/StatsIcon"), statsButtonPos, paramters));
 
             // Initialize 5 inventory slots.
             inventorySlots = new List<InventorySlot>();
