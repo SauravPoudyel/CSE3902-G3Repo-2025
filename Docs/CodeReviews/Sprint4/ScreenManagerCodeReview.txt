@@ -1,0 +1,7 @@
+4/4/2025
+Sprint 4
+ScreenManager.cs
+Code Author(s): Saurav
+Code Reviewer: Harry Manzler
+Comments: 
+Overall, ScreenManager has good cohesion by encapsulating all the logic related to managing the different screens. The Update, Add/Remove Screen, and Clear methods themselves are all very cohesive. The logic for handling inputs is sound and readable. I think where this class is lacking is in terms of reusability and maintainability. The private variables make ScreenManager tightly coupled to different screen types (e.g. StartMenu, Shop) and the logic of UpdateCoreScreen is hardcoded to accommodate them. This could make it difficult to add more screen types or game modes in the future. I also wonder if some of the state variables (e.g. isPaused) aren’t redundant with GameManager’s similar variables.
