@@ -1,0 +1,8 @@
+4/6/2025
+Sprint 4
+StartMenu.cs
+Code Author(s): Leo
+Code Reviewer: Harry Manzler
+Comments: 
+The StartMenu class demonstrates strong cohesion, encapsulating all behavior related to the start menu interface in concise and cohesive methods. The dictionary to pass data to commands adds reusability for multiple buttons to leverage the same shared parameters. Maintainability is solid, with the class being easy to extend for adding new buttons, although the menu layout / positioning is hardcoded. In terms of coupling, the class is moderately coupled to Game1 which doesn’t seem ideal. Also, overlayColor doesn’t look like it’s used (anymore?) so could be removed.
+
