@@ -5,5 +5,5 @@ Block_Tree_0,,Block_Tree_0,,Block_Tree_0,Enemy_StealthTank,,,Enemy_Turret,Block_
 Block_Tree_0,Item_AmmoShotgun,Block_Tree_0,,Block_Tree_0,,Block_Tree_0,Block_Tree_0,,Block_Tree_0,Enemy_SmallEnemy,Block_Tree_0,Enemy_SmallEnemy,,,
 Block_Tree_0,,Block_Tree_0,,Block_Tree_0,,,Block_Tree_0,,Block_Tree_0,,Block_Tree_0,,,,Block_Tree_0
 Block_Tree_0,,Block_Tree_0,,Block_Tree_0,Block_Tree_0,,Block_Tree_0,,Block_Tree_0,,Block_Tree_0,,Block_Tree_0,,Block_Tree_0
-Block_Tree_0,,Block_Tree_0,,,,,Block_Tree_0,,Block_Tree_0,,Block_Tree_0,,Block_Tree_0,Enemy_SmallEnemy,Block_Tree_0
-Block_Tree_0,,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,,,,Block_Tree_0,,Block_Tree_0,,
+Block_Tree_0,,Block_Tree_0,,,,,Block_Tree_0,,,,,,Block_Tree_0,Enemy_SmallEnemy,
+Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0
