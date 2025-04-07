@@ -1,9 +1,9 @@
 Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,VerticalSandRoad,Sand,Sand,Sand,RaisedSandMidLeft,Sand,Sand,Sand
-Sand,Sand,TopLeftSandCurve,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,BottomRightSandCurve,Sand,Sand,Sand,RaisedSandBotLeft,RaisedSandBotMid,RaisedSandBotMid,RaisedSandBotMid
+Sand,Sand,SandCrossroad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,SandCrossroad,Sand,Sand,Sand,RaisedSandBotLeft,RaisedSandBotMid,RaisedSandBotMid,RaisedSandBotMid
 Sand,Sand,VerticalSandRoad,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand
 Sand,Sand,VerticalSandRoad,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand
 HorizontalSandRoad,HorizontalSandRoad,SandCrossroad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad
 Sand,Sand,VerticalSandRoad,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand
 Sand,Sand,VerticalSandRoad,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand
-Sand,Sand,BottomLeftSandCurve,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,TopRightSandCurve,Sand,Sand,Sand,RaisedSandTopLeft,RaisedSandTopMid,RaisedSandTopMid,RaisedSandTopMid
+Sand,Sand,SandCrossroad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,HorizontalSandRoad,SandCrossroad,Sand,Sand,Sand,RaisedSandTopLeft,RaisedSandTopMid,RaisedSandTopMid,RaisedSandTopMid
 Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,VerticalSandRoad,Sand,Sand,Sand,RaisedSandMidLeft,Sand,Sand,Sand
