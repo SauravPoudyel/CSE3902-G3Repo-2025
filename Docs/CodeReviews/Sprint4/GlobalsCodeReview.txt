@@ -1,0 +1,6 @@
+4/7/2025
+Sprint4
+Globals.cs
+Code Author: Payton
+Code Reviewer: Alex
+Comments: The actual code for this file is very good, there's little wrong on the front. However, all of the fields are public, which I don't think is necessary but I don't know how they're used throughout the rest of the code base, so it may be necessary, but I doubt that. I recommend going through each of the fields and finding which can be changed to private and which should stay public. 
