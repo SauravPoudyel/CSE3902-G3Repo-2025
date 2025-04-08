@@ -13,9 +13,9 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("player") && parameters["player"] is Player player &&
-                    parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("actionType") && parameters["actionType"] is string actionType)
+                if (parameters.TryGetValue("player", out object value) && value is Player player &&
+                    parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
+                    parameters.TryGetValue("actionType", out object value) && value is string actionType)
                 {
                     ActionCommands_Logic.HandlePlayerAction(player, gameManager, actionType);
                 }
@@ -26,7 +26,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager)
                 {
                     // Implement the logic for the entity to take damage
                     if (gameManager.GetEntity("player") is Character player)
@@ -41,11 +41,11 @@ namespace Sprint0
     {
         public void Execute(Dictionary<string, object> parameters)
         {
-            if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                parameters.ContainsKey("projectileType") && parameters["projectileType"] is string projectileType &&
-                parameters.ContainsKey("spawnPosition") && parameters["spawnPosition"] is Vector2 spawnPosition &&
-                parameters.ContainsKey("cannonRotation") && parameters["cannonRotation"] is float cannonRotation &&
-                parameters.ContainsKey("owner") && parameters["owner"] is Character owner)
+            if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
+                parameters.TryGetValue("projectileType", out object value) && value is string projectileType &&
+                parameters.TryGetValue("spawnPosition", out object value) && value is Vector2 spawnPosition &&
+                parameters.TryGetValue("cannonRotation", out object value) && value is float cannonRotation &&
+                parameters.TryGetValue("owner", out object value) && value is Character owner)
             {
                 ActionCommands_Logic.HandleCreateProjectileCommand(parameters, owner, projectileType, spawnPosition, cannonRotation, gameManager);
             }
@@ -56,11 +56,11 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("create") && parameters["create"] is Entity entity &&
-                    parameters.ContainsKey("entityName") && parameters["entityName"] is string entityName &&
-                    parameters.ContainsKey("position") && parameters["position"] is Vector2 position &&
-                    parameters.ContainsKey("velocity") && parameters["velocity"] is Vector2 velocity)
+                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
+                    parameters.TryGetValue("create", out object value) && value is Entity entity &&
+                    parameters.TryGetValue("entityName", out object value) && value is string entityName &&
+                    parameters.TryGetValue("position", out object value) && value is Vector2 position &&
+                    parameters.TryGetValue("velocity", out object value) && value is Vector2 velocity)
                 {
                     ActionCommands_Logic.HandleCreateEntityCommand(parameters, gameManager, entityName, entity, position, velocity);
                 }
@@ -71,8 +71,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("destroyEntity") && parameters["destroyEntity"] is string entityName)
+                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
+                    parameters.TryGetValue("destroyEntity", out object value) && value is string entityName)
                 {
                     gameManager.GetEntities().Remove(entityName);
                 }
@@ -83,8 +83,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("mob") && parameters["mob"] is Mob mob)
+                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
+                    parameters.TryGetValue("mob", out object value) && value is Mob mob)
                 {
                     ActionCommands_Logic.HandleRequestPlayerPositionCommand(gameManager, mob);
                 }
@@ -107,10 +107,10 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("healOrigin") && parameters["healOrigin"] is Vector2 origin &&
-                    parameters.ContainsKey("healRadius") && parameters["healRadius"] is float healRadius &&
-                    parameters.ContainsKey("healAmount") && parameters["healAmount"] is int healAmount)
+                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
+                    parameters.TryGetValue("healOrigin", out object value) && value is Vector2 origin &&
+                    parameters.TryGetValue("healRadius", out object value) && value is float healRadius &&
+                    parameters.TryGetValue("healAmount", out object value) && value is int healAmount)
                 {
                     ActionCommands_Logic.HandleHealRadiusCommand(gameManager, origin, healRadius, healAmount);
                 }
@@ -121,8 +121,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("player") && parameters["player"] is Player player)
+                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
+                    parameters.TryGetValue("player", out object value) && value is Player player)
                 {
                     foreach(var InteractableBlock in gameManager.GetEntities().Values.OfType<InteractableBlock>())
                     {
@@ -142,8 +142,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("player") && parameters["player"] is Player player)
+                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
+                    parameters.TryGetValue("player", out object value) && value is Player player)
                 {
                     player.IsImmortal = !player.IsImmortal;
                 }

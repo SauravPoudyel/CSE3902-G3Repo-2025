@@ -11,8 +11,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
-                    parameters.ContainsKey("target") && parameters["target"] is Entity target)
+                if (parameters.TryGetValue("actor", out object value) && value is Player player &&
+                    parameters.TryGetValue("target", out object value) && value is Entity target)
                 {
                     if (target is IRigid || (target is Mob mob && !(mob is Plane || mob is HoveringTank)))
                     {
@@ -28,8 +28,8 @@ namespace Sprint0
                         }
                     }
                 }
-                else if (parameters.ContainsKey("actor") && parameters["actor"] is Mob mobActor &&
-                        parameters.ContainsKey("target") && parameters["target"] is Entity target2)
+                else if (parameters.TryGetValue("actor", out object value) && value is Mob mobActor &&
+                        parameters.TryGetValue("target", out object value) && value is Entity target2)
                 {
                     // Ignore Plane collisions with blocks, rigid entities, or other mobs
                     if (mobActor is Plane)
@@ -47,8 +47,8 @@ namespace Sprint0
                         }
                     }
                 }
-                else if (parameters.ContainsKey("actor") && parameters["actor"] is PushableBlock pushableBlock &&
-                        parameters.ContainsKey("target") && parameters["target"] is Entity target3)
+                else if (parameters.TryGetValue("actor", out object value) && value is PushableBlock pushableBlock &&
+                        parameters.TryGetValue("target", out object value) && value is Entity target3)
                 {
                     if (target3 is IRigid || target3 is Mob)
                     {
@@ -69,11 +69,11 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Projectile projectile &&
-                    parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("target"))
+                if (parameters.TryGetValue("actor", out object value) && value is Projectile projectile &&
+                    parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
+                    parameters.TryGetValue("target", out object value))
                 {
-                    CollisionHandler.HandleProjectileDestroy(projectile, (Entity)parameters["target"]);
+                    CollisionHandler.HandleProjectileDestroy(projectile, (Entity)value);
                 }
             }
         }
@@ -82,8 +82,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Projectile projectile &&
-                    parameters.ContainsKey("target") && parameters["target"] is Entity target)
+                if (parameters.TryGetValue("actor", out object value) && value is Projectile projectile &&
+                    parameters.TryGetValue("target", out object value) && value is Entity target)
                 {
                     CollisionHandler.HandleProjectileReflect(projectile, target);
                 }
@@ -94,12 +94,12 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
-                    parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("target"))
+                if (parameters.TryGetValue("actor", out object value) && value is Player player &&
+                    parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
+                    parameters.TryGetValue("target", out object value))
                 {
                     // Since collision handler is static, passing gameManager as a parameter still keeps our singelton design concept
-                    CollisionHandler.HandlePickup(player, parameters["target"], gameManager);
+                    CollisionHandler.HandlePickup(player, value, gameManager);
                 }
             }
         }
@@ -147,8 +147,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("actor") && parameters["actor"] is Player player &&
-                    parameters.ContainsKey("target") && parameters["target"] is IPushable pushable)
+                if (parameters.TryGetValue("actor", out object value) && value is Player player &&
+                    parameters.TryGetValue("target", out object value) && value is IPushable pushable)
                 {
                     CollisionHandler.HandlePush(player, pushable);
                 }
@@ -159,7 +159,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("target") && parameters["target"] is IFlammable flammableBlock)
+                if (parameters.TryGetValue("target", out object value) && value is IFlammable flammableBlock)
                 {
                     flammableBlock.Destroy();
                     flammableBlock.Ignite();
@@ -171,7 +171,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("target") && parameters["target"] is IDestructible destructibleBlock && parameters.ContainsKey("actor") && parameters["actor"] is MineProjectile mine)
+                if (parameters.TryGetValue("target", out object value) && value is IDestructible destructibleBlock && parameters.TryGetValue("actor", out object value) && value is MineProjectile mine)
                 {
                     destructibleBlock.Destroy();
                 }

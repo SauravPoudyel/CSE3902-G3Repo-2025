@@ -24,16 +24,17 @@ namespace Sprint0
             this.content = content; 
             string levelName = "Level" + levelNum;
 
-            if (!levels.ContainsKey(levelName)) {
-                levels.Add(levelName, new Level());
+            if (!levels.TryGetValue(levelName, out Level value)) {
+                value = new Level();
+                levels.Add(levelName, value);
             }
 
-            if (!levels[levelName].Loaded) {
+            if (!value.Loaded) {
                 string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Entities.csv");
                 string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Tiles.csv");
                 Level loadedLevel = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
 
-                Level indexLevel = levels[levelName];
+                Level indexLevel = value;
                 if (indexLevel.HasKeyItem) {
                     loadedLevel.SetKeyItemType(indexLevel.KeyItemType);
                 }
@@ -90,9 +91,9 @@ namespace Sprint0
                 }
             }
             // Level moving logic
-            if (entities.ContainsKey("player"))
+            if (entities.TryGetValue("player", out Entity value))
             {
-                Player player = (Player)entities["player"];
+                Player player = (Player)value;
                 int halfTile = activeLevel.tileSize / 2; // 60 if tileSize is 120
 
                 if (player.GetPosition().Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top))

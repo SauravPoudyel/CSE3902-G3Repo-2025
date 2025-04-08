@@ -117,11 +117,11 @@ namespace Sprint0
             int numberOfProjectiles = 1;
             float spreadAngle = 0f;
             float speedModifer = 0f;
-            if (parameters.ContainsKey("numberOfProjectiles") && parameters["numberOfProjectiles"] is int num)
+            if (parameters.TryGetValue("numberOfProjectiles", out object value) && value is int num)
                 numberOfProjectiles = num;
-            if (parameters.ContainsKey("spreadAngle") && parameters["spreadAngle"] is float angle)
+            if (parameters.TryGetValue("spreadAngle", out object value) && value is float angle)
                 spreadAngle = angle;
-            if (parameters.ContainsKey("speedModifier") && parameters["speedModifier"] is float speedMod)
+            if (parameters.TryGetValue("speedModifier", out object value) && value is float speedMod)
                 speedModifer = speedMod;
             ProjectileFactory.CalculateProjectiles(owner, projectileType, spawnPosition, cannonRotation, spreadAngle, numberOfProjectiles, speedModifer);
             ProjectileFactory.SpawnProjectiles(gameManager, owner);
@@ -133,7 +133,7 @@ namespace Sprint0
             gameManager.GetEntities()[entityName].SetPosition(position);
             gameManager.GetEntities()[entityName].SetVelocity(velocity);
 
-            if(parameters.ContainsKey("owner") && parameters["owner"] is Character owner)
+            if(parameters.TryGetValue("owner", out object value) && value is Character owner)
             {
                 gameManager.GetEntities()[entityName].Owner = owner;
             }

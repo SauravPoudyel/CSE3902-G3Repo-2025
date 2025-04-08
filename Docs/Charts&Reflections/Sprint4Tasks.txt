@@ -1,0 +1,94 @@
+Title	URL	Status	Size	Iteration	Start date	End date	Completion Time	Assignees
+Grid Based Entity Spawning	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/120	Done		Sprint4	Mar 20, 2025			manzlerh, SauravPoudyel
+Change Cursor to Reticle	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/121	Done		Sprint4	Mar 20, 2025			LeoChen1068, SauravPoudyel
+Make HUD semitransparent (little smaller)	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/122			Sprint4	Mar 20, 2025			LeoChen1068, SauravPoudyel
+Rotatable Blocks on Spawn	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/123	Done		Sprint4	Mar 20, 2025			Aperture-1101, SauravPoudyel
+Add more Blocks (Trees)	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/124			Sprint4	Mar 20, 2025			LeoChen1068
+Add invisible/blockable tiles (with null block)	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/125			Sprint4	Mar 20, 2025			Aperture-1101
+Space for Player Rocket	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/126			Sprint4	Mar 20, 2025			SauravPoudyel
+Add More Mob Related Player Data (XP, Mob Stats)	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/127	Done		Sprint4	Mar 20, 2025			PaytonYaffe, SauravPoudyel
+Player Respawn at Hub	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/128			Sprint4	Mar 20, 2025			PaytonYaffe, SauravPoudyel
+Level Locking and Unlocking	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/129			Sprint4	Mar 20, 2025			AlexanderNistor04, manzlerh, SauravPoudyel
+Fix Projectile Reflection	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/130			Sprint4	Mar 20, 2025			SauravPoudyel
+Complete Shop UI	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/131			Sprint4	Mar 20, 2025			LeoChen1068
+Create Shop UI Specific Player Data Tracking	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/132			Sprint4	Mar 20, 2025			PaytonYaffe, SauravPoudyel
+Finish 10 levels or so for the grass biome (more will probably be needed)	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/133			Sprint4	Mar 20, 2025			manzlerh
+Finish 10 levels or so for the sand biome (more will probably be needed)	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/134	Done		Sprint4	Mar 20, 2025			AlexanderNistor04
+Make and Keep an Updated Map of all the levels	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/135	Done		Sprint4	Mar 20, 2025			AlexanderNistor04
+Action Commands and Collision Command Refactor	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/98	Done		Sprint4	Mar 17, 2025	Mar 19, 2025		PaytonYaffe, SauravPoudyel
+Mob and Mob Types Refactor	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/99	Done		Sprint4	Mar 17, 2025			SauravPoudyel
+Projectile, Effect, and Blocks Refactor	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/100	Done		Sprint4	Mar 17, 2025			SauravPoudyel
+GameManager and Collision Refactor	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/101	Done		Sprint4	Mar 17, 2025			SauravPoudyel
+Player and Character Refactor	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/102	Done		Sprint4	Mar 17, 2025			SauravPoudyel
+Button Refactor	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/103	Todo		Sprint4	Mar 17, 2025			LeoChen1068
+Flesh out the sound system	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/104	Done		Sprint4	Mar 17, 2025	Mar 19, 2025		SauravPoudyel
+DEBUG the sound file issue with MAC	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/105	Todo		Sprint4	Mar 17, 2025			SauravPoudyel
+Improve Room state transitions	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/106	In Progress		Sprint4	Mar 17, 2025			manzlerh, SauravPoudyel
+Create More Global Game State Triggers	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/107	Done		Sprint4	Mar 17, 2025			SauravPoudyel
+Integrate Shop UI with HUB level	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/108	Done		Sprint4	Mar 17, 2025			LeoChen1068
+Improve Screen Clarity for death, shop, pause, start etc	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/109	Done		Sprint4	Mar 17, 2025			LeoChen1068, SauravPoudyel
+Implement Sound Settings and Mute Option	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/110	Done		Sprint4	Mar 17, 2025			
+Implement Item Selection Screen	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/111	Todo		Sprint4	Mar 17, 2025			
+Implement Game Over Screen	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/112	Done		Sprint4	Mar 17, 2025			
+Implement Transitioning Between Rooms/Stages of a Level	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/113	Done		Sprint4	Mar 17, 2025			manzlerh
+Add "a few additional items, enemies, or NPCs"	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/114	Done		Sprint4	Mar 17, 2025			
+Replace Magic Numbers/Strings	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/115	Todo		Sprint4	Mar 17, 2025			
+Fix Item "Magnetism" (Floating Towards Player and missing)	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/116	Done		Sprint4	Mar 17, 2025	Mar 19, 2025		SauravPoudyel
+Fefactor Dictionaries to Enums	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/84	Done	S	Sprint3	Mar 3, 2025			PaytonYaffe, SauravPoudyel
+Add More Enviornment Tiles and Blocks	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/89	Done	S	Sprint3	Mar 3, 2025			Aperture-1101, manzlerh
+Debug Collisions for Blocks & Mobs	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/85	Done	M	Sprint3	Mar 3, 2025			PaytonYaffe, SauravPoudyel
+Design Shop UI for HUB	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/88	Todo	M	Sprint3	Mar 3, 2025			LeoChen1068
+Add Multiple Mobs and update state logic to be more dynamic	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/86	Done	M	Sprint3	Mar 3, 2025		4	SauravPoudyel
+Introduce Sound System Layout and Storage	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/87	Done	S	Sprint3	Mar 3, 2025		2	SauravPoudyel
+Improve Start Menu and UI Visuals	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/90	Done	M	Sprint3	Mar 3, 2025			LeoChen1068
+Optimize Sprite scaling and display	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/91	Done	S	Sprint3	Mar 3, 2025			manzlerh, PaytonYaffe, SauravPoudyel
+Design Tutorial Level	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/77	Done	M	Sprint3	Feb 26, 2025			AlexanderNistor04
+Design Hub Level	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/76	Done	M	Sprint3	Feb 26, 2025			AlexanderNistor04
+Room Framework	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/64	Done	M	Sprint3	Feb 26, 2025		6	manzlerh
+Room Loading	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/65	Done	L	Sprint3	Feb 26, 2025		6	manzlerh
+Add RayTracing	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/68	Done	L	Sprint3	Feb 21, 2025	Feb 24, 2025	5	SauravPoudyel
+Add player detection algorithms to all the mobs	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/69	Done	M	Sprint3	Feb 21, 2025	Feb 24, 2025	4	SauravPoudyel
+Optimize Player Controls & Mob Behavior	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/48	Done	L	Sprint3	Feb 20, 2025	Mar 3, 2025	4	PaytonYaffe, SauravPoudyel
+Block Collision Handling & Physics	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/49	Done	L	Sprint3	Feb 20, 2025	Feb 28, 2025		Aperture-1101, LeoChen1068
+Item Collosions and Reactions	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/50	Done	XL	Sprint3	Feb 20, 2025	Feb 28, 2025	7	SauravPoudyel
+Full Collision System (this is a parent)	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/62	Done	XL	Sprint3	Feb 20, 2025			Aperture-1101, LeoChen1068, PaytonYaffe, SauravPoudyel
+Basic Collosion system (collosion management, detection and reaction)	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/51	Done	M	Sprint3	Feb 19, 2025	Feb 21, 2025	6	SauravPoudyel
+Projectile Collision Response/Detection	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/52	Done	XL	Sprint3	Feb 19, 2025			PaytonYaffe, SauravPoudyel
+UI and Menu Design	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/56	Done	M	Sprint3	Feb 19, 2025	Feb 28, 2025		AlexanderNistor04, LeoChen1068
+Player Screen UI	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/58	Done	M	Sprint3	Feb 19, 2025	Feb 28, 2025		LeoChen1068
+Start menu Screen	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/60	Done	M	Sprint3	Feb 19, 2025	Feb 28, 2025		LeoChen1068
+Design Player Screen	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/59	Done	S	Sprint3	Feb 19, 2025	Feb 28, 2025		AlexanderNistor04
+Enviornment Optimization	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/57	Done	L	Sprint3	Feb 19, 2025	Feb 28, 2025		AlexanderNistor04, manzlerh
+Grid System	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/61	Done	L	Sprint3	Feb 19, 2025	Feb 28, 2025	3	manzlerh
+Mob Collision/Response with Blocks and Player	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/54	Done	M	Sprint3	Feb 19, 2025			Aperture-1101, LeoChen1068
+Scrolling Camera	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/63	Todo	L	Sprint3	Feb 19, 2025			LeoChen1068, PaytonYaffe, SauravPoudyel
+Implement Command Request System	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/37	Done	M	Sprint2	Feb 2, 2025	Feb 4, 2025	6	SauravPoudyel
+Implement Game Commands	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/36	Done	M	Sprint2	Jan 29, 2025	Feb 5, 2025	6	SauravPoudyel
+Implement keyboard controller	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/22	Done	M	Sprint2		Feb 6, 2025	6	manzlerh, SauravPoudyel
+Implement mouse controller	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/23	Done	M	Sprint2		Feb 3, 2025	5	manzlerh, SauravPoudyel
+Implement Entity class	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/24	Done	XL	Sprint2		Feb 6, 2025	8	manzlerh, PaytonYaffe, SauravPoudyel
+Implement Player class	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/25	Done	XL	Sprint2		Feb 6, 2025	12	PaytonYaffe, SauravPoudyel
+Implement Mob class	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/26	Done	XL	Sprint2		Feb 17, 2025	17	manzlerh, PaytonYaffe, SauravPoudyel
+Implement Projectile class	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/27	Done	M	Sprint2		Feb 10, 2025	10	Aperture-1101, LeoChen1068, manzlerh, PaytonYaffe, SauravPoudyel
+Implement Block class	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/28	Done	S	Sprint2		Feb 16, 2025	12	Aperture-1101, LeoChen1068, manzlerh
+Implement Pickup Item class	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/29	Done	L	Sprint2		Feb 5, 2025	11	manzlerh
+Implement Rocket class	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/30	Done	S	Sprint2		Feb 6, 2025	9	Aperture-1101, LeoChen1068
+Implement Sniper class	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/31	Done	S	Sprint2		Feb 6, 2025	8	Aperture-1101, LeoChen1068
+Implement Shotgun class	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/32	Done	M	Sprint2		Feb 13, 2025	9	Aperture-1101, LeoChen1068, PaytonYaffe
+Create ICommands Interface	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/33	Done	M	Sprint2		Feb 5, 2025	8	manzlerh
+Implement Action Commands	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/34	Done	L	Sprint2		Feb 9, 2025	12	Aperture-1101, LeoChen1068, manzlerh, PaytonYaffe, SauravPoudyel
+Implement Graphics Commands	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/35	Done	M	Sprint2		Feb 5, 2025	7	manzlerh, SauravPoudyel
+Implement Movement Commands	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/38	Done	S	Sprint2		Feb 3, 2025	5	SauravPoudyel
+Implement Static & Animated Sprites	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/39	Done	M	Sprint2		Feb 5, 2025	8	manzlerh, SauravPoudyel
+Implement Text Sprites	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/40	Done	XS	Sprint2		Feb 10, 2025	14	manzlerh
+Optimize Sprite Sheets	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/41	Done	M	Sprint2		Feb 6, 2025	6	manzlerh
+Implement Game Manager	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/42	Done	L	Sprint2		Feb 11, 2025	6	manzlerh, SauravPoudyel
+Implement EventManager	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/47	Done	M	Sprint2		Feb 11, 2025	7	SauravPoudyel
+Implement Sprite Manager	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/43	Done	XS	Sprint2		Feb 12, 2025	6	SauravPoudyel
+Create map for inheritance trees	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/44	Done	M	Sprint2		Feb 12, 2025	6	AlexanderNistor04
+Create map for class interactions	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/45	Done	L	Sprint2		Feb 12, 2025	7	AlexanderNistor04
+Create GameState and Menu	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/46	Done	L	Sprint2		Feb 12, 2025	5	SauravPoudyel
+Add In-game Pause Menu	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/93	Done	M	Sprint3			5	manzlerh
+Implement Selection between Multiple Levels	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/94	Done	M	Sprint3			5	manzlerh
+Implement CSV Parser for Level Files (Entities and Tiles)	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/issues/95	Done	L	Sprint3			9	manzlerh
+Level Transitions, Level Connections, Level Permanency, and Loading Screen	https://github.com/SauravPoudyel/CSE3902-G3Repo-2025/pull/137	Done						

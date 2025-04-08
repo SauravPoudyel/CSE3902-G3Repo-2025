@@ -81,9 +81,9 @@ namespace Sprint0
                 LoadDialogues(dialogueCSVPath);
             }
 
-            if (dialogueDictionary.ContainsKey(key))
+            if (dialogueDictionary.TryGetValue(key, out DialogueData value))
             {
-                DialogueData data = dialogueDictionary[key];
+                DialogueData data = value;
                 /* even if automatic trigger check would normally skip this dialogue, manual addition 
                 will force it. */
                 if (!activeDialogueAdapters.ContainsKey(key))

@@ -50,9 +50,9 @@ namespace Sprint0
 
         public static BaseBlock CreateBlock(EntityKeys.BlockType blockType, ContentManager content, Vector2 position, float frameTime)
         {
-            if (blockCreators.ContainsKey(blockType))
+            if (blockCreators.TryGetValue(blockType, out Func<ContentManager, EntityKeys.BlockType, float, BaseBlock> value))
             {
-                BaseBlock block = blockCreators[blockType](content, blockType, frameTime);
+                BaseBlock block = value(content, blockType, frameTime);
                 block.SetPosition(position);
                 return block;
             }

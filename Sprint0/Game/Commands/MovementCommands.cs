@@ -11,7 +11,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("player") && parameters["player"] is Entity entity)
+                if (parameters.TryGetValue("player", out object value) && value is Entity entity)
                 {
 
                     entity.SetVelocity(new Vector2(0,0));
@@ -23,7 +23,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("player") && parameters["player"] is Player player)
+                if (parameters.TryGetValue("player", out object value) && value is Player player)
                 {
                     // Assuming the Entity base class provides a GetVelocity() method.
                     Vector2 currentVelocity = player.GetVelocity();
@@ -42,8 +42,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("player") && parameters["player"] is Entity entity &&
-                    parameters.ContainsKey("velocity") && parameters["velocity"] is Vector2 inputVelocity)
+                if (parameters.TryGetValue("player", out object value) && value is Entity entity &&
+                    parameters.TryGetValue("velocity", out object value) && value is Vector2 inputVelocity)
                 {
                     float forwardAcceleration = 50f;
                     float turnAcceleration = 12f; 

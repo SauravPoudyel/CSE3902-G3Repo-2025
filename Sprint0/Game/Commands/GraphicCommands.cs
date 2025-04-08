@@ -12,7 +12,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager)
                 {
                     var staticSprite = new StaticSprite();
                     staticSprite.LoadContent(gameManager.GetContent(), "LinkSpritesheet", 140, 2, 62, 62, 1);
@@ -25,7 +25,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager)
                 {
                     var animatedSprite = new AnimatedSprite(0.4f);
                     animatedSprite.LoadContent(gameManager.GetContent(), "LinkSpritesheet", 140, 2, 62, 62, 2);
@@ -38,8 +38,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
-                    parameters.ContainsKey("sprite") && parameters["sprite"] is ISprite sprite)
+                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
+                    parameters.TryGetValue("sprite", out object value) && value is ISprite sprite)
                 {
                     gameManager.GetEntity("player").SetSprite(sprite);
                 }
@@ -50,8 +50,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("player") && parameters["player"] is Player player &&
-                    parameters.ContainsKey("rotation") && parameters["rotation"] is float rotation)
+                if (parameters.TryGetValue("player", out object value) && value is Player player &&
+                    parameters.TryGetValue("rotation", out object value) && value is float rotation)
                 {
                     player.SetCannonRotation(rotation);
                 }
@@ -62,7 +62,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("blocks") && parameters["blocks"] is Blocks blocks)
+                if (parameters.TryGetValue("blocks", out object value) && value is Blocks blocks)
                 {
                     blocks.CycleBlockPrev();
                 }
@@ -73,7 +73,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("blocks") && parameters["blocks"] is Blocks blocks)
+                if (parameters.TryGetValue("blocks", out object value) && value is Blocks blocks)
                 {
                     blocks.CycleBlockNext();
                 }
@@ -85,7 +85,7 @@ namespace Sprint0
             public void Execute(Dictionary<string, object> parameters)
             {
                 // Implement the logic to cycle to the previous item
-                if (parameters.ContainsKey("pickupItem") && parameters["pickupItem"] is PickupItem pickupItem)
+                if (parameters.TryGetValue("pickupItem", out object value) && value is PickupItem pickupItem)
                 {
                     pickupItem.CycleItemPrev();
                 }
@@ -96,7 +96,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("pickupItem") && parameters["pickupItem"] is PickupItem pickupItem)
+                if (parameters.TryGetValue("pickupItem", out object value) && value is PickupItem pickupItem)
                 {
                     pickupItem.CycleItemNext();
                 }
@@ -107,7 +107,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager)
                 {
                     MobFactory.CycleNextMob(gameManager);
                 }
@@ -118,7 +118,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
+                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager)
                 {
                     MobFactory.CyclePreviousMob(gameManager);
                 }

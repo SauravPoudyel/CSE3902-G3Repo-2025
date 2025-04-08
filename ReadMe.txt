@@ -18,8 +18,10 @@ PLAYER CONTROLS
   3: Shotgun — fires a spread of projectiles.
   4: Mine — deploys and detonates on contact.
   5: Teleporter — teleports player to impact location.
-- Press E to test self-damage (there's a death animation)
+- Press H to test self-damage (there's a death animation)
+- J should toggle invincibility, but it might not be working 100%
 - ESC to access the Pause Menu.
+- We gave you a bunch of health to be able to tets things out for now
 
 ENEMY AI
 - Enemies constantly track the player between agressive, passive, and neutral states
@@ -66,6 +68,9 @@ SHOP SYSTEM
 - Categories include Weapons, Consumables, and more.
 - Click icons or text to purchase.
 - Purchases update player stats immediately.
+- WE NOW HAVE LOGIC TO INTERACT WITH THE SHOP building, this is unlcoked after you defeat the first Boss
+in the grass biome, but you can tets it by going into PLayerData.csv and changing HasShopKeys to 1. The shop is the
+top right building, and you can interact with it by pressing 3. This is how it will function in the final game
 
 MENUS + STATES
 - Start Menu: Loads on game boot. Press ENTER to begin.
@@ -74,6 +79,7 @@ MENUS + STATES
 - Screen transitions are managed to avoid input issues.
 - We have a Day and Night Cycle, it works with shaders and you can see it's effects after
 a couple minutes (we accelerated it for now)
+- There is also a stat screen that you can look at for each mob type killed
 
 CSV-BASED DESIGN + DATA
 - Levels are loaded from CSV files.
@@ -90,13 +96,15 @@ KNOWN BUGS
 - Some projectiles may pass through targets at extreme angles.
 - Level transition arrow prompt is currently a placeholder/work in progress.
 - ****** Level Transitions work though, If you want to see what levels are connected to which 
-         please check the LevelIndex.csv file to see which level connects in which way to the other
-         you can find out what level you are in the pause menu (you start at 1). 
+         please check the LevelIndex.csv file or the png level maps to see which level connects in which way to the other
+         you can find out what level you are in the pause menu (you start at 1; were working on the tutorial. 
          You can only change levels once all the enemies are killed              *******
 - Audio persistence bug: Driving sound sometimes continues when game is paused.
 - We think the sound issue might be fixed on MAC, but there still might be a small change it doesn't run on MAC
 - We have raised ground in hub and level 1 but their collisions don't work right now (we're trying to figure out 
 how to best do tile collisions)
+- AFTER YOUR FIRST DEATH. some of the items may not magnetize to you. this has to do with player references, and we are working
+on a fix
 
 DOCUMENTATION
 - All relevant CSV files, assets, and developer documentation are located in the DOCS folder.

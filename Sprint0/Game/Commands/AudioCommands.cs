@@ -35,8 +35,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("currentSpeed") && parameters["currentSpeed"] is float currentSpeed &&
-                    parameters.ContainsKey("maxSpeed") && parameters["maxSpeed"] is float maxSpeed)
+                if (parameters.TryGetValue("currentSpeed", out object value) && value is float currentSpeed &&
+                    parameters.TryGetValue("maxSpeed", out object value) && value is float maxSpeed)
                 {
                     AudioManager.AudioDrive(currentSpeed, maxSpeed);
                 }

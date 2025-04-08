@@ -113,7 +113,7 @@ namespace Sprint0 {
 
         public Level GetConnectedLevel(Direction direction)
         {
-            return connectedLevels.ContainsKey(direction) ? connectedLevels[direction] : null;
+            return connectedLevels.TryGetValue(direction, out Level value) ? value : null;
         }
         public bool HasConnectedLevel(Direction direction)
         {
@@ -159,7 +159,9 @@ namespace Sprint0 {
                 return;
 
             player = new Player(content);
-            player.SetPosition(position);
+            player.SetPosition((position * tileSize) + new Vector2(tileSize / 2, tileSize / 2));
+            player.EntityKey = "player";
+            player.Update();
             entities.Add("player", player);
         }
 

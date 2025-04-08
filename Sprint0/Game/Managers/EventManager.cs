@@ -98,9 +98,9 @@ namespace Sprint0
 
         public void ExecuteCommand(string commandKey, Dictionary<string, object> parameters)
         {
-            if (commandMap.ContainsKey(commandKey))
+            if (commandMap.TryGetValue(commandKey, out ICommand value))
             {
-                commandMap[commandKey].Execute(parameters);
+                value.Execute(parameters);
             }
             else
             {
