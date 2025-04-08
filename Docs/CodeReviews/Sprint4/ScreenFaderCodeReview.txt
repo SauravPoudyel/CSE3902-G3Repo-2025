@@ -1,0 +1,7 @@
+4/4/2025
+Sprint 4
+ScreenFader.cs
+Code Author(s): Payton
+Code Reviewer: Harry Manzler
+Comments: 
+ScreenFader is very concise and cohesive for handling screen fade transitions. Each method is clearly separated for high cohesion and simple for readability. It has virtually no coupling, so looks very maintainable and reusable. I don’t see any need for changes.

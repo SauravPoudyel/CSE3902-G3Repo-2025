@@ -1,0 +1,15 @@
+Author of the code review: Daoping Huang
+Date of the code review: April 3, 2025
+Sprint number: 4
+Files Reviewed: AudioCommands.cs
+Author of the reviewed files: Payton Yaffe
+Specific comments on code quality:
+CRITICAL
+1. Hardcoded parameter keys ("currentSpeed"/"maxSpeed") → Use constants  
+2. Magic number 0.1f volume steps → Define VOLUME_STEP constant  
+
+OPTIMIZATION
+- Duplicate param checks in commands → Create BaseAudioCommand abstract class  
+
+CODE SAFETY
+- No null-check for parameters["gameManager"] in AudioDriveCommand 

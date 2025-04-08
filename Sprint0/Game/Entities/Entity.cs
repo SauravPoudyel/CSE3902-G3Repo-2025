@@ -29,6 +29,7 @@ namespace Sprint0
         protected bool hasSprite = true;
         protected Dictionary<string, ISprite> sprites;
         protected Rectangle bounds;
+        public Rectangle Bounds => bounds;
         protected Queue<CommandRequest> commandQueue;
         public Entity Owner { get; set; }
 

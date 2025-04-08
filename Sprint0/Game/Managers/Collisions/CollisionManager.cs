@@ -1,11 +1,15 @@
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using static Sprint0.CollisionCommands;
+using static Sprint0.EntityKeys;
 
 namespace Sprint0
 {
     public class CollisionManager
     {
+        private Dictionary<Entity, bool> previousCollisionStates = new Dictionary<Entity, bool>();
+
         public void Update(Dictionary<string, Entity> entities)
         {
             CheckCollisions(entities.Values.ToList());
@@ -21,11 +25,13 @@ namespace Sprint0
                     if (actor == target)
                         continue;
                     Rectangle futureTargetBounds = target.PredictFutureBounds();
-                    
+
                     if (futureActorBounds.Intersects(futureTargetBounds))
                         ResolveCollision(actor, target);
                 }
             }
+
+            CheckFireCollisions(entities);
         }
 
         private void ResolveCollision(Entity actor, Entity target)
@@ -39,6 +45,33 @@ namespace Sprint0
                     { "target", target }
                 };
                 actor.EnqueueCommand(commandKey, parameters);
+            }
+        }
+
+        private void CheckFireCollisions(List<Entity> entities)
+        {
+            Player player = entities.OfType<Player>().FirstOrDefault();
+            if (player == null) return;
+
+            foreach (Effect effect in entities.OfType<Effect>().Where(e => e.effectType == EffectType.Fire))
+            {
+                bool isCollidingNow = effect.GetBounds().Intersects(player.GetBounds());
+                bool wasCollidingPreviously = previousCollisionStates.TryGetValue(effect, out bool state) && state;
+
+                if (isCollidingNow && !wasCollidingPreviously)
+                {
+                    // Trigger enter event
+                    var parameters = new Dictionary<string, object> { { "actor", player }, { "target", effect } };
+                    new CollisionHurtCommand().Execute(parameters);
+                }
+                else if (!isCollidingNow && wasCollidingPreviously)
+                {
+                    // Trigger exit event
+                    var parameters = new Dictionary<string, object> { { "actor", player }, { "target", effect } };
+                    new FireCollisionExitCommand().Execute(parameters);
+                }
+
+                previousCollisionStates[effect] = isCollidingNow;
             }
         }
     }

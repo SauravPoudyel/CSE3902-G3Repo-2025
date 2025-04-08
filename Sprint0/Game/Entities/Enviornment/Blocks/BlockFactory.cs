@@ -30,6 +30,8 @@ namespace Sprint0
                 { EntityKeys.BlockType.Boarder, CreateRigidBlock },
                 { EntityKeys.BlockType.Tree1, CreateRigidBlock },
                 { EntityKeys.BlockType.Tree2, CreateRigidBlock },
+                { EntityKeys.BlockType.DesertHouse, CreateRigidBlock },
+                { EntityKeys.BlockType.Tent, CreateRigidBlock },
 
                 // Pushable Blocks
                 { EntityKeys.BlockType.Box, CreatePushableBlock },

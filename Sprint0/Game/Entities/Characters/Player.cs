@@ -22,6 +22,11 @@ namespace Sprint0
         public bool CanFire { get { return timeSinceLastShot >= currentShootInterval; }}
         public bool IsImmortal { get; set; } = false;
 
+        public List<Effect> activeFireEffects = new List<Effect>();
+        private float fireDamageCooldown;
+        private const float FIRE_DAMAGE_INTERVAL = 1.0f; //Fire damage gap
+        private const int FIRE_DAMAGE_PER_TICK = 10; //Fire damage
+
         public Player(ContentManager content) : base(content)
         {
             spriteWidth = 65;
@@ -131,12 +136,42 @@ namespace Sprint0
             PowerUpFactory.UpdateEffects(this);
             cannon.Update();
 
+            //Fire damage logic process
+            ProcessFireDamage();
+
             if (shieldActive)
                 effectSprite.Update();
 
             rotationInput = 0f;
         }
 
+        public bool IsTouchingFire(Effect effect)
+        {
+            return this.Bounds.Intersects(effect.Bounds);
+        }
+
+        private void ProcessFireDamage()
+        {
+            // Clear the fire effect if the player is not touching the fire or the fire vanishes
+            activeFireEffects.RemoveAll(fire =>
+                fire.IsFinished || !fire.GetBounds().Intersects(this.GetBounds()));
+
+            // Damage logic
+            if (activeFireEffects.Count > 0)
+            {
+                fireDamageCooldown -= Globals.PLAYERFRAMETIME;
+                if (fireDamageCooldown <= 0)
+                {
+                    ChangeHealth(-FIRE_DAMAGE_PER_TICK);
+                    fireDamageCooldown = FIRE_DAMAGE_INTERVAL;
+                    isDamaged = true;
+                }
+            }
+            else
+            {
+                fireDamageCooldown = 0;
+            }
+        }
 
         public override void FireProjectile()
         {

@@ -1,0 +1,28 @@
+Author of code review: Payton
+3/29/25
+Sprint 4
+Dialogue.cs
+Author of code: Saurav
+Comments:
+Code is not long and is concise
+Maybe we can turn the code where we check if diaglogue has started or not into another method, so the update() method is shorter.
+
+
+Author of code review: Payton
+3/30/25
+Sprint 4
+DialogueHandler.cs
+Author of code: Saurav
+Comments:
+We might want to change or add a way to store all the dialogue strings. Currently only one string is used for dialogue, so if we want more dialogue beyond the tutorial, we need a way to store all of them. 
+If we also want more dialogue beyond the tutorial, some of the variable names would need to change to match with its purpose. 
+
+Author of code review: Payton
+4/1/25
+Sprint 4
+DialogueToScreenAdapter.cs
+Author of code: Saurav
+Comments: 
+Code is very compact and straight forward. 
+I think we should change the name to something more descriptive like DialogueUserSkipCheck or something since it looks like the code just checks if the user wants to skip the tutorial. 
+Another option would be to turn this into a method inside DialogueHandler.cs

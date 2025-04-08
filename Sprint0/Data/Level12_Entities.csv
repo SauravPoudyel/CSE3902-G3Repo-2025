@@ -1,8 +1,8 @@
 Block_Tree2_0,Block_Tree1_0,Block_Tree_0,Block_DeadTree_0,Block_Tree1_0,Block_DeadTree_0,Block_BarbedFence,Block_Tree_0,Block_Tree_0,Block_DeadTree_0,Block_DeadTree_0,Block_Tree1_0,Block_Tree_0,Block_Tree_0,Block_Tree1_0,Block_Tree_0
 Block_Tree2_0,Block_DeadTree_0,Block_DeadTree_0,Block_BarbedFence,,Item_MedStrong,,,,,,,Enemy_Turret,Block_Tree_0,Block_DeadTree_0,Block_DeadTree_0
-Block_Tree_0,Block_Tree_0,Block_DeadTree_0,Enemy_Turret,,Enemy_SmallEnemy,Block_BarbedFence,,Enemy_Plane,,Block_RockPile_0,,,,,Block_Tree_0
+Block_Tree_0,Block_Tree_0,Block_DeadTree_0,Enemy_Turret,,,Block_BarbedFence,,Enemy_Plane,,Block_RockPile_0,,,,,Block_Tree_0
 Block_DeadTree_0,Block_DeadTree_0,,,,,,,,,,,,,,Block_BarbedFence
-Block_DeadTree_0,Block_DeadTree_0,,,Block_RockPile_0,,,,Enemy_BossTank,Enemy_HealerTank,,,Enemy_SmallEnemy,,,Block_BarbedFence
+Block_DeadTree_0,Block_DeadTree_0,,,Block_RockPile_0,,,,Enemy_BossTank,Enemy_HealerTank,,,,,,Block_BarbedFence
 Block_Tree1_0,Block_BarbedFence,,,,,Block_RockPile_0,,,,,,,,Block_Tree_0,Block_DeadTree_0
 Block_Tree1_0,,,,,,Block_RockPile_0,Enemy_Turret,Block_BarbedFence,Block_DeadTree_0,,,,Enemy_Turret,Block_Tree_0,Block_Tree_0
 ,,Item_Shield,,,,,Block_BarbedFence,Block_DeadTree_0,Block_DeadTree_0,Item_MedStrong,Block_RockPile_0,,Block_Tree2_0,Block_DeadTree_0,Block_DeadTree_0

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using static Sprint0.CollisionCommands;
 using static Sprint0.EntityKeys;
 
 namespace Sprint0
@@ -142,6 +143,26 @@ namespace Sprint0
                         commandQueue.Enqueue(new CommandRequest("DestroyEntity", destroyParams));
                     }
                 }
+            }
+
+            if (effectType == EffectType.Fire)
+            {
+                CheckInitialPlayerCollision();
+            }
+        }
+
+        private void CheckInitialPlayerCollision()
+        {
+            Player player = Player.Instance;
+            if (player != null && this.Bounds.Intersects(player.Bounds))
+            {
+                // Trigger collision event manually
+                var parameters = new Dictionary<string, object>
+            {
+                { "actor", player },
+                { "target", this }
+            };
+                new CollisionHurtCommand().Execute(parameters);
             }
         }
 
