@@ -33,7 +33,7 @@ namespace Sprint0
         {
             int xpBarLength = Globals.SCREENWIDTH/3;
             double ratio = (double)currentXP / maxXP;
-            int yLocation = Globals.SCREENHEIGHT -150;
+            int yLocation = Globals.SCREENHEIGHT -140;
             int xLocation = Globals.SCREENWIDTH / 3;
             spriteBatch.Draw(gray, new Rectangle(xLocation, yLocation, xpBarLength, 25), Color.White * 0.5f);
             spriteBatch.Draw(blue, new Rectangle(xLocation, yLocation, (int)(xpBarLength*ratio), 25), Color.White);
