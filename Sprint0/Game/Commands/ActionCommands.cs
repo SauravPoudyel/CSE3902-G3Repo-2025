@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.VisualBasic;
+using System.Linq;
 
 namespace Sprint0
 {
@@ -111,6 +113,39 @@ namespace Sprint0
                     parameters.ContainsKey("healAmount") && parameters["healAmount"] is int healAmount)
                 {
                     ActionCommands_Logic.HandleHealRadiusCommand(gameManager, origin, healRadius, healAmount);
+                }
+            }
+        }
+
+        public class PlayerInteractCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("player") && parameters["player"] is Player player)
+                {
+                    foreach(var InteractableBlock in gameManager.GetEntities().Values.OfType<InteractableBlock>())
+                    {
+                        System.Console.WriteLine("Checking interactable block: " + InteractableBlock.GetType().Name);
+                        InteractableBlock.IsInRange(player.GetPosition());
+                        if (InteractableBlock.CanInteract)
+                        {
+                            InteractableBlock.Interact();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        public class TogglePlayerImmortalityCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager &&
+                    parameters.ContainsKey("player") && parameters["player"] is Player player)
+                {
+                    player.IsImmortal = !player.IsImmortal;
                 }
             }
         }

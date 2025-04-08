@@ -6,25 +6,16 @@ namespace Sprint0
 {
     public static class ActionCommands_Logic
     {
-        public static void HandlePlayerAction(Player player, GameManager gameManager, string actionType) {
+        public static void HandlePlayerAction(Player player, GameManager gameManager, string actionType)
+        {
             switch (actionType)
             {
                 case "fire":
-                    if (!player.CanFire) return;
-                    
-                    string projectileType = "Default";
-                    player.SetProjectileType(projectileType);
-                    
-                    // Ensure default ammo is decremented properly
-                    if (Globals.PlayerData.GetInt("AmmoDefault") > 0)
-                    {
-                        Globals.PlayerData.UpdateVariable("AmmoDefault", -1); 
-                        player.FireProjectile();
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("Out of default ammo!");
-                    }
+                    HandleFireAction(player);
+                    break;
+                
+                case "interact":
+                    player.Interact();
                     break;
 
                 case "item1":
@@ -32,64 +23,94 @@ namespace Sprint0
                 case "item3":
                 case "item4":
                 case "item5":
-                    int slotIndex = actionType switch
-                    {
-                        "item1" => 0,
-                        "item2" => 1,
-                        "item3" => 2,
-                        "item4" => 3,
-                        "item5" => 4,
-                        _ => 0
-                    };
-
-                    if (!player.CanFire) return;
-
-                    InventorySlot slot = gameManager.screenManager.playerInventory.inventorySlots[slotIndex];
-                    projectileType = slot.ProjectileType;
-
-                    if (slot.AmmoCount <= 0) return;
-
-                    // Decrement correct ammo type
-                    switch (projectileType)
-                    {
-                        case "Sniper":
-                            Globals.PlayerData.UpdateVariable("AmmoSniper", -1);
-                            break;
-                        case "Rocket":
-                            Globals.PlayerData.UpdateVariable("AmmoRocket", -1);
-                            break;
-                        case "Shotgun":
-                            Globals.PlayerData.UpdateVariable("AmmoShotgun", -1);
-                            break;
-                        case "Mine":
-                            Globals.PlayerData.UpdateVariable("AmmoMine", -1);
-                            break;
-                        case "Teleporter":
-                            Globals.PlayerData.UpdateVariable("AmmoTeleporter", -1);
-                            break;
-                        case "Default":  // Ensure default ammo decrements properly here too
-                            Globals.PlayerData.UpdateVariable("AmmoDefault", -1);
-                            break;
-                        default:
-                            System.Console.WriteLine("Error: Invalid projectile type.");
-                            break;
-                    }
-
-                    player.SetProjectileType(projectileType);
-                    player.FireProjectile();
-
-                    if (slot.AmmoCount <= 0)
-                    {
-                        gameManager.screenManager.playerInventory.ShiftEmptySlot(slotIndex);
-                    }
+                    int slotIndex = GetItemSlotIndex(actionType);
+                    HandleItemAction(player, gameManager, slotIndex);
                     break;
 
                 default:
-                    System.Console.WriteLine("Error: Invalid actionType.");
+                    Console.WriteLine("Error: Invalid actionType.");
                     break;
             }
         }
 
+        private static int GetItemSlotIndex(string actionType)
+        {
+            return actionType switch
+            {
+                "item1" => 0,
+                "item2" => 1,
+                "item3" => 2,
+                "item4" => 3,
+                "item5" => 4,
+                _ => 0
+            };
+        }
+
+        private static void HandleFireAction(Player player)
+        {
+            if (!player.CanFire)
+                return;
+
+            string projectileType = "Default";
+            player.SetProjectileType(projectileType);
+
+            // Ensure default ammo is decremented properly
+            if (Globals.PlayerData.GetInt("AmmoDefault") > 0)
+            {
+                Globals.PlayerData.UpdateVariable("AmmoDefault", -1);
+                player.FireProjectile();
+            }
+            else
+            {
+                Console.WriteLine("Out of default ammo!");
+            }
+        }
+
+        private static void HandleItemAction(Player player, GameManager gameManager, int slotIndex)
+        {
+            if (!player.CanFire)
+                return;
+
+            InventorySlot slot = gameManager.screenManager.playerInventory.inventorySlots[slotIndex];
+            string projectileType = slot.ProjectileType;
+
+            if (slot.AmmoCount <= 0)
+                return;
+
+            // Decrement the correct ammo type
+            switch (projectileType)
+            {
+                case "Sniper":
+                    Globals.PlayerData.UpdateVariable("AmmoSniper", -1);
+                    break;
+                case "Rocket":
+                    Globals.PlayerData.UpdateVariable("AmmoRocket", -1);
+                    break;
+                case "Shotgun":
+                    Globals.PlayerData.UpdateVariable("AmmoShotgun", -1);
+                    break;
+                case "Mine":
+                    Globals.PlayerData.UpdateVariable("AmmoMine", -1);
+                    break;
+                case "Teleporter":
+                    Globals.PlayerData.UpdateVariable("AmmoTeleporter", -1);
+                    break;
+                case "Default":  // Ensure default ammo decrements properly here too
+                    Globals.PlayerData.UpdateVariable("AmmoDefault", -1);
+                    break;
+                default:
+                    Console.WriteLine("Error: Invalid projectile type.");
+                    break;
+            }
+
+            player.SetProjectileType(projectileType);
+            player.FireProjectile();
+
+            if (slot.AmmoCount <= 0)
+            {
+                gameManager.screenManager.playerInventory.ShiftEmptySlot(slotIndex);
+            }
+        }
 
         public static void HandleCreateProjectileCommand(Dictionary<string, object> parameters, Character owner, string projectileType, Vector2 spawnPosition, float cannonRotation, GameManager gameManager)
         {

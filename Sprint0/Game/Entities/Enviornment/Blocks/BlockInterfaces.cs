@@ -13,6 +13,12 @@ namespace Sprint0
         bool IsDestroyed { get; }
         void Destroy();
     }
+
+    public interface IInteractable // Blocks that can be interacted with e
+    {
+        void Interact();
+    } 
+
     public interface IFlammable 
     {
         bool IsIgnited { get; }

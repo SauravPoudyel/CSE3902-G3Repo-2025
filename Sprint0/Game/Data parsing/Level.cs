@@ -90,6 +90,27 @@ namespace Sprint0 {
                 connectedLevels[direction] = level;
             }
         }
+
+        public bool HasKeyItem { get; private set; } = false;
+        public EntityKeys.ItemType KeyItemType { get; private set; }
+        private bool keyItemDropped = false;
+        public void SetKeyItemType(EntityKeys.ItemType keyItemType)
+        {
+            HasKeyItem = true;
+            KeyItemType = keyItemType;
+        }
+
+        // When the level is complete, drop the key item in the center.
+        public void DropKeyItem(ContentManager content)
+        {
+            System.Console.WriteLine(Complete + " " + HasKeyItem + " " + keyItemDropped);
+            if (Complete && HasKeyItem)
+            {
+                AddItem(content, new Vector2(8, 5), KeyItemType);
+                keyItemDropped = true;
+            }
+        }
+
         public Level GetConnectedLevel(Direction direction)
         {
             return connectedLevels.ContainsKey(direction) ? connectedLevels[direction] : null;

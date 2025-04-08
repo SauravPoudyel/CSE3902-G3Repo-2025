@@ -20,12 +20,14 @@ namespace Sprint0
         private float timeSinceLastShot = 0f;
         public static Player Instance { get; private set; }
         public bool CanFire { get { return timeSinceLastShot >= currentShootInterval; }}
+        public bool IsImmortal { get; set; } = false;
 
         public Player(ContentManager content) : base(content)
         {
             spriteWidth = 65;
             spriteHeight = 65;
             EntityKey = "player"; 
+            health = 1000; 
             Instance = this;
             currentShootInterval = baseShootInterval;
 
@@ -62,6 +64,7 @@ namespace Sprint0
 
         public override void ChangeHealth(int change)
         {
+            if(IsImmortal) return; 
             base.ChangeHealth(change);
             if(change < 0)
                 isDamaged = true;
@@ -76,6 +79,11 @@ namespace Sprint0
             Dictionary<string, object> parameters2 = new Dictionary<string, object>{{ "player", this }};
             commandQueue.Enqueue(new CommandRequest("PlayerDeath", parameters2));
             this.SetPosition(new Vector2(700, 700)); // to respawn at the proper point
+        }
+
+        public void Interact() {
+            Dictionary<string, object> parameters2 = new Dictionary<string, object>{{ "player", this}};
+            commandQueue.Enqueue(new CommandRequest("PlayerInteract", parameters2));
         }
 
         public void MoveLevel(int levelNum) {

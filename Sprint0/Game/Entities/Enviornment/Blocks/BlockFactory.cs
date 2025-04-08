@@ -17,11 +17,11 @@ namespace Sprint0
                 { EntityKeys.BlockType.Tree, CreateRigidBlock },
                 { EntityKeys.BlockType.BarbedFence, CreateRigidBlock },
                 { EntityKeys.BlockType.RockPile, CreateRigidBlock },
-                { EntityKeys.BlockType.Factory, CreateRigidBlock },
                 { EntityKeys.BlockType.RockPileVar1, CreateRigidBlock },
                 { EntityKeys.BlockType.RockPileVar2, CreateRigidBlock },
                 { EntityKeys.BlockType.House, CreateRigidBlock },
                 { EntityKeys.BlockType.House2, CreateRigidBlock },
+                { EntityKeys.BlockType.Factory, CreateRigidBlock },
                 { EntityKeys.BlockType.SmallTree, CreateRigidBlock },
                 { EntityKeys.BlockType.Fence, CreateRigidBlock },
                 { EntityKeys.BlockType.DeadTree, CreateRigidBlock },
@@ -40,7 +40,9 @@ namespace Sprint0
                 // Flammable Blocks
                 { EntityKeys.BlockType.Barrel, CreateFlammableBlock },
                 { EntityKeys.BlockType.RedBarrel, CreateFlammableBlock },
-                { EntityKeys.BlockType.Oil, CreateFlammableBlock }
+                { EntityKeys.BlockType.Oil, CreateFlammableBlock },
+
+                { EntityKeys.BlockType.Shop, CreateInteractableBlock }
             };
         }
 
@@ -66,5 +68,8 @@ namespace Sprint0
 
         private static BaseBlock CreatePushableDestructibleBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime) =>
             new PushableDestructibleBlock(content, blockType, frameTime);
+        
+        private static BaseBlock CreateInteractableBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime) =>
+            new InteractableBlock(content, blockType, frameTime);
     }
 }

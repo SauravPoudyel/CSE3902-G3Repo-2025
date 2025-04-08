@@ -15,6 +15,7 @@ namespace Sprint0
             ParseTiles(tileFilePath, level, content);
             return level;
         }
+
         public static Dictionary<string, Level> ParseLevelIndex(){
             Dictionary<string, Level> levelDict = new Dictionary<string, Level>();
             string indexPath = Path.Combine(Globals.projectDirectory, "Data\\LevelIndex.csv");
@@ -24,7 +25,8 @@ namespace Sprint0
             string[] lines = File.ReadAllLines(indexPath);
             if (lines.Length == 0)
                 Console.WriteLine($"Zero lines read: {indexPath}");
-            for (int i = 1; i < lines.Length; i++) { // Must add all levels (skip header line) to Dictionary before connecting them
+            // First pass: add all levels (skip header)
+            for (int i = 1; i < lines.Length; i++) {
                 string[] currentRow = lines[i].Split(',');
                 string levelName = currentRow[0];
                 if(!levelDict.ContainsKey(levelName)) {
@@ -32,26 +34,43 @@ namespace Sprint0
                     levelDict[levelName].LevelNumber = int.Parse(currentRow[1]);
                 }
             }
-            for (int i = 1; i < lines.Length; i++) // Now connect levels
+            // Second pass: connect levels, set prerequisites, and set key item info.
+            // Note: KeyItem info is in column 8 (index 7).
+            for (int i = 1; i < lines.Length; i++)
             {
                 string[] currentRow = lines[i].Split(',');
                 string levelName = currentRow[0];
-                if(levelDict.ContainsKey(levelName)) {
-                    for(int j=0; j<4; j++){ // iterate through 4 directions (0-3 are their equiv. values)
-                        string connectedLevelName = currentRow[j+2]; // first two columns are name and number
+                if(levelDict.ContainsKey(levelName))
+                {
+                    for(int j=0; j<4; j++){
+                        string connectedLevelName = currentRow[j+2];
                         if(levelDict.ContainsKey(connectedLevelName)) {
                             levelDict[levelName].AddConnectedLevel((Level.Direction)j, levelDict[connectedLevelName]);
                         }
                     }
                     string preReqLevelName = currentRow[6];
-                    if(levelDict.ContainsKey(preReqLevelName)) {
+                    if(levelDict.ContainsKey(preReqLevelName))
+                    {
                         levelDict[levelName].Unlocked = false;
                         levelDict[levelName].PrereqLevel = levelDict[preReqLevelName];
+                    }
+                    // Check for KeyItem info in column 8.
+                    if (currentRow.Length > 7 && !string.IsNullOrWhiteSpace(currentRow[7]))
+                    {
+                        if (Enum.TryParse(currentRow[7], out EntityKeys.ItemType keyItemType))
+                        {
+                            levelDict[levelName].SetKeyItemType(keyItemType);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid KeyItem type in LevelIndex: " + currentRow[7]);
+                        }
                     }
                 }
             }
             return levelDict;
         }
+
         private static void ParseEntities(string filePath, Level level, ContentManager content)
         {
             string[,] grid = ParseEntityGridFile(filePath);
@@ -67,7 +86,7 @@ namespace Sprint0
                     if (string.IsNullOrWhiteSpace(cell))
                         continue;
 
-                    // Each cell is structured as: ParentType_Subtype or for blocks: Block_Subtype_Rotation
+                    // Each cell is structured as: ParentType_Subtype (or for blocks: Block_Subtype_Rotation)
                     string[] parts = cell.Split('_');
                     if (parts.Length == 0)
                         continue;
@@ -75,7 +94,7 @@ namespace Sprint0
 
                     // Calculate the position based on grid coordinates.
                     // Level.Add* methods already adjust for tile size.
-                    Vector2 position = new Microsoft.Xna.Framework.Vector2(x, y);
+                    Vector2 position = new Vector2(x, y);
 
                     switch (parentType)
                     {
@@ -131,6 +150,18 @@ namespace Sprint0
                             }
                             break;
 
+                        // New case: register a KeyItem if found in the entities CSV.
+                        case "KeyItem":
+                            if (parts.Length >= 2 && Enum.TryParse(parts[1], out EntityKeys.ItemType keyType))
+                            {
+                                level.SetKeyItemType(keyType);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Unknown KeyItem subtype in cell: " + cell);
+                            }
+                            break;
+
                         default:
                             Console.WriteLine("Unknown entity type in cell: " + cell);
                             break;
@@ -171,7 +202,7 @@ namespace Sprint0
 
         private static string[,] ParseTileFile(string filePath)
         {
-            string[,] tileArray = new string[9, 16]; 
+            string[,] tileArray = new string[9, 16];
             if (!File.Exists(filePath))
             {
                 Console.WriteLine($"File path does not exist: {filePath}");

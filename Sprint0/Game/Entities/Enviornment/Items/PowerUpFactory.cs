@@ -127,6 +127,9 @@ namespace Sprint0
                 case EntityKeys.ItemType.GoldTag:
                     Globals.PlayerData.UpdateVariable("Coins", 100);
                     break;
+                case EntityKeys.ItemType.ShopKeys:
+                    Globals.PlayerData.UpdateVariable("HasShopKeys", 1);
+                    break;
             }
         }
     }

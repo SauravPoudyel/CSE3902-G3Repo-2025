@@ -77,7 +77,6 @@ namespace Sprint0
         public void Update()
         {
             
-
             MouseState currentMouseState = Mouse.GetState();
 
             Vector2 categoryPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + 10);

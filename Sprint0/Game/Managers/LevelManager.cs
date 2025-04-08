@@ -10,6 +10,7 @@ namespace Sprint0
 {
     public class LevelManager {
         private Level activeLevel;
+        private ContentManager content;
         public Level ActiveLevel
         {
             get { return activeLevel; }
@@ -20,20 +21,31 @@ namespace Sprint0
             levels = CSVLevelParser.ParseLevelIndex();
         }
         public void LoadContent(ContentManager content, int levelNum) {
+            this.content = content; 
             string levelName = "Level" + levelNum;
-            if(!levels.ContainsKey(levelName)) { // if level isn't in dictionary
+
+            if (!levels.ContainsKey(levelName)) {
                 levels.Add(levelName, new Level());
-            }  
-            if(!levels[levelName].Loaded) { // if level hasn't been loaded
-                    string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Entities.csv");
-                    string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Tiles.csv");
-                    Level loadedLevel = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
-                    loadedLevel.ConnectedLevels = levels[levelName].ConnectedLevels; // Unfortunately, current methods require this awkward handoff
-                    levels[levelName] = loadedLevel;
-                    levels[levelName].LevelNumber = levelNum;
-                    levels[levelName].Loaded = true;
-                    loadedLevel.InitializePerimeter(content);
-            }          
+            }
+
+            if (!levels[levelName].Loaded) {
+                string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Entities.csv");
+                string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Tiles.csv");
+                Level loadedLevel = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
+
+                Level indexLevel = levels[levelName];
+                if (indexLevel.HasKeyItem) {
+                    loadedLevel.SetKeyItemType(indexLevel.KeyItemType);
+                }
+
+                loadedLevel.ConnectedLevels = indexLevel.ConnectedLevels; // still needed
+                levels[levelName] = loadedLevel;
+                levels[levelName].LevelNumber = levelNum;
+                levels[levelName].Loaded = true;
+
+                loadedLevel.InitializePerimeter(content);
+            }
+
             activeLevel = levels[levelName];
         }
         public Dictionary<string, Entity> LoadLevelEntities()
@@ -63,15 +75,18 @@ namespace Sprint0
         }
         public void Update(Dictionary<string, Entity> entities) {
             UpdateLevelEntities(entities);
-            if(!activeLevel.Complete && activeLevel.Loaded && !activeLevel.HasEnemies()) {
+            if(!activeLevel.Complete && activeLevel.Loaded && !activeLevel.HasEnemies())
+            {
                 activeLevel.Complete = true;
+                // Drop the key item if applicable.
+                activeLevel.DropKeyItem(content);
                 foreach(Level level in levels.Values) {
-                    if(level.PrereqLevel!=null && level.PrereqLevel.LevelNumber == activeLevel.LevelNumber) 
+                    if(level.PrereqLevel != null && level.PrereqLevel.LevelNumber == activeLevel.LevelNumber)
                         level.Unlocked = true;
-                        if(activeLevel.ConnectedLevels.Values.Contains(level)) {
-                            var direction = activeLevel.ConnectedLevels.FirstOrDefault(x => x.Value == level).Key;
-                            activeLevel.UnlockConnectedLevel(direction);
-                        }
+                    if(activeLevel.ConnectedLevels.Values.Contains(level)) {
+                        var direction = activeLevel.ConnectedLevels.FirstOrDefault(x => x.Value == level).Key;
+                        activeLevel.UnlockConnectedLevel(direction);
+                    }
                 }
             }
             // Level moving logic
