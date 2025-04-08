@@ -17,11 +17,11 @@ namespace Sprint0
                 { EntityKeys.BlockType.Tree, CreateRigidBlock },
                 { EntityKeys.BlockType.BarbedFence, CreateRigidBlock },
                 { EntityKeys.BlockType.RockPile, CreateRigidBlock },
-                { EntityKeys.BlockType.Factory, CreateRigidBlock },
                 { EntityKeys.BlockType.RockPileVar1, CreateRigidBlock },
                 { EntityKeys.BlockType.RockPileVar2, CreateRigidBlock },
                 { EntityKeys.BlockType.House, CreateRigidBlock },
                 { EntityKeys.BlockType.House2, CreateRigidBlock },
+                { EntityKeys.BlockType.Factory, CreateRigidBlock },
                 { EntityKeys.BlockType.SmallTree, CreateRigidBlock },
                 { EntityKeys.BlockType.Fence, CreateRigidBlock },
                 { EntityKeys.BlockType.DeadTree, CreateRigidBlock },
@@ -30,6 +30,8 @@ namespace Sprint0
                 { EntityKeys.BlockType.Boarder, CreateRigidBlock },
                 { EntityKeys.BlockType.Tree1, CreateRigidBlock },
                 { EntityKeys.BlockType.Tree2, CreateRigidBlock },
+                { EntityKeys.BlockType.DesertHouse, CreateRigidBlock },
+                { EntityKeys.BlockType.Tent, CreateRigidBlock },
 
                 // Pushable Blocks
                 { EntityKeys.BlockType.Box, CreatePushableBlock },
@@ -40,15 +42,17 @@ namespace Sprint0
                 // Flammable Blocks
                 { EntityKeys.BlockType.Barrel, CreateFlammableBlock },
                 { EntityKeys.BlockType.RedBarrel, CreateFlammableBlock },
-                { EntityKeys.BlockType.Oil, CreateFlammableBlock }
+                { EntityKeys.BlockType.Oil, CreateFlammableBlock },
+
+                { EntityKeys.BlockType.Shop, CreateInteractableBlock }
             };
         }
 
         public static BaseBlock CreateBlock(EntityKeys.BlockType blockType, ContentManager content, Vector2 position, float frameTime)
         {
-            if (blockCreators.ContainsKey(blockType))
+            if (blockCreators.TryGetValue(blockType, out Func<ContentManager, EntityKeys.BlockType, float, BaseBlock> value))
             {
-                BaseBlock block = blockCreators[blockType](content, blockType, frameTime);
+                BaseBlock block = value(content, blockType, frameTime);
                 block.SetPosition(position);
                 return block;
             }
@@ -66,5 +70,8 @@ namespace Sprint0
 
         private static BaseBlock CreatePushableDestructibleBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime) =>
             new PushableDestructibleBlock(content, blockType, frameTime);
+        
+        private static BaseBlock CreateInteractableBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime) =>
+            new InteractableBlock(content, blockType, frameTime);
     }
 }

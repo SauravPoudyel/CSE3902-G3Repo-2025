@@ -60,7 +60,7 @@ namespace Sprint0
         public ContentManager GetContent() => content;
         public Dictionary<string, Entity> GetEntities() => entities;
         public Entity GetEntity(string entityKey) =>
-            entities.ContainsKey(entityKey) ? entities[entityKey] : null;
+            entities.TryGetValue(entityKey, out Entity value) ? value : null;
         public void SetEntity(string key, Entity entity) => entities[key] = entity;
         public void RemoveEntity(string key) { if (entities.ContainsKey(key)) entities.Remove(key); }
 

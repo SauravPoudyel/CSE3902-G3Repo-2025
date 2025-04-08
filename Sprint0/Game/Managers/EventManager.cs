@@ -23,6 +23,8 @@ namespace Sprint0
                 {"DecreaseLevel", new GameCommands.DecreaseLevelCommand()},
                 {"SetLevel", new GameCommands.SetLevelCommand()},
                 {"PlayerDeath", new GameCommands.PlayerDeathCommand()},
+                {"OpenShop", new GameCommands.OpenShopCommand()},
+                {"CloseShop", new GameCommands.CloseShopCommand()},
 
                 {"Static", new GraphicCommands.DisplayStaticGameCommand()},
                 {"Animated", new GraphicCommands.DisplayAnimatedGameCommand()},
@@ -48,6 +50,8 @@ namespace Sprint0
                 {"RequestPlayerPosition", new ActionCommands.RequestPlayerPositionCommand() },
                 {"Damage", new ActionCommands.DamageCommand()},
                 {"HealRadius", new ActionCommands.HealRadiusCommand()},
+                {"PlayerInteract", new ActionCommands.PlayerInteractCommand()},
+                {"Immortality", new ActionCommands.TogglePlayerImmortalityCommand()},
 
                 {"CollisionPush", new CollisionCommands.CollisionPushCommand()},
                 {"CollisionStop", new CollisionCommands.CollisionStopCommand()},
@@ -94,9 +98,9 @@ namespace Sprint0
 
         public void ExecuteCommand(string commandKey, Dictionary<string, object> parameters)
         {
-            if (commandMap.ContainsKey(commandKey))
+            if (commandMap.TryGetValue(commandKey, out ICommand value))
             {
-                commandMap[commandKey].Execute(parameters);
+                value.Execute(parameters);
             }
             else
             {

@@ -43,6 +43,8 @@ namespace Sprint0
                 EntityKeys.BlockType.Boarder => (2872, 0, 120, 120, 1f),
                 EntityKeys.BlockType.Tree1 => (1023, 1128, 52, 89, 1f),
                 EntityKeys.BlockType.Tree2 => (1075, 1125, 29, 60, 1f),
+                EntityKeys.BlockType.DesertHouse => (765, 1896, 104, 120, 1f),
+                EntityKeys.BlockType.Tent => (868, 1864, 89, 120, 1),
                 
                 _ => throw new System.ArgumentException($"Invalid BlockSpriteKey: {blockType}")
             };

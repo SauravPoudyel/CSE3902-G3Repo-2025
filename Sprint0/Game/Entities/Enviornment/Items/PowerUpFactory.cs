@@ -49,8 +49,8 @@ namespace Sprint0
                 EffectTimers[effect] -= Globals.FRAMETIME;
                 if (EffectTimers[effect] <= 0f)
                 {
-                    if (expireActions.ContainsKey(effect))
-                        expireActions[effect](player);
+                    if (expireActions.TryGetValue(effect, out Action<Player> value))
+                        value(player);
                     
                     EffectTimers.Remove(effect);
                 }
@@ -126,6 +126,9 @@ namespace Sprint0
                     break;
                 case EntityKeys.ItemType.GoldTag:
                     Globals.PlayerData.UpdateVariable("Coins", 100);
+                    break;
+                case EntityKeys.ItemType.ShopKeys:
+                    Globals.PlayerData.UpdateVariable("HasShopKeys", 1);
                     break;
             }
         }

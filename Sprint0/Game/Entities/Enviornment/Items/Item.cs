@@ -25,6 +25,10 @@ namespace Sprint0
 
         public void LoadItemContent(ContentManager content, EntityKeys.ItemType type)
         {
+            if(content == null) {
+                throw new ArgumentNullException(nameof(content), "ContentManager cannot be null.");
+            }
+
             animatedSprite = new AnimatedSprite(frameTime);
 
             switch (type)
@@ -82,6 +86,9 @@ namespace Sprint0
                     break;
                 case EntityKeys.ItemType.Teleporter:
                     animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 680, 40, 40, 10);
+                    break;
+                case EntityKeys.ItemType.ShopKeys:
+                    animatedSprite.LoadContent(content, "PickupItemSpritesheet2", 0, 920 , 40, 40, 10);
                     break;
                 default:
                     throw new ArgumentException($"Invalid ItemType: {type}");

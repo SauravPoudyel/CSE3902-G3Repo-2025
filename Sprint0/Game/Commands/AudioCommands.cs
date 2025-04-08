@@ -27,7 +27,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                AudioManager.SetVolume(MathHelper.Clamp(AudioManager.Volume - 0.1f, 0f, 1f));
+                AudioManager.SetVolume(MathHelper.Clamp(AudioManager.Volume - 0.2f, 0f, 1f));
             }
         }
 
@@ -35,8 +35,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.ContainsKey("currentSpeed") && parameters["currentSpeed"] is float currentSpeed &&
-                    parameters.ContainsKey("maxSpeed") && parameters["maxSpeed"] is float maxSpeed)
+                if (parameters.TryGetValue("currentSpeed", out object value) && value is float currentSpeed &&
+                    parameters.TryGetValue("maxSpeed", out object value2) && value is float maxSpeed)
                 {
                     AudioManager.AudioDrive(currentSpeed, maxSpeed);
                 }

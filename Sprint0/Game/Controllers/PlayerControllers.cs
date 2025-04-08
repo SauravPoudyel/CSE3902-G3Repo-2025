@@ -27,8 +27,10 @@ namespace Sprint0
                 { Keys.D5, "PlayerAction" },
                 { Keys.W, "Move" },
                 { Keys.S, "Move" },
-                { Keys.Z, "PlayerAction" },
-                { Keys.E, "Damage" },
+                { Keys.C, "PlayerAction" },
+                { Keys.E, "PlayerAction" },
+                { Keys.H, "Damage" },
+                { Keys.K, "Immortality" },
                 { Keys.T, "CycleBlockPrev" },
                 { Keys.Y, "CycleBlockNext" },
                 { Keys.U, "CycleItemPrev" },
@@ -87,7 +89,8 @@ namespace Sprint0
             }
 
             string actionType = "fire";
-            if (state.IsKeyDown(Keys.Z)) actionType = "fire";
+            if (state.IsKeyDown(Keys.C)) actionType = "fire";
+            if (state.IsKeyDown(Keys.E)) actionType = "interact";
             if (state.IsKeyDown(Keys.D1)) actionType = "item1";
             if (state.IsKeyDown(Keys.D2)) actionType = "item2";
             if (state.IsKeyDown(Keys.D3)) actionType = "item3";
