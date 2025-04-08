@@ -17,13 +17,14 @@ namespace Sprint0
         private List<ShopItem> shopItems;
         private List<ShopItem> filteredItems;
         private List<string> categories;
+        private List<Button> shopButtons;
         private string selectedCategory;
         private int selectedIndex;
         private SpriteFont font;
         private Texture2D background;
         private Rectangle windowRectangle;
         private MouseState previousMouseState;
-        public bool BlocksInput => true; 
+        public bool BlocksInput => true;
 
         public Shop(Game1 game)
         {
@@ -33,13 +34,20 @@ namespace Sprint0
             categories = new List<string> { "Ammo", "permanent" };
             selectedCategory = "Ammo";
             selectedIndex = -1;
-            previousMouseState = Mouse.GetState();            
+            previousMouseState = Mouse.GetState();
+            shopButtons = new List<Button>();
+            
 
-            int width = Globals.SCREENWIDTH/4;
-            int height = Globals.SCREENHEIGHT/2;
+            int width = Globals.SCREENWIDTH / 4;
+            int height = Globals.SCREENHEIGHT / 2;
             int x = (Globals.SCREENWIDTH - width) / 2;
             int y = (Globals.SCREENHEIGHT - height) / 2;
             windowRectangle = new Rectangle(x, y, width, height);
+
+            Texture2D buttonTexture = game.Content.Load<Texture2D>("UI/ShopExit");
+            Vector2 exitButtonPos = new Vector2(x - buttonTexture.Width + width, y);
+            shopButtons.Add(new ShopExitButton(buttonTexture, exitButtonPos, 
+                new Dictionary<string, object> { { "gameManager", game.GameManager } }));
         }
         public void LoadContent()
         {
@@ -47,7 +55,7 @@ namespace Sprint0
             GraphicsDevice graphicsDevice = game.GraphicsDevice;
             font = Globals.FONT;
             background = new Texture2D(graphicsDevice, 1, 1);
-            background.SetData(new Color[] { Color.LightGray});
+            background.SetData(new Color[] { Color.LightGray });
 
             // Load item icons.
             Texture2D sheet = content.Load<Texture2D>("PickupItemSpritesheet2");
@@ -58,6 +66,7 @@ namespace Sprint0
             Rectangle mineRect = new Rectangle(0, 280, 40, 40);
             Rectangle fireRate = new Rectangle(0, 360, 40, 40);
             Rectangle speed = new Rectangle(0, 840, 40, 40);
+            Rectangle maxHealth = new Rectangle(0, 720, 40, 40);
 
             // Add shop items.
             shopItems.Add(new ShopItem("Sniper Rifle", 100, sheet, sniperRect, "Ammo", 3));
@@ -67,6 +76,7 @@ namespace Sprint0
             shopItems.Add(new ShopItem("Mine", 50, sheet, mineRect, "Ammo", 1));
             shopItems.Add(new ShopItem("Fire Rate", 1000, sheet, fireRate, "permanent", 1));
             shopItems.Add(new ShopItem("Speed", 1000, sheet, speed, "permanent", 1));
+            shopItems.Add(new ShopItem("Max Health", 1000, sheet, maxHealth, "permanent", 50));
 
             shopItems.Sort((a, b) => a.Name.CompareTo(b.Name));
 
@@ -76,7 +86,6 @@ namespace Sprint0
 
         public void Update()
         {
-            
             MouseState currentMouseState = Mouse.GetState();
 
             Vector2 categoryPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + 10);
@@ -93,6 +102,10 @@ namespace Sprint0
                     FilterItems();
                 }
                 categoryPos.X += catSize.X + 20;
+            }
+            foreach (Button button in shopButtons)
+            {
+                button.Update();
             }
 
             int itemsStartY = windowRectangle.Y + 50;
@@ -137,6 +150,10 @@ namespace Sprint0
                 spriteBatch.Draw(background, catRect, Color.Gray * 0.5f);
                 spriteBatch.DrawString(font, cat, new Vector2(categoryPos.X + 5, categoryPos.Y + 5), catColor);
                 categoryPos.X += catSize.X + 20;
+            }
+            foreach (Button button in shopButtons)
+            {
+                button.Draw(spriteBatch);
             }
 
             int itemsStartY = windowRectangle.Y + 50;
@@ -201,10 +218,14 @@ namespace Sprint0
                     Globals.PlayerData.SetInt("Coins", Globals.PlayerData.GetInt("Coins") - item.Price);
                     Globals.PlayerData.SetInt("SpeedModifier", Globals.PlayerData.GetInt("SpeedModifier") + item.Amount);
                     break;
+                case "Max Health" when Globals.PlayerData.GetInt("Coins") >= item.Price:
+                    Globals.PlayerData.SetInt("Coins", Globals.PlayerData.GetInt("Coins") - item.Price);
+                    Globals.PlayerData.SetInt("MaxHealth", Globals.PlayerData.GetInt("MaxHealth") + item.Amount);
+                    break;
                 default:
                     break;
             }
-                
+
         }
     }
 }
