@@ -1,0 +1,15 @@
+In this sprint, we found that we were able to work more productively and collaboratively. Having become familiar with the code base during previous sprints, we could both work on our 
+individual tasks and ensure our work integrated seamlessly with that of others. With many interconnected parts—such as the level CSV parser, enemy AI, item systems, and the shop 
+system—clear communication was absolutely essential. Increased collaboration was required to coordinate changes that affected multiple areas of the game. For example, when tweaking 
+the level parser or adding new item types, we had to ensure that these modifications worked harmoniously with our entity management, level transitions, and UI updates.
+
+This high level of collaboration was made possible by the improved team dynamics we developed over time and the adoption of new organizational tools like GitHub Projects. Although the 
+decision on which platform to use took a few days, ultimately we settled on a system that better integrated with our code repository. This change allowed us to assign tasks more clearly 
+and maintain constant communication about overlapping features. As we tackled interconnected systems—such as synchronizing key item drops and ensuring enemy AI seamlessly tracked the 
+player—the need for frequent code reviews and rapid feedback increased. Regular code reviews and the use of code metrics not only helped us catch bugs earlier (for instance, issues with 
+sprite positioning and entity placement) but also made sure that our collective progress remained steady without the end-of-sprint crunch.
+
+Moreover, our new process meant that our challenges, whether they were technical or organizational, were addressed early rather than piling up near the end of the sprint. In summary, 
+Sprint 4 marked a significant improvement in our collaboration techniques, allowing us to bring a wealth of new content—including multiple enemy types, creative items like invisibility 
+and teleportation weapons, and more defined levels with enhanced mechanics—into the project. Team member Harry noted in particular that "the team comes alive when we have to rely on each other". We plan to refine our already improved process further in the coming sprints, with ongoing 
+adaptations as new challenges arise.

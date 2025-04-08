@@ -41,9 +41,9 @@ namespace Sprint0
             {
                 if (dialogueInstance == null || dialogueInstance.State != SoundState.Playing)
                 {
-                    if (soundEffectPlayer.soundEffects.ContainsKey(key))
+                    if (soundEffectPlayer.soundEffects.TryGetValue(key, out SoundEffect value))
                     {
-                        dialogueInstance = soundEffectPlayer.soundEffects[key].CreateInstance();
+                        dialogueInstance = value.CreateInstance();
                         dialogueInstance.IsLooped = true;
                         dialogueInstance.Volume = Volume;
                         dialogueInstance.Play();
@@ -75,9 +75,9 @@ namespace Sprint0
 
             if (driveInstance == null)
             {
-                if (soundEffectPlayer.soundEffects.ContainsKey(SoundKey.Drive))
+                if (soundEffectPlayer.soundEffects.TryGetValue(SoundKey.Drive, out SoundEffect value))
                 {
-                    driveInstance = soundEffectPlayer.soundEffects[SoundKey.Drive].CreateInstance();
+                    driveInstance = value.CreateInstance();
                     driveInstance.IsLooped = true;
                     driveInstance.Volume = normalizedVolume;
                     driveInstance.Play();
@@ -133,10 +133,10 @@ namespace Sprint0
 
             public void Play(SoundKey key, float volumeMod = 1)
             {
-                if (soundEffects.ContainsKey(key))
+                if (soundEffects.TryGetValue(key, out SoundEffect value))
                 {
                     float playVolume = MathHelper.Clamp(Volume * volumeMod, 0f, 1f);
-                    soundEffects[key].Play(playVolume, 0f, 0f);
+                    value.Play(playVolume, 0f, 0f);
                 }
             }
         }
@@ -158,10 +158,10 @@ namespace Sprint0
 
             public void Play(MusicKey key)
             {
-                if (musicTracks.ContainsKey(key))
+                if (musicTracks.TryGetValue(key, out Song value))
                 {
                     MediaPlayer.IsRepeating = true;
-                    MediaPlayer.Play(musicTracks[key]);
+                    MediaPlayer.Play(value);
                 }
             }
 

@@ -100,9 +100,9 @@ namespace Sprint0
 
         public void SetSprite(string key)
         {
-            if (sprites.ContainsKey(key))
+            if (sprites.TryGetValue(key, out ISprite value))
             {
-                sprite = sprites[key];
+                sprite = value;
                 UpdateBounds();
             }
         }

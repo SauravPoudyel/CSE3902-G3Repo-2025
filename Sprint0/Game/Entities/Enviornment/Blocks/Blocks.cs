@@ -39,6 +39,8 @@ namespace Sprint0
             Boarder,
             Tree1,
             Tree2,
+            DesertHouse,
+            Tent
         }
         private ContentManager content;
         private float timer;
@@ -111,6 +113,12 @@ namespace Sprint0
 
             AddSprite("Tree2", new AnimatedSprite(0.3f));
             sprites["Tree2"].LoadContent(content, "TDTanksAllSprites", 1075, 1125, 29, 60, 1);
+
+            AddSprite("DesertHouse", new AnimatedSprite(0.3f));
+            sprites["DesertHouse"].LoadContent(content, "TDTanksAllSprites", 765, 1896, 104, 120, 1);
+
+            AddSprite("Tent", new AnimatedSprite(0.3f));
+            sprites["Tent"].LoadContent(content, "TDTanksAllSprites", 868, 1864, 89, 120, 1);
 
             SetSprite(sprites[this.blocktype.ToString()]);
         }

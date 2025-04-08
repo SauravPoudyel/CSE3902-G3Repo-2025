@@ -90,9 +90,30 @@ namespace Sprint0 {
                 connectedLevels[direction] = level;
             }
         }
+
+        public bool HasKeyItem { get; private set; } = false;
+        public EntityKeys.ItemType KeyItemType { get; private set; }
+        private bool keyItemDropped = false;
+        public void SetKeyItemType(EntityKeys.ItemType keyItemType)
+        {
+            HasKeyItem = true;
+            KeyItemType = keyItemType;
+        }
+
+        // When the level is complete, drop the key item in the center.
+        public void DropKeyItem(ContentManager content)
+        {
+            System.Console.WriteLine(Complete + " " + HasKeyItem + " " + keyItemDropped);
+            if (Complete && HasKeyItem)
+            {
+                AddItem(content, new Vector2(8, 5), KeyItemType);
+                keyItemDropped = true;
+            }
+        }
+
         public Level GetConnectedLevel(Direction direction)
         {
-            return connectedLevels.ContainsKey(direction) ? connectedLevels[direction] : null;
+            return connectedLevels.TryGetValue(direction, out Level value) ? value : null;
         }
         public bool HasConnectedLevel(Direction direction)
         {
@@ -138,7 +159,9 @@ namespace Sprint0 {
                 return;
 
             player = new Player(content);
-            player.SetPosition(position);
+            player.SetPosition((position * tileSize) + new Vector2(tileSize / 2, tileSize / 2));
+            player.EntityKey = "player";
+            player.Update();
             entities.Add("player", player);
         }
 

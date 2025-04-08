@@ -1,0 +1,23 @@
+Author of the code review: Saurav Poudyel
+Date of the code review: April 6, 2024
+Sprint number: 5
+Name of the .cs file(s) being reviewed: PushableDestructibleBlock.cs
+Author of the .cs file(s) being reviewed: Daoping
+Specific comments on code quality:
+
+I really like how we implement multiple interfaces (IObtuse, IPushable, IDestructible) for modular behavior.
+
+I also like the use of clamps to ensure that the block stays within the bounds of the game world; nice practice to prevent unexpected behavior. I do think
+ut would be safer to use vector math though such as (velocity = Vector2.Zero if velocity.LengthSquared() < epsilon) instead of repeating threshold checks 
+on both axes.
+
+
+
+
+
+
+
+
+
+
+

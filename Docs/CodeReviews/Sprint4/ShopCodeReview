@@ -1,0 +1,22 @@
+Author of the code review: Saurav Poudyel
+Date of the code review: April 6, 2024
+Sprint number: 5
+Name of the .cs file(s) being reviewed: Shop.cs, ShopItem.cs
+Author of the .cs file(s) being reviewed: Leo
+Specific comments on code quality:
+
+The UI interaction logic (mouse state checks and hit-testing against calculated rectangles) is well-executed, however, we should encapsulate some of the repetitive 
+rectangle calculations or hit detection into helper methods to reduce code duplication and improve readability.
+
+I actually really like the use of linq for filtering and sorting the items in the shop. It makes the code cleaner and more expressive. The use of a dictionary to store items 
+is also a good choice, as it allows for quick lookups.The filtering and sorting logic is clear and easy to follow, which is great for maintainability.
+
+The shop layout system assumes fixed widths and item box padding, which could break if screen size or item count changes unexpectedly. Rather than calculating item rectangles 
+inline repeatedly, extract a helper method to generate item rectangles with offsets.
+
+For improved maintainability, consider adding error handling in case resource loading fails (if an icon texture is missing). The item dictionary being directly iterated 
+assumes all keys are safe for rendering, but there’s no null check for item icons or content-loaded textures. If a texture is missing, it could cause a runtime exception 
+causing the game to crash. 
+
+ShopItem.cs is mostly fine structurally, but it exposes all properties publicly with no validation. If you ever allow editing of prices or amounts post-initialization, 
+you’ll want setter validation or a readonly pattern.

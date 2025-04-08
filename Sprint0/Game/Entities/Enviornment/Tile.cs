@@ -154,7 +154,7 @@ namespace Sprint0
                     sprite.LoadContent(content, "TDTanksAllSprites", 0, 2872, 128, 128, 1);
                     break;
                 case TileType.Water:
-                    sprite.LoadContent(content, "TDTanksAllSprites", 1024, 2744, 128, 128, 1);
+                    sprite.LoadContent(content, "TDTanksAllSprites", 512, 1768, 128, 128, 1);
                     break;
                 case TileType.ItemSpawn:
                     sprite.LoadContent(content, "TDTanksAllSprites", 384, 1512, 128, 128, 1);

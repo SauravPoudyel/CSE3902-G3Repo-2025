@@ -1,0 +1,9 @@
+,,,,Enemy_Turret,,,,,,,,Enemy_Turret,,,,
+,,,,,,,,,,,,,,,,
+Block_Barrel,Block_Box,,,,,Block_Cactus,Block_RockPileVar1,,,Block_Cactus,,,Block_Box,,
+Block_RockPileVar2,,Block_SmallBarrel,,Block_Cactus,,,,,,Block_RockPile,,,Block_Cactus,,
+,Block_Oil,Enemy_SwarmingTank,,Enemy_HoveringTank,Block_Oil,Enemy_StealthTank,Enemy_HealerTank,,Block_Oil,,,Enemy_ShieldTank,Block_Oil,Enemy_BossTank,Enemy_SmallEnemy
+,,,,,,Block_Barrel,Block_RockPileVar2,,Block_Cactus,,Block_Box,,,Block_Cactus,
+Block_Box,Block_RockPileVar1,,,,,Block_Barrel,,,Block_RockPile,,Block_Cactus,,,,
+,,,,,,,,,,,,,,,,
+,,,,Enemy_Turret,,,,,,,,Enemy_Turret,,,,

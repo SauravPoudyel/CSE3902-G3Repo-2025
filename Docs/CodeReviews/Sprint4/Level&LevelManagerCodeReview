@@ -1,0 +1,15 @@
+Author of the code review: Saurav Poudyel
+Date of the code review: April 6, 2024
+Sprint number: 5
+Name of the .cs file(s) being reviewed: Level.cs, LevelManager.cs
+Author of the .cs file(s) being reviewed: Harry
+Specific comments on code quality:
+
+The Level.cs file is well-structured and clearly organizes level data, including tiles, entities, blocks, items, and enemies.
+
+The method for unlocking connected levels is a good approach to level progression, although the logic in the switch statement 
+within UnlockConnectedLevel could be slightly more concise. The use of enums for level IDs is a good practice, as it improves readability and maintainability.
+
+The use of a dictionary to store level data is efficient, but the current implementation lacks error handling for cases where a level ID might not exist in the dictionary.
+
+In LevelManager.cs, the code has some awkward handoff logic for connected levels that might benefit from more abstraction.
