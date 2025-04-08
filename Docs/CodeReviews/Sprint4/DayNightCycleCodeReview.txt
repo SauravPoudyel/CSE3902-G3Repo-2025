@@ -1,0 +1,12 @@
+Author of the code review: Leo Chen
+Date of the code review: April 6, 2024
+Sprint number: 4
+Name of the .cs file(s) being reviewed: DayandNight.cs
+Author of the .cs file(s) being reviewed: Saurav
+Specific comments on code quality:
+
+The class is simple and well-organized with clearly named properties (CycleDuration, MaxOverlayAlpha) and methods (Update, GetOverlayAlpha, AdvanceDayNightCycle), which aids in understanding and maintaining the code.
+
+Instead of returning only the overlay alpha, you could expand the interface to provide additional context about the current cycle state. This can be beneficial if other game systems need to adjust behavior based on the time of day beyond just visual changes.
+
+To further decouple the cycle’s logic from other components, consider encapsulating the mathematical calculation of the overlay alpha in a dedicated private method or even a separate utility class. This change could make future modifications easier without affecting the overall class design.
