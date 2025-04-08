@@ -73,18 +73,25 @@ namespace Sprint0
         {
             float normalizedVolume = MathHelper.Clamp(currentSpeed / maxSpeed, 0f, 1f) * Volume;
 
-            if (driveInstance == null)
+            if (normalizedVolume <= 0.01f)
             {
-                if (soundEffectPlayer.soundEffects.TryGetValue(SoundKey.Drive, out SoundEffect value))
+                if (driveInstance != null && driveInstance.State == SoundState.Playing)
                 {
-                    driveInstance = value.CreateInstance();
+                    driveInstance.Stop();
+                    driveInstance.Dispose();
+                    driveInstance = null;
+                }
+                return;
+            }
+
+            if (driveInstance == null || driveInstance.State != SoundState.Playing)
+            {
+                if (soundEffectPlayer.soundEffects.TryGetValue(SoundKey.Drive, out SoundEffect driveSound))
+                {
+                    driveInstance = driveSound.CreateInstance();
                     driveInstance.IsLooped = true;
                     driveInstance.Volume = normalizedVolume;
                     driveInstance.Play();
-                }
-                else
-                {
-                    Console.WriteLine("Drive sound not loaded.");
                 }
             }
             else
@@ -92,6 +99,7 @@ namespace Sprint0
                 driveInstance.Volume = normalizedVolume;
             }
         }
+
 
         public static void StopDriveSound()
         {
