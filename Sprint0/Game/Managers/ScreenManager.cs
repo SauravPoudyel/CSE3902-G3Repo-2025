@@ -16,11 +16,13 @@ namespace Sprint0
         public bool IsPaused { get; set; }
         public bool GameStarted { get; set; }
         public bool shopOpen { get; set; }  // When true, shop is active
+        public bool statsOpen { get; set; }
 
         private ContentManager content;
         private Game1 game;
         public PlayerInventory playerInventory;
         private Shop shop;
+        private StatsScreen statsScreen;
 
         // Persistent core screens
         private StartMenu startMenu;
@@ -35,11 +37,14 @@ namespace Sprint0
             shop = new Shop(game);   // Shop now implements IScreen
             shop.LoadContent();
             dialogueHandler = new DialogueHandler(content, game);
+            statsScreen = new StatsScreen(game);
             startMenu = new StartMenu(game);
             pauseMenu = new PauseMenu(content, game.GraphicsDevice, game);
             GameStarted = false;
             IsPaused = false;
             shopOpen = false;
+            statsOpen = false;
+
         }
 
         private void UpdateCoreScreen()
@@ -48,6 +53,10 @@ namespace Sprint0
             if (shopOpen)
             {
                 desired = shop;
+            } 
+            else if (statsOpen)
+            {
+                desired = statsScreen;
             }
             else if (!GameStarted)
             {
@@ -77,7 +86,7 @@ namespace Sprint0
 
             coreScreen = desired;
             // If desired screen is not already in the list, add it with blocking if needed.
-            bool blocking = (!GameStarted || IsPaused || shopOpen);
+            bool blocking = (!GameStarted || IsPaused || shopOpen || statsOpen);
             if (!screens.Contains(desired))
                 AddScreen(desired, blocking);
         }
