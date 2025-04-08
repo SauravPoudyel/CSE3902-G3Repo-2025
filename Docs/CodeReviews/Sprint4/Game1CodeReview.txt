@@ -1,0 +1,6 @@
+4/7/2025
+Sprint4
+Game1.cs
+Code Author: Daoping
+Code Reviewer: Alex
+Comments: There's very little to complain about with this. The only thing I'll say is that some of the code is a little hard to read, specifically around the variable blackTexture, which is set to Color.White for some reason so I don't really know its purpose. The code could use some more commenting to make it more navigable and legible. 
