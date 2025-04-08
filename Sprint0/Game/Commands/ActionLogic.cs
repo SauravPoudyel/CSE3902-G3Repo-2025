@@ -13,7 +13,7 @@ namespace Sprint0
                 case "fire":
                     HandleFireAction(player);
                     break;
-                
+
                 case "interact":
                     player.Interact();
                     break;
@@ -54,7 +54,6 @@ namespace Sprint0
             string projectileType = "Default";
             player.SetProjectileType(projectileType);
 
-            // Ensure default ammo is decremented properly
             if (Globals.PlayerData.GetInt("AmmoDefault") > 0)
             {
                 Globals.PlayerData.UpdateVariable("AmmoDefault", -1);
@@ -77,7 +76,6 @@ namespace Sprint0
             if (slot.AmmoCount <= 0)
                 return;
 
-            // Decrement the correct ammo type
             switch (projectileType)
             {
                 case "Sniper":
@@ -95,7 +93,7 @@ namespace Sprint0
                 case "Teleporter":
                     Globals.PlayerData.UpdateVariable("AmmoTeleporter", -1);
                     break;
-                case "Default":  // Ensure default ammo decrements properly here too
+                case "Default":
                     Globals.PlayerData.UpdateVariable("AmmoDefault", -1);
                     break;
                 default:
@@ -116,14 +114,18 @@ namespace Sprint0
         {
             int numberOfProjectiles = 1;
             float spreadAngle = 0f;
-            float speedModifer = 0f;
-            if (parameters.TryGetValue("numberOfProjectiles", out object value) && value is int num)
+            float speedModifier = 0f;
+
+            if (parameters.TryGetValue("numberOfProjectiles", out object numObj) && numObj is int num)
                 numberOfProjectiles = num;
-            if (parameters.TryGetValue("spreadAngle", out object value) && value is float angle)
+
+            if (parameters.TryGetValue("spreadAngle", out object angleObj) && angleObj is float angle)
                 spreadAngle = angle;
-            if (parameters.TryGetValue("speedModifier", out object value) && value is float speedMod)
-                speedModifer = speedMod;
-            ProjectileFactory.CalculateProjectiles(owner, projectileType, spawnPosition, cannonRotation, spreadAngle, numberOfProjectiles, speedModifer);
+
+            if (parameters.TryGetValue("speedModifier", out object speedModObj) && speedModObj is float speedMod)
+                speedModifier = speedMod;
+
+            ProjectileFactory.CalculateProjectiles(owner, projectileType, spawnPosition, cannonRotation, spreadAngle, numberOfProjectiles, speedModifier);
             ProjectileFactory.SpawnProjectiles(gameManager, owner);
         }
 
@@ -133,7 +135,7 @@ namespace Sprint0
             gameManager.GetEntities()[entityName].SetPosition(position);
             gameManager.GetEntities()[entityName].SetVelocity(velocity);
 
-            if(parameters.TryGetValue("owner", out object value) && value is Character owner)
+            if (parameters.TryGetValue("owner", out object ownerObj) && ownerObj is Character owner)
             {
                 gameManager.GetEntities()[entityName].Owner = owner;
             }
@@ -143,9 +145,9 @@ namespace Sprint0
         {
             if (gameManager.GetEntity("player") is Player player)
             {
-                if(player.isInvis)
-                    return; 
-                
+                if (player.isInvis)
+                    return;
+
                 Vector2 playerPos = player.GetPosition();
                 Rectangle playerBounds = player.GetBounds();
 
@@ -156,7 +158,6 @@ namespace Sprint0
                         blocks.Add(entity);
                 }
 
-                // Use the new RayTracer function to determine full exposure
                 bool fullyVisible = RayTracer.IsPlayerFullyExposed(mob.GetPosition(), playerBounds, blocks);
 
                 if (fullyVisible)
@@ -177,19 +178,7 @@ namespace Sprint0
                         mob.ChangeHealth(healAmount);
                     }
                 }
-                // for testing only, not actually used in the game
-                // if (entity is Player player)
-                // {
-                //     System.Console.WriteLine("Healing player");
-                //     if (Vector2.Distance(origin, player.GetPosition()) <= healRadius)
-                //     {
-                //         System.Console.WriteLine("Healed player");
-                //         player.ChangeHealth(healAmount);
-                //     }
-                // }
             }
         }
-
-        
     }
 }

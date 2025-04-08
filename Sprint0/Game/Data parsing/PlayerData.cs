@@ -16,13 +16,13 @@ namespace Sprint0
 
         public string GetString(string key, string defaultValue = "")
         {
-            return Variables.TryGetValue(key, out string value) ? value : defaultValue;
+            return Variables.TryGetValue(key, out string stringValue) ? stringValue : defaultValue;
         }
 
         public int GetInt(string key, int defaultValue = 0)
         {
-            if (Variables.TryGetValue(key, out string value) && int.TryParse(value, out int value))
-                return value;
+            if (Variables.TryGetValue(key, out string stringValue) && int.TryParse(stringValue, out int intValue))
+                return intValue;
             return defaultValue;
         }
 

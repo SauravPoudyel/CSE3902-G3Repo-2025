@@ -8,14 +8,13 @@ namespace Sprint0
 {
     public static class ActionCommands
     {
-
         public class PlayerActionCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("player", out object value) && value is Player player &&
-                    parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
-                    parameters.TryGetValue("actionType", out object value) && value is string actionType)
+                if (parameters.TryGetValue("player", out object playerObj) && playerObj is Player player &&
+                    parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager &&
+                    parameters.TryGetValue("actionType", out object actionTypeObj) && actionTypeObj is string actionType)
                 {
                     ActionCommands_Logic.HandlePlayerAction(player, gameManager, actionType);
                 }
@@ -26,9 +25,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager)
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager)
                 {
-                    // Implement the logic for the entity to take damage
                     if (gameManager.GetEntity("player") is Character player)
                     {
                         player.ChangeHealth(-20);
@@ -36,31 +34,31 @@ namespace Sprint0
                 }
             }
         }
-        
-    public class CreateProjectileCommand : ICommand
-    {
-        public void Execute(Dictionary<string, object> parameters)
+
+        public class CreateProjectileCommand : ICommand
         {
-            if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
-                parameters.TryGetValue("projectileType", out object value) && value is string projectileType &&
-                parameters.TryGetValue("spawnPosition", out object value) && value is Vector2 spawnPosition &&
-                parameters.TryGetValue("cannonRotation", out object value) && value is float cannonRotation &&
-                parameters.TryGetValue("owner", out object value) && value is Character owner)
+            public void Execute(Dictionary<string, object> parameters)
             {
-                ActionCommands_Logic.HandleCreateProjectileCommand(parameters, owner, projectileType, spawnPosition, cannonRotation, gameManager);
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager &&
+                    parameters.TryGetValue("projectileType", out object typeObj) && typeObj is string projectileType &&
+                    parameters.TryGetValue("spawnPosition", out object posObj) && posObj is Vector2 spawnPosition &&
+                    parameters.TryGetValue("cannonRotation", out object rotObj) && rotObj is float cannonRotation &&
+                    parameters.TryGetValue("owner", out object ownerObj) && ownerObj is Character owner)
+                {
+                    ActionCommands_Logic.HandleCreateProjectileCommand(parameters, owner, projectileType, spawnPosition, cannonRotation, gameManager);
+                }
             }
         }
-    }
 
         public class CreateEntityCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
-                    parameters.TryGetValue("create", out object value) && value is Entity entity &&
-                    parameters.TryGetValue("entityName", out object value) && value is string entityName &&
-                    parameters.TryGetValue("position", out object value) && value is Vector2 position &&
-                    parameters.TryGetValue("velocity", out object value) && value is Vector2 velocity)
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager &&
+                    parameters.TryGetValue("create", out object entityObj) && entityObj is Entity entity &&
+                    parameters.TryGetValue("entityName", out object nameObj) && nameObj is string entityName &&
+                    parameters.TryGetValue("position", out object posObj) && posObj is Vector2 position &&
+                    parameters.TryGetValue("velocity", out object velObj) && velObj is Vector2 velocity)
                 {
                     ActionCommands_Logic.HandleCreateEntityCommand(parameters, gameManager, entityName, entity, position, velocity);
                 }
@@ -71,8 +69,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
-                    parameters.TryGetValue("destroyEntity", out object value) && value is string entityName)
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager &&
+                    parameters.TryGetValue("destroyEntity", out object keyObj) && keyObj is string entityName)
                 {
                     gameManager.GetEntities().Remove(entityName);
                 }
@@ -83,8 +81,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
-                    parameters.TryGetValue("mob", out object value) && value is Mob mob)
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager &&
+                    parameters.TryGetValue("mob", out object mobObj) && mobObj is Mob mob)
                 {
                     ActionCommands_Logic.HandleRequestPlayerPositionCommand(gameManager, mob);
                 }
@@ -107,10 +105,10 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
-                    parameters.TryGetValue("healOrigin", out object value) && value is Vector2 origin &&
-                    parameters.TryGetValue("healRadius", out object value) && value is float healRadius &&
-                    parameters.TryGetValue("healAmount", out object value) && value is int healAmount)
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager &&
+                    parameters.TryGetValue("healOrigin", out object originObj) && originObj is Vector2 origin &&
+                    parameters.TryGetValue("healRadius", out object radiusObj) && radiusObj is float healRadius &&
+                    parameters.TryGetValue("healAmount", out object amountObj) && amountObj is int healAmount)
                 {
                     ActionCommands_Logic.HandleHealRadiusCommand(gameManager, origin, healRadius, healAmount);
                 }
@@ -121,16 +119,16 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
-                    parameters.TryGetValue("player", out object value) && value is Player player)
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager &&
+                    parameters.TryGetValue("player", out object playerObj) && playerObj is Player player)
                 {
-                    foreach(var InteractableBlock in gameManager.GetEntities().Values.OfType<InteractableBlock>())
+                    foreach (var interactableBlock in gameManager.GetEntities().Values.OfType<InteractableBlock>())
                     {
-                        System.Console.WriteLine("Checking interactable block: " + InteractableBlock.GetType().Name);
-                        InteractableBlock.IsInRange(player.GetPosition());
-                        if (InteractableBlock.CanInteract)
+                        System.Console.WriteLine("Checking interactable block: " + interactableBlock.GetType().Name);
+                        interactableBlock.IsInRange(player.GetPosition());
+                        if (interactableBlock.CanInteract)
                         {
-                            InteractableBlock.Interact();
+                            interactableBlock.Interact();
                             break;
                         }
                     }
@@ -142,8 +140,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
-                    parameters.TryGetValue("player", out object value) && value is Player player)
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager &&
+                    parameters.TryGetValue("player", out object playerObj) && playerObj is Player player)
                 {
                     player.IsImmortal = !player.IsImmortal;
                 }

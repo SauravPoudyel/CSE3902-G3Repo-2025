@@ -12,7 +12,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager)
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager)
                 {
                     var staticSprite = new StaticSprite();
                     staticSprite.LoadContent(gameManager.GetContent(), "LinkSpritesheet", 140, 2, 62, 62, 1);
@@ -25,7 +25,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager)
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager)
                 {
                     var animatedSprite = new AnimatedSprite(0.4f);
                     animatedSprite.LoadContent(gameManager.GetContent(), "LinkSpritesheet", 140, 2, 62, 62, 2);
@@ -38,8 +38,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager &&
-                    parameters.TryGetValue("sprite", out object value) && value is ISprite sprite)
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager &&
+                    parameters.TryGetValue("sprite", out object spriteObj) && spriteObj is ISprite sprite)
                 {
                     gameManager.GetEntity("player").SetSprite(sprite);
                 }
@@ -50,8 +50,8 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("player", out object value) && value is Player player &&
-                    parameters.TryGetValue("rotation", out object value) && value is float rotation)
+                if (parameters.TryGetValue("player", out object playerObj) && playerObj is Player player &&
+                    parameters.TryGetValue("rotation", out object rotObj) && rotObj is float rotation)
                 {
                     player.SetCannonRotation(rotation);
                 }
@@ -62,7 +62,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("blocks", out object value) && value is Blocks blocks)
+                if (parameters.TryGetValue("blocks", out object blockObj) && blockObj is Blocks blocks)
                 {
                     blocks.CycleBlockPrev();
                 }
@@ -73,7 +73,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("blocks", out object value) && value is Blocks blocks)
+                if (parameters.TryGetValue("blocks", out object blockObj) && blockObj is Blocks blocks)
                 {
                     blocks.CycleBlockNext();
                 }
@@ -84,8 +84,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                // Implement the logic to cycle to the previous item
-                if (parameters.TryGetValue("pickupItem", out object value) && value is PickupItem pickupItem)
+                if (parameters.TryGetValue("pickupItem", out object itemObj) && itemObj is PickupItem pickupItem)
                 {
                     pickupItem.CycleItemPrev();
                 }
@@ -96,7 +95,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("pickupItem", out object value) && value is PickupItem pickupItem)
+                if (parameters.TryGetValue("pickupItem", out object itemObj) && itemObj is PickupItem pickupItem)
                 {
                     pickupItem.CycleItemNext();
                 }
@@ -107,7 +106,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager)
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager)
                 {
                     MobFactory.CycleNextMob(gameManager);
                 }
@@ -118,7 +117,7 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (parameters.TryGetValue("gameManager", out object value) && value is GameManager gameManager)
+                if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager)
                 {
                     MobFactory.CyclePreviousMob(gameManager);
                 }
@@ -129,40 +128,21 @@ namespace Sprint0
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                // Using TryGetValue to safely extract the parameters
-                if (!parameters.TryGetValue("gameManager", out var gmObj) ||
-                    !(gmObj is GameManager gameManager))
-                {
-                    return;
-                }
+                if (!parameters.TryGetValue("gameManager", out var gmObj) || !(gmObj is GameManager gameManager)) return;
+                if (!parameters.TryGetValue("spawnPosition", out var posObj) || !(posObj is Vector2 spawnPosition)) return;
+                if (!parameters.TryGetValue("effectType", out var typeObj) || !(typeObj is EntityKeys.EffectType effectType)) return;
 
-                if (!parameters.TryGetValue("spawnPosition", out var posObj) ||
-                    !(posObj is Vector2 spawnPosition))
-                {
-                    return;
-                }
-
-                if (!parameters.TryGetValue("effectType", out var typeObj) ||
-                    !(typeObj is EntityKeys.EffectType effectType))
-                {
-                    return;
-                }
-
-                string effectKey = "effect_" + Guid.NewGuid().ToString();
+                string effectKey = "effect_" + Guid.NewGuid();
                 Effect effect = new Effect(gameManager.GetContent(), spawnPosition, effectKey, effectType);
                 gameManager.GetEntities().Add(effectKey, effect);
 
-                // Play the sound
                 if (effectType == EntityKeys.EffectType.Explosion)
                 {
                     AudioManager.PlaySound(AudioManager.SoundKey.Explosion);
                 }
 
-                // Mine range detection logic
-                if (parameters.TryGetValue("explosionSource", out var sourceObj) &&
-                    sourceObj as string == "Mine" &&
-                    parameters.TryGetValue("explosionRadius", out var radiusObj) &&
-                    radiusObj is float radius)
+                if (parameters.TryGetValue("explosionSource", out var sourceObj) && sourceObj as string == "Mine" &&
+                    parameters.TryGetValue("explosionRadius", out var radiusObj) && radiusObj is float radius)
                 {
                     DetectDestructibleBlocks(spawnPosition, radius, gameManager);
                 }
