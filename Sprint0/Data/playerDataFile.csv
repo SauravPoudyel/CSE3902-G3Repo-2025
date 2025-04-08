@@ -1,5 +1,5 @@
 Name, TankSlayer10
-Health, 20
+Health, 100
 AmmoDefault, 50
 AmmoSniper, 6
 AmmoRocket, 7
@@ -7,7 +7,7 @@ AmmoShotgun, 8
 AmmoMine, 1
 AmmoLaser, 2
 AmmoTeleporter, 6
-Coins, 0
+Coins, 3000
 XP, 2145
 MaxXP, 3000
 SpeedModifier, 1
