@@ -25,4 +25,6 @@ namespace Sprint0
         void Ignite();
         void Destroy();
     }
+
+    public interface ICliff { }
 }
