@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static Sprint0.EntityKeys;
 
 namespace Sprint0 {
@@ -18,11 +19,11 @@ namespace Sprint0 {
         private bool loaded;
         private List<Tile> tilesList;
         private Dictionary<string, Entity> entities;
-        private List<BaseBlock> blocksList;
         private Player player;
-        private List<Item> itemsList;
-        private List<Mob> enemiesList;
         private List<BaseBlock> perimeter;
+        public IEnumerable<Mob> GetEnemies() => entities.Values.OfType<Mob>();
+        public IEnumerable<Item> GetItems() => entities.Values.OfType<Item>();
+        public IEnumerable<BaseBlock> GetBlocks() => entities.Values.OfType<BaseBlock>();
         public Dictionary<string, Entity> Entities 
         {
             get { return entities; }
@@ -67,9 +68,6 @@ namespace Sprint0 {
             prereqLevel = null;
             tilesList = new List<Tile>();
             entities = new Dictionary<string, Entity>();
-            blocksList = new List<BaseBlock>();
-            itemsList = new List<Item>();
-            enemiesList = new List<Mob>();
             connectedLevels = new Dictionary<Direction, Level>();
             perimeter = new List<BaseBlock>();
         }
@@ -170,8 +168,7 @@ namespace Sprint0 {
         {
             Item newItem = new Item(content, itemType);
             newItem.SetPosition((position * tileSize) + new Vector2(tileSize / 2, tileSize / 2));
-            newItem.EntityKey = "item_" + itemsList.Count + "_" + itemType.ToString();
-            itemsList.Add(newItem);
+            newItem.EntityKey = "item_" + this.GetItems().Count() + "_" + itemType.ToString();
             entities.Add(newItem.EntityKey, newItem);
         }
 
@@ -179,8 +176,7 @@ namespace Sprint0 {
         {
             Mob newEnemy = MobFactory.CreateMob(mobType, content);
             newEnemy.SetPosition((position * tileSize) + new Vector2(tileSize / 2, tileSize / 2));
-            newEnemy.EntityKey = "enemy_" + enemiesList.Count + "_" + mobType.ToString();
-            enemiesList.Add(newEnemy);
+            newEnemy.EntityKey = "enemy_" + this.GetEnemies().Count() + "_" + mobType.ToString();
             entities.Add(newEnemy.EntityKey, newEnemy);
         }
 
@@ -189,8 +185,7 @@ namespace Sprint0 {
             Vector2 worldPosition = (position * tileSize) + new Vector2(tileSize / 2, tileSize / 2);
             BaseBlock newBlock = BlockFactory.CreateBlock(blockType, content, worldPosition, 0.3f);
             newBlock.Rotation = rotation;
-            newBlock.EntityKey = "block_" + blocksList.Count + "_" + blockType.ToString();
-            blocksList.Add(newBlock);
+            newBlock.EntityKey = "block_" + this.GetBlocks().Count() + "_" + blockType.ToString();
             entities.Add(newBlock.EntityKey, newBlock);
         }
         
