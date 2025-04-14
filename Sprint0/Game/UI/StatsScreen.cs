@@ -27,6 +27,7 @@ namespace Sprint0
     {
         private Dictionary<string, Rectangle> mobList = new Dictionary<string, Rectangle>();
         private List<StatsItem> statsItems;
+        private List<Button> statsButtons;
         private Rectangle windowRectangle;
         private Texture2D backgroundTexture;
         private Texture2D spriteSheet1;
@@ -38,6 +39,7 @@ namespace Sprint0
             ContentManager content = game.Content;
             GraphicsDevice graphicsDevice = game.GraphicsDevice;
             statsItems = new List<StatsItem>();
+            statsButtons = new List<Button>();
             //Set size of the window
             int width = Globals.SCREENWIDTH/2;
             int height = Globals.SCREENHEIGHT/2;
@@ -66,7 +68,10 @@ namespace Sprint0
             statsItems.Add(new StatsItem("Turret", spriteSheet2, new Rectangle(2444, 908, 104, 104), Globals.PlayerData.GetInt("TurretKilled")));
 
             //Add close screen buttons
-
+            Texture2D buttonTexture = game.Content.Load<Texture2D>("UI/ShopExit");
+            Vector2 exitButtonPos = new Vector2(x - buttonTexture.Width + width, y);
+            statsButtons.Add(new StatsExitButton(buttonTexture, exitButtonPos, 
+                new Dictionary<string, object> { { "gameManager", game.GameManager } }));
 
         }
 
@@ -75,6 +80,10 @@ namespace Sprint0
         public void Update()
         {   
             //Might not need this since we aren't clicking anything (as of now)
+            foreach (Button button in statsButtons)
+            {
+                button.Update();
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -113,6 +122,10 @@ namespace Sprint0
                     spriteBatch.Draw(item.Icon, iconDestinationRect, item.IconRect, Color.White);
                     spriteBatch.DrawString(font, itemText, textPos, Color.White);
                 }
+            }
+            foreach (Button button in statsButtons)
+            {
+                button.Draw(spriteBatch);
             }
         }
     }
