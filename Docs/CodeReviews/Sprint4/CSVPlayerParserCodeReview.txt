@@ -1,0 +1,10 @@
+Author of the code review: Leo Chen
+Date of the code review: April 6, 2024
+Sprint number: 4
+Name of the .cs file(s) being reviewed: CSVPlayerParser.cs
+Author of the .cs file(s) being reviewed: Payton
+Specific comments on code quality:
+
+The class is easy to understand, with clear methods for parsing (ParsePlayerData) and 
+saving (SavePlayerData) player data. The use of built-in methods like File.ReadAllLines 
+and File.WriteAllLines keeps the code concise.
