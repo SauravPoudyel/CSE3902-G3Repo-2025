@@ -9,7 +9,7 @@ using static Sprint0.Level;
 using static Sprint0.EntityKeys;
 public class LevelEntities
 {
-    private readonly Dictionary<string, Entity> entities = new();
+    private Dictionary<string, Entity> entities = new();
     private int entityIdCounter = 0;
     public Dictionary<string, Entity> Entities => entities;
 

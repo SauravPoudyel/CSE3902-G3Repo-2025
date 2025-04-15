@@ -16,8 +16,6 @@ namespace Sprint0 {
         private bool complete;
         private bool loaded;
         private List<Tile> tilesList;
-        private Dictionary<string, Entity> entities;
-        private Player player;
         private LevelEntities levelEntities;
         private LevelConnections connections;
         private LevelPerimeter levelPerimeter;
@@ -70,20 +68,11 @@ namespace Sprint0 {
             levelNumber = 1;
             prereqLevel = null;
             tilesList = new List<Tile>();
-            entities = new Dictionary<string, Entity>();
             connections = new LevelConnections();
-            levelPerimeter = new LevelPerimeter(this, entities);
+            levelPerimeter = new LevelPerimeter(this, levelEntities.Entities);
             levelEntities = new LevelEntities();
         }
-        public bool HasEnemies() {
-            bool hasEnemies = false;
-            foreach(Entity entity in entities.Values) {
-                if(entity is Mob) {
-                    hasEnemies = true;
-                }
-            }
-            return hasEnemies;
-        }
+        public bool HasEnemies() => GetEnemies().Any();
         public List<Tile> GetLevelTiles => tilesList;
         public bool HasKeyItem { get; private set; } = false;
         public EntityKeys.ItemType KeyItemType { get; private set; }
