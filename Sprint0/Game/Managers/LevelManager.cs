@@ -76,11 +76,9 @@ namespace Sprint0
         }
         public void Update(Dictionary<string, Entity> entities) {
             UpdateLevelEntities(entities);
-            if(!activeLevel.Complete && activeLevel.Loaded && !activeLevel.HasEnemies())
+            activeLevel.CheckAndMarkCompletion(content);
+            if(activeLevel.Complete)
             {
-                activeLevel.Complete = true;
-                // Drop the key item if applicable.
-                activeLevel.DropKeyItem(content);
                 foreach(Level level in levels.Values) {
                     if(level.PrereqLevel != null && level.PrereqLevel.LevelNumber == activeLevel.LevelNumber)
                         level.Unlocked = true;

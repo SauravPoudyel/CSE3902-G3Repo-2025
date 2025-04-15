@@ -70,6 +70,13 @@ namespace Sprint0 {
             levelPerimeter = new LevelPerimeter(this, levelEntities.Entities);
             keyItem = new KeyItem();
         }
+        public void CheckAndMarkCompletion(ContentManager content)
+        {
+            if (!Complete && Loaded && !HasEnemies()) {
+                Complete = true;
+                DropKeyItem(content);
+            }
+        }
         public void AddTile(ContentManager content, Tile.TileType tileType, Vector2 position)
         {
             tilesList.Add(new Tile(content, tileType, (position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2)));
