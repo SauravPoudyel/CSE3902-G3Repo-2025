@@ -25,7 +25,6 @@ namespace Sprint0
     }
     public class StatsScreen : IScreen
     {
-        private Dictionary<string, Rectangle> mobList = new Dictionary<string, Rectangle>();
         private List<StatsItem> statsItems;
         private List<Button> statsButtons;
         private Rectangle windowRectangle;
