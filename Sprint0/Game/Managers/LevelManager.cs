@@ -92,32 +92,33 @@ namespace Sprint0
             }
             // Level moving logic
             if (entities.TryGetValue("player", out Entity value))
+                HandlePlayerPortal((Player)value);
+        }
+        private void HandlePlayerPortal(Player player)
+        {
+            int halfTile = Globals.TILESIZE / 2;
+            Vector2 playerPos = player.GetPosition();
+
+            if (playerPos.Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top))
             {
-                Player player = (Player)value;
-                int halfTile = Globals.TILESIZE / 2; // 60 if tileSize is 120
-
-                if (player.GetPosition().Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top))
-                {
-                    player.SetPosition(new Vector2(player.GetPosition().X, 1080 - halfTile));
-                    player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Top).LevelNumber);
-                }
-                else if (player.GetPosition().Y > 1080 && activeLevel.HasConnectedLevel(Level.Direction.Bottom))
-                {
-                    player.SetPosition(new Vector2(player.GetPosition().X, halfTile));
-                    player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Bottom).LevelNumber);
-                }
-                else if (player.GetPosition().X < 0 && activeLevel.HasConnectedLevel(Level.Direction.Left))
-                {
-                    player.SetPosition(new Vector2(1920 - halfTile, player.GetPosition().Y));
-                    player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Left).LevelNumber);
-                }
-                else if (player.GetPosition().X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right))
-                {
-                    player.SetPosition(new Vector2(halfTile, player.GetPosition().Y));
-                    player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Right).LevelNumber);
-                }
+                player.SetPosition(new Vector2(playerPos.X, 1080 - halfTile));
+                player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Top).LevelNumber);
             }
-
+            else if (playerPos.Y > 1080 && activeLevel.HasConnectedLevel(Level.Direction.Bottom))
+            {
+                player.SetPosition(new Vector2(playerPos.X, halfTile));
+                player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Bottom).LevelNumber);
+            }
+            else if (playerPos.X < 0 && activeLevel.HasConnectedLevel(Level.Direction.Left))
+            {
+                player.SetPosition(new Vector2(1920 - halfTile, playerPos.Y));
+                player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Left).LevelNumber);
+            }
+            else if (playerPos.X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right))
+            {
+                player.SetPosition(new Vector2(halfTile, playerPos.Y));
+                player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Right).LevelNumber);
+            }
         }
     }
 }
