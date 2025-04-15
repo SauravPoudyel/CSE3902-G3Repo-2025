@@ -105,7 +105,7 @@ namespace Sprint0
                         case "Enemy":
                             if (parts.Length >= 2 && Enum.TryParse(parts[1], out EntityKeys.MobType mobType))
                             {
-                                level.AddEnemy(content, mobType, position);
+                                level.AddEnemy(content, position, mobType);
                             }
                             else
                             {

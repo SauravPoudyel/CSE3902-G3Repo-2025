@@ -10,7 +10,6 @@ namespace Sprint0 {
     public class Level
     {
         public enum Direction { Top, Bottom, Left, Right }  
-        private LevelConnections connections;
         private Level prereqLevel;
         private int levelNumber;
         private bool unlocked;
@@ -19,16 +18,24 @@ namespace Sprint0 {
         private List<Tile> tilesList;
         private Dictionary<string, Entity> entities;
         private Player player;
+        private LevelEntities levelEntities;
+        private LevelConnections connections;
         private LevelPerimeter levelPerimeter;
 
-        public IEnumerable<Mob> GetEnemies() => entities.Values.OfType<Mob>();
-        public IEnumerable<Item> GetItems() => entities.Values.OfType<Item>();
-        public IEnumerable<BaseBlock> GetBlocks() => entities.Values.OfType<BaseBlock>();
-        public Dictionary<string, Entity> Entities 
+        public IEnumerable<Mob> GetEnemies() => levelEntities.GetEntitiesOfType<Mob>();
+        public IEnumerable<Item> GetItems() => levelEntities.GetEntitiesOfType<Item>();
+        public IEnumerable<BaseBlock> GetBlocks() => levelEntities.GetEntitiesOfType<BaseBlock>();
+
+        public Dictionary<string, Entity> Entities
         {
-            get { return entities; }
-            set { entities = value; }
+            get => levelEntities.Entities;
+            set
+            {
+                foreach (var kvp in value)
+                    levelEntities.Entities[kvp.Key] = kvp.Value;
+            }
         }
+
         public int LevelNumber
         {
             get { return levelNumber; }
@@ -66,6 +73,7 @@ namespace Sprint0 {
             entities = new Dictionary<string, Entity>();
             connections = new LevelConnections();
             levelPerimeter = new LevelPerimeter(this, entities);
+            levelEntities = new LevelEntities();
         }
         public bool HasEnemies() {
             bool hasEnemies = false;
@@ -77,8 +85,6 @@ namespace Sprint0 {
             return hasEnemies;
         }
         public List<Tile> GetLevelTiles => tilesList;
-        
-
         public bool HasKeyItem { get; private set; } = false;
         public EntityKeys.ItemType KeyItemType { get; private set; }
         private bool keyItemDropped = false;
@@ -118,42 +124,15 @@ namespace Sprint0 {
             tilesList.Add(new Tile(content, tileType, (position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2)));
         }
 
-        public void AddPlayer(ContentManager content, Vector2 position)
-        {
-            // Only create a new player if one doesn't already exist in the level
-            if (entities.ContainsKey("player"))
-                return;
-
-            player = new Player(content);
-            player.SetPosition((position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2));
-            player.EntityKey = "player";
-            player.Update();
-            entities.Add("player", player);
-        }
-        public void AddItem(ContentManager content, Vector2 position, EntityKeys.ItemType itemType)
-        {
-            Item newItem = new Item(content, itemType);
-            newItem.SetPosition((position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2));
-            newItem.EntityKey = "item_" + this.GetItems().Count() + "_" + itemType.ToString();
-            entities.Add(newItem.EntityKey, newItem);
-        }
-
-        public void AddEnemy(ContentManager content, MobType mobType, Vector2 position)
-        {
-            Mob newEnemy = MobFactory.CreateMob(mobType, content);
-            newEnemy.SetPosition((position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2));
-            newEnemy.EntityKey = "enemy_" + this.GetEnemies().Count() + "_" + mobType.ToString();
-            entities.Add(newEnemy.EntityKey, newEnemy);
-        }
-
-        public void AddBlock(ContentManager content, Vector2 position, BlockType blockType, float rotation)
-        {
-            Vector2 worldPosition = (position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2);
-            BaseBlock newBlock = BlockFactory.CreateBlock(blockType, content, worldPosition, 0.3f);
-            newBlock.Rotation = rotation;
-            newBlock.EntityKey = "block_" + this.GetBlocks().Count() + "_" + blockType.ToString();
-            entities.Add(newBlock.EntityKey, newBlock);
-        }
+        public void AddPlayer(ContentManager content, Vector2 gridPosition)
+            => levelEntities.AddPlayer(content, gridPosition);
+        public void AddItem(ContentManager content, Vector2 gridPosition, EntityKeys.ItemType itemType) 
+            => levelEntities.AddItem(content, gridPosition, itemType);
+        public void AddEnemy(ContentManager content, Vector2 gridPosition, MobType mobType) 
+            => levelEntities.AddEnemy(content, gridPosition, mobType);
+        public void AddBlock(ContentManager content, Vector2 gridPosition, BlockType blockType, float rotation) 
+            => levelEntities.AddBlock(content, gridPosition, blockType, rotation);
+        
         public void InitializePerimeter(ContentManager content)
         {
             levelPerimeter.Initialize(content);

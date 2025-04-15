@@ -39,7 +39,7 @@ namespace Sprint0
                     loadedLevel.SetKeyItemType(indexLevel.KeyItemType);
                 }
 
-                loadedLevel.ConnectedLevels = indexLevel.ConnectedLevels; // still needed
+                loadedLevel.ConnectedLevels.SetAll(indexLevel.ConnectedLevels.GetAll().ToDictionary(kv => kv.Key, kv => kv.Value));                
                 levels[levelName] = loadedLevel;
                 levels[levelName].LevelNumber = levelNum;
                 levels[levelName].Loaded = true;
@@ -84,9 +84,11 @@ namespace Sprint0
                 foreach(Level level in levels.Values) {
                     if(level.PrereqLevel != null && level.PrereqLevel.LevelNumber == activeLevel.LevelNumber)
                         level.Unlocked = true;
-                    if(activeLevel.ConnectedLevels.Values.Contains(level)) {
-                        var direction = activeLevel.ConnectedLevels.FirstOrDefault(x => x.Value == level).Key;
-                        activeLevel.UnlockConnectedLevel(direction);
+                    if (activeLevel.ConnectedLevels.GetAll().Any(pair => pair.Value == level))
+                    {
+                        var direction = activeLevel.ConnectedLevels.GetDirectionOf(level);
+                        if (direction != null)
+                            activeLevel.UnlockConnectedLevel(direction.Value);
                     }
                 }
             }
