@@ -7,8 +7,7 @@ using System.Linq;
 using static Sprint0.EntityKeys;
 
 namespace Sprint0 {
-    public class Level
-    {
+    public class Level {
         public enum Direction { Top, Bottom, Left, Right }  
         private Level prereqLevel;
         private int levelNumber;
@@ -19,7 +18,7 @@ namespace Sprint0 {
         private LevelEntities levelEntities;
         private LevelConnections connections;
         private LevelPerimeter levelPerimeter;
-
+        private KeyItem keyItem;
         public IEnumerable<Mob> GetEnemies() => levelEntities.GetEntitiesOfType<Mob>();
         public IEnumerable<Item> GetItems() => levelEntities.GetEntitiesOfType<Item>();
         public IEnumerable<BaseBlock> GetBlocks() => levelEntities.GetEntitiesOfType<BaseBlock>();
@@ -27,13 +26,10 @@ namespace Sprint0 {
         public Dictionary<string, Entity> Entities
         {
             get => levelEntities.Entities;
-            set
-            {
+            set {
                 foreach (var kvp in value)
-                    levelEntities.Entities[kvp.Key] = kvp.Value;
-            }
+                    levelEntities.Entities[kvp.Key] = kvp.Value; }
         }
-
         public int LevelNumber
         {
             get { return levelNumber; }
@@ -60,6 +56,7 @@ namespace Sprint0 {
             set { prereqLevel = value; }
         }
         public LevelConnections ConnectedLevels => connections;
+        public bool HasEnemies() => GetEnemies().Any();
         public Level()
         {
             complete = false;
@@ -69,31 +66,22 @@ namespace Sprint0 {
             prereqLevel = null;
             tilesList = new List<Tile>();
             connections = new LevelConnections();
-            levelPerimeter = new LevelPerimeter(this, levelEntities.Entities);
             levelEntities = new LevelEntities();
+            levelPerimeter = new LevelPerimeter(this, levelEntities.Entities);
+            keyItem = new KeyItem();
         }
-        public bool HasEnemies() => GetEnemies().Any();
+        public void AddTile(ContentManager content, Tile.TileType tileType, Vector2 position)
+        {
+            tilesList.Add(new Tile(content, tileType, (position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2)));
+        }
         public List<Tile> GetLevelTiles => tilesList;
-        public bool HasKeyItem { get; private set; } = false;
-        public EntityKeys.ItemType KeyItemType { get; private set; }
-        private bool keyItemDropped = false;
-        public void SetKeyItemType(EntityKeys.ItemType keyItemType)
-        {
-            HasKeyItem = true;
-            KeyItemType = keyItemType;
-        }
-
-        // When the level is complete, drop the key item in the center.
+        // LevelKeyItem
+        public KeyItem KeyItem => keyItem;
+        public void SetKeyItemType(EntityKeys.ItemType itemType)
+            => keyItem.Set(itemType);
         public void DropKeyItem(ContentManager content)
-        {
-            System.Console.WriteLine(Complete + " " + HasKeyItem + " " + keyItemDropped);
-            if (Complete && HasKeyItem)
-            {
-                AddItem(content, new Vector2(8, 5), KeyItemType);
-                keyItemDropped = true;
-            }
-        }
-
+            => keyItem.TryDrop(content, Complete, levelEntities);
+        // LevelConnections
         public void AddConnectedLevel(Direction dir, Level level)
             => connections.AddConnectedLevel(dir, level);
 
@@ -107,12 +95,7 @@ namespace Sprint0 {
         {
             levelPerimeter.Unlock(direction);
         }
-
-        public void AddTile(ContentManager content, Tile.TileType tileType, Vector2 position)
-        {
-            tilesList.Add(new Tile(content, tileType, (position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2)));
-        }
-
+        // LevelEntities
         public void AddPlayer(ContentManager content, Vector2 gridPosition)
             => levelEntities.AddPlayer(content, gridPosition);
         public void AddItem(ContentManager content, Vector2 gridPosition, EntityKeys.ItemType itemType) 
@@ -122,6 +105,7 @@ namespace Sprint0 {
         public void AddBlock(ContentManager content, Vector2 gridPosition, BlockType blockType, float rotation) 
             => levelEntities.AddBlock(content, gridPosition, blockType, rotation);
         
+        // LevelPerimeter
         public void InitializePerimeter(ContentManager content)
         {
             levelPerimeter.Initialize(content);

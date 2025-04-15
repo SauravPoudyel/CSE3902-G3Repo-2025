@@ -35,8 +35,8 @@ namespace Sprint0
                 Level loadedLevel = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
 
                 Level indexLevel = value;
-                if (indexLevel.HasKeyItem) {
-                    loadedLevel.SetKeyItemType(indexLevel.KeyItemType);
+                if (indexLevel.KeyItem.Exists) {
+                    loadedLevel.SetKeyItemType(indexLevel.KeyItem.Type);
                 }
 
                 loadedLevel.ConnectedLevels.SetAll(indexLevel.ConnectedLevels.GetAll().ToDictionary(kv => kv.Key, kv => kv.Value));                
