@@ -20,7 +20,8 @@ namespace Sprint0 {
         private List<Tile> tilesList;
         private Dictionary<string, Entity> entities;
         private Player player;
-        private List<BaseBlock> perimeter;
+        private LevelPerimeter levelPerimeter;
+
         public IEnumerable<Mob> GetEnemies() => entities.Values.OfType<Mob>();
         public IEnumerable<Item> GetItems() => entities.Values.OfType<Item>();
         public IEnumerable<BaseBlock> GetBlocks() => entities.Values.OfType<BaseBlock>();
@@ -69,7 +70,7 @@ namespace Sprint0 {
             tilesList = new List<Tile>();
             entities = new Dictionary<string, Entity>();
             connectedLevels = new Dictionary<Direction, Level>();
-            perimeter = new List<BaseBlock>();
+            levelPerimeter = new LevelPerimeter(this, entities);
         }
         public bool HasEnemies() {
             bool hasEnemies = false;
@@ -119,32 +120,9 @@ namespace Sprint0 {
         }
         public void UnlockConnectedLevel(Direction direction)
         {
-            List<BaseBlock> fencesToRemove = perimeter.FindAll(fence =>
-            {
-                Vector2 pos = fence.GetPosition();
-                switch (direction)
-                {
-                    case Direction.Top:
-                        return pos.Y < 0;
-                    case Direction.Bottom:
-                        return pos.Y > tileSize * 9;
-                    case Direction.Left:
-                        return pos.X < 0;
-                    case Direction.Right:
-                        return pos.X > tileSize * 16;
-                    default:
-                        return false;
-                }
-            });
-            foreach (var fence in fencesToRemove)
-            {
-                perimeter.Remove(fence);
-                if (entities.ContainsKey(fence.EntityKey))
-                {
-                    entities.Remove(fence.EntityKey);
-                }
-            }
+            levelPerimeter.Unlock(direction);
         }
+
         public void AddTile(ContentManager content, Tile.TileType tileType, Vector2 position)
         {
             tilesList.Add(new Tile(content, tileType, (position * tileSize) + new Vector2(tileSize / 2, tileSize / 2)));
@@ -188,31 +166,9 @@ namespace Sprint0 {
             newBlock.EntityKey = "block_" + this.GetBlocks().Count() + "_" + blockType.ToString();
             entities.Add(newBlock.EntityKey, newBlock);
         }
-        
         public void InitializePerimeter(ContentManager content)
         {
-            perimeter.Clear();
-            for (int x = -1; x < 16; x++) {
-                if(!this.HasConnectedLevel(Direction.Top) || !this.GetConnectedLevel(Direction.Top).Unlocked)
-                    AddPerimeterBlock(content, new Vector2(x, -1));
-                if(!this.HasConnectedLevel(Direction.Bottom) || !this.GetConnectedLevel(Direction.Bottom).Unlocked)
-                    AddPerimeterBlock(content, new Vector2(x, 9));
-            }
-            for (int y = -1; y < 9; y++){
-                if(!this.HasConnectedLevel(Direction.Left) || !this.GetConnectedLevel(Direction.Left).Unlocked)
-                    AddPerimeterBlock(content, new Vector2(-1, y));
-                if(!this.HasConnectedLevel(Direction.Right) || !this.GetConnectedLevel(Direction.Right).Unlocked)
-                    AddPerimeterBlock(content, new Vector2(16, y));
-            }
-        }
-
-        private void AddPerimeterBlock(ContentManager content, Vector2 position)
-        {
-            Vector2 worldPosition = (position * tileSize) + new Vector2(tileSize / 2, tileSize / 2);
-            BaseBlock perimeterBlock = BlockFactory.CreateBlock(BlockType.Boarder, content, worldPosition, 0.3f);
-            perimeter.Add(perimeterBlock);
-            perimeterBlock.EntityKey = "perimeterBlock_" + perimeter.Count;
-            entities.Add(perimeterBlock.EntityKey, perimeterBlock);
+            levelPerimeter.Initialize(content);
         }
     }
 }
