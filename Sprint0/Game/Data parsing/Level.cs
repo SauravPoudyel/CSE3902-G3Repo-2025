@@ -10,9 +10,8 @@ namespace Sprint0 {
     public class Level
     {
         public enum Direction { Top, Bottom, Left, Right }  
-        private Dictionary<Direction, Level> connectedLevels;  
+        private LevelConnections connections;
         private Level prereqLevel;
-        public int tileSize = 120;
         private int levelNumber;
         private bool unlocked;
         private bool complete;
@@ -55,11 +54,7 @@ namespace Sprint0 {
             get { return prereqLevel; }
             set { prereqLevel = value; }
         }
-        public Dictionary<Direction, Level> ConnectedLevels   
-        {
-            get { return connectedLevels; }
-            set { connectedLevels = value; }
-        }
+        public LevelConnections ConnectedLevels => connections;
         public Level()
         {
             complete = false;
@@ -69,7 +64,7 @@ namespace Sprint0 {
             prereqLevel = null;
             tilesList = new List<Tile>();
             entities = new Dictionary<string, Entity>();
-            connectedLevels = new Dictionary<Direction, Level>();
+            connections = new LevelConnections();
             levelPerimeter = new LevelPerimeter(this, entities);
         }
         public bool HasEnemies() {
@@ -82,13 +77,7 @@ namespace Sprint0 {
             return hasEnemies;
         }
         public List<Tile> GetLevelTiles => tilesList;
-        public void AddConnectedLevel(Direction direction, Level level)
-        {
-            if (level != null)
-            {
-                connectedLevels[direction] = level;
-            }
-        }
+        
 
         public bool HasKeyItem { get; private set; } = false;
         public EntityKeys.ItemType KeyItemType { get; private set; }
@@ -110,14 +99,15 @@ namespace Sprint0 {
             }
         }
 
-        public Level GetConnectedLevel(Direction direction)
-        {
-            return connectedLevels.TryGetValue(direction, out Level value) ? value : null;
-        }
-        public bool HasConnectedLevel(Direction direction)
-        {
-            return connectedLevels.ContainsKey(direction);
-        }
+        public void AddConnectedLevel(Direction dir, Level level)
+            => connections.AddConnectedLevel(dir, level);
+
+        public bool HasConnectedLevel(Direction dir)
+            => connections.HasConnectedLevel(dir);
+
+        public Level GetConnectedLevel(Direction dir)
+            => connections.GetConnectedLevel(dir);
+
         public void UnlockConnectedLevel(Direction direction)
         {
             levelPerimeter.Unlock(direction);
@@ -125,7 +115,7 @@ namespace Sprint0 {
 
         public void AddTile(ContentManager content, Tile.TileType tileType, Vector2 position)
         {
-            tilesList.Add(new Tile(content, tileType, (position * tileSize) + new Vector2(tileSize / 2, tileSize / 2)));
+            tilesList.Add(new Tile(content, tileType, (position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2)));
         }
 
         public void AddPlayer(ContentManager content, Vector2 position)
@@ -135,17 +125,15 @@ namespace Sprint0 {
                 return;
 
             player = new Player(content);
-            player.SetPosition((position * tileSize) + new Vector2(tileSize / 2, tileSize / 2));
+            player.SetPosition((position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2));
             player.EntityKey = "player";
             player.Update();
             entities.Add("player", player);
         }
-
-
         public void AddItem(ContentManager content, Vector2 position, EntityKeys.ItemType itemType)
         {
             Item newItem = new Item(content, itemType);
-            newItem.SetPosition((position * tileSize) + new Vector2(tileSize / 2, tileSize / 2));
+            newItem.SetPosition((position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2));
             newItem.EntityKey = "item_" + this.GetItems().Count() + "_" + itemType.ToString();
             entities.Add(newItem.EntityKey, newItem);
         }
@@ -153,14 +141,14 @@ namespace Sprint0 {
         public void AddEnemy(ContentManager content, MobType mobType, Vector2 position)
         {
             Mob newEnemy = MobFactory.CreateMob(mobType, content);
-            newEnemy.SetPosition((position * tileSize) + new Vector2(tileSize / 2, tileSize / 2));
+            newEnemy.SetPosition((position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2));
             newEnemy.EntityKey = "enemy_" + this.GetEnemies().Count() + "_" + mobType.ToString();
             entities.Add(newEnemy.EntityKey, newEnemy);
         }
 
         public void AddBlock(ContentManager content, Vector2 position, BlockType blockType, float rotation)
         {
-            Vector2 worldPosition = (position * tileSize) + new Vector2(tileSize / 2, tileSize / 2);
+            Vector2 worldPosition = (position * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2, Globals.TILESIZE / 2);
             BaseBlock newBlock = BlockFactory.CreateBlock(blockType, content, worldPosition, 0.3f);
             newBlock.Rotation = rotation;
             newBlock.EntityKey = "block_" + this.GetBlocks().Count() + "_" + blockType.ToString();

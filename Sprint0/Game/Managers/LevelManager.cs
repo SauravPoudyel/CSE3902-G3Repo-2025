@@ -94,7 +94,7 @@ namespace Sprint0
             if (entities.TryGetValue("player", out Entity value))
             {
                 Player player = (Player)value;
-                int halfTile = activeLevel.tileSize / 2; // 60 if tileSize is 120
+                int halfTile = Globals.TILESIZE / 2; // 60 if tileSize is 120
 
                 if (player.GetPosition().Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top))
                 {

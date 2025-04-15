@@ -9,9 +9,8 @@ using static Sprint0.Level;
 using static Sprint0.EntityKeys;
 public class LevelPerimeter
 {
-    private readonly List<BaseBlock> perimeterBlocks = new();
-    private readonly Dictionary<string, Entity> entities;
-    private readonly int tileSize = 120;
+    private List<BaseBlock> perimeterBlocks = new List<BaseBlock>();
+    private Dictionary<string, Entity> entities;
     private readonly Level level;
 
     public LevelPerimeter(Level level, Dictionary<string, Entity> entities)
@@ -62,8 +61,8 @@ public class LevelPerimeter
         };
 
         var toRemove = perimeterBlocks
-            .Where(f => f.GetPosition().X >= min.X * tileSize && f.GetPosition().X <= max.X * tileSize &&
-                        f.GetPosition().Y >= min.Y * tileSize && f.GetPosition().Y <= max.Y * tileSize)
+            .Where(f => f.GetPosition().X >= min.X * Globals.TILESIZE && f.GetPosition().X <= max.X * Globals.TILESIZE &&
+                        f.GetPosition().Y >= min.Y * Globals.TILESIZE && f.GetPosition().Y <= max.Y * Globals.TILESIZE)
             .ToList();
 
         foreach (var block in toRemove)
@@ -76,7 +75,7 @@ public class LevelPerimeter
 
     private void AddBlock(ContentManager content, Vector2 gridPos)
     {
-        Vector2 worldPosition = (gridPos * tileSize) + new Vector2(tileSize / 2f);
+        Vector2 worldPosition = (gridPos * Globals.TILESIZE) + new Vector2(Globals.TILESIZE / 2f);
         BaseBlock block = BlockFactory.CreateBlock(BlockType.Boarder, content, worldPosition, 0.3f);
         block.EntityKey = $"perimeterBlock_{perimeterBlocks.Count}";
         perimeterBlocks.Add(block);
