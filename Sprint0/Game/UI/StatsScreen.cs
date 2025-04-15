@@ -34,6 +34,7 @@ namespace Sprint0
         private Texture2D spriteSheet2;
         public bool BlocksInput => true;
         SpriteFont font = Globals.FONT;
+
         public StatsScreen(Game1 game) 
         {
             ContentManager content = game.Content;
@@ -110,7 +111,7 @@ namespace Sprint0
                     iconPos = new Vector2(windowRectangle.X + 20 + 500, windowRectangle.Y + 50 + i * 60 - 350);
                     iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
                     textPos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
-                    itemText = item.Name + " Killed " + Globals.PlayerData.GetInt(item.Name.ToString() + "killed");
+                    itemText = item.Name + " Killed " + Globals.PlayerData.GetInt(item.Name.ToString() + "Killed");
                     textSize = font.MeasureString(itemText);
                     textRect = new Rectangle((int)textPos.X + 500, (int)textPos.Y, (int)textSize.X, (int)textSize.Y);
                     spriteBatch.Draw(item.Icon, iconDestinationRect, item.IconRect, Color.White);
@@ -120,7 +121,7 @@ namespace Sprint0
                     iconPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + 50 + i * 60);
                     iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
                     textPos = new Vector2(iconPos.X + 50 + secondColumn, iconPos.Y + 10);
-                    itemText = item.Name + " Killed " + Globals.PlayerData.GetInt(item.Name.ToString() + "killed");
+                    itemText = item.Name + " Killed " + Globals.PlayerData.GetInt(item.Name.ToString() + "Killed");
                     textSize = font.MeasureString(itemText);
                     textRect = new Rectangle((int)textPos.X, (int)textPos.Y, (int)textSize.X, (int)textSize.Y);
                     spriteBatch.Draw(item.Icon, iconDestinationRect, item.IconRect, Color.White);
