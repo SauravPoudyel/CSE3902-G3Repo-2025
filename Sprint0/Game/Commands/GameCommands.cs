@@ -119,7 +119,7 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    gameManager.screenManager.shopOpen = false;
+                    gameManager.screenManager.statsOpen = false;
                 }
             }
         }

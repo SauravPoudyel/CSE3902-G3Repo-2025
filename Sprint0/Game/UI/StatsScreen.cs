@@ -79,11 +79,11 @@ namespace Sprint0
         //These two methods follow the shop.cs format very similarly 
         public void Update()
         {   
-            //Might not need this since we aren't clicking anything (as of now)
             foreach (Button button in statsButtons)
             {
                 button.Update();
             }
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -98,6 +98,10 @@ namespace Sprint0
             string itemText;
             Vector2 textSize;
             Rectangle textRect;
+            foreach (Button button in statsButtons)
+            {
+                button.Draw(spriteBatch);
+            }
             for (int i = 0; i < 11; i++)
             {
                 StatsItem item = statsItems[i];
@@ -122,10 +126,6 @@ namespace Sprint0
                     spriteBatch.Draw(item.Icon, iconDestinationRect, item.IconRect, Color.White);
                     spriteBatch.DrawString(font, itemText, textPos, Color.White);
                 }
-            }
-            foreach (Button button in statsButtons)
-            {
-                button.Draw(spriteBatch);
             }
         }
     }
