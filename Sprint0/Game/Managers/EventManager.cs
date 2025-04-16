@@ -25,6 +25,10 @@ namespace Sprint0
                 {"PlayerDeath", new GameCommands.PlayerDeathCommand()},
                 {"OpenShop", new GameCommands.OpenShopCommand()},
                 {"CloseShop", new GameCommands.CloseShopCommand()},
+                {"OpenStatsScreen", new GameCommands.OpenStatsCommand()},
+                {"CloseStatsScreen", new GameCommands.CloseStatsCommand()},
+                {"OpenAchievements", new GameCommands.OpenAchievementsCommand()},
+                {"CloseAchievements", new GameCommands.CloseAchievementsCommand()},
 
                 {"Static", new GraphicCommands.DisplayStaticGameCommand()},
                 {"Animated", new GraphicCommands.DisplayAnimatedGameCommand()},
