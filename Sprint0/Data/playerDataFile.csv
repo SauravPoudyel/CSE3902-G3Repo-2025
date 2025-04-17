@@ -20,8 +20,9 @@ PlaneKilled, 0
 ShieldTankKilled, 0
 ShipKilled, 0
 SmallEnemyKilled, 19
-StealthTanksKileld, 0
+StealthTanksKilled, 0
 TurretKilled, 0
 TutorialDialogueCount, 2
 BaseDialogueCount, 1
 HasShopKeys, 1
+DistanceTraveled, 0

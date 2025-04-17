@@ -58,8 +58,13 @@ namespace Sprint0
             achievements.Add(new Achievement("Juggernaut", "Kill 10 Boss Tanks", false));
             achievements.Add(new Achievement("Aerial Defender", "Kill 20 Planes", false));
             achievements.Add(new Achievement("Speedster", "Get a speed modifier of 4X", false));
-            achievements.Add(new Achievement("XP Farmer", "Get an XP level of 5000", false));
-            achievements.Add(new Achievement("The Tank", "Get a health of 500", false));
+            achievements.Add(new Achievement("XP Farmer", "Get an XP level of 5,000", false));
+            achievements.Add(new Achievement("The Tank", "Have at least 500 health", false));
+            achievements.Add(new Achievement("Bread Collector", "Get at least 5,000 coins", false));
+            achievements.Add(new Achievement("Traveler", "Travel a distance of 10,000", false));
+            achievements.Add(new Achievement("The Ninja", "Kill 10 Stealth Tanks", false));
+            achievements.Add(new Achievement("Anti Pacifist", "Kill 10 Healer Tanks", false));
+            achievements.Add(new Achievement("Loaded", "Have at least 100 ammo", false));
 
             //Add close screen buttons
             Texture2D buttonTexture = game.Content.Load<Texture2D>("UI/ShopExit");
@@ -89,7 +94,7 @@ namespace Sprint0
                 button.Draw(spriteBatch);
             }
 
-            for (int i = 0; i < 5; i ++)
+            for (int i = 0; i < 10; i ++)
             {
                 Achievement item = achievements[i];
                 iconPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + i * 60 + 10);
@@ -117,13 +122,23 @@ namespace Sprint0
                 case "Juggernaut":
                     return (Globals.PlayerData.GetInt("BossTankKilled") >= 10) ? true : false;
                 case "Aeiral Defender":
-                    return (Globals.PlayerData.GetInt("BossTankKilled") >= 10) ? true : false;
+                    return (Globals.PlayerData.GetInt("PlaneKilled") >= 10) ? true : false;
                 case "Speedster":
                     return (Globals.PlayerData.GetInt("SpeedModifier") >= 4) ? true : false;
                 case "XP Farmer":
                     return (Globals.PlayerData.GetInt("XP") >= 5000) ? true : false;
                 case "The Tank":
                     return (Globals.PlayerData.GetInt("Health") >= 500) ? true : false;
+                case "Bread Collector":
+                    return (Globals.PlayerData.GetInt("Coins") >= 5000) ? true : false;
+                case "Traveler":
+                    return (Globals.PlayerData.GetInt("DistanceTraveled") >= 10000) ? true : false;
+                case "The Ninja":
+                    return (Globals.PlayerData.GetInt("StealthTankKilled") >= 10) ? true : false;
+                case "Anti Pacifist":
+                    return (Globals.PlayerData.GetInt("HealerTankKilled") >= 10) ? true : false;
+                case "Loaded":
+                    return (Globals.PlayerData.GetInt("AmmoDefault") >= 100) ? true : false;
                 default:
                     return false;
             }
