@@ -26,14 +26,15 @@ namespace Sprint0
                 if (trailEffectKey == null)
                 {
                     trailEffectKey = "boost_trail_" + Guid.NewGuid();
-
+                    Vector2 backwardOffset = new Vector2((float)Math.Cos(player.bodyRotation + MathHelper.Pi), 
+                                     (float)Math.Sin(player.bodyRotation + MathHelper.Pi)) * 30f;
                     var parameters = new Dictionary<string, object>
                     {
                         { "gameManager", GameManager.Instance },
                         { "spawnPosition", player.GetPosition() },
                         { "effectType", EntityKeys.EffectType.Fire },
                         { "followTarget", player },
-                        { "offset", new Vector2(0, 20) },
+                        { "offset", backwardOffset },
                         { "customKey", trailEffectKey },
                         { "rotation", player.bodyRotation }, // Optional: make the effect loop
                         { "damagesPlayer", false }
