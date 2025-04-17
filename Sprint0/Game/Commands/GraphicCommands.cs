@@ -14,7 +14,7 @@ namespace Sprint0
             {
                 if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager)
                 {
-                    var staticSprite = new StaticSprite();
+                    var staticSprite = new Sprite();
                     staticSprite.LoadContent(gameManager.GetContent(), "LinkSpritesheet", 140, 2, 62, 62, 1);
                     gameManager.GetEntity("player").SetSprite(staticSprite);
                 }
@@ -27,7 +27,7 @@ namespace Sprint0
             {
                 if (parameters.TryGetValue("gameManager", out object gmObj) && gmObj is GameManager gameManager)
                 {
-                    var animatedSprite = new AnimatedSprite(0.4f);
+                    var animatedSprite = new Sprite(0.4f);
                     animatedSprite.LoadContent(gameManager.GetContent(), "LinkSpritesheet", 140, 2, 62, 62, 2);
                     gameManager.GetEntity("player").SetSprite(animatedSprite);
                 }

@@ -28,10 +28,10 @@ namespace Sprint0
             defaultMovementSpeed = 30f; 
             firingInterval = 0f; 
             
-            normalSprite = new AnimatedSprite(0.3f);
+            normalSprite = new Sprite(0.3f);
             normalSprite.LoadContent(content, "TDTanksAllSprites", 1126, 334, 76, 72, 1);
 
-            healSprite = new AnimatedSprite(0.3f);
+            healSprite = new Sprite(0.3f);
             healSprite.LoadContent(content, "TDTanksAllSprites", 1202, 334, 76, 72, 1);
             SetSprite(normalSprite);
 

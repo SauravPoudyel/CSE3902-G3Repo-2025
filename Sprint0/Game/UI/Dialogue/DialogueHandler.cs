@@ -33,12 +33,12 @@ namespace Sprint0
             dialoguesLoaded = true;
         }
 
-        private StaticSprite CreatePortraitSprite(string characterName)
+        private Sprite CreatePortraitSprite(string characterName)
         {
             if (characterCircleSheet == null)
                 characterCircleSheet = content.Load<Texture2D>("CharacterCircle");
 
-            StaticSprite sprite = new StaticSprite();
+            Sprite sprite = new Sprite();
             int spriteSize = 150;
 
             CharacterPortrait portraitEnum = CharacterPortrait.Player;
@@ -61,7 +61,7 @@ namespace Sprint0
             finalText = finalText.Replace("{playerName}", Globals.PlayerData.GetString("Name"));
             finalText = $"{data.Character}:\n\n" + finalText;
 
-            StaticSprite circleSprite = CreatePortraitSprite(data.Character);
+            Sprite circleSprite = CreatePortraitSprite(data.Character);
             Texture2D rectangleTexture = new Texture2D(game.GraphicsDevice, 1, 1);
             rectangleTexture.SetData(new Color[] { Color.White });
             SpriteFont font = Globals.FONT;

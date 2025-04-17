@@ -23,7 +23,7 @@ namespace Sprint0
 
         public override void LoadBlockContent(ContentManager content, EntityKeys.BlockType blockType)
         {
-            animatedSprite = new AnimatedSprite(frameTime);
+            animatedSprite = new Sprite(frameTime);
             var (x, y, width, height, scale) = GetSpriteCoords(blockType);
             Scale = scale; // this gets aplied in draw
             animatedSprite.LoadContent(content, "TDTanksAllSprites", x, y, width, height, 1);

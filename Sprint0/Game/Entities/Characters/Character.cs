@@ -17,7 +17,7 @@ namespace Sprint0
         protected List<TrackTrail> trackTrailList;
         protected float trackTrailSpawnTimer, trackTrailSpawnInterval = 0.4f;
         public bool TrackTrailsEnabled { get; set; } = true;
-        protected ISprite trackTrailSprite = new StaticSprite();
+        protected ISprite trackTrailSprite = new Sprite();
         public float health = 100f;
         public bool isDead = false, isDamaged = false, isHealed = false;
         protected Color? changeIndicator = null;

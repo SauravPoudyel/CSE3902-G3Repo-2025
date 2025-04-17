@@ -58,7 +58,7 @@ namespace Sprint0
         }
 
         private TileType tileType;
-        private StaticSprite sprite;
+        private Sprite sprite;
         private Vector2 position;
         private float spriteScaler = 0.9375f; // = 120/128, used to scale between the spritesheet size of 128x128 and grid size of 120
 
@@ -71,7 +71,7 @@ namespace Sprint0
 
         private void LoadTileSprite(ContentManager content)
         {
-            sprite = new StaticSprite();
+            sprite = new Sprite();
 
             switch (tileType)
             {
