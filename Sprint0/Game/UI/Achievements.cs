@@ -12,14 +12,12 @@ namespace Sprint0
     {
         public string Name { get; set; }
         public string Text { get; set;}
-        public Texture2D Icon { get; set; }
         public bool Completed {get ; set;}
 
-        public Achievement(string name, string text, Texture2D icon, bool completed)
+        public Achievement(string name, string text, bool completed)
         {
             Name = name;
             Text = text;
-            Icon = icon;
             Completed = completed;
         }
     }
@@ -56,7 +54,12 @@ namespace Sprint0
             checkmark = content.Load<Texture2D>("UI/checkmark");
             xMark = content.Load<Texture2D>("UI/xMark");
 
-            achievements.Add(new Achievement("HeadHunter", "Kill 20 Small Enemys", content.Load<Texture2D>("UI/checkmark"), false));
+            achievements.Add(new Achievement("HeadHunter", "Kill 20 Small Enemys", false));
+            achievements.Add(new Achievement("Juggernaut", "Kill 10 Boss Tanks", false));
+            achievements.Add(new Achievement("Aerial Defender", "Kill 20 Planes", false));
+            achievements.Add(new Achievement("Speedster", "Get a speed modifier of 4X", false));
+            achievements.Add(new Achievement("XP Farmer", "Get an XP level of 5000", false));
+            achievements.Add(new Achievement("The Tank", "Get a health of 500", false));
 
             //Add close screen buttons
             Texture2D buttonTexture = game.Content.Load<Texture2D>("UI/ShopExit");
@@ -86,7 +89,7 @@ namespace Sprint0
                 button.Draw(spriteBatch);
             }
 
-            for (int i = 0; i < 1; i ++)
+            for (int i = 0; i < 5; i ++)
             {
                 Achievement item = achievements[i];
                 iconPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + i * 60 + 10);
@@ -101,6 +104,7 @@ namespace Sprint0
                 }
                 spriteBatch.Draw(markTexture, iconDestinationRect, Color.WhiteSmoke);
                 spriteBatch.DrawString(font, item.Text, textPos, Color.White);
+                markTexture = xMark;
             }
         }
 
@@ -109,13 +113,17 @@ namespace Sprint0
             switch(currentAch.Name)
             {
                 case "HeadHunter":
-                    if(Globals.PlayerData.GetInt("SmallEnemyKilled") >= 20) 
-                    {
-                        return true;
-                    } 
-                    else {
-                        return false;
-                    }
+                    return (Globals.PlayerData.GetInt("SmallEnemyKilled") >= 20) ? true : false;
+                case "Juggernaut":
+                    return (Globals.PlayerData.GetInt("BossTankKilled") >= 10) ? true : false;
+                case "Aeiral Defender":
+                    return (Globals.PlayerData.GetInt("BossTankKilled") >= 10) ? true : false;
+                case "Speedster":
+                    return (Globals.PlayerData.GetInt("SpeedModifier") >= 4) ? true : false;
+                case "XP Farmer":
+                    return (Globals.PlayerData.GetInt("XP") >= 5000) ? true : false;
+                case "The Tank":
+                    return (Globals.PlayerData.GetInt("Health") >= 500) ? true : false;
                 default:
                     return false;
             }
