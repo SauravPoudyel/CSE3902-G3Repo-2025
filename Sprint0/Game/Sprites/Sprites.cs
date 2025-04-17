@@ -62,7 +62,7 @@ namespace Sprint0
             Vertical
         }
 
-        public AnimatedSprite(float frameTime, FrameOrientation orientation = FrameOrientation.Horizontal)
+        public Sprite(float frameTime, FrameOrientation orientation = FrameOrientation.Horizontal)
         {
             this.frameTime = frameTime;
             this.orientation = orientation;
