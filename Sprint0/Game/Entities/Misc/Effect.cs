@@ -40,6 +40,7 @@ namespace Sprint0
             switch (effectType)
             {
                 case EffectType.Fire:
+                case EffectType.BoostFire:
                     _totalLoops = 8;
                     InitializeFireEffect();
                     break;
@@ -185,6 +186,7 @@ namespace Sprint0
                 switch (effectType)
                 {
                     case EffectType.Fire:
+                    case EffectType.BoostFire:
                         DrawFire(spriteBatch);
                         break;
                     default:

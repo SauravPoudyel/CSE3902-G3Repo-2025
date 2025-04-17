@@ -25,7 +25,7 @@ namespace Sprint0
 
         public enum EffectType
         {
-            Explosion, Fire, Shield, TeleportOut, TeleportIn
+            Explosion, Fire, Shield, TeleportOut, TeleportIn, BoostFire
         }
 
         public enum ItemType

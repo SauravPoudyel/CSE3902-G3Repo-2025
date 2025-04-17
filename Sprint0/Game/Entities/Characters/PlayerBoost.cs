@@ -32,7 +32,7 @@ namespace Sprint0
                     {
                         { "gameManager", GameManager.Instance },
                         { "spawnPosition", player.GetPosition() },
-                        { "effectType", EntityKeys.EffectType.Fire },
+                        { "effectType", EntityKeys.EffectType.BoostFire },
                         { "followTarget", player },
                         { "offset", backwardOffset },
                         { "customKey", trailEffectKey },
