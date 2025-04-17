@@ -30,6 +30,8 @@ namespace Sprint0
         private Rectangle windowRectangle;
         private Texture2D backgroundTexture;
         private Texture2D boxTexture;
+        private Texture2D checkmark;
+        private Texture2D xMark;
         public bool BlocksInput => true;
         SpriteFont font = Globals.FONT;
 
@@ -51,13 +53,15 @@ namespace Sprint0
             backgroundTexture.SetData(new Color[] { Color.LightGray});
             boxTexture = new Texture2D(graphicsDevice, 1, 1);
             boxTexture.SetData(new Color[] { Color.Gray});
+            checkmark = content.Load<Texture2D>("UI/checkmark");
+            xMark = content.Load<Texture2D>("UI/xMark");
 
             achievements.Add(new Achievement("HeadHunter", "Kill 20 Small Enemys", content.Load<Texture2D>("UI/checkmark"), false));
 
             //Add close screen buttons
             Texture2D buttonTexture = game.Content.Load<Texture2D>("UI/ShopExit");
             Vector2 exitButtonPos = new Vector2(x - buttonTexture.Width + width, y);
-            buttons.Add(new StatsExitButton(buttonTexture, exitButtonPos, 
+            buttons.Add(new AchievementsExitButton(buttonTexture, exitButtonPos, 
                 new Dictionary<string, object> { { "gameManager", game.GameManager } }));
 
         }
@@ -74,30 +78,47 @@ namespace Sprint0
             spriteBatch.Draw(backgroundTexture, windowRectangle, Color.White);
             Vector2 iconPos;
             Rectangle iconDestinationRect;
+            Rectangle boxDestinationRect;
             Vector2 textPos;
-            string itemText;
-            Vector2 textSize;
+            Texture2D markTexture = xMark;
             foreach (Button button in buttons)
             {
                 button.Draw(spriteBatch);
             }
 
-            for (int i = 0; i < 16; i ++)
+            for (int i = 0; i < 1; i ++)
             {
                 Achievement item = achievements[i];
-                iconPos = new Vector2(windowRectangle.X + 20 + 500, windowRectangle.Y + 50 + i * 60 - 350);
+                iconPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + i * 60 + 10);
                 iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
+                //3 columns, 10 pixel inbetween
+                boxDestinationRect = new Rectangle((int)iconPos.X - 5, (int)iconPos.Y - 5, 306, 50);
                 textPos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
-                itemText = item.Text;
-                textSize = font.MeasureString(itemText);
-                spriteBatch.Draw(item.Icon, iconDestinationRect, item.IconRect, Color.White);
-                spriteBatch.DrawString(font, itemText, textPos, Color.White);
+                spriteBatch.Draw(boxTexture, boxDestinationRect, Color.Gray);
+                if (IsAchievementCompleted(item)) {
+                    item.Completed = true;
+                    markTexture = checkmark;
+                }
+                spriteBatch.Draw(markTexture, iconDestinationRect, Color.WhiteSmoke);
+                spriteBatch.DrawString(font, item.Text, textPos, Color.White);
             }
         }
 
-        public bool isAchievementCompleted() 
+        private bool IsAchievementCompleted(Achievement currentAch) 
         {
-
+            switch(currentAch.Name)
+            {
+                case "HeadHunter":
+                    if(Globals.PlayerData.GetInt("SmallEnemyKilled") >= 20) 
+                    {
+                        return true;
+                    } 
+                    else {
+                        return false;
+                    }
+                default:
+                    return false;
+            }
         }
 
     }
