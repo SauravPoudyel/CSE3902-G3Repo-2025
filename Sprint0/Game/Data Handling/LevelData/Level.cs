@@ -103,7 +103,6 @@ namespace Sprint0 {
         // When the level is complete, drop the key item in the center.
         public void DropKeyItem(ContentManager content)
         {
-            System.Console.WriteLine(Complete + " " + HasKeyItem + " " + keyItemDropped);
             if (Complete && HasKeyItem)
             {
                 AddItem(content, new Vector2(8, 5), KeyItemType);
@@ -196,17 +195,33 @@ namespace Sprint0 {
         
         public void InitializePerimeter(ContentManager content)
         {
+            // Remove any existing perimeter block entries.
+            List<string> perimeterKeys = new List<string>();
+            foreach (var kvp in entities)
+            {
+                if (kvp.Key.StartsWith("perimeterBlock_"))
+                    perimeterKeys.Add(kvp.Key);
+            }
+            foreach (string key in perimeterKeys)
+            {
+                entities.Remove(key);
+            }
+            // Also clear the perimeter list.
             perimeter.Clear();
-            for (int x = -1; x < 16; x++) {
-                if(!this.HasConnectedLevel(Direction.Top) || !this.GetConnectedLevel(Direction.Top).Unlocked)
+
+            // Re-add perimeter blocks.
+            for (int x = -1; x < 16; x++)
+            {
+                if (!this.HasConnectedLevel(Direction.Top) || !this.GetConnectedLevel(Direction.Top).Unlocked)
                     AddPerimeterBlock(content, new Vector2(x, -1));
-                if(!this.HasConnectedLevel(Direction.Bottom) || !this.GetConnectedLevel(Direction.Bottom).Unlocked)
+                if (!this.HasConnectedLevel(Direction.Bottom) || !this.GetConnectedLevel(Direction.Bottom).Unlocked)
                     AddPerimeterBlock(content, new Vector2(x, 9));
             }
-            for (int y = -1; y < 9; y++){
-                if(!this.HasConnectedLevel(Direction.Left) || !this.GetConnectedLevel(Direction.Left).Unlocked)
+            for (int y = -1; y < 9; y++)
+            {
+                if (!this.HasConnectedLevel(Direction.Left) || !this.GetConnectedLevel(Direction.Left).Unlocked)
                     AddPerimeterBlock(content, new Vector2(-1, y));
-                if(!this.HasConnectedLevel(Direction.Right) || !this.GetConnectedLevel(Direction.Right).Unlocked)
+                if (!this.HasConnectedLevel(Direction.Right) || !this.GetConnectedLevel(Direction.Right).Unlocked)
                     AddPerimeterBlock(content, new Vector2(16, y));
             }
         }
@@ -216,8 +231,10 @@ namespace Sprint0 {
             Vector2 worldPosition = (position * tileSize) + new Vector2(tileSize / 2, tileSize / 2);
             BaseBlock perimeterBlock = BlockFactory.CreateBlock(BlockType.Boarder, content, worldPosition, 0.3f);
             perimeter.Add(perimeterBlock);
-            perimeterBlock.EntityKey = "perimeterBlock_" + perimeter.Count;
-            entities.Add(perimeterBlock.EntityKey, perimeterBlock);
+            // Use the current perimeter.Count to build a key.
+            string key = "perimeterBlock_" + perimeter.Count;
+            perimeterBlock.EntityKey = key;
+            entities.Add(key, perimeterBlock);
         }
     }
 }

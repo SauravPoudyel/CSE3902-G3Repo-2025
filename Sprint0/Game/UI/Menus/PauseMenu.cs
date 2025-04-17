@@ -57,10 +57,10 @@ namespace Sprint0
 
             textButton increaseLevelButton = new textButton(buttonTexture,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75 + 160, Globals.SCREENHEIGHT / 2 + 40, 40, 40),
-                "+", new GameCommands.IncreaseLevelCommand(), screenParams);
+                "+", new LevelCommands.IncreaseLevelCommand(), screenParams);
             textButton decreaseLevelButton = new textButton(buttonTexture,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75 - 50, Globals.SCREENHEIGHT / 2 + 40, 40, 40),
-                "-", new GameCommands.DecreaseLevelCommand(), screenParams);
+                "-", new LevelCommands.DecreaseLevelCommand(), screenParams);
             textButton levelButton = new textButton(buttonTexture,
                 new Rectangle(Globals.SCREENWIDTH / 2 - 75, Globals.SCREENHEIGHT / 2 + 40, 150, 40),
                 "Level: " + game.GameManager.LevelNumber.ToString(), null, screenParams);

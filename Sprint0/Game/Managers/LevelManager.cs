@@ -15,6 +15,9 @@ namespace Sprint0
         {
             get { return activeLevel; }
         }
+        public bool ProcedurallyLoading { get; set; } = false;
+        public ProceduralHandler proceduralHandler { get; set; } = new ProceduralHandler();
+
         private Dictionary<string, Level> levels;
         public LevelManager() {
             activeLevel = new Level();
@@ -74,11 +77,32 @@ namespace Sprint0
         public void UpdateLevelEntities(Dictionary<string, Entity> entities) {
             activeLevel.Entities = entities;
         }
-        public void Update(Dictionary<string, Entity> entities) {
-            UpdateLevelEntities(entities);
+        public void LoadProceduralLevel()
+        {
+            Level proceduralLevel = proceduralHandler.GenerateProceduralLevel(content);
+            activeLevel = proceduralLevel; 
+            // Optionally assign a special level number, for example 0 or a procedural counter.
+            activeLevel.LevelNumber = -1;
+            activeLevel.InitializePerimeter(content);
+            ProcedurallyLoading = true;
+        }
+
+
+        public void Update(GameManager gameManager, Dictionary<string, Entity> entities) {
+            proceduralHandler.Update(gameManager);
+            if (!proceduralHandler.pendingProceduralLevelLoad)
+                UpdateLevelEntities(entities);
+                
             if(!activeLevel.Complete && activeLevel.Loaded && !activeLevel.HasEnemies())
             {
                 activeLevel.Complete = true;
+
+                // If the active level is procedural and marked as complete, load a new one.
+                if (activeLevel is ProceduralLevel)
+                {
+                    LoadProceduralLevel();
+                }
+
                 // Drop the key item if applicable.
                 activeLevel.DropKeyItem(content);
                 foreach(Level level in levels.Values) {

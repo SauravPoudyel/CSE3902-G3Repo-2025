@@ -19,12 +19,14 @@ namespace Sprint0
                 {"Reset", new GameCommands.ResetCommand()},
                 {"StartGame", new GameCommands.StartGameCommand()},
                 {"ShowPauseMenu", new GameCommands.ShowPauseMenuCommand()},
-                {"IncreaseLevel", new GameCommands.IncreaseLevelCommand()},
-                {"DecreaseLevel", new GameCommands.DecreaseLevelCommand()},
-                {"SetLevel", new GameCommands.SetLevelCommand()},
-                {"PlayerDeath", new GameCommands.PlayerDeathCommand()},
                 {"OpenShop", new GameCommands.OpenShopCommand()},
                 {"CloseShop", new GameCommands.CloseShopCommand()},
+
+                {"IncreaseLevel", new LevelCommands.IncreaseLevelCommand()},
+                {"DecreaseLevel", new LevelCommands.DecreaseLevelCommand()},
+                {"SetLevel", new LevelCommands.SetLevelCommand()},
+                {"PlayerDeath", new LevelCommands.PlayerDeathCommand()},
+                {"GenerateProceduralLevel", new LevelCommands.GenerateProceduralLevelCommand()},
 
                 {"Static", new GraphicCommands.DisplayStaticGameCommand()},
                 {"Animated", new GraphicCommands.DisplayAnimatedGameCommand()},
