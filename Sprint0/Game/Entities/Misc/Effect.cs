@@ -122,6 +122,8 @@ namespace Sprint0
             if (followTarget != null)
             {
                 position = followTarget.GetPosition() + followOffset;
+                if (followTarget is Player player)
+                    effectRotation = player.bodyRotation;
                 bounds = new Rectangle((int)position.X, (int)position.Y, bounds.Width, bounds.Height);
             }
 
