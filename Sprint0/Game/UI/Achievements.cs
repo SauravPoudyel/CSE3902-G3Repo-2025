@@ -90,15 +90,15 @@ namespace Sprint0
                 textPos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
                 itemText = item.Text;
                 textSize = font.MeasureString(itemText);
-                spriteBatch.Draw(item.Icon, iconDestinationRect, item.IconRect, Color.White);
+                // spriteBatch.Draw(item.Icon, iconDestinationRect, item.IconRect, Color.White);
                 spriteBatch.DrawString(font, itemText, textPos, Color.White);
             }
         }
 
-        public bool isAchievementCompleted() 
+        /* public bool isAchievementCompleted() 
         {
 
-        }
+        } */
 
     }
 }

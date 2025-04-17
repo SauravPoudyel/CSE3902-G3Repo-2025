@@ -42,9 +42,9 @@ namespace Sprint0
                 if (parameters.TryGetValue("player", out object entityObj) && entityObj is Entity entity &&
                     parameters.TryGetValue("velocity", out object velocityObj) && velocityObj is Vector2 inputVelocity)
                 {
-                    bool isBoosting = parameters.TryGetValue("isBoosting", out object boostObj) && boostObj is bool b && b;
+                    bool playerBoosting = parameters.TryGetValue("playerBoosting", out object boostObj) && boostObj is bool b && b;
 
-                    float forwardAcceleration = isBoosting ? 150f : 50f;  // Boosted acceleration
+                    float forwardAcceleration = playerBoosting ? 150f : 10f;  // Boosted acceleration
                     float turnAcceleration = 12f;
                     float turnDamping = 0.9f;
 
@@ -55,7 +55,7 @@ namespace Sprint0
                     float newVelocityX = currentVelocity.X + inputVelocity.X * turnAcceleration * Globals.FRAMETIME;
                     newVelocityX *= turnDamping;
 
-                    float maxSpeed = isBoosting ? 225f : 150f;
+                    float maxSpeed = playerBoosting ? 250f : 150f;
                     newVelocityY = MathHelper.Clamp(newVelocityY, -maxSpeed, maxSpeed);
 
                     newVelocity = new Vector2(newVelocityX, newVelocityY);

@@ -55,7 +55,7 @@ namespace Sprint0
                 playerVelocity.Y += 50;
 
             bool playerMoving = (playerVelocity != Vector2.Zero);
-            bool playerBoosting = state.IsKeyDown(Keys.LeftShift); // or Keys.Space, etc.
+            bool playerBoosting = state.IsKeyDown(Keys.LeftShift); 
 
             if (!game.GameManager.screenManager.IsInputBlocked())
             {
@@ -75,6 +75,7 @@ namespace Sprint0
                     game.GameManager.eventManager.ExecuteCommand("ApplyFriction", new Dictionary<string, object>
                     {
                         { "player", game.GameManager.GetEntity("player") },
+                        { "playerBoosting", playerBoosting },
                         { "gameManager", game.GameManager }
                     });
                 }
