@@ -13,12 +13,16 @@ namespace Sprint0
         private float timer;
         private float effectDuration;
         private ISprite effectSprite;
+        private float effectRotation = 0f;
+        private Entity followTarget = null;
+        private Vector2 followOffset = Vector2.Zero;
         private string entityKey;
         private bool hasSentDestroyCommand;
         private ContentManager content;
         public bool IsFinished { get; private set; }
         public EntityKeys.EffectType effectType; 
         public bool didDamage = false;
+        private bool damagesPlayer = true;
 
         private int _totalLoops;
         private int _remainingLoops;
@@ -115,6 +119,12 @@ namespace Sprint0
         {
             if (IsFinished) return;
 
+            if (followTarget != null)
+            {
+                position = followTarget.GetPosition() + followOffset;
+                bounds = new Rectangle((int)position.X, (int)position.Y, bounds.Width, bounds.Height);
+            }
+
             timer += Globals.FRAMETIME;
             effectSprite.Update();
 
@@ -154,14 +164,14 @@ namespace Sprint0
         private void CheckInitialPlayerCollision()
         {
             Player player = Player.Instance;
-            if (player != null && this.Bounds.Intersects(player.Bounds))
+            if (player != null && this.Bounds.Intersects(player.Bounds) && damagesPlayer)
             {
                 // Trigger collision event manually
                 var parameters = new Dictionary<string, object>
-            {
-                { "actor", player },
-                { "target", this }
-            };
+                {
+                    { "actor", player },
+                    { "target", this }
+                };
                 new CollisionHurtCommand().Execute(parameters);
             }
         }
@@ -195,7 +205,8 @@ namespace Sprint0
         position + new Vector2(scaledWidth / 2, scaledHeight / 2),
         effects: SpriteEffects.None,
         scale: Scale,
-        pivot: new Vector2(OriginalWidth / 2, OriginalHeight / 2)
+        pivot: new Vector2(OriginalWidth / 2, OriginalHeight / 2),
+        rotation: effectRotation
     );
         }
 
@@ -208,5 +219,18 @@ namespace Sprint0
                 scale: 1f
             );
         }
+        public void DisableDamage()
+        {
+            this.damagesPlayer = false; // prevents collision hurt
+        }
+        public void SetRotation(float rotation) {
+            this.effectRotation = rotation;
+        }
+        public void AttachTo(Entity target, Vector2 offset)
+        {
+            followTarget = target;
+            followOffset = offset;
+        }
+
     }
 }

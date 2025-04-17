@@ -11,7 +11,7 @@ namespace Sprint0
         // effect fields
         private PlayerBoost playerBoost = new PlayerBoost();
         public void UpdateBoostState(bool tryingToBoost) 
-            => playerBoost.UpdateBoostState(tryingToBoost);
+            => playerBoost.UpdateBoostState(tryingToBoost, this);
         public bool CanBoost() 
             => playerBoost.CanBoost();
         public float speedMultiplier = 1f;   

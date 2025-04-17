@@ -146,6 +146,23 @@ namespace Sprint0
                 {
                     DetectDestructibleBlocks(spawnPosition, radius, gameManager);
                 }
+                if (parameters.TryGetValue("followTarget", out var followObj) && followObj is Entity target)
+                {
+                    Vector2 offset = Vector2.Zero;
+                    if (parameters.TryGetValue("offset", out var offsetObj) && offsetObj is Vector2 o)
+                    {
+                        offset = o;
+                    }
+                    effect.AttachTo(target, offset);
+                }
+                if (parameters.TryGetValue("damagesPlayer", out var damages))
+                {
+                    effect.DisableDamage();
+                }
+                if (parameters.TryGetValue("rotation", out var rotation) && rotation is float rotate)
+                {
+                    effect.SetRotation(rotate);
+                }
             }
 
             private void DetectDestructibleBlocks(Vector2 center, float radius, GameManager gm)

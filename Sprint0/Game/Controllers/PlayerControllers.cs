@@ -83,7 +83,6 @@ namespace Sprint0
                         { "gameManager", game.GameManager }
                     });
                 }
-
                 else
                 {
                     game.GameManager.eventManager.ExecuteCommand("ApplyFriction", new Dictionary<string, object>
