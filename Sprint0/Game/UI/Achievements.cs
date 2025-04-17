@@ -88,6 +88,7 @@ namespace Sprint0
             Rectangle iconDestinationRect;
             Rectangle boxDestinationRect;
             Vector2 textPos;
+            Vector2 namePos;
             Texture2D markTexture = xMark;
             foreach (Button button in buttons)
             {
@@ -97,17 +98,36 @@ namespace Sprint0
             for (int i = 0; i < 10; i ++)
             {
                 Achievement item = achievements[i];
-                iconPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + i * 60 + 10);
-                iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
-                //3 columns, 10 pixel inbetween
-                boxDestinationRect = new Rectangle((int)iconPos.X - 5, (int)iconPos.Y - 5, 306, 50);
-                textPos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
+                if (i > 5) 
+                {
+                    iconPos = new Vector2(windowRectangle.X + 20 + 500, windowRectangle.Y + i * 90 + 10 - 540);
+                    iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
+                    boxDestinationRect = new Rectangle((int)iconPos.X - 5, (int)iconPos.Y - 5, 306, 80);
+                    namePos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
+                    textPos = new Vector2(namePos.X, namePos.Y + 30);
+                } 
+                else 
+                {
+                    iconPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + i * 90 + 10);
+                    iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
+                    boxDestinationRect = new Rectangle((int)iconPos.X - 5, (int)iconPos.Y - 5, 306, 80);
+                    namePos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
+                    textPos = new Vector2(namePos.X, namePos.Y + 30);
+                }
                 spriteBatch.Draw(boxTexture, boxDestinationRect, Color.Gray);
                 if (IsAchievementCompleted(item)) {
                     item.Completed = true;
                     markTexture = checkmark;
                 }
                 spriteBatch.Draw(markTexture, iconDestinationRect, Color.WhiteSmoke);
+                if (!item.Completed) 
+                {
+                    spriteBatch.DrawString(font, item.Name, namePos, Color.Red);
+                } 
+                else 
+                {
+                    spriteBatch.DrawString(font, item.Name, namePos, Color.Green);
+                }
                 spriteBatch.DrawString(font, item.Text, textPos, Color.White);
                 markTexture = xMark;
             }
