@@ -44,7 +44,7 @@ namespace Sprint0
                 {
                     bool playerBoosting = parameters.TryGetValue("playerBoosting", out object boostObj) && boostObj is bool b && b;
 
-                    float forwardAcceleration = playerBoosting ? 150f : 10f;  // Boosted acceleration
+                    float forwardAcceleration = playerBoosting ? 100f : 10f;  // Boosted acceleration
                     float turnAcceleration = 12f;
                     float turnDamping = 0.9f;
 

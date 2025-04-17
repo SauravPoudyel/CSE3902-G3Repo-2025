@@ -9,6 +9,11 @@ namespace Sprint0
     public class Player : Character
     {
         // effect fields
+        private PlayerBoost playerBoost = new PlayerBoost();
+        public void UpdateBoostState(bool tryingToBoost) 
+            => playerBoost.UpdateBoostState(tryingToBoost);
+        public bool CanBoost() 
+            => playerBoost.CanBoost();
         public float speedMultiplier = 1f;   
         public bool shieldActive = false, 
                     isInvis = false, 

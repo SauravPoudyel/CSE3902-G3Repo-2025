@@ -55,7 +55,21 @@ namespace Sprint0
                 playerVelocity.Y += 50;
 
             bool playerMoving = (playerVelocity != Vector2.Zero);
-            bool playerBoosting = state.IsKeyDown(Keys.LeftShift); 
+            bool playerTryBoosting = state.IsKeyDown(Keys.LeftShift); 
+            bool playerBoosting = false; 
+            if (game.GameManager.GetEntity("player") is Player player)
+            {
+                player.UpdateBoostState(playerTryBoosting);
+                playerBoosting = player.CanBoost();
+                if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
+                {
+                    player.rotationInput = -1; // rotate left
+                }
+                if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
+                {
+                    player.rotationInput = 1; // rotate right
+                }
+            }
 
             if (!game.GameManager.screenManager.IsInputBlocked())
             {
@@ -65,7 +79,7 @@ namespace Sprint0
                     {
                         { "player", game.GameManager.GetEntity("player") },
                         { "velocity", new Vector2(0, playerVelocity.Y) },
-                        { "playerBoosting", playerBoosting },
+                        { "playerBoosting", playerBoosting},
                         { "gameManager", game.GameManager }
                     });
                 }
@@ -75,21 +89,9 @@ namespace Sprint0
                     game.GameManager.eventManager.ExecuteCommand("ApplyFriction", new Dictionary<string, object>
                     {
                         { "player", game.GameManager.GetEntity("player") },
-                        { "playerBoosting", playerBoosting },
+                        { "playerTryBoosting", playerTryBoosting },
                         { "gameManager", game.GameManager }
                     });
-                }
-            }
-
-            if (game.GameManager.GetEntity("player") is Player player)
-            {
-                if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
-                {
-                    player.rotationInput = -1; // rotate left
-                }
-                if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
-                {
-                    player.rotationInput = 1; // rotate right
                 }
             }
 
