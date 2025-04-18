@@ -13,6 +13,7 @@ namespace Sprint0
         public string Name { get; set; }
         public string Text { get; set;}
         public Texture2D Icon { get; set; }
+        public Rectangle IconRect => new Rectangle(0, 0, Icon.Width, Icon.Height);
         public bool Completed {get ; set;}
 
         public Achievement(string name, string text, Texture2D icon, bool completed)
@@ -97,7 +98,7 @@ namespace Sprint0
 
         public bool isAchievementCompleted() 
         {
-
+            return false;
         }
 
     }

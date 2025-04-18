@@ -25,6 +25,7 @@ namespace Sprint0
         private Shop shop;
         private StatsScreen statsScreen;
         private Achievements achievements;
+        private MiniMap miniMap;
 
         // Persistent core screens
         private StartMenu startMenu;
@@ -41,6 +42,7 @@ namespace Sprint0
             dialogueHandler = new DialogueHandler(content, game);
             statsScreen = new StatsScreen(game);
             achievements = new Achievements(game);
+            miniMap = new MiniMap(content, game.GameManager);
             startMenu = new StartMenu(game);
             pauseMenu = new PauseMenu(content, game.GraphicsDevice, game);
             GameStarted = false;
@@ -97,6 +99,8 @@ namespace Sprint0
             bool blocking = (!GameStarted || IsPaused || shopOpen || statsOpen);
             if (!screens.Contains(desired))
                 AddScreen(desired, blocking);
+
+
         }
 
         public void Update()
@@ -113,12 +117,15 @@ namespace Sprint0
                 foreach (var screen in screens.ToList())
                     screen.Update();
             }
+
+            miniMap.Update();
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (var screen in screens)
                 screen.Draw(spriteBatch);
+            miniMap.Draw(spriteBatch);
         }
 
         public void AddScreen(IScreen screen, bool isBlocking = false)
