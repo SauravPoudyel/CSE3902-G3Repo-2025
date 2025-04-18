@@ -21,6 +21,7 @@ namespace Sprint0
             hudElements = new List<IHUD>();
             // hudElements.Add(new ShieldHUD(content.Load<Texture2D>("UI/ShieldIcon")));
             hudElements.Add(new HealthHUD(content.Load<Texture2D>("UI/HealthIcon")));
+            hudElements.Add(new BoostHUD(content.Load<Texture2D>("UI/HealthIcon")));
             hudElements.Add(new AmmoHUD(content.Load<Texture2D>("UI/AmmoIcon")));
             hudElements.Add(new CoinHUD(content.Load<Texture2D>("PickupItemSpritesheet2")));
             hudElements.Add(new XPHUD(game.GraphicsDevice));

@@ -13,6 +13,7 @@ namespace Sprint0
         private float boostCooldown = 3.0f;
         private float boostTimer = 0f;
         private float cooldownTimer = 0f;
+        private float boostPercent = 0f;
 
         private string trailEffectKey = null;
 
@@ -27,16 +28,17 @@ namespace Sprint0
                 {
                     trailEffectKey = "boost_trail_" + Guid.NewGuid();
                     Vector2 backwardOffset = new Vector2((float)Math.Cos(player.bodyRotation + MathHelper.Pi), 
-                                     (float)Math.Sin(player.bodyRotation + MathHelper.Pi)) * 30f;
+                                     (float)Math.Sin(player.bodyRotation + MathHelper.Pi)) * 30f; 
+
                     var parameters = new Dictionary<string, object>
                     {
                         { "gameManager", GameManager.Instance },
                         { "spawnPosition", player.GetPosition() },
                         { "effectType", EntityKeys.EffectType.BoostFire },
                         { "followTarget", player },
-                        { "offset", backwardOffset },
+                        { "offset", new Vector2(-0,0) },
                         { "customKey", trailEffectKey },
-                        { "rotation", player.bodyRotation }, // Optional: make the effect loop
+                        { "rotation", -1* player.bodyRotation}, // Optional: make the effect loop
                         { "damagesPlayer", false }
                     };
 
@@ -50,15 +52,18 @@ namespace Sprint0
             }
             else
             {
-                if (cooldownTimer > 0f)
+                if (cooldownTimer > 0f) {
                     cooldownTimer -= Globals.FRAMETIME;
-
+                    boostPercent += cooldownTimer / boostDuration;
+                }
                 if (tryingToBoost && cooldownTimer <= 0f)
                 {
                     IsBoosting = true;
                     boostTimer = boostDuration;
                 }
             }
+            boostPercent = ((boostDuration - boostTimer) / boostDuration) * 100;
+            Globals.PlayerData.SetInt("Boost", (int)boostPercent);
         }
 
         private void EndBoost()
@@ -79,6 +84,10 @@ namespace Sprint0
         }
 
         public bool CanBoost() => IsBoosting;
+
+        public float BoostRatio() {
+            return (boostDuration - boostTimer) / boostDuration;
+        }
     }
 
 }

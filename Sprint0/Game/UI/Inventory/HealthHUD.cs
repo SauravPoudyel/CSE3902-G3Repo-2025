@@ -33,7 +33,6 @@ namespace Sprint0
         {
             // Update health bar based on player health
             this.currentHealth = playerData.GetInt("Health");
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
