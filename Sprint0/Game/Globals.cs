@@ -15,7 +15,7 @@ namespace Sprint0
         public static float FRAMETIME = 1f / 60f;
         public const float PLAYERFRAMETIME = 1f / 60f; // just so the slow powerup works
         private static PlayerData playerData;
-        private static MobData mobData;
+        public static MobData GlobalMobData = new MobData();
         public static SpriteFont FONT;
         public static string projectDirectory = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\"));
         public static Random random = new Random();
