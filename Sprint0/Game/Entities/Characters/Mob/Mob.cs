@@ -75,7 +75,7 @@ namespace Sprint0
             if (lastKnownPlayerPosition != Vector2.Zero)
             {
                 float distanceToPlayer = Vector2.Distance(GetPosition(), lastKnownPlayerPosition);
-                if (distanceToPlayer <= aggressionRange)
+                if (distanceToPlayer <= aggressionRange * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.AggressionRange))
                 {
                     Vector2 directionToPlayer = lastKnownPlayerPosition - GetPosition();
                     float desiredCannonAngle = (float)Math.Atan2(directionToPlayer.Y, directionToPlayer.X) - MathHelper.PiOver2;
@@ -222,7 +222,7 @@ namespace Sprint0
         public override void OnDeath()
         {
             base.OnDeath();
-            Globals.PlayerData.UpdateVariable("XP", MobXP);
+            Globals.PlayerData.UpdateVariable("XP", (int)(MobXP * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.XP)));
             if (currentMobType.ToString() == "ShipVertical" || currentMobType.ToString() == "ShipHorizontal") {
                 Globals.PlayerData.UpdateVariable("ShipKilled", 1);
             }
