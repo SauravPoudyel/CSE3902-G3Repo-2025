@@ -38,7 +38,7 @@ namespace Sprint0
             if (characterCircleSheet == null)
                 characterCircleSheet = content.Load<Texture2D>("CharacterCircle");
 
-            Sprite sprite = new Sprite();
+            Sprite sprite = new Sprite(0.4f);
             int spriteSize = 150;
 
             CharacterPortrait portraitEnum = CharacterPortrait.Player;

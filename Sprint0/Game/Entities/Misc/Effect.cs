@@ -107,7 +107,7 @@ namespace Sprint0
         {
             const float DefaultDuration = 1f;
             effectDuration = DefaultDuration;
-            effectSprite = new Sprite();
+            effectSprite = new Sprite(0.4f);
             effectSprite.LoadContent(content, "EffectSprites", 0, 0, 128, 128, 1);
         }
 

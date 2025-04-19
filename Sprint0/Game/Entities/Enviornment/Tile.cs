@@ -71,7 +71,7 @@ namespace Sprint0
 
         private void LoadTileSprite(ContentManager content)
         {
-            sprite = new Sprite();
+            sprite = new Sprite(0.4f);
 
             switch (tileType)
             {

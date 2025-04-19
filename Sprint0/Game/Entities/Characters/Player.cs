@@ -15,7 +15,7 @@ namespace Sprint0
                     isFly = false;
         public float baseShootInterval = 1.2f;
         public float currentShootInterval;   
-        ISprite effectSprite = new Sprite(); 
+        ISprite effectSprite = new Sprite(0.4f); 
         public float rotationInput = 0f;
         private float timeSinceLastShot = 0f;
         public static Player Instance { get; private set; }

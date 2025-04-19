@@ -32,7 +32,7 @@ namespace Sprint0
 
         public static void LoadGlobalSprites(ContentManager content)
         {
-            NULLSPRITE_S = new Sprite();
+            NULLSPRITE_S = new Sprite(0.4f);
             NULLSPRITE_S.LoadContent(content, "TDTanksAllSprites", 129, 0, 1, 1, 1);
 
             NULLSPRITE_A = new Sprite(0.1f);
