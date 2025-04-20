@@ -64,7 +64,7 @@ namespace Sprint0
             return blockType switch
             {
                 EntityKeys.BlockType.Shop => (766, 1768, 104, 96, 1.5f),
-                EntityKeys.BlockType.ProceduralPortal => (1276, 334, 74, 72, 1.2f),
+                EntityKeys.BlockType.ProceduralPortal => (1277, 334, 74, 72, 1.2f),
             
                 _ => throw new System.ArgumentException($"Invalid BlockSpriteKey: {blockType}")
             };

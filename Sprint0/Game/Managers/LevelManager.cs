@@ -17,6 +17,7 @@ namespace Sprint0
         }
         public bool ProcedurallyLoading { get; set; } = false;
         public ProceduralHandler proceduralHandler { get; set; } = new ProceduralHandler();
+        public bool portalAdded = false; 
 
         private Dictionary<string, Level> levels;
         public LevelManager() {
@@ -79,10 +80,13 @@ namespace Sprint0
         }
         public void LoadProceduralLevel()
         {
-            Level proceduralLevel = proceduralHandler.GenerateProceduralLevel(content);
+            ProceduralLevel proceduralLevel = proceduralHandler.GenerateProceduralLevel(content);
             activeLevel = proceduralLevel; 
-            // Optionally assign a special level number, for example 0 or a procedural counter.
+
             activeLevel.LevelNumber = -1;
+            activeLevel.Complete = false;
+            activeLevel.Loaded = true;
+
             activeLevel.InitializePerimeter(content);
             ProcedurallyLoading = true;
         }
@@ -98,9 +102,10 @@ namespace Sprint0
                 activeLevel.Complete = true;
 
                 // If the active level is procedural and marked as complete, load a new one.
-                if (activeLevel is ProceduralLevel)
+                if (activeLevel is ProceduralLevel )
                 {
-                    LoadProceduralLevel();
+                    proceduralHandler.AddPortal(activeLevel, content, gameManager);
+                    return; 
                 }
 
                 // Drop the key item if applicable.

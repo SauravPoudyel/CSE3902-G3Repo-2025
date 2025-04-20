@@ -6,13 +6,6 @@ using Microsoft.Xna.Framework;
 
 namespace Sprint0
 {
-    /// <summary>
-    /// ProceduralGenerator creates a level layout using:
-    ///  - TileMatrix: holds tiles loaded from multiple 3×4 CSV templates.
-    ///  - EntityMatrix: holds blocks loaded from multiple 3×4 entity‑CSV templates.
-    /// 
-    /// After seeding blocks from randomly selected templates, it overlays mobs and items.
-    /// </summary>
     public class ProceduralGenerator
     {
         public int Width  { get; private set; }
@@ -24,7 +17,7 @@ namespace Sprint0
         private int maxMobs;
         private int maxItems;
 
-        private EntityKeys.MobType[]  candidateMobs  = { EntityKeys.MobType.BossTank,  EntityKeys.MobType.SmallEnemy,  EntityKeys.MobType.Turret,  EntityKeys.MobType.Plane,  
+        private EntityKeys.MobType[]  candidateMobs  = {EntityKeys.MobType.SmallEnemy,  EntityKeys.MobType.Turret,  EntityKeys.MobType.Plane,  
                                                         EntityKeys.MobType.ShieldTank,  EntityKeys.MobType.SwarmingTank,  EntityKeys.MobType.HoveringTank,  EntityKeys.MobType.StealthTank, 
                                                         EntityKeys.MobType.HealerTank};
         private EntityKeys.ItemType[] candidateItems = { EntityKeys.ItemType.AmmoDefault, EntityKeys.ItemType.SpeedBoost, EntityKeys.ItemType.Cloak, EntityKeys.ItemType.FireRateIncrease, 
@@ -44,8 +37,6 @@ namespace Sprint0
 
         public void Generate()
         {
-            Random rand = new Random();
-
             // Paths and template dims
             string tileCsv   = Path.Combine(Globals.projectDirectory, "Data\\ProceduralTileTemplates.csv");
             string entityCsv = Path.Combine(Globals.projectDirectory, "Data\\ProceduralEntityTemplates.csv");
@@ -58,21 +49,20 @@ namespace Sprint0
             int tileTplCount   = tileTemplates.Count;
             int entityTplCount = entityTemplates.Count;
 
-            // We split the world into blocks of size 3×4; there are:
             int blockRows = Height / tplRows;   // e.g. 9/3 = 3
             int blockCols = Width  / tplCols;   // e.g. 16/4 = 4
 
-            // Pre-pick a random template for each block
+            // Pre-pick a Globals.random.m template for each block
             int[,] tilePick   = new int[blockRows, blockCols];
             int[,] entityPick = new int[blockRows, blockCols];
             for (int br = 0; br < blockRows; br++)
             for (int bc = 0; bc < blockCols; bc++)
             {
-                tilePick[br,bc]   = rand.Next(tileTplCount);
-                entityPick[br,bc] = rand.Next(entityTplCount);
+                tilePick[br,bc] = Globals.random.Next(tileTplCount);
+                entityPick[br,bc] = Globals.random.Next(entityTplCount);
             }
 
-            // --- 1) Seed Tiles & Blocks from chosen templates ---
+            // blocks
             for (int r = 0; r < Height; r++)
             {
                 for (int c = 0; c < Width; c++)
@@ -89,41 +79,39 @@ namespace Sprint0
                     string cell       = chosenEntTpl[lr,lc]?.Trim();
                     EntityMatrix[r,c] = string.IsNullOrWhiteSpace(cell) 
                                         ? "" 
-                                        : cell;   // already in form "Block_Tree_0", etc.
-                    if (!string.IsNullOrWhiteSpace(cell))
-                        Console.WriteLine($"Seeded {cell} at ({c},{r})");
+                                        : cell;
                 }
             }
 
-            // --- 2) Overlay Mobs ---
+            // mobs
             int mobCount = 0;
-            for (int r = 0; r < Height; r++)
-            for (int c = 0; c < Width; c++)
-                if (string.IsNullOrWhiteSpace(EntityMatrix[r,c]) 
-                    && mobCount < maxMobs 
-                    && rand.NextDouble() < 0.1)
-                {
-                    var m = candidateMobs[rand.Next(candidateMobs.Length)];
-                    EntityMatrix[r,c] = $"Enemy_{m}";
-                    mobCount++;
-                    Console.WriteLine($"Placed Mob at ({c},{r}): {EntityMatrix[r,c]}");
+            for (int r = 0; r < Height; r++) {
+                for (int c = 0; c < Width; c++) {
+                    if (string.IsNullOrWhiteSpace(EntityMatrix[r,c]) 
+                        && mobCount < maxMobs 
+                        && Globals.random.NextDouble() < 0.1)
+                    {
+                        var m = candidateMobs[Globals.random.Next(candidateMobs.Length)];
+                        EntityMatrix[r,c] = $"Enemy_{m}";
+                        mobCount++;
+                    }
                 }
-            Console.WriteLine($"Total Mobs Placed: {mobCount}");
+            }
 
-            // --- 3) Overlay Items ---
+            // items
             int itemCount = 0;
-            for (int r = 0; r < Height; r++)
-            for (int c = 0; c < Width; c++)
-                if (string.IsNullOrWhiteSpace(EntityMatrix[r,c]) 
-                    && itemCount < maxItems 
-                    && rand.NextDouble() < 0.05)
-                {
-                    var it = candidateItems[rand.Next(candidateItems.Length)];
-                    EntityMatrix[r,c] = $"Item_{it}";
-                    itemCount++;
-                    Console.WriteLine($"Placed Item at ({c},{r}): {EntityMatrix[r,c]}");
+            for (int r = 0; r < Height; r++) {
+                for (int c = 0; c < Width; c++) {
+                    if (string.IsNullOrWhiteSpace(EntityMatrix[r,c]) 
+                        && itemCount < maxItems 
+                        && Globals.random.NextDouble() < 0.05)
+                    {
+                        var it = candidateItems[Globals.random.Next(candidateItems.Length)];
+                        EntityMatrix[r,c] = $"Item_{it}";
+                        itemCount++;
+                    }
                 }
-            Console.WriteLine($"Total Items Placed: {itemCount}");
+            }
         }
 
         // Reads the entire CSV (rows x cols), slices it into multiple 3×4 templates.
