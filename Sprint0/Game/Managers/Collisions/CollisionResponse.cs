@@ -30,6 +30,10 @@ namespace Sprint0
 
                 // Other
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(IFlammable)), "DestroyFlammableCommand" },
+
+                //Detect the cliff first for Projectile
+                { new Tuple<Type, Type>(typeof(Projectile), typeof(ICliff)), "NoAction" },
+
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(IRigid)), "CollisionProjectileReflect" },
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(Blocks)), "CollisionProjectileReflect" },
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(Mob)), "CollisionProjectileDestroy"},
@@ -42,7 +46,7 @@ namespace Sprint0
 
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(IDestructible)), "DestroyDestructible" },
 
-                { new Tuple<Type, Type>(typeof(Effect), typeof(Player)), "FireCollisionExit" }
+                { new Tuple<Type, Type>(typeof(Effect), typeof(Player)), "FireCollisionExit" },
             };
         }
 

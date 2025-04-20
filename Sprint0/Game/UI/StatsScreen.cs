@@ -25,19 +25,21 @@ namespace Sprint0
     }
     public class StatsScreen : IScreen
     {
-        private Dictionary<string, Rectangle> mobList = new Dictionary<string, Rectangle>();
         private List<StatsItem> statsItems;
+        private List<Button> statsButtons;
         private Rectangle windowRectangle;
         private Texture2D backgroundTexture;
         private Texture2D spriteSheet1;
         private Texture2D spriteSheet2;
         public bool BlocksInput => true;
         SpriteFont font = Globals.FONT;
+
         public StatsScreen(Game1 game) 
         {
             ContentManager content = game.Content;
             GraphicsDevice graphicsDevice = game.GraphicsDevice;
             statsItems = new List<StatsItem>();
+            statsButtons = new List<Button>();
             //Set size of the window
             int width = Globals.SCREENWIDTH/2;
             int height = Globals.SCREENHEIGHT/2;
@@ -63,10 +65,14 @@ namespace Sprint0
             statsItems.Add(new StatsItem("SmallEnemy", spriteSheet1, new Rectangle(768, 256, 95, 113), Globals.PlayerData.GetInt("SmallEnemyKilled")));
             statsItems.Add(new StatsItem("StealthTank", spriteSheet1, new Rectangle( 876, 783, 84, 80), Globals.PlayerData.GetInt("StealthTankKilled")));
             statsItems.Add(new StatsItem("SwarmingTank", spriteSheet1, new Rectangle( 1126, 275, 53, 56), Globals.PlayerData.GetInt("SwarmingTankKilled")));
-            statsItems.Add(new StatsItem("Turret", spriteSheet2, new Rectangle(2444, 908, 104, 104), Globals.PlayerData.GetInt("TurretKilled")));
+            statsItems.Add(new StatsItem("Turret", spriteSheet2, new Rectangle(2455, 1290, 85, 110), Globals.PlayerData.GetInt("TurretKilled")));
+            statsItems.Add(new StatsItem("Distance Traveled", spriteSheet1, new Rectangle(953, 665, 73, 88), Globals.PlayerData.GetInt("DistanceTraveled")));
 
             //Add close screen buttons
-
+            Texture2D buttonTexture = game.Content.Load<Texture2D>("UI/ShopExit");
+            Vector2 exitButtonPos = new Vector2(x - buttonTexture.Width + width, y);
+            statsButtons.Add(new StatsExitButton(buttonTexture, exitButtonPos, 
+                new Dictionary<string, object> { { "gameManager", game.GameManager } }));
 
         }
 
@@ -74,7 +80,11 @@ namespace Sprint0
         //These two methods follow the shop.cs format very similarly 
         public void Update()
         {   
-            //Might not need this since we aren't clicking anything (as of now)
+            foreach (Button button in statsButtons)
+            {
+                button.Update();
+            }
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -89,7 +99,11 @@ namespace Sprint0
             string itemText;
             Vector2 textSize;
             Rectangle textRect;
-            for (int i = 0; i < 11; i++)
+            foreach (Button button in statsButtons)
+            {
+                button.Draw(spriteBatch);
+            }
+            for (int i = 0; i < 12; i++)
             {
                 StatsItem item = statsItems[i];
                 if (i > 5)
@@ -97,7 +111,11 @@ namespace Sprint0
                     iconPos = new Vector2(windowRectangle.X + 20 + 500, windowRectangle.Y + 50 + i * 60 - 350);
                     iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
                     textPos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
-                    itemText = item.Name + " Killed " + Globals.PlayerData.GetInt(item.Name.ToString() + "killed");
+                    itemText = item.Name + " Killed " + Globals.PlayerData.GetInt(item.Name.ToString() + "Killed");
+                    if (item.Name == "Distance Traveled") 
+                    {
+                        itemText = "Distance Traveled " + Globals.PlayerData.GetInt("DistanceTraveled");
+                    }
                     textSize = font.MeasureString(itemText);
                     textRect = new Rectangle((int)textPos.X + 500, (int)textPos.Y, (int)textSize.X, (int)textSize.Y);
                     spriteBatch.Draw(item.Icon, iconDestinationRect, item.IconRect, Color.White);
@@ -107,7 +125,7 @@ namespace Sprint0
                     iconPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + 50 + i * 60);
                     iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
                     textPos = new Vector2(iconPos.X + 50 + secondColumn, iconPos.Y + 10);
-                    itemText = item.Name + " Killed " + Globals.PlayerData.GetInt(item.Name.ToString() + "killed");
+                    itemText = item.Name + " Killed " + Globals.PlayerData.GetInt(item.Name.ToString() + "Killed");
                     textSize = font.MeasureString(itemText);
                     textRect = new Rectangle((int)textPos.X, (int)textPos.Y, (int)textSize.X, (int)textSize.Y);
                     spriteBatch.Draw(item.Icon, iconDestinationRect, item.IconRect, Color.White);

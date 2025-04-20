@@ -39,11 +39,11 @@ namespace Sprint0
                 Level loadedLevel = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
 
                 Level indexLevel = value;
-                if (indexLevel.HasKeyItem) {
-                    loadedLevel.SetKeyItemType(indexLevel.KeyItemType);
+                if (indexLevel.KeyItem.Exists) {
+                    loadedLevel.SetKeyItemType(indexLevel.KeyItem.Type);
                 }
 
-                loadedLevel.ConnectedLevels = indexLevel.ConnectedLevels; // still needed
+                loadedLevel.ConnectedLevels.SetAll(indexLevel.ConnectedLevels.GetAll().ToDictionary(kv => kv.Key, kv => kv.Value));                
                 levels[levelName] = loadedLevel;
                 levels[levelName].LevelNumber = levelNum;
                 levels[levelName].Loaded = true;
@@ -78,75 +78,51 @@ namespace Sprint0
         public void UpdateLevelEntities(Dictionary<string, Entity> entities) {
             activeLevel.Entities = entities;
         }
-        public void LoadProceduralLevel()
-        {
-            ProceduralLevel proceduralLevel = proceduralHandler.GenerateProceduralLevel(content);
-            activeLevel = proceduralLevel; 
-
-            activeLevel.LevelNumber = -1;
-            activeLevel.Complete = false;
-            activeLevel.Loaded = true;
-
-            activeLevel.InitializePerimeter(content);
-            ProcedurallyLoading = true;
-        }
-
-
-        public void Update(GameManager gameManager, Dictionary<string, Entity> entities) {
-            proceduralHandler.Update(gameManager);
-            if (!proceduralHandler.pendingProceduralLevelLoad)
-                UpdateLevelEntities(entities);
-                
-            if(!activeLevel.Complete && activeLevel.Loaded && !activeLevel.HasEnemies())
+        public void Update(Dictionary<string, Entity> entities) {
+            UpdateLevelEntities(entities);
+            activeLevel.CheckAndMarkCompletion(content);
+            if(activeLevel.Complete)
             {
-                activeLevel.Complete = true;
-
-                // If the active level is procedural and marked as complete, load a new one.
-                if (activeLevel is ProceduralLevel )
-                {
-                    proceduralHandler.AddPortal(activeLevel, content, gameManager);
-                    return; 
-                }
-
-                // Drop the key item if applicable.
-                activeLevel.DropKeyItem(content);
                 foreach(Level level in levels.Values) {
                     if(level.PrereqLevel != null && level.PrereqLevel.LevelNumber == activeLevel.LevelNumber)
                         level.Unlocked = true;
-                    if(activeLevel.ConnectedLevels.Values.Contains(level)) {
-                        var direction = activeLevel.ConnectedLevels.FirstOrDefault(x => x.Value == level).Key;
-                        activeLevel.UnlockConnectedLevel(direction);
+                    if (activeLevel.ConnectedLevels.GetAll().Any(pair => pair.Value == level))
+                    {
+                        var direction = activeLevel.ConnectedLevels.GetDirectionOf(level);
+                        if (direction != null)
+                            activeLevel.UnlockConnectedLevel(direction.Value);
                     }
                 }
             }
             // Level moving logic
             if (entities.TryGetValue("player", out Entity value))
+                HandlePlayerPortal((Player)value);
+        }
+        private void HandlePlayerPortal(Player player)
+        {
+            int halfTile = Globals.TILESIZE / 2;
+            Vector2 playerPos = player.GetPosition();
+
+            if (playerPos.Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top))
             {
-                Player player = (Player)value;
-                int halfTile = activeLevel.tileSize / 2; // 60 if tileSize is 120
-
-                if (player.GetPosition().Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top))
-                {
-                    player.SetPosition(new Vector2(player.GetPosition().X, 1080 - halfTile));
-                    player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Top).LevelNumber);
-                }
-                else if (player.GetPosition().Y > 1080 && activeLevel.HasConnectedLevel(Level.Direction.Bottom))
-                {
-                    player.SetPosition(new Vector2(player.GetPosition().X, halfTile));
-                    player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Bottom).LevelNumber);
-                }
-                else if (player.GetPosition().X < 0 && activeLevel.HasConnectedLevel(Level.Direction.Left))
-                {
-                    player.SetPosition(new Vector2(1920 - halfTile, player.GetPosition().Y));
-                    player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Left).LevelNumber);
-                }
-                else if (player.GetPosition().X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right))
-                {
-                    player.SetPosition(new Vector2(halfTile, player.GetPosition().Y));
-                    player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Right).LevelNumber);
-                }
+                player.SetPosition(new Vector2(playerPos.X, 1080 - halfTile));
+                player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Top).LevelNumber);
             }
-
+            else if (playerPos.Y > 1080 && activeLevel.HasConnectedLevel(Level.Direction.Bottom))
+            {
+                player.SetPosition(new Vector2(playerPos.X, halfTile));
+                player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Bottom).LevelNumber);
+            }
+            else if (playerPos.X < 0 && activeLevel.HasConnectedLevel(Level.Direction.Left))
+            {
+                player.SetPosition(new Vector2(1920 - halfTile, playerPos.Y));
+                player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Left).LevelNumber);
+            }
+            else if (playerPos.X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right))
+            {
+                player.SetPosition(new Vector2(halfTile, playerPos.Y));
+                player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Right).LevelNumber);
+            }
         }
     }
 }

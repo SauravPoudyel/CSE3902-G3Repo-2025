@@ -116,6 +116,9 @@ namespace Sprint0
                     game.GameManager.eventManager.ExecuteCommand(keyMappings[key], parameters);
                 }
             }
+            if (playerMoving) {
+                Globals.PlayerData.UpdateVariable("DistanceTraveled", 1);
+            }
             previousKeyboardState = state;
         }
     }

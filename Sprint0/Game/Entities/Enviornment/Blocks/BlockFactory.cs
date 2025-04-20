@@ -45,12 +45,29 @@ namespace Sprint0
                 { EntityKeys.BlockType.Oil, CreateFlammableBlock },
 
                 { EntityKeys.BlockType.Shop, CreateInteractableBlock },
-                { EntityKeys.BlockType.ProceduralPortal, CreateInteractableBlock },
+
+                { EntityKeys.BlockType.CliffHorizontalLeft, CreateCliffBlock },
+                { EntityKeys.BlockType.CliffHorizontalRight, CreateCliffBlock },
+                { EntityKeys.BlockType.CliffVerticalTop, CreateCliffBlock },
+                { EntityKeys.BlockType.CliffVerticalBottom, CreateCliffBlock },
             };
         }
 
         public static BaseBlock CreateBlock(EntityKeys.BlockType blockType, ContentManager content, Vector2 position, float frameTime)
         {
+            // Adjust spawn location based on cliff types
+            switch (blockType)
+            {
+                case EntityKeys.BlockType.CliffHorizontalRight:
+                    position.X += 44;
+                    break;
+                case EntityKeys.BlockType.CliffVerticalBottom:
+                    position.Y += 54;
+                    break;
+                default:
+                    break; // No shift for other types
+            }
+
             if (blockCreators.TryGetValue(blockType, out Func<ContentManager, EntityKeys.BlockType, float, BaseBlock> value))
             {
                 BaseBlock block = value(content, blockType, frameTime);
@@ -74,5 +91,8 @@ namespace Sprint0
         
         private static BaseBlock CreateInteractableBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime) =>
             new InteractableBlock(content, blockType, frameTime);
+
+        private static BaseBlock CreateCliffBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime) =>
+            new CliffBlock(content, blockType, frameTime);
     }
 }

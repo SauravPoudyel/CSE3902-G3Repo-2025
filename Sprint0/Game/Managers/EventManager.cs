@@ -21,6 +21,10 @@ namespace Sprint0
                 {"ShowPauseMenu", new GameCommands.ShowPauseMenuCommand()},
                 {"OpenShop", new GameCommands.OpenShopCommand()},
                 {"CloseShop", new GameCommands.CloseShopCommand()},
+                {"OpenStatsScreen", new GameCommands.OpenStatsCommand()},
+                {"CloseStatsScreen", new GameCommands.CloseStatsCommand()},
+                {"OpenAchievements", new GameCommands.OpenAchievementsCommand()},
+                {"CloseAchievements", new GameCommands.CloseAchievementsCommand()},
 
                 {"IncreaseLevel", new LevelCommands.IncreaseLevelCommand()},
                 {"DecreaseLevel", new LevelCommands.DecreaseLevelCommand()},
