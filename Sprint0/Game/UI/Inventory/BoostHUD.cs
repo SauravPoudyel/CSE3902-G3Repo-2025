@@ -9,41 +9,64 @@ namespace Sprint0
         private Texture2D gray;
         private Texture2D cyan;
         private PlayerData playerData;
+        private Player player => Player.Instance;
 
-        private int maxWidth = 300;  // max width of the bar
-        private int currentBoost;
+        private float currentBoost = 100f;               // 0–100%
+        private const float rechargeRate = 100f / 3f;     // % per second (3s cooldown)
+
+        private int maxWidth = 300;
+        private int height = 30;
+        private int x = 61;
+        private int y = 900;
 
         public BoostHUD(Texture2D texture)
         {
             this.icon = texture;
             this.playerData = Globals.PlayerData;
 
-            // Initialize textures for boost bar
             gray = new Texture2D(texture.GraphicsDevice, 1, 1);
-            gray.SetData(new Color[] { Color.Gray });
-
+            gray.SetData(new[] { Color.Gray });
             cyan = new Texture2D(texture.GraphicsDevice, 1, 1);
-            cyan.SetData(new Color[] { Color.Cyan });
+            cyan.SetData(new[] { Color.Cyan });
         }
 
         public void Update()
         {
-            currentBoost = playerData.GetInt("Boost");
+            int raw = playerData.GetInt("Boost");           // 0→100 during boost
+            raw = MathHelper.Clamp(raw, 0, 100);
+
+            if (player != null && player.CanBoost())
+            {
+                // bar decreases from full→empty while boosting
+                currentBoost = 100 - raw;
+            }
+            else
+            {
+                // recharge back to full when not boosting
+                currentBoost = MathHelper.Clamp(
+                    currentBoost + rechargeRate * Globals.FRAMETIME,
+                    0f, 100f
+                );
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            // Bar position above health (e.g., 900 instead of 950)
-            int x = 61;
-            int y = 900;
-            int height = 30;
-            int filledWidth = 3*currentBoost;
+            int filledWidth = (int)(maxWidth * (currentBoost / 100f));
 
-            // Draw gray background bar
-            spriteBatch.Draw(gray, new Rectangle(x, y, maxWidth, height), Color.White * 0.5f);
+            // gray background
+            spriteBatch.Draw(
+                gray,
+                new Rectangle(x, y, maxWidth, height),
+                Color.White * 0.5f
+            );
 
-            // Draw cyan active portion
-            spriteBatch.Draw(cyan, new Rectangle(x, y, filledWidth, height), Color.White);
+            // cyan fill
+            spriteBatch.Draw(
+                cyan,
+                new Rectangle(x, y, filledWidth, height),
+                Color.White
+            );
         }
     }
 }

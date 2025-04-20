@@ -124,46 +124,41 @@ namespace Sprint0
             }
         }
 
+ // GraphicCommands.cs
         public class SpawnEffectCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
             {
-                if (!parameters.TryGetValue("gameManager", out var gmObj) || !(gmObj is GameManager gameManager)) return;
-                if (!parameters.TryGetValue("spawnPosition", out var posObj) || !(posObj is Vector2 spawnPosition)) return;
-                if (!parameters.TryGetValue("effectType", out var typeObj) || !(typeObj is EntityKeys.EffectType effectType)) return;
+                if (!parameters.TryGetValue("gameManager", out var gmObj) || !(gmObj is GameManager gameManager))
+                    return;
+                if (!parameters.TryGetValue("spawnPosition", out var posObj) || !(posObj is Vector2 spawnPosition))
+                    return;
+                if (!parameters.TryGetValue("effectType", out var typeObj) || !(typeObj is EntityKeys.EffectType effectType))
+                    return;
 
-                string effectKey = "effect_" + Guid.NewGuid();
+                string effectKey;
+                if (parameters.TryGetValue("customKey", out var customObj) && customObj is string ck)
+                    effectKey = ck;
+                else
+                    effectKey = "effect_" + Guid.NewGuid();
+
                 Effect effect = new Effect(gameManager.GetContent(), spawnPosition, effectKey, effectType);
                 gameManager.GetEntities().Add(effectKey, effect);
 
-                if (effectType == EntityKeys.EffectType.Explosion)
-                {
-                    AudioManager.PlaySound(AudioManager.SoundKey.Explosion);
-                }
-
-                if (parameters.TryGetValue("explosionSource", out var sourceObj) && sourceObj as string == "Mine" &&
-                    parameters.TryGetValue("explosionRadius", out var radiusObj) && radiusObj is float radius)
-                {
-                    DetectDestructibleBlocks(spawnPosition, radius, gameManager);
-                }
                 if (parameters.TryGetValue("followTarget", out var followObj) && followObj is Entity target)
                 {
                     Vector2 offset = Vector2.Zero;
                     if (parameters.TryGetValue("offset", out var offsetObj) && offsetObj is Vector2 o)
-                    {
                         offset = o;
-                    }
                     effect.AttachTo(target, offset);
                 }
-                if (parameters.TryGetValue("damagesPlayer", out var damages))
-                {
+
+                if (parameters.TryGetValue("damagesPlayer", out var damages) && damages is bool dp && dp == false)
                     effect.DisableDamage();
-                }
+
                 if (parameters.TryGetValue("rotation", out var rotation) && rotation is float rotate)
-                {
                     effect.SetRotation(rotate);
-                }
-            }
+            }         
 
             private void DetectDestructibleBlocks(Vector2 center, float radius, GameManager gm)
             {

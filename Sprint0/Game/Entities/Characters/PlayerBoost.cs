@@ -26,19 +26,22 @@ namespace Sprint0
                 // If trail effect isn't active, spawn it
                 if (trailEffectKey == null)
                 {
-                    trailEffectKey = "boost_trail_" + Guid.NewGuid();
-                    Vector2 backwardOffset = new Vector2((float)Math.Cos(player.bodyRotation + MathHelper.Pi), 
-                                     (float)Math.Sin(player.bodyRotation + MathHelper.Pi)) * 30f; 
+                    // local “backwards” offset in player’s space
+                    float offsetDistance = -80f;
+                    Vector2 localOffset = new Vector2(0, offsetDistance);
+
+                    Vector2 worldSpawn = player.GetPosition()
+                        + Vector2.Transform(localOffset, Matrix.CreateRotationZ(player.bodyRotation));
 
                     var parameters = new Dictionary<string, object>
                     {
                         { "gameManager", GameManager.Instance },
-                        { "spawnPosition", player.GetPosition() },
+                        { "spawnPosition", worldSpawn },
                         { "effectType", EntityKeys.EffectType.BoostFire },
                         { "followTarget", player },
-                        { "offset", new Vector2(-0,0) },
+                        { "offset", localOffset },           // store as local
                         { "customKey", trailEffectKey },
-                        { "rotation", -1* player.bodyRotation}, // Optional: make the effect loop
+                        { "rotation", player.bodyRotation },
                         { "damagesPlayer", false }
                     };
 

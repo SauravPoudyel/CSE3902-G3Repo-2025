@@ -14,7 +14,7 @@ namespace Sprint0
 
         private static SoundEffectPlayer soundEffectPlayer = new SoundEffectPlayer();
         private static MusicPlayer musicPlayer = new MusicPlayer();
-        public static float Volume { get; private set; } = 1f;
+        public static float Volume { get; private set; } = 0f;
         private static readonly string soundPath = Path.Combine(Globals.projectDirectory, "Content", "Sounds");
 
         private static SoundEffectInstance dialogueInstance;
