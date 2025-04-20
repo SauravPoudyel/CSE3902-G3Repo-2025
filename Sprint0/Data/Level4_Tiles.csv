@@ -1,8 +1,8 @@
-﻿Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass
-Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass
-Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass
-HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,GrassCrossroad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,LeftGrassRightGrassRoad,TopRightGrassCurve,Grass,Grass,Grass,Grass,Grass,Grass
-Grass,Grass,Grass,VerticalGrassRoad,Grass,Grass,Grass,Grass,Grass,VerticalGrassRoad,Grass,Grass,Grass,Grass,Grass,Grass
+﻿Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,RaisedGrassMidLeft,Grass,Grass,Grass,Grass
+Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,RaisedGrassMidLeft,Grass,Grass,Grass,Grass
+Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,RaisedGrassMidLeft,Grass,Grass,Grass,Grass
+HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,GrassCrossroad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,LeftGrassRightGrassRoad,TopRightGrassCurve,Grass,RaisedGrassMidLeft,Grass,Grass,Grass,Grass
+Grass,Grass,Grass,VerticalGrassRoad,Grass,Grass,Grass,Grass,Grass,VerticalGrassRoad,Grass,RaisedGrassBotLeft,RaisedGrassBotMid,Grass,RaisedGrassBotMid,RaisedGrassBotMid
 Grass,Grass,Grass,VerticalGrassRoad,Grass,Grass,Grass,Grass,Grass,VerticalGrassRoad,Grass,Grass,Grass,Grass,Grass,Grass
 HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,GrassCrossroad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,LeftGrassRightGrassRoad,GrassCrossroad,Grass,Grass,Grass,Grass,Grass,Grass
 Grass,Grass,Grass,VerticalGrassRoad,Grass,Grass,Grass,Grass,Grass,VerticalGrassRoad,Grass,Grass,Grass,Grass,Grass,Grass
