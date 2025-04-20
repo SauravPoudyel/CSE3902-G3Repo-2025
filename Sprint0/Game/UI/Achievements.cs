@@ -12,14 +12,12 @@ namespace Sprint0
     {
         public string Name { get; set; }
         public string Text { get; set;}
-        public Texture2D Icon { get; set; }
         public bool Completed {get ; set;}
 
-        public Achievement(string name, string text, Texture2D icon, bool completed)
+        public Achievement(string name, string text, bool completed)
         {
             Name = name;
             Text = text;
-            Icon = icon;
             Completed = completed;
         }
     }
@@ -30,6 +28,8 @@ namespace Sprint0
         private Rectangle windowRectangle;
         private Texture2D backgroundTexture;
         private Texture2D boxTexture;
+        private Texture2D checkmark;
+        private Texture2D xMark;
         public bool BlocksInput => true;
         SpriteFont font = Globals.FONT;
 
@@ -51,13 +51,25 @@ namespace Sprint0
             backgroundTexture.SetData(new Color[] { Color.LightGray});
             boxTexture = new Texture2D(graphicsDevice, 1, 1);
             boxTexture.SetData(new Color[] { Color.Gray});
+            checkmark = content.Load<Texture2D>("UI/checkmark");
+            xMark = content.Load<Texture2D>("UI/xMark");
 
-            achievements.Add(new Achievement("HeadHunter", "Kill 20 Small Enemys", content.Load<Texture2D>("UI/checkmark"), false));
+            achievements.Add(new Achievement("HeadHunter", "Kill 20 Small Enemys", false));
+            achievements.Add(new Achievement("Juggernaut", "Kill 10 Boss Tanks", false));
+            achievements.Add(new Achievement("Aerial Defender", "Kill 20 Planes", false));
+            achievements.Add(new Achievement("Speedster", "Get a speed modifier of 4X", false));
+            achievements.Add(new Achievement("XP Farmer", "Get an XP level of 5,000", false));
+            achievements.Add(new Achievement("The Tank", "Have at least 500 health", false));
+            achievements.Add(new Achievement("Bread Collector", "Get at least 5,000 coins", false));
+            achievements.Add(new Achievement("Traveler", "Travel a distance of 10,000", false));
+            achievements.Add(new Achievement("The Ninja", "Kill 10 Stealth Tanks", false));
+            achievements.Add(new Achievement("Anti Pacifist", "Kill 10 Healer Tanks", false));
+            achievements.Add(new Achievement("Loaded", "Have at least 100 ammo", false));
 
             //Add close screen buttons
             Texture2D buttonTexture = game.Content.Load<Texture2D>("UI/ShopExit");
             Vector2 exitButtonPos = new Vector2(x - buttonTexture.Width + width, y);
-            buttons.Add(new StatsExitButton(buttonTexture, exitButtonPos, 
+            buttons.Add(new AchievementsExitButton(buttonTexture, exitButtonPos, 
                 new Dictionary<string, object> { { "gameManager", game.GameManager } }));
 
         }
@@ -74,30 +86,82 @@ namespace Sprint0
             spriteBatch.Draw(backgroundTexture, windowRectangle, Color.White);
             Vector2 iconPos;
             Rectangle iconDestinationRect;
+            Rectangle boxDestinationRect;
             Vector2 textPos;
-            string itemText;
-            Vector2 textSize;
+            Vector2 namePos;
+            Texture2D markTexture = xMark;
             foreach (Button button in buttons)
             {
                 button.Draw(spriteBatch);
             }
 
-            for (int i = 0; i < 16; i ++)
+            for (int i = 0; i < 10; i ++)
             {
                 Achievement item = achievements[i];
-                iconPos = new Vector2(windowRectangle.X + 20 + 500, windowRectangle.Y + 50 + i * 60 - 350);
-                iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
-                textPos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
-                itemText = item.Text;
-                textSize = font.MeasureString(itemText);
-                spriteBatch.Draw(item.Icon, iconDestinationRect, item.IconRect, Color.White);
-                spriteBatch.DrawString(font, itemText, textPos, Color.White);
+                if (i > 5) 
+                {
+                    iconPos = new Vector2(windowRectangle.X + 20 + 500, windowRectangle.Y + i * 90 + 10 - 540);
+                    iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
+                    boxDestinationRect = new Rectangle((int)iconPos.X - 5, (int)iconPos.Y - 5, 306, 80);
+                    namePos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
+                    textPos = new Vector2(namePos.X, namePos.Y + 30);
+                } 
+                else 
+                {
+                    iconPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + i * 90 + 10);
+                    iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
+                    boxDestinationRect = new Rectangle((int)iconPos.X - 5, (int)iconPos.Y - 5, 306, 80);
+                    namePos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
+                    textPos = new Vector2(namePos.X, namePos.Y + 30);
+                }
+                spriteBatch.Draw(boxTexture, boxDestinationRect, Color.Gray);
+                if (IsAchievementCompleted(item)) {
+                    item.Completed = true;
+                    markTexture = checkmark;
+                }
+                spriteBatch.Draw(markTexture, iconDestinationRect, Color.WhiteSmoke);
+                if (!item.Completed) 
+                {
+                    spriteBatch.DrawString(font, item.Name, namePos, Color.Red);
+                } 
+                else 
+                {
+                    spriteBatch.DrawString(font, item.Name, namePos, Color.Green);
+                }
+                spriteBatch.DrawString(font, item.Text, textPos, Color.White);
+                markTexture = xMark;
             }
         }
 
-        public bool isAchievementCompleted() 
+        private bool IsAchievementCompleted(Achievement currentAch) 
         {
-
+            switch(currentAch.Name)
+            {
+                case "HeadHunter":
+                    return (Globals.PlayerData.GetInt("SmallEnemyKilled") >= 20) ? true : false;
+                case "Juggernaut":
+                    return (Globals.PlayerData.GetInt("BossTankKilled") >= 10) ? true : false;
+                case "Aeiral Defender":
+                    return (Globals.PlayerData.GetInt("PlaneKilled") >= 10) ? true : false;
+                case "Speedster":
+                    return (Globals.PlayerData.GetInt("SpeedModifier") >= 4) ? true : false;
+                case "XP Farmer":
+                    return (Globals.PlayerData.GetInt("XP") >= 5000) ? true : false;
+                case "The Tank":
+                    return (Globals.PlayerData.GetInt("Health") >= 500) ? true : false;
+                case "Bread Collector":
+                    return (Globals.PlayerData.GetInt("Coins") >= 5000) ? true : false;
+                case "Traveler":
+                    return (Globals.PlayerData.GetInt("DistanceTraveled") >= 10000) ? true : false;
+                case "The Ninja":
+                    return (Globals.PlayerData.GetInt("StealthTankKilled") >= 10) ? true : false;
+                case "Anti Pacifist":
+                    return (Globals.PlayerData.GetInt("HealerTankKilled") >= 10) ? true : false;
+                case "Loaded":
+                    return (Globals.PlayerData.GetInt("AmmoDefault") >= 100) ? true : false;
+                default:
+                    return false;
+            }
         }
 
     }

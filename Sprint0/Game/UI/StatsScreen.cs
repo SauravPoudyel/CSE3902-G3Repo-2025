@@ -65,7 +65,8 @@ namespace Sprint0
             statsItems.Add(new StatsItem("SmallEnemy", spriteSheet1, new Rectangle(768, 256, 95, 113), Globals.PlayerData.GetInt("SmallEnemyKilled")));
             statsItems.Add(new StatsItem("StealthTank", spriteSheet1, new Rectangle( 876, 783, 84, 80), Globals.PlayerData.GetInt("StealthTankKilled")));
             statsItems.Add(new StatsItem("SwarmingTank", spriteSheet1, new Rectangle( 1126, 275, 53, 56), Globals.PlayerData.GetInt("SwarmingTankKilled")));
-            statsItems.Add(new StatsItem("Turret", spriteSheet2, new Rectangle(2444, 908, 104, 104), Globals.PlayerData.GetInt("TurretKilled")));
+            statsItems.Add(new StatsItem("Turret", spriteSheet2, new Rectangle(2455, 1290, 85, 110), Globals.PlayerData.GetInt("TurretKilled")));
+            statsItems.Add(new StatsItem("Distance Traveled", spriteSheet1, new Rectangle(953, 665, 73, 88), Globals.PlayerData.GetInt("DistanceTraveled")));
 
             //Add close screen buttons
             Texture2D buttonTexture = game.Content.Load<Texture2D>("UI/ShopExit");
@@ -102,7 +103,7 @@ namespace Sprint0
             {
                 button.Draw(spriteBatch);
             }
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 12; i++)
             {
                 StatsItem item = statsItems[i];
                 if (i > 5)
@@ -111,6 +112,10 @@ namespace Sprint0
                     iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
                     textPos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
                     itemText = item.Name + " Killed " + Globals.PlayerData.GetInt(item.Name.ToString() + "Killed");
+                    if (item.Name == "Distance Traveled") 
+                    {
+                        itemText = "Distance Traveled " + Globals.PlayerData.GetInt("DistanceTraveled");
+                    }
                     textSize = font.MeasureString(itemText);
                     textRect = new Rectangle((int)textPos.X + 500, (int)textPos.Y, (int)textSize.X, (int)textSize.Y);
                     spriteBatch.Draw(item.Icon, iconDestinationRect, item.IconRect, Color.White);
