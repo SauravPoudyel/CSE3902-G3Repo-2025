@@ -45,6 +45,7 @@ namespace Sprint0
                 { EntityKeys.BlockType.Oil, CreateFlammableBlock },
 
                 { EntityKeys.BlockType.Shop, CreateInteractableBlock },
+                { EntityKeys.BlockType.ProceduralPortal, CreateInteractableBlock },
 
                 { EntityKeys.BlockType.CliffHorizontalLeft, CreateCliffBlock },
                 { EntityKeys.BlockType.CliffHorizontalRight, CreateCliffBlock },

@@ -112,7 +112,7 @@ namespace Sprint0
                 entity.Update();
                 eventManager.CollectCommandRequests(entity.GetCommandQueue());
             }
-            levelManager.Update(this, entities);
+            levelManager.Update(entities);
             collisionManager.Update(entities);
             spriteManager.Update();
             eventManager.ProcessCommandRequests();

@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,119 +7,187 @@ using System.Linq;
 
 namespace Sprint0
 {
-    public class LevelManager {
+    public class LevelManager
+    {
         private Level activeLevel;
         private ContentManager content;
-        public Level ActiveLevel
-        {
-            get { return activeLevel; }
-        }
+
+        public Level ActiveLevel => activeLevel;
+
+        // === Procedural‑level support ===
         public bool ProcedurallyLoading { get; set; } = false;
         public ProceduralHandler proceduralHandler { get; set; } = new ProceduralHandler();
-        public bool portalAdded = false; 
+        private bool portalAdded = false;
+        private bool sawEnemies  = false;
 
+        // === Hand‑crafted levels ===
         private Dictionary<string, Level> levels;
-        public LevelManager() {
+
+        public LevelManager()
+        {
             activeLevel = new Level();
-            levels = CSVLevelParser.ParseLevelIndex();
+            levels      = CSVLevelParser.ParseLevelIndex();
         }
-        public void LoadContent(ContentManager content, int levelNum) {
-            this.content = content; 
-            string levelName = "Level" + levelNum;
 
-            if (!levels.TryGetValue(levelName, out Level value)) {
-                value = new Level();
-                levels.Add(levelName, value);
+        // Standard CSV level load
+        public void LoadContent(ContentManager content, int levelNum)
+        {
+            this.content = content;
+            string lvlName = "Level" + levelNum;
+
+            if (!levels.TryGetValue(lvlName, out Level placeholder))
+            {
+                placeholder = new Level();
+                levels[lvlName] = placeholder;
             }
 
-            if (!value.Loaded) {
-                string entityFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Entities.csv");
-                string tilesFilePath = Path.Combine(Globals.projectDirectory, "Data\\Level" + levelNum + "_Tiles.csv");
-                Level loadedLevel = CSVLevelParser.ParseLevel(entityFilePath, tilesFilePath, content);
+            if (!placeholder.Loaded)
+            {
+                string ePath = Path.Combine(Globals.projectDirectory, $"Data\\Level{levelNum}_Entities.csv");
+                string tPath = Path.Combine(Globals.projectDirectory, $"Data\\Level{levelNum}_Tiles.csv");
+                Level parsed = CSVLevelParser.ParseLevel(ePath, tPath, content);
 
-                Level indexLevel = value;
-                if (indexLevel.KeyItem.Exists) {
-                    loadedLevel.SetKeyItemType(indexLevel.KeyItem.Type);
-                }
+                // carry over index metadata (key‑item, connections)
+                if (placeholder.KeyItem.Exists)
+                    parsed.SetKeyItemType(placeholder.KeyItem.Type);
 
-                loadedLevel.ConnectedLevels.SetAll(indexLevel.ConnectedLevels.GetAll().ToDictionary(kv => kv.Key, kv => kv.Value));                
-                levels[levelName] = loadedLevel;
-                levels[levelName].LevelNumber = levelNum;
-                levels[levelName].Loaded = true;
+                parsed.ConnectedLevels.SetAll(
+                    placeholder.ConnectedLevels
+                               .GetAll()
+                               .ToDictionary(kv => kv.Key, kv => kv.Value)
+                );
 
-                loadedLevel.InitializePerimeter(content);
+                parsed.LevelNumber = levelNum;
+                parsed.Loaded      = true;
+                parsed.InitializePerimeter(content);
+
+                levels[lvlName] = parsed;
             }
 
-            activeLevel = levels[levelName];
+            activeLevel = levels[lvlName];
         }
+
+        // Called by GameManager to pull entities out of the Level
         public Dictionary<string, Entity> LoadLevelEntities()
         {
-            var loadedEntities = activeLevel.Entities;
+            var ents = activeLevel.Entities;
 
-            if (GameManager.Instance.GetEntities().ContainsKey("player"))
+            // Preserve the existing player instance if there is one
+            var gmEnts = GameManager.Instance.GetEntities();
+            if (gmEnts.ContainsKey("player"))
             {
-                Player persistentPlayer = (Player)GameManager.Instance.GetEntities()["player"];
-                persistentPlayer.SetVelocity(Vector2.Zero); // Also stop any movement.
-                loadedEntities["player"] = persistentPlayer;
+                Player p = (Player)gmEnts["player"];
+                p.SetVelocity(Vector2.Zero);
+                ents["player"] = p;
             }
 
-            return loadedEntities;
+            return ents;
         }
 
-        public List<Tile> LoadLevelTiles() {
-            return activeLevel.GetLevelTiles;
+        // Called by GameManager to pull tiles out of the Level
+        public List<Tile> LoadLevelTiles() => activeLevel.GetLevelTiles;
+
+        // Manual level switch (edge transitions)
+        public void SwitchLevel(Level.Direction dir)
+        {
+            if (activeLevel.HasConnectedLevel(dir))
+                activeLevel = activeLevel.GetConnectedLevel(dir);
         }
-        public void SwitchLevel(Level.Direction direction) {
-            if(activeLevel.HasConnectedLevel(direction)) {
-                activeLevel = activeLevel.GetConnectedLevel(direction);
-            }
-        }
-        public void UpdateLevelEntities(Dictionary<string, Entity> entities) {
+        
+        public void UpdateLevelEntities(Dictionary<string, Entity> entities)
+        {
             activeLevel.Entities = entities;
         }
-        public void Update(Dictionary<string, Entity> entities) {
-            UpdateLevelEntities(entities);
-            activeLevel.CheckAndMarkCompletion(content);
-            if(activeLevel.Complete)
+
+        public void LoadProceduralLevel()
+        {
+            Level proc = proceduralHandler.GenerateProceduralLevel(content);
+            activeLevel = proc;
+
+            activeLevel.LevelNumber = -1;
+            activeLevel.Loaded      = true;
+            activeLevel.Complete    = false;
+            activeLevel.InitializePerimeter(content);
+            ProcedurallyLoading = true;
+
+            portalAdded = false;
+            sawEnemies  = false;
+        }
+
+        public void Update(Dictionary<string, Entity> entities)
+        {
+            var gm = GameManager.Instance;
+
+            if (proceduralHandler.pendingProceduralLevelLoad)
             {
-                foreach(Level level in levels.Values) {
-                    if(level.PrereqLevel != null && level.PrereqLevel.LevelNumber == activeLevel.LevelNumber)
-                        level.Unlocked = true;
-                    if (activeLevel.ConnectedLevels.GetAll().Any(pair => pair.Value == level))
+                proceduralHandler.Update(gm);
+                if (!proceduralHandler.pendingProceduralLevelLoad)
+                {
+                    gm.entities = LoadLevelEntities();
+                    gm.tiles    = LoadLevelTiles();
+                }
+                return;
+            }
+
+            UpdateLevelEntities(entities);
+
+            activeLevel.CheckAndMarkCompletion(content);
+
+            if (activeLevel.HasEnemies())
+            {
+                sawEnemies = true;
+            }
+            else if (sawEnemies && !portalAdded && ProcedurallyLoading)
+            {
+                // place exactly one portal
+                proceduralHandler.AddPortal(activeLevel, content, gm);
+                portalAdded = true;
+            }
+
+            if (!ProcedurallyLoading && activeLevel.Complete)
+            {
+                // (key‑drop already happened in CheckAndMarkCompletion)
+                foreach (var lvl in levels.Values)
+                {
+                    if (lvl.PrereqLevel?.LevelNumber == activeLevel.LevelNumber)
+                        lvl.Unlocked = true;
+
+                    foreach (var kv in activeLevel.ConnectedLevels.GetAll())
                     {
-                        var direction = activeLevel.ConnectedLevels.GetDirectionOf(level);
-                        if (direction != null)
-                            activeLevel.UnlockConnectedLevel(direction.Value);
+                        if (kv.Value == lvl)
+                            activeLevel.UnlockConnectedLevel(kv.Key);
                     }
                 }
             }
-            // Level moving logic
-            if (entities.TryGetValue("player", out Entity value))
-                HandlePlayerPortal((Player)value);
+
+            if (entities.TryGetValue("player", out Entity ent) && ent is Player pl)
+                HandlePlayerPortal(pl);
         }
+
+        // Wrap or portal‐transition logic
         private void HandlePlayerPortal(Player player)
         {
-            int halfTile = Globals.TILESIZE / 2;
-            Vector2 playerPos = player.GetPosition();
+            int half = Globals.TILESIZE / 2;
+            Vector2 pos = player.GetPosition();
 
-            if (playerPos.Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top))
+            if (pos.Y < 0 && activeLevel.HasConnectedLevel(Level.Direction.Top))
             {
-                player.SetPosition(new Vector2(playerPos.X, 1080 - halfTile));
+                player.SetPosition(new Vector2(pos.X, 1080 - half));
                 player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Top).LevelNumber);
             }
-            else if (playerPos.Y > 1080 && activeLevel.HasConnectedLevel(Level.Direction.Bottom))
+            else if (pos.Y > 1080 && activeLevel.HasConnectedLevel(Level.Direction.Bottom))
             {
-                player.SetPosition(new Vector2(playerPos.X, halfTile));
+                player.SetPosition(new Vector2(pos.X, half));
                 player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Bottom).LevelNumber);
             }
-            else if (playerPos.X < 0 && activeLevel.HasConnectedLevel(Level.Direction.Left))
+            else if (pos.X < 0 && activeLevel.HasConnectedLevel(Level.Direction.Left))
             {
-                player.SetPosition(new Vector2(1920 - halfTile, playerPos.Y));
+                player.SetPosition(new Vector2(1920 - half, pos.Y));
                 player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Left).LevelNumber);
             }
-            else if (playerPos.X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right))
+            else if (pos.X > 1920 && activeLevel.HasConnectedLevel(Level.Direction.Right))
             {
-                player.SetPosition(new Vector2(halfTile, playerPos.Y));
+                player.SetPosition(new Vector2(half, pos.Y));
                 player.MoveLevel(activeLevel.GetConnectedLevel(Level.Direction.Right).LevelNumber);
             }
         }

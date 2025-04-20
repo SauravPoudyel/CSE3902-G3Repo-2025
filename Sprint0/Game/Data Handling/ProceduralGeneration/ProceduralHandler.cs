@@ -51,7 +51,7 @@ namespace Sprint0
                                     Vector2 gridPos = new Vector2(c, r);
                                     int tileSize = procLevel.tileSize; // Get the tile size from the level.
                                     Vector2 worldPos = (gridPos * tileSize) + new Vector2(tileSize / 2, tileSize / 2);
-                                    procLevel.AddEnemy(content, mobType, gridPos);
+                                    procLevel.AddEnemy(content, gridPos, mobType);
                                 }
                                 break;
                             case "Item":
@@ -144,8 +144,6 @@ namespace Sprint0
 
             level.Entities[portal.EntityKey]      = portal;
             gameManager.entities[portal.EntityKey] = portal;
-
-            Console.WriteLine($"Portal placed at grid ({gridPos.X},{gridPos.Y})");
         }
 
         
@@ -155,18 +153,15 @@ namespace Sprint0
             if (pendingProceduralLevelLoad)
             {
                 proceduralLoadTimer += (float)gameManager.Game.TargetElapsedTime.TotalSeconds;
-                if (proceduralLoadTimer >= 4.0f && gameManager.LevelManager.ActiveLevel.Loaded)
-                {
-                    // Update GameManager's collections with the new procedural level data.
-                    gameManager.entities = gameManager.LevelManager.LoadLevelEntities();
-                    gameManager.tiles = gameManager.LevelManager.LoadLevelTiles();
+                // Update GameManager's collections with the new procedural level data.
+                gameManager.entities = gameManager.LevelManager.LoadLevelEntities();
+                gameManager.tiles = gameManager.LevelManager.LoadLevelTiles();
 
-                    // Remove the loading screen.
-                    gameManager.screenManager.RemoveScreen(proceduralLoadingScreen);
-                    proceduralLoadingScreen = null;
-                    pendingProceduralLevelLoad = false;
-                    proceduralLoadTimer = 0f;
-                }
+                // Remove the loading screen.
+                gameManager.screenManager.RemoveScreen(proceduralLoadingScreen);
+                proceduralLoadingScreen = null;
+                pendingProceduralLevelLoad = false;
+                proceduralLoadTimer = 0f;
             }
         }
     }
