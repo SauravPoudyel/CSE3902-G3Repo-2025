@@ -1,0 +1,9 @@
+Block_Tree_0,,,Block_CliffHorizontalLeft_0,,Block_CliffHorizontalRight_0,,,,,,,,,Block_CliffHorizontalRight_0,
+Block_Tree_0,,,Block_CliffHorizontalLeft_0,,Block_CliffHorizontalRight_0,,,,,,,,,Block_CliffHorizontalRight_0,
+Block_Tree_0,,,Block_CliffHorizontalLeft_0,Block_CliffVerticalBottom_0,Block_CliffVerticalBottom_0,,,,,,,,,Block_CliffHorizontalRight_0,
+Block_Tree_0,,,,,,,,,,,,,,Block_CliffHorizontalRight_0,
+Block_Tree_0,,,Block_CliffHorizontalLeft_0,Block_CliffVerticalTop_0,Block_CliffVerticalTop_0,Block_CliffHorizontalRight_0,,,,,,,Block_CliffVerticalTop_0,Block_CliffHorizontalRight_0,
+Block_Tree_0,Enemy_Turret,,Block_CliffHorizontalLeft_0,,,Block_CliffVerticalTop_0,,Enemy_SmallEnemy,,,,,Block_CoconutTree_0,,Enemy_ShipVertical
+Block_Tree_0,,Block_CliffHorizontalLeft_0,Block_CliffVerticalTop_0,,,Block_CliffHorizontalRight_0,,,,,Block_CliffHorizontalRight_0,Block_CliffVerticalTop_0,Block_CliffHorizontalRight_0,,
+Block_Tree_0,Block_CliffVerticalTop_0,Block_CliffVerticalTop_0,,,,,Block_CliffVerticalTop_0,Block_CliffVerticalTop_0,Block_CliffVerticalTop_0,Block_CliffVerticalTop_0,Block_CliffVerticalTop_0,,,,
+Block_Tree_0,Block_CoconutTree_0,,,Enemy_ShipHorizontal,,,,,,,,Enemy_ShipHorizontal,,,
