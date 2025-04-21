@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -38,10 +39,25 @@ namespace Sprint0
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(icon, new Rectangle(20, 120, 80, 80), iconSourceRectangle, Color.White * 0.5f);
-            spriteBatch.DrawString(Globals.FONT, currentKillCount + "/" + levelEnemies, new Vector2(40, 100), Color.Black, 0f, new Vector2(0,0), 1.5f, SpriteEffects.None, 0f);
-            if(levelComplete) {
-                // spriteBatch.DrawString(Globals.FONT, "LEVEL COMPLETE!", new Vector2(1920 - 200, 1080-140), Color.Red, 0f, new Vector2(0,0), 1f, SpriteEffects.None, 0f);
-                // spriteBatch.Draw(arrow, new Rectangle(1730, 970, 180, 96), arrowSourceRectangle[(int)timer%2], Color.White);
+            if(!levelComplete) {
+                spriteBatch.DrawString(Globals.FONT, currentKillCount + "/" + levelEnemies, new Vector2(40, 100), Color.Black, 0f, new Vector2(0,0), 1.5f, SpriteEffects.None, 0f);
+            } else {
+                spriteBatch.DrawString(Globals.FONT, currentKillCount + "/" + levelEnemies, new Vector2(40, 100), Color.Gold, 0f, new Vector2(0,0), 1.5f, SpriteEffects.None, 0f);
+                Level.Direction nextLevelDirection = gameManager.LevelManager.ActiveLevel.NextLevelDirection();
+                switch(nextLevelDirection) {
+                    case Level.Direction.Top:
+                    spriteBatch.Draw(arrow, new Rectangle(Globals.SCREENWIDTH/2, 0, 180, 96), arrowSourceRectangle[(int)timer%2], Color.White*.35f, (float)(Math.PI * 0.5), new Vector2(0,0), SpriteEffects.FlipHorizontally, 1f);
+                    break;
+                    case Level.Direction.Bottom:
+                    spriteBatch.Draw(arrow, new Rectangle(Globals.SCREENWIDTH/2, Globals.SCREENHEIGHT-180, 180, 96), arrowSourceRectangle[(int)timer%2], Color.White*.35f, (float)(Math.PI * 0.5), new Vector2(0,0), SpriteEffects.None, 1f);
+                    break;
+                    case Level.Direction.Left:
+                    spriteBatch.Draw(arrow, new Rectangle(0, Globals.SCREENHEIGHT/2, 180, 96), arrowSourceRectangle[(int)timer%2], Color.White*.35f, 0f, new Vector2(0,0), SpriteEffects.FlipHorizontally, 1f);
+                    break;
+                    case Level.Direction.Right:
+                    spriteBatch.Draw(arrow, new Rectangle(Globals.SCREENWIDTH - 180, Globals.SCREENHEIGHT/2, 180, 96), arrowSourceRectangle[(int)timer%2], Color.White*.35f);
+                    break;
+                }
             }
         }
     }

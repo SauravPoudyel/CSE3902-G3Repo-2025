@@ -8,7 +8,7 @@ using static Sprint0.EntityKeys;
 
 namespace Sprint0 {
     public class Level {
-        public enum Direction { Top, Bottom, Left, Right }  
+        public enum Direction { Top, Bottom, Left, Right, Null}  
         private Level prereqLevel;
         private int levelNumber;
         private bool unlocked;
@@ -33,6 +33,8 @@ namespace Sprint0 {
         public int InitialEnemies {
             get; set;
         }
+        public Level.Direction NextLevelDirection() 
+            => connections.NextLevelDirection(levelNumber);
         public int LevelNumber
         {
             get { return levelNumber; }
