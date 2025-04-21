@@ -1,0 +1,9 @@
+Grass,Grass,Grass,Grass,Grass,Water,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass
+Grass,Grass,Grass,Grass,Water,Water,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass
+Water,Water,Water,Water,Water,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass
+Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass
+HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad,HorizontalGrassRoad
+TopGrassBottomSand,TopGrassBottomSand,TopGrassBottomSand,TopGrassBottomSand,TopGrassBottomSand,TopGrassBottomSand,TopGrassBottomSand,TopGrassBottomSand,Grass,Grass,Grass,Grass,Grass,Grass,Grass,Grass
+Sand,Sand,Sand,Sand,Sand,Sand,Sand,Sand,TopGrassBottomSand,TopGrassBottomSand,Grass,Grass,Grass,Grass,Grass,Grass
+Sand,Water,Water,Water,Water,Sand,Sand,Sand,Sand,Sand,RightGrassLeftSand,Grass,Grass,Grass,Grass,Grass
+Water,Water,Water,Water,Water,Water,Water,Water,Sand,Sand,RightGrassLeftSand,Grass,Grass,Grass,Grass,Grass
