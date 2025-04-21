@@ -29,7 +29,7 @@ namespace Sprint0
             firingInterval = 2f;
             currentProjectileVariables["projectileType"] = "Default";
 
-            AnimatedSprite shipSprite = new AnimatedSprite(0.3f);
+            Sprite shipSprite = new Sprite(0.3f);
             // For this example we use the same sprite for both; adjust if needed.
             shipSprite.LoadContent(content, "TDTanksAllSprites", 1135, 840, 68, 116, 1);
             // Set the initial rotation.

@@ -12,7 +12,7 @@ namespace Sprint0
         private EntityKeys.ItemType itemType;
         private float PickupRadius = 150f;
         private const float Acceleration = 300f;
-        protected AnimatedSprite animatedSprite;
+        protected Sprite animatedSprite;
         protected float frameTime = 0.15f;
 
         public Item(ContentManager content, EntityKeys.ItemType type)
@@ -29,7 +29,7 @@ namespace Sprint0
                 throw new ArgumentNullException(nameof(content), "ContentManager cannot be null.");
             }
 
-            animatedSprite = new AnimatedSprite(frameTime);
+            animatedSprite = new Sprite(frameTime);
 
             switch (type)
             {

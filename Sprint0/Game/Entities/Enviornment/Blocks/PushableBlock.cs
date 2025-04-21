@@ -12,7 +12,7 @@ namespace Sprint0
 
         public PushableBlock(ContentManager content, EntityKeys.BlockType blockType, float frameTime = 0.3f)
         {
-            animatedSprite = new AnimatedSprite(frameTime);
+            animatedSprite = new Sprite(frameTime);
             LoadBlockContent(content, blockType);
             SetFrameTime(frameTime);
         }
@@ -20,7 +20,7 @@ namespace Sprint0
         public override void LoadBlockContent(ContentManager content, EntityKeys.BlockType blockType)
         {
             if (animatedSprite == null)
-                animatedSprite = new AnimatedSprite(frameTime);
+                animatedSprite = new Sprite(frameTime);
 
             var (x, y, width, height) = GetSpriteCoords(blockType);
             animatedSprite.LoadContent(content, "TDTanksAllSprites", x, y, width, height, 1);

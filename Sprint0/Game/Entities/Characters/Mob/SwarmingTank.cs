@@ -26,7 +26,7 @@ namespace Sprint0
             firingInterval = 0f; // Doesn't shoot.
             inExplosionState = false;
 
-            var bodySprite = new AnimatedSprite(0.3f);
+            var bodySprite = new Sprite(0.3f);
             bodySprite.LoadContent(content, "TDTanksAllSprites", 1126, 275, 53, 56, 2);
             SetSprite(bodySprite);
 

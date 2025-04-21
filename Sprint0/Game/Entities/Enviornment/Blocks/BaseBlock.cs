@@ -6,7 +6,7 @@ namespace Sprint0
 {
     public abstract class BaseBlock : Entity
     {
-        protected AnimatedSprite animatedSprite;
+        protected Sprite animatedSprite;
         protected float frameTime = 0.3f;
         public float Rotation {get; set;} = 0f; 
         public float Scale { get; set; } = 1.0f;

@@ -24,11 +24,11 @@ namespace Sprint0
             turretRotationSpeed = MathHelper.ToRadians(40);
             currentProjectileVariables["projectileType"] = "Rocket";
 
-            var turretBaseSprite = new AnimatedSprite(0.3f);
+            var turretBaseSprite = new Sprite(0.3f);
             turretBaseSprite.LoadContent(content, "TDTowerDefenseSprites", 2444, 908, 104, 104, 1);
             SetSprite(turretBaseSprite);
 
-            var turretCannonSprite = new AnimatedSprite(0.3f);
+            var turretCannonSprite = new Sprite(0.3f);
             turretCannonSprite.LoadContent(content, "TDTowerDefenseSprites", 2455, 1290, 85, 110, 1);
             
             cannon = new Cannon(content, turretCannonSprite, this, new Vector2(42, 34), -70f, new Vector2(42, -80),

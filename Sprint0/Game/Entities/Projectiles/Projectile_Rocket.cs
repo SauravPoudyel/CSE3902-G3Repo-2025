@@ -9,7 +9,7 @@ namespace Sprint0
     {   
         public RocketProjectile(ContentManager content, string entityKey, Character owner) : base(content, entityKey, owner)
         {
-            AddSprite("Rocket", new StaticSprite());
+            AddSprite("Rocket", new Sprite(0.4f));
             sprites["Rocket"].LoadContent(content, "TDTanksAllSprites", 120, 1040, 20, 20, 1); 
 
             SetSprite("Rocket");

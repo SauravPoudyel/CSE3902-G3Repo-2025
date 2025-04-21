@@ -16,7 +16,7 @@ namespace Sprint0
         private EntityKeys.ItemType itemType;
         private const float PickupRadius = 150f;
         private const float Acceleration = 300f;
-        protected AnimatedSprite animatedSprite;
+        protected Sprite animatedSprite;
         protected float frameTime = 0.15f;
 
         public PickupItem(ContentManager content, EntityKeys.ItemType type)
@@ -29,7 +29,7 @@ namespace Sprint0
 
         public void LoadItemContent(ContentManager content, EntityKeys.ItemType type)
         {
-            animatedSprite = new AnimatedSprite(frameTime);
+            animatedSprite = new Sprite(frameTime);
             switch (type)
             {
                 case EntityKeys.ItemType.SpeedBoost:
