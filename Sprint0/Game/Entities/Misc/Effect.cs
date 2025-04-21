@@ -77,7 +77,7 @@ namespace Sprint0
             // choose scale
             fireScale = (effectType == EffectType.BoostFire) ? 2.8f : 4f;
 
-            effectSprite = new AnimatedSprite(FrameTime);
+            effectSprite = new Sprite(FrameTime);
             effectSprite.LoadContent(content, FireSheetName, 0, 0, FrameWidth, FrameHeight, TotalFrames);
 
             int width = (int)(FrameWidth  * fireScale);
@@ -96,7 +96,7 @@ namespace Sprint0
         private void InitializeEffect(int rowY, int frames, float cycleSpeed, int width, int height)
         {
             effectDuration = cycleSpeed * frames;
-            effectSprite = new AnimatedSprite(cycleSpeed);
+            effectSprite = new Sprite(cycleSpeed);
             effectSprite.LoadContent(content, "EffectSprites", 0, rowY, width, height, frames);
             bounds = new Rectangle((int)position.X, (int)position.Y, width, height);
         }
@@ -104,7 +104,7 @@ namespace Sprint0
         private void InitializeDefaultEffect()
         {
             effectDuration = 1f;
-            effectSprite = new StaticSprite();
+            effectSprite = new Sprite(1);
             effectSprite.LoadContent(content, "EffectSprites", 0, 0, 128, 128, 1);
             bounds = new Rectangle((int)position.X, (int)position.Y, 128, 128);
         }
@@ -150,7 +150,7 @@ namespace Sprint0
                 if (_remainingLoops > 0)
                 {
                     timer = 0f;
-                    if (effectSprite is AnimatedSprite anim)
+                    if (effectSprite is Sprite anim)
                         anim.ResetAnimation();
                 }
                 else
