@@ -1,8 +1,8 @@
 Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0,Block_Tree_0
-,,Item_Shield,,,Block_Box_0,,,,Enemy_Turret,,,Item_FireRateIncrease,,,Block_Tree_0
-,,,Item_MedStrong,,,,,,,,,,Item_MedWeak,,Block_Tree_0
-,,,,,Block_Tree_0,,,,,,,,,,Block_Tree_0
-,,Block_Box_0,,,Block_Tree_0,,,,,,,,,,Block_Tree_0
+,,Item_Shield,,,Block_Box_0,,,,Enemy_Turret,,Block_CliffHorizontalLeft_0,Item_FireRateIncrease,,,Block_Tree_0
+,,,Item_MedStrong,,,,,,,,Block_CliffHorizontalLeft_0,,Item_MedWeak,,Block_Tree_0
+,,,,,Block_Tree_0,,,,,,Block_CliffHorizontalLeft_0,,,,Block_Tree_0
+,,Block_Box_0,,,Block_Tree_0,,,,,,Block_CliffVerticalBottom_0,Block_CliffVerticalBottom_0,,Block_CliffVerticalBottom_0,Block_Tree_0
 ,,,,,Block_Tree_0,,,,,Item_TimeSlow,,Enemy_Turret,,,Block_Tree_0
 ,,,,,,,,,,,,Item_Cloak,,,Block_Tree_0
 ,Block_BarbedFence_0,,,Item_SilverTag,,,,Enemy_SmallEnemy,,,Item_GoldTag,,Block_Box_0,,Block_Tree_0

@@ -28,10 +28,10 @@ namespace Sprint0
             return blockType switch
             {
                 // Change the texture for the final version, the texture coordinates now are just for visual test.
-                EntityKeys.BlockType.CliffHorizontalLeft => (0, 0, 16, 128, 1f),
-                EntityKeys.BlockType.CliffHorizontalRight => (64, 0, 16, 128, 1f),
-                EntityKeys.BlockType.CliffVerticalTop => (128, 0, 128, 16, 1f),
-                EntityKeys.BlockType.CliffVerticalBottom => (128, 64, 128, 16, 1f),
+                EntityKeys.BlockType.CliffHorizontalLeft => (1981, 499, 16, 128, 1f),
+                EntityKeys.BlockType.CliffHorizontalRight => (1981, 499, 16, 128, 1f),
+                EntityKeys.BlockType.CliffVerticalTop => (1981, 499, 128, 16, 1f),
+                EntityKeys.BlockType.CliffVerticalBottom => (1981, 499, 128, 70, 1f),
                 _ => throw new System.ArgumentException($"Invalid BlockType: {blockType}")
             };
         }

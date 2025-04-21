@@ -18,7 +18,7 @@ namespace Sprint0
 
         public static Dictionary<string, Level> ParseLevelIndex(){
             Dictionary<string, Level> levelDict = new Dictionary<string, Level>();
-            string indexPath = Path.Combine(Globals.projectDirectory, "Data\\LevelIndex.csv");
+            string indexPath = Path.Combine(Globals.projectDirectory, "Data","LevelIndex.csv");
             string[,] grid = ParseEntityGridFile(indexPath);
             if (!File.Exists(indexPath))
                 Console.WriteLine($"File path does not exist: {indexPath}");
