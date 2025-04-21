@@ -30,6 +30,9 @@ namespace Sprint0 {
                 foreach (var kvp in value)
                     levelEntities.Entities[kvp.Key] = kvp.Value; }
         }
+        public int InitialEnemies {
+            get; set;
+        }
         public int LevelNumber
         {
             get { return levelNumber; }
@@ -107,8 +110,10 @@ namespace Sprint0 {
             => levelEntities.AddPlayer(content, gridPosition);
         public void AddItem(ContentManager content, Vector2 gridPosition, EntityKeys.ItemType itemType) 
             => levelEntities.AddItem(content, gridPosition, itemType);
-        public void AddEnemy(ContentManager content, Vector2 gridPosition, MobType mobType) 
-            => levelEntities.AddEnemy(content, gridPosition, mobType);
+        public void AddEnemy(ContentManager content, Vector2 gridPosition, MobType mobType) {
+            levelEntities.AddEnemy(content, gridPosition, mobType);
+            InitialEnemies++;
+        }
         public void AddBlock(ContentManager content, Vector2 gridPosition, BlockType blockType, float rotation) 
             => levelEntities.AddBlock(content, gridPosition, blockType, rotation);
         
