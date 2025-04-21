@@ -36,6 +36,15 @@ public class LevelConnections
         return null;
     }
 
+    public Level.Direction NextLevelDirection(int levelNumber) {
+        for(int i=0; i<4; i++) {
+            Level level = GetConnectedLevel((Level.Direction)i);
+            if(level!=null && level.LevelNumber == levelNumber +1) 
+                return (Level.Direction)i;
+        }
+        return Level.Direction.Null;
+    }
+
     public void SetAll(Dictionary<Level.Direction, Level> newConnections)
     {
         connections.Clear();

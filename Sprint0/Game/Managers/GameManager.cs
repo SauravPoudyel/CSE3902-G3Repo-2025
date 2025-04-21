@@ -9,8 +9,8 @@ namespace Sprint0
     public class GameManager
     {
         public static GameManager Instance { get; private set; }
-        private Dictionary<string, Entity> entities;
-        private List<Tile> tiles;
+        public Dictionary<string, Entity> entities { get; set;}
+        public List<Tile> tiles { get; set;}
         private CollisionManager collisionManager;
         private SpriteManager spriteManager;
         private ContentManager content;
@@ -116,6 +116,7 @@ namespace Sprint0
             collisionManager.Update(entities);
             spriteManager.Update();
             eventManager.ProcessCommandRequests();
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -14,7 +14,7 @@ namespace Sprint0
 
         public override void LoadBlockContent(ContentManager content, EntityKeys.BlockType blockType)
         {
-            animatedSprite = new AnimatedSprite(frameTime);
+            animatedSprite = new Sprite(frameTime);
             var (x, y, width, height, scale) = GetSpriteCoords(blockType);
             Scale = scale; // this gets aplied in draw
             animatedSprite.LoadContent(content, "TDTanksAllSprites", x, y, width, height, 1);
@@ -40,7 +40,7 @@ namespace Sprint0
                 EntityKeys.BlockType.DeadTree => (128, 512, 128, 128, 1f),
                 EntityKeys.BlockType.Garage => (869, 1864, 88, 120, 1.5f),
                 EntityKeys.BlockType.CoconutTree => (774, 2748, 120, 120, 1f),
-                EntityKeys.BlockType.Boarder => (2872, 0, 120, 120, 1f),
+                EntityKeys.BlockType.Boarder => (1981, 499, 120, 120, 1f),
                 EntityKeys.BlockType.Tree1 => (1023, 1128, 52, 89, 1f),
                 EntityKeys.BlockType.Tree2 => (1075, 1125, 29, 60, 1f),
                 EntityKeys.BlockType.DesertHouse => (765, 1896, 104, 120, 1f),

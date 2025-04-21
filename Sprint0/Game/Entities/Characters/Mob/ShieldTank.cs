@@ -27,7 +27,7 @@ namespace Sprint0
             firingInterval = 0f;
             currentProjectileVariables["projectileType"] = "Default";
 
-            var bodySprite = new AnimatedSprite(0.3f);
+            var bodySprite = new Sprite(0.3f);
             bodySprite.LoadContent(content, "TDTanksAllSprites", 768, 0, 94, 97, 1);
             SetSprite(bodySprite);
 

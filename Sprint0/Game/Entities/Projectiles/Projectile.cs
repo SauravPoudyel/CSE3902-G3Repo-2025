@@ -26,7 +26,7 @@ namespace Sprint0
         public Projectile(ContentManager content, string entityKey, Character owner)
         {
             this.EntityKey = entityKey;
-            AddSprite("Default", new StaticSprite());
+            AddSprite("Default", new Sprite(0.4f));
             sprites["Default"].LoadContent(content, "TDTanksAllSprites", 120, 1040, 20, 20, 1);
             SetSprite("Default");
             baseSpeed = 250f;

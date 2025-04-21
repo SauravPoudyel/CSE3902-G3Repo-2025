@@ -18,7 +18,7 @@ namespace Sprint0
         public bool HasFiringEffect { get; set; } = true; 
         public SpriteEffects CannonEffects { get; set; }
 
-        private AnimatedSprite firingEffectSprite;
+        private Sprite firingEffectSprite;
         private bool showFiringEffect;
         private float effectTimer;
         private const float defaultLowerBound = MathHelper.PiOver2;
@@ -42,7 +42,7 @@ namespace Sprint0
             showFiringEffect = false;
             effectTimer = 0f;
 
-            firingEffectSprite = new AnimatedSprite(0.1f);
+            firingEffectSprite = new Sprite(0.1f);
             firingEffectSprite.LoadContent(content, "TDTanksAllSprites", 1025, 56, 39, 50, 1);
             firingEffectSprite.AddFrame(1033, 215, 32, 62);
 

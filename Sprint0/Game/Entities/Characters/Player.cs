@@ -20,7 +20,7 @@ namespace Sprint0
                     isFly = false;
         public float baseShootInterval = 1.2f;
         public float currentShootInterval;   
-        ISprite effectSprite = new StaticSprite(); 
+        ISprite effectSprite = new Sprite(0.4f); 
         public float rotationInput = 0f;
         private float timeSinceLastShot = 0f;
         public static Player Instance { get; private set; }
@@ -43,25 +43,25 @@ namespace Sprint0
 
             bodyRotation = 0f;
             
-            AddSprite("TankBody", new AnimatedSprite(0.3f));
+            AddSprite("TankBody", new Sprite(0.3f));
             sprites["TankBody"].LoadContent(content, "TDTanksAllSprites", 795, 1052, 74, 76, 1);
             SetSprite("TankBody");
 
-            AddSprite("InvisTankBody", new AnimatedSprite(0.3f));
+            AddSprite("InvisTankBody", new Sprite(0.3f));
             sprites["InvisTankBody"].LoadContent(content, "TDTanksAllSprites", 1114, 1, 84, 84, 1);
 
-            AddSprite("FlyingTankBody", new AnimatedSprite(0.3f));
+            AddSprite("FlyingTankBody", new Sprite(0.3f));
             sprites["FlyingTankBody"].LoadContent(content, "TDTanksAllSprites", 1135, 88, 86, 92, 1);
 
-            effectSprite =  new AnimatedSprite(0.08f);
+            effectSprite =  new Sprite(0.08f);
             effectSprite.LoadContent(content, "EffectSprites", 0, 128, 128, 128, 12);
 
-            ISprite cannonSprite = new AnimatedSprite(0.3f);
+            ISprite cannonSprite = new Sprite(0.3f);
             cannonSprite.LoadContent(content, "TDTanksAllSprites", 1060, 837, 24, 60, 1);
             cannon = new Cannon(content, cannonSprite, this, new Vector2(12, 5), 50f, new Vector2(12, 60),
                     0f, MathHelper.ToRadians(20));
 
-            ISprite cannonSpriteInvis = new AnimatedSprite(0.3f);
+            ISprite cannonSpriteInvis = new Sprite(0.3f);
             cannonSpriteInvis.LoadContent(content, "TDTanksAllSprites", 1110, 88, 24, 60, 1);
             cannon.AddSprite("InvisTankCannon", cannonSpriteInvis); 
             

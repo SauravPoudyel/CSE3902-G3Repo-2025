@@ -45,6 +45,7 @@ namespace Sprint0
                 { EntityKeys.BlockType.Oil, CreateFlammableBlock },
 
                 { EntityKeys.BlockType.Shop, CreateInteractableBlock },
+                { EntityKeys.BlockType.ProceduralPortal, CreateInteractableBlock },
 
                 { EntityKeys.BlockType.CliffHorizontalLeft, CreateCliffBlock },
                 { EntityKeys.BlockType.CliffHorizontalRight, CreateCliffBlock },
@@ -62,7 +63,13 @@ namespace Sprint0
                     position.X += 44;
                     break;
                 case EntityKeys.BlockType.CliffVerticalBottom:
-                    position.Y += 54;
+                    position.Y += 20;
+                    break;
+                case EntityKeys.BlockType.CliffVerticalTop:
+                    position.Y -= 46;
+                    break;
+                case EntityKeys.BlockType.CliffHorizontalLeft:
+                    position.X -= 32;
                     break;
                 default:
                     break; // No shift for other types

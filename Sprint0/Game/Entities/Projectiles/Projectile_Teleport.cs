@@ -16,7 +16,7 @@ namespace Sprint0
             baseSpeed = 80f;
 
             // Load the teleporter sprite as provided.
-            AddSprite("Teleporter", new AnimatedSprite(0.15f));
+            AddSprite("Teleporter", new Sprite(0.15f));
             sprites["Teleporter"].LoadContent(content, "PickupItemSpritesheet2", 0, 680, 40, 40, 10);
             SetSprite("Teleporter");
 
