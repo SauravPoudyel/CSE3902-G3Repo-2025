@@ -65,6 +65,8 @@ namespace Sprint0
             achievements.Add(new Achievement("The Ninja", "Kill 10 Stealth Tanks", false));
             achievements.Add(new Achievement("Anti Pacifist", "Kill 10 Healer Tanks", false));
             achievements.Add(new Achievement("Loaded", "Have at least 100 ammo", false));
+            achievements.Add(new Achievement("Quick Draw", "Get a fire rate modifier of 4X", false));
+            achievements.Add(new Achievement("Turret Killer", "Kill at least 10 Turrets", false));
 
             //Add close screen buttons
             Texture2D buttonTexture = game.Content.Load<Texture2D>("UI/ShopExit");
@@ -95,14 +97,14 @@ namespace Sprint0
                 button.Draw(spriteBatch);
             }
 
-            for (int i = 0; i < 10; i ++)
+            for (int i = 0; i < 12; i ++)
             {
                 Achievement item = achievements[i];
                 if (i > 5) 
                 {
                     iconPos = new Vector2(windowRectangle.X + 20 + 500, windowRectangle.Y + i * 90 + 10 - 540);
                     iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
-                    boxDestinationRect = new Rectangle((int)iconPos.X - 5, (int)iconPos.Y - 5, 306, 80);
+                    boxDestinationRect = new Rectangle((int)iconPos.X - 5, (int)iconPos.Y - 5, 320, 80);
                     namePos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
                     textPos = new Vector2(namePos.X, namePos.Y + 30);
                 } 
@@ -110,7 +112,7 @@ namespace Sprint0
                 {
                     iconPos = new Vector2(windowRectangle.X + 20, windowRectangle.Y + i * 90 + 10);
                     iconDestinationRect = new Rectangle((int)iconPos.X, (int)iconPos.Y, 40, 40);
-                    boxDestinationRect = new Rectangle((int)iconPos.X - 5, (int)iconPos.Y - 5, 306, 80);
+                    boxDestinationRect = new Rectangle((int)iconPos.X - 5, (int)iconPos.Y - 5, 320, 80);
                     namePos = new Vector2(iconPos.X + 50, iconPos.Y + 10);
                     textPos = new Vector2(namePos.X, namePos.Y + 30);
                 }
@@ -159,6 +161,10 @@ namespace Sprint0
                     return (Globals.PlayerData.GetInt("HealerTankKilled") >= 10) ? true : false;
                 case "Loaded":
                     return (Globals.PlayerData.GetInt("AmmoDefault") >= 100) ? true : false;
+                case "Quick Draw":
+                    return (Globals.PlayerData.GetInt("FireRateModifier") >= 4) ? true : false;
+                case "Turret Killer":
+                    return (Globals.PlayerData.GetInt("TurretKilled") >= 10) ? true : false;
                 default:
                     return false;
             }
