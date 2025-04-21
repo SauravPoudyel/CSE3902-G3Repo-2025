@@ -8,7 +8,7 @@ using static Sprint0.EntityKeys;
 
 namespace Sprint0 {
     public class Level {
-        public enum Direction { Top, Bottom, Left, Right }  
+        public enum Direction { Top, Bottom, Left, Right, Null}  
         private Level prereqLevel;
         private int levelNumber;
         private bool unlocked;
@@ -30,6 +30,11 @@ namespace Sprint0 {
                 foreach (var kvp in value)
                     levelEntities.Entities[kvp.Key] = kvp.Value; }
         }
+        public int InitialEnemies {
+            get; set;
+        }
+        public Level.Direction NextLevelDirection() 
+            => connections.NextLevelDirection(levelNumber);
         public int LevelNumber
         {
             get { return levelNumber; }
@@ -107,8 +112,10 @@ namespace Sprint0 {
             => levelEntities.AddPlayer(content, gridPosition);
         public void AddItem(ContentManager content, Vector2 gridPosition, EntityKeys.ItemType itemType) 
             => levelEntities.AddItem(content, gridPosition, itemType);
-        public void AddEnemy(ContentManager content, Vector2 gridPosition, MobType mobType) 
-            => levelEntities.AddEnemy(content, gridPosition, mobType);
+        public void AddEnemy(ContentManager content, Vector2 gridPosition, MobType mobType) {
+            levelEntities.AddEnemy(content, gridPosition, mobType);
+            InitialEnemies++;
+        }
         public void AddBlock(ContentManager content, Vector2 gridPosition, BlockType blockType, float rotation) 
             => levelEntities.AddBlock(content, gridPosition, blockType, rotation);
         
