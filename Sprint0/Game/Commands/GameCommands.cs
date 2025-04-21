@@ -152,7 +152,7 @@ namespace Sprint0
             {
                 if (parameters.ContainsKey("gameManager") && parameters["gameManager"] is GameManager gameManager)
                 {
-                    if (gameManager.LevelNumber < 99)
+                    if (gameManager.LevelNumber < 999)
                     {
                         gameManager.LevelNumber++;
                         gameManager.UpdateLevel();
