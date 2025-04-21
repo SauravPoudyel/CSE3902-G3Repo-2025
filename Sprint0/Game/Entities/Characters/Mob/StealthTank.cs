@@ -31,13 +31,13 @@ namespace Sprint0
             aggressiveSpeed = normalSpeed * 1.7f;
             firingInterval = 2f; // fire slow when not in invisible state
 
-            var tankSprite = new AnimatedSprite(0.3f);
+            var tankSprite = new Sprite(0.3f);
             tankSprite.LoadContent(content, "TDTanksAllSprites", 876, 783, 84, 80, 1);
             SetSprite(tankSprite);
 
             originalTankSprite = tankSprite;
 
-            var cannonSprite = new AnimatedSprite(0.3f);
+            var cannonSprite = new Sprite(0.3f);
             cannonSprite.LoadContent(content, "TDTanksAllSprites", 1104, 152, 16, 52, 1);
             cannon = new Cannon(content, cannonSprite, this, new Vector2(8, 5), 50f, new Vector2(8, 60), 0f, MathHelper.ToRadians(20));
 

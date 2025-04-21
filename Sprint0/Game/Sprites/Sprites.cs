@@ -12,40 +12,7 @@ namespace Sprint0
         void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 1.0f);
     }
 
-    public class StaticSprite : ISprite
-    {
-        public Texture2D spriteSheet {get; set;}
-        private Rectangle frame;
-
-        public void LoadContent(ContentManager content, string assetName, int startX, int startY, int frameWidth, int frameHeight, int frameCount)
-        {
-            spriteSheet = content.Load<Texture2D>(assetName);
-            frame = new Rectangle(startX, startY, frameWidth, frameHeight);
-        }
-
-        public void Update() { }
-
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None, float rotation = 0f, Vector2? pivot = null, Color? color = null, float scale = 1.0f)
-        {
-            // Use the center of the frame as the default origin.
-            Vector2 origin = pivot ?? new Vector2(frame.Width / 2f, frame.Height / 2f);
-            
-            spriteBatch.Draw(
-                spriteSheet,
-                position,
-                frame,
-                color ?? Color.White,
-                rotation, 
-                origin, 
-                scale,    // Use the passed scale
-                effects,
-                0f        // Set layerDepth to 0 (or as needed)
-            );
-        }
-    }
-
-
-    public class AnimatedSprite : ISprite
+    public class Sprite : ISprite
     
     {
         public Texture2D spriteSheet {get; set;}
@@ -62,7 +29,7 @@ namespace Sprint0
             Vertical
         }
 
-        public AnimatedSprite(float frameTime, FrameOrientation orientation = FrameOrientation.Horizontal)
+        public Sprite(float frameTime, FrameOrientation orientation = FrameOrientation.Horizontal)
         {
             this.frameTime = frameTime;
             this.orientation = orientation;
@@ -201,4 +168,3 @@ namespace Sprint0
 
     }
     }
-

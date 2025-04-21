@@ -75,7 +75,7 @@ namespace Sprint0
             const float FrameTime = 0.04f;
             const float FireScale = 4.0f;
 
-            effectSprite = new AnimatedSprite(FrameTime);
+            effectSprite = new Sprite(FrameTime);
             effectSprite.LoadContent(
                 content,
                 FireSheetName,
@@ -99,7 +99,7 @@ namespace Sprint0
         private void InitializeEffect(int rowY, int frames, float cycleSpeed, int width, int height)
         {
             effectDuration = cycleSpeed * frames;
-            effectSprite = new AnimatedSprite(cycleSpeed);
+            effectSprite = new Sprite(cycleSpeed);
             effectSprite.LoadContent(content, "EffectSprites", 0, rowY, width, height, frames);
         }
 
@@ -107,7 +107,7 @@ namespace Sprint0
         {
             const float DefaultDuration = 1f;
             effectDuration = DefaultDuration;
-            effectSprite = new StaticSprite();
+            effectSprite = new Sprite(0.4f);
             effectSprite.LoadContent(content, "EffectSprites", 0, 0, 128, 128, 1);
         }
 
@@ -125,7 +125,7 @@ namespace Sprint0
                 if (_remainingLoops > 0)
                 {
                     timer = 0f;
-                    if (effectSprite is AnimatedSprite animatedSprite)
+                    if (effectSprite is Sprite animatedSprite)
                     {
                         animatedSprite.ResetAnimation();
                     }

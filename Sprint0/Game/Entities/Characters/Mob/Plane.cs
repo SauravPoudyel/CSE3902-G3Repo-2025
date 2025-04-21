@@ -31,7 +31,7 @@ namespace Sprint0
             orbitRadius = 150f;
             orbitAngle = 0f;
             
-            var planeBodySprite = new AnimatedSprite(0.3f);
+            var planeBodySprite = new Sprite(0.3f);
             planeBodySprite.LoadContent(content, "TDTowerDefenseSprites", 2183, 1411, 135, 134, 1);
             SetSprite(planeBodySprite);
 

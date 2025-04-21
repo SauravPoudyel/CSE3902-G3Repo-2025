@@ -14,7 +14,7 @@ namespace Sprint0
 
         public MineProjectile(ContentManager content, string entityKey, Character owner) : base(content, entityKey, owner)
         {
-            AddSprite("Mine", new AnimatedSprite(FrameTime, AnimatedSprite.FrameOrientation.Vertical));
+            AddSprite("Mine", new Sprite(FrameTime, Sprite.FrameOrientation.Vertical));
             sprites["Mine"].LoadContent(content, "TDTanksAllSprites", 1014, 936, 48, 48, 2);
             SetSprite("Mine");
 

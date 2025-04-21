@@ -51,73 +51,73 @@ namespace Sprint0
             this.content = content;
             this.blocktype = BlockType.Tree;
 
-            AddSprite("Tree", new AnimatedSprite(0.3f));
+            AddSprite("Tree", new Sprite(0.3f));
             sprites["Tree"].LoadContent(content, "TDTanksAllSprites", 128, 0, 128, 128, 1);
 
-            AddSprite("Box", new AnimatedSprite(0.3f));
+            AddSprite("Box", new Sprite(0.3f));
             sprites["Box"].LoadContent(content, "TDTanksAllSprites", 960, 753, 56, 56, 1);
 
-            AddSprite("Oil", new AnimatedSprite(0.3f));
+            AddSprite("Oil", new Sprite(0.3f));
             sprites["Oil"].LoadContent(content, "TDTanksAllSprites", 524, 1024, 100, 100, 1);
 
-            AddSprite("BarbedFence", new AnimatedSprite(0.3f));
+            AddSprite("BarbedFence", new Sprite(0.3f));
             sprites["BarbedFence"].LoadContent(content, "TDTanksAllSprites", 958, 1048, 56, 56, 1);
 
-            AddSprite("Barrel", new AnimatedSprite(0.3f));
+            AddSprite("Barrel", new Sprite(0.3f));
             sprites["Barrel"].LoadContent(content, "2DTanksSprites", 485, 1523, 80, 99, 1);
 
-            AddSprite("RedBarrel", new AnimatedSprite(0.3f));
+            AddSprite("RedBarrel", new Sprite(0.3f));
             sprites["RedBarrel"].LoadContent(content, "2DTanksSprites", 485, 1622, 80, 99, 1);
 
-            AddSprite("RockPile", new AnimatedSprite(0.3f));
+            AddSprite("RockPile", new Sprite(0.3f));
             sprites["RockPile"].LoadContent(content, "TDTanksAllSprites", 950, 1593, 76, 70, 1);
 
-            AddSprite("Factory", new AnimatedSprite(0.3f));
+            AddSprite("Factory", new Sprite(0.3f));
             sprites["Factory"].LoadContent(content, "TDTanksAllSprites", 766, 1768, 104, 96, 1);
 
-            AddSprite("RockPileVar1", new AnimatedSprite(0.3f));
+            AddSprite("RockPileVar1", new Sprite(0.3f));
             sprites["RockPileVar1"].LoadContent(content, "TDTanksAllSprites", 950, 1523, 76, 70, 1);
 
-            AddSprite("RockPileVar2", new AnimatedSprite(0.3f));
+            AddSprite("RockPileVar2", new Sprite(0.3f));
             sprites["RockPileVar2"].LoadContent(content, "TDTanksAllSprites", 950, 1453, 76, 70, 1);
 
-            AddSprite("Hosue", new AnimatedSprite(0.3f));
+            AddSprite("Hosue", new Sprite(0.3f));
             sprites["Hosue"].LoadContent(content, "TDTanksAllSprites", 862, 1431, 88, 96, 1);
 
-            AddSprite("House2", new AnimatedSprite(0.3f));
+            AddSprite("House2", new Sprite(0.3f));
             sprites["House2"].LoadContent(content, "TDTanksAllSprites", 871, 1128, 88, 120, 1);
 
-            AddSprite("SmallTree", new AnimatedSprite(0.3f));
+            AddSprite("SmallTree", new Sprite(0.3f));
             sprites["SmallTree"].LoadContent(content, "TDTanksAllSprites", 954, 362, 72, 72, 1);
 
-            AddSprite("Fence", new AnimatedSprite(0.3f));
+            AddSprite("Fence", new Sprite(0.3f));
             sprites["Fence"].LoadContent(content, "TDTanksAllSprites", 2159, 1095, 128, 48, 1);
 
-            AddSprite("DeadTree", new AnimatedSprite(0.3f));
+            AddSprite("DeadTree", new Sprite(0.3f));
             sprites["DeadTree"].LoadContent(content, "TDTanksAllSprites", 128, 512, 128, 128, 1);
 
-            AddSprite("Garage", new AnimatedSprite(0.3f));
+            AddSprite("Garage", new Sprite(0.3f));
             sprites["Garage"].LoadContent(content, "TDTanksAllSprites", 869, 1864, 88, 120, 1);
 
-            AddSprite("CoconutTree", new AnimatedSprite(0.3f));
+            AddSprite("CoconutTree", new Sprite(0.3f));
             sprites["CoconutTree"].LoadContent(content, "TDTanksAllSprites", 774, 2748, 120, 120, 1);
 
-            AddSprite("SmallBarrel", new AnimatedSprite(0.3f));
+            AddSprite("SmallBarrel", new Sprite(0.3f));
             sprites["SmallBarrel"].LoadContent(content, "TDTanksAllSprites", 1016, 510, 40, 56, 1);
 
-            AddSprite("Boarder", new AnimatedSprite(0.3f));
+            AddSprite("Boarder", new Sprite(0.3f));
             sprites["Boarder"].LoadContent(content, "TDTanksAllSprites", 2872, 0, 128, 128, 1);
 
-            AddSprite("Tree1", new AnimatedSprite(0.3f));
+            AddSprite("Tree1", new Sprite(0.3f));
             sprites["Tree1"].LoadContent(content, "TDTanksAllSprites", 1023, 1128, 52, 89, 1);
 
-            AddSprite("Tree2", new AnimatedSprite(0.3f));
+            AddSprite("Tree2", new Sprite(0.3f));
             sprites["Tree2"].LoadContent(content, "TDTanksAllSprites", 1075, 1125, 29, 60, 1);
 
-            AddSprite("DesertHouse", new AnimatedSprite(0.3f));
+            AddSprite("DesertHouse", new Sprite(0.3f));
             sprites["DesertHouse"].LoadContent(content, "TDTanksAllSprites", 765, 1896, 104, 120, 1);
 
-            AddSprite("Tent", new AnimatedSprite(0.3f));
+            AddSprite("Tent", new Sprite(0.3f));
             sprites["Tent"].LoadContent(content, "TDTanksAllSprites", 868, 1864, 89, 120, 1);
 
             SetSprite(sprites[this.blocktype.ToString()]);

@@ -6,7 +6,7 @@ namespace Sprint0
 {
     public class Dialogue : IHUD
     {
-        private StaticSprite circleSprite;
+        private Sprite circleSprite;
         private Texture2D rectangleTexture;
         private SpriteFont font;
         private string fullText;
@@ -19,7 +19,7 @@ namespace Sprint0
         private float maxTextWidth;
         private bool soundStarted = false;
 
-        public Dialogue(StaticSprite circleSprite, Texture2D rectangleTexture, SpriteFont font, string text)
+        public Dialogue(Sprite circleSprite, Texture2D rectangleTexture, SpriteFont font, string text)
         {
             this.circleSprite = circleSprite;
             this.rectangleTexture = rectangleTexture;
@@ -73,7 +73,7 @@ namespace Sprint0
             Vector2 textPosition = speechBubblePosition + new Vector2(10, 10);
             spriteBatch.DrawString(font, wrappedText, textPosition, Color.White);
 
-            // Draw the character circle using the StaticSprite.
+            // Draw the character circle using the Sprite.
             circleSprite.Draw(spriteBatch, circlePosition, scale: 1f);
         }
 

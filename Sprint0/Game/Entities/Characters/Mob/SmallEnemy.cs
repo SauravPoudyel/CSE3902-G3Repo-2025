@@ -27,11 +27,11 @@ namespace Sprint0
             firingInterval = 1.4f;
             currentProjectileVariables["projectileType"] = "Default";
 
-            var bodySprite = new AnimatedSprite(0.3f);
+            var bodySprite = new Sprite(0.3f);
             bodySprite.LoadContent(content, "TDTanksAllSprites", 768, 256, 95, 113, 1);
             SetSprite(bodySprite);
 
-            var cannonSprite = new AnimatedSprite(0.3f);
+            var cannonSprite = new Sprite(0.3f);
             cannonSprite.LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);
             cannon = new Cannon(content, cannonSprite, this, new Vector2(14, 10), 50f, new Vector2(12, 70),
                                 0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
