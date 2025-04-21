@@ -22,6 +22,7 @@ namespace Sprint0 {
         public IEnumerable<Mob> GetEnemies() => levelEntities.GetEntitiesOfType<Mob>();
         public IEnumerable<Item> GetItems() => levelEntities.GetEntitiesOfType<Item>();
         public IEnumerable<BaseBlock> GetBlocks() => levelEntities.GetEntitiesOfType<BaseBlock>();
+        public int tileSize = 128; 
 
         public Dictionary<string, Entity> Entities
         {

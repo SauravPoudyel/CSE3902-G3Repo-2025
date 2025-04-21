@@ -51,6 +51,9 @@ namespace Sprint0
                     if(Globals.PlayerData.GetInt("HasShopKeys") == 1)
                         commandQueue.Enqueue(new CommandRequest("OpenShop", parameters2));
                     break;
+                case EntityKeys.BlockType.ProceduralPortal:
+                        commandQueue.Enqueue(new CommandRequest("GenerateProceduralLevel", parameters2));
+                    break;
                 default:
                     throw new System.ArgumentException($"Invalid BlockType for interaction: {blockType}");
             }
@@ -61,6 +64,7 @@ namespace Sprint0
             return blockType switch
             {
                 EntityKeys.BlockType.Shop => (766, 1768, 104, 96, 1.5f),
+                EntityKeys.BlockType.ProceduralPortal => (1277, 334, 74, 72, 1.2f),
             
                 _ => throw new System.ArgumentException($"Invalid BlockSpriteKey: {blockType}")
             };
