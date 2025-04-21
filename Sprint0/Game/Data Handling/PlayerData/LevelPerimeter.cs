@@ -42,34 +42,36 @@ public class LevelPerimeter
 
     public void Unlock(Direction direction)
     {
+        Vector2 tileOffset = new Vector2(Globals.TILESIZE / 2f);
+
         Vector2 min = direction switch
         {
-            Direction.Top => new Vector2(-1, -1),
-            Direction.Bottom => new Vector2(-1, 9),
-            Direction.Left => new Vector2(-1, -1),
-            Direction.Right => new Vector2(16, -1),
-            _ => Vector2.Zero
-        };
+            Direction.Top    => new Vector2(-1, -1),
+            Direction.Bottom => new Vector2(-1,  9),
+            Direction.Left   => new Vector2(-1, -1),
+            Direction.Right  => new Vector2(16, -1),
+            _                => Vector2.Zero
+        } * Globals.TILESIZE + tileOffset;
 
         Vector2 max = direction switch
         {
-            Direction.Top => new Vector2(16, -1),
-            Direction.Bottom => new Vector2(16, 9),
-            Direction.Left => new Vector2(-1, 9),
-            Direction.Right => new Vector2(16, 9),
-            _ => Vector2.Zero
-        };
+            Direction.Top    => new Vector2(16, -1),
+            Direction.Bottom => new Vector2(16,  9),
+            Direction.Left   => new Vector2(-1,  9),
+            Direction.Right  => new Vector2(16,  9),
+            _                => Vector2.Zero
+        } * Globals.TILESIZE + tileOffset;
 
-        var toRemove = perimeterBlocks
-            .Where(f => f.GetPosition().X >= min.X * Globals.TILESIZE && f.GetPosition().X <= max.X * Globals.TILESIZE &&
-                        f.GetPosition().Y >= min.Y * Globals.TILESIZE && f.GetPosition().Y <= max.Y * Globals.TILESIZE)
-            .ToList();
+            var toRemove = perimeterBlocks
+        .Where(f => f.GetPosition().X >= min.X && f.GetPosition().X <= max.X &&
+                    f.GetPosition().Y >= min.Y && f.GetPosition().Y <= max.Y)
+        .ToList();
 
         foreach (var block in toRemove)
         {
             perimeterBlocks.Remove(block);
             if (entities.ContainsKey(block.EntityKey))
-                entities.Remove(block.EntityKey);
+                level.Entities.Remove(block.EntityKey);
         }
     }
 
