@@ -99,8 +99,8 @@ namespace Sprint0
             bool blocking = (!GameStarted || IsPaused || shopOpen || statsOpen);
             if (!screens.Contains(desired))
                 AddScreen(desired, blocking);
-
-
+            if (GameStarted && !screens.Contains(miniMap))
+                AddScreen(miniMap, false);
         }
 
         public void Update()
@@ -117,15 +117,12 @@ namespace Sprint0
                 foreach (var screen in screens.ToList())
                     screen.Update();
             }
-
-            miniMap.Update();
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (var screen in screens)
                 screen.Draw(spriteBatch);
-            miniMap.Draw(spriteBatch);
         }
 
         public void AddScreen(IScreen screen, bool isBlocking = false)
