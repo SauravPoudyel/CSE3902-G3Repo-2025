@@ -17,7 +17,7 @@ namespace Sprint0
         public bool GameStarted { get; set; }
         public bool shopOpen { get; set; }  // When true, shop is active
         public bool statsOpen { get; set; }
-        public bool achievementsOpen { get; set;}
+        public bool achievementsOpen { get; set; }
 
         private ContentManager content;
         private Game1 game;
@@ -96,7 +96,7 @@ namespace Sprint0
 
             coreScreen = desired;
             // If desired screen is not already in the list, add it with blocking if needed.
-            bool blocking = (!GameStarted || IsPaused || shopOpen || statsOpen);
+            bool blocking = (!GameStarted || IsPaused || shopOpen || statsOpen || achievementsOpen);
             if (!screens.Contains(desired))
                 AddScreen(desired, blocking);
             if (GameStarted && !screens.Contains(miniMap))
