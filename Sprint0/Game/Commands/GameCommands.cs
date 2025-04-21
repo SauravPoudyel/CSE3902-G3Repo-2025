@@ -178,6 +178,24 @@ namespace Sprint0
             }
         }
 
+        public class IncreaseDifficultyCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if(Globals.GlobalMobData.Difficulty != MobData.MobDifficulty.Insane)
+                    Globals.GlobalMobData.SetDifficulty(Globals.GlobalMobData.Difficulty+1);
+            }
+        }
+
+        public class DecreaseDifficultyCommand : ICommand
+        {
+            public void Execute(Dictionary<string, object> parameters)
+            {
+                if(Globals.GlobalMobData.Difficulty != MobData.MobDifficulty.Easy)
+                    Globals.GlobalMobData.SetDifficulty(Globals.GlobalMobData.Difficulty-1);
+            }
+        }
+
         public class SetLevelCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
