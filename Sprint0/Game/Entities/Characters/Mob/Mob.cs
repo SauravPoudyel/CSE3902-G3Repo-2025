@@ -75,7 +75,7 @@ namespace Sprint0
             if (lastKnownPlayerPosition != Vector2.Zero)
             {
                 float distanceToPlayer = Vector2.Distance(GetPosition(), lastKnownPlayerPosition);
-                if (distanceToPlayer <= aggressionRange)
+                if (distanceToPlayer <= aggressionRange * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.AggressionRange))
                 {
                     Vector2 directionToPlayer = lastKnownPlayerPosition - GetPosition();
                     float desiredCannonAngle = (float)Math.Atan2(directionToPlayer.Y, directionToPlayer.X) - MathHelper.PiOver2;
@@ -86,7 +86,7 @@ namespace Sprint0
                     if (Math.Abs(angleDiff) > maxTurnRadians)
                         angleDiff = Math.Sign(angleDiff) * maxTurnRadians;
                     cannon.Rotation = currentRotation + angleDiff;
-                    if (Math.Abs(MathHelper.WrapAngle(desiredCannonAngle - cannon.Rotation)) < 0.15f && firingTimer >= firingInterval)
+                    if (Math.Abs(MathHelper.WrapAngle(desiredCannonAngle - cannon.Rotation)) < 0.15f && firingTimer >= firingInterval * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.FiringInterval))
                     {
                         FireProjectile();
                         firingTimer = 0f;
@@ -121,12 +121,12 @@ namespace Sprint0
                             bodyRotation = -MathHelper.PiOver2;  // For example, always face right
                             // Since Character.Update moves using velocity.Y, use that value to encode direction:
                             // A positive velocity means move right (if facing right) and a negative velocity means move left.
-                            velocity = new Vector2(0, Math.Sign(delta) * defaultMovementSpeed);
+                            velocity = new Vector2(0, Math.Sign(delta) * defaultMovementSpeed * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.MovementSpeed));
                         }
                         else
                         {
                             velocity = Vector2.Zero;
-                            if (firingTimer >= firingInterval)
+                            if (firingTimer >= firingInterval * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.FiringInterval))
                             {
                                 FireProjectile();
                                 firingTimer = 0f;
@@ -142,12 +142,12 @@ namespace Sprint0
                             float movementMultiplier = (delta > 0) ? 1f : -1f;
                             // Vertical ship: face down (or adjust as desired)
                             bodyRotation = 0f;
-                            velocity = new Vector2(0, defaultMovementSpeed * movementMultiplier);
+                            velocity = new Vector2(0, defaultMovementSpeed * movementMultiplier * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.MovementSpeed));
                         }
                         else
                         {
                             velocity = Vector2.Zero;
-                            if (firingTimer >= firingInterval)
+                            if (firingTimer >= firingInterval * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.FiringInterval))
                             {
                                 FireProjectile();
                                 firingTimer = 0f;
@@ -199,7 +199,7 @@ namespace Sprint0
                 movementMultiplier = neutralToggle ? 1f : -1f;
             }
             // Default moves along the Y-axis.
-            velocity = new Vector2(0, defaultMovementSpeed * movementMultiplier);
+            velocity = new Vector2(0, defaultMovementSpeed * movementMultiplier * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.MovementSpeed));
         }
 
 
@@ -222,7 +222,7 @@ namespace Sprint0
         public override void OnDeath()
         {
             base.OnDeath();
-            Globals.PlayerData.UpdateVariable("XP", MobXP);
+            Globals.PlayerData.UpdateVariable("XP", (int)(MobXP * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.XP)));
             if (currentMobType.ToString() == "ShipVertical" || currentMobType.ToString() == "ShipHorizontal") {
                 Globals.PlayerData.UpdateVariable("ShipKilled", 1);
             }
