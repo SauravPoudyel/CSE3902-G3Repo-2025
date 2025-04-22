@@ -1,0 +1,19 @@
+Author of the code review: Payton
+Date of the code review: April 6, 2024
+Sprint number: 5
+Name of the .cs file(s) being reviewed: LevelManager.cs
+Author of the .cs file(s) being reviewed: Harry
+Specific comments on code quality:
+
+The LoadContent method provides a fallback for missing levels and efficiently parses CSV data into level structures. Carrying over index metadata like key items and connections is 
+a thoughtful touch that improves consistency across level transitions. However, the logic for checking and copying connected levels and key items might benefit from being encapsulated 
+in a dedicated method to improve readability.
+
+The update logic handles both procedural generation and static level progression well. The conditional flow for placing portals after all enemies are defeated is easy to follow, and 
+the one-time flag system (portalAdded) avoids duplication. Still, the repeated pattern of checking enemy presence and completion status could be abstracted slightly to simplify Update.
+
+The portal placement and wraparound logic in HandlePlayerPortal is straightforward and works correctly for seamless screen edge transitions. However, hardcoded screen dimensions 
+(1920 and 1080) should ideally be abstracted into constants or configurable fields to improve maintainability across screen resolutions.
+
+The procedural level integration is strong. The connection between ProceduralHandler and LevelManager is tight, but not overly coupled, allowing for future extensibility (e.g., 
+saving procedural levels, adding procedural variants). It’s also nice to see proper reuse of content loading pipelines between handcrafted and procedural levels, promoting consistency.

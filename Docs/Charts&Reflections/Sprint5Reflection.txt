@@ -1,0 +1,16 @@
+Sprint 5, our final sprint, brought together all of the teamwork and technical skills we've developed throughout this project. After the productive momentum from Sprint 4, our improved 
+familiarity with the codebase made tackling tasks feel more natural and efficient. We quickly worked through refining features like procedural level generation, enhancing the player
+boosting mechanic, integrating the mini-map, and making interactive environment objects more polished and engaging.
+
+Knowing this was our last sprint, we put extra effort into addressing any lingering technical issues and ensuring thorough integration testing. By staying proactive, we 
+avoided the stress of a last-minute crunch and kept our workflow steady and manageable. Complex features like procedural content generation, connecting various levels, and fine-tuning 
+player interactions demanded careful coordination. Clear communication was key, especially when finalizing interconnected systems such as entity management, sprite adjustments, and command 
+logic.
+
+GitHub Projects continued to be a huge help, keeping our tasks clear and allowing us to see progress at a glance. Frequent and thorough code reviews remained essential, helping us catch 
+and resolve issues early such as sprite sizing errors, misplaced entities, or command logic bugs ensuring we were confident in the quality of our final deliverable.
+
+Reflecting on the entire project, Sprint 5 highlighted just how far we've come, both as developers and as a team. Everyone contributed valuable skills and perspectives, 
+which allowed us to create a polished and enjoyable game experience. Leo summed it up well when he said, "Looking back at our first sprint, it’s incredible to see how 
+seamlessly we now collaborate—everyone anticipates each other's needs." This final sprint truly showcased our team's adaptability and effective collaboration. We're excited 
+to carry forward the valuable experiences and agile practices we've refined into future projects, coursework, and careers.

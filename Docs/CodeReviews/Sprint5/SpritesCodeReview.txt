@@ -1,0 +1,17 @@
+Author of the code review: Daoping
+Date of the code review: April 6, 2024
+Sprint number: 5
+Name of the .cs file(s) being reviewed: Sprites.cs
+Author of the .cs file(s) being reviewed: Alex
+Specific comments on code quality:
+
+The Sprite class covers core animation logic pretty well. Frame extraction is clean, and the orientation support is a nice touch. But isDamaged is reset automatically during animation 
+updates, which means damage effects are tied to frame rate—probably not ideal if you want more control. Would be better to let external systems clear that flag.
+
+Draw uses the passed scale param but also repeats scale in the layerDepth argument accidentally—last param should just be 0f, not scale.
+
+AddFrame allows manual frame injection, which is cool but inconsistent with LoadContent, which replaces the list. If this is intended to support mix-and-match animations, call it 
+out explicitly.
+
+TextSprite is fine and lightweight. SetText works but there’s no SetColor, which might be useful. Font loading ignores all other LoadContent params—maybe just drop them from the 
+interface or clarify they’re unused in this implementation.

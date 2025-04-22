@@ -19,8 +19,9 @@ PLAYER CONTROLS
   4: Mine — deploys and detonates on contact.
   5: Teleporter — teleports player to impact location.
 - Press H to test self-damage (there's a death animation)
-- J should toggle invincibility, but it might not be working 100%
+- J should toggle invincibility, but it might not be working 100% (we gave you more than enough health to play test)
 - ESC to access the Pause Menu.
+- Press Shift for a player boost (there's a boost stamina meter)
 - We gave you a bunch of health to be able to tets things out for now
 
 ENEMY AI
@@ -43,6 +44,8 @@ COLLISION + WORLD INTERACTIONS
 - Sniper bullets reflect off trees.
 - Explosions damage nearby entities.
 - Pushable boxes move on collision.
+- THERE IS A "Z-AXIS implementation" on level 3-ish and others. You should be able to walk up on to the top of the cliff
+and shoot down on the enemies without moving through
 
 ITEM SYSTEM (PICKUPS)
 - SpeedBoost: Increases movement speed.
@@ -61,6 +64,7 @@ UI + INVENTORY
 - Special item inventory rotates when an item is finished.
 - Dialogue is added to appear upon certain events, click to skip dialogue
 - XP is also incremented and increases per enemy
+- Map on the bottom right for navigation
 
 SHOP SYSTEM
 - Access the shop by clicking the icon in the top-right corner.
@@ -75,6 +79,7 @@ top right building, and you can interact with it by pressing 3. This is how it w
 MENUS + STATES
 - Start Menu: Loads on game boot. Press ENTER to begin.
 - Pause Menu: Accessed via ESC. Click “Resume” or press ENTER to unpause.
+- Achievement Screen ans Stat screen in the top right of the game. 
 - There are also some other options to mess with in PauseMenu
 - Screen transitions are managed to avoid input issues.
 - We have a Day and Night Cycle, it works with shaders and you can see it's effects after
@@ -86,6 +91,8 @@ CSV-BASED DESIGN + DATA
 - Player data (ammo, health, coins, etc.) is stored persistently in CSV format.
 - Player inventory and progress update based on CSV values.
 - Moving off screen edges triggers level transitions based on connected map data.
+- PROCEDURAL GENERATION is now in the game. You can access it by pressing e on the purple portal in the base level
+a second portal appears once you defeat all enemies within the procedural portal.
 
 SOUND
 - Sounds include: shooting, explosions, pickup, and menu background music.
@@ -94,11 +101,6 @@ SOUND
 
 KNOWN BUGS
 - Some projectiles may pass through targets at extreme angles.
-- Level transition arrow prompt is currently a placeholder/work in progress.
-- ****** Level Transitions work though, If you want to see what levels are connected to which 
-         please check the LevelIndex.csv file or the png level maps to see which level connects in which way to the other
-         you can find out what level you are in the pause menu (you start at 1; were working on the tutorial. 
-         You can only change levels once all the enemies are killed              *******
 - Audio persistence bug: Driving sound sometimes continues when game is paused.
 - We think the sound issue might be fixed on MAC, but there still might be a small change it doesn't run on MAC
 - We have raised ground in hub and level 1 but their collisions don't work right now (we're trying to figure out 

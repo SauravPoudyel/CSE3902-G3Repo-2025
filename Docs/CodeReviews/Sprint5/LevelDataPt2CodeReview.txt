@@ -1,0 +1,15 @@
+Author of the code review: Leo Chen
+Date of the code review: April 6, 2024
+Sprint number: 5
+Name of the .cs file(s) being reviewed: LevelEntities.cs, LevelKeyItem.cs
+Author of the .cs file(s) being reviewed: Harry
+Specific comments on code quality:
+
+LevelEntities.cs covers most entity types cleanly. Entity key generation via a counter is simple and works, but could lead to collisions if keys are saved/loaded across sessions—consider 
+prefixing with something session-unique if persistence is added later. The method separation for adding each type of entity is fine, but AddBlock hardcodes the layer depth as 0.3f—might be 
+worth passing it as a parameter if needed elsewhere. The ToWorldPosition method is useful but could be static since it doesn’t touch instance state. Removing entities is straightforward, 
+though silent failure on missing keys might be worth logging during debug.
+
+LevelKeyItem.cs is minimal. The TryDrop method assumes the item always drops at (8,5), which is fine for now but should be pulled into a named constant or config if this ever changes. 
+TryDrop has solid guard conditions, but if drop fails silently (e.g., due to earlier conditions), that could be tricky to debug. Set resets dropped, which is good, but there’s no way to 
+unset or reinitialize the item—might want to add a Clear() or similar if reusability is needed.

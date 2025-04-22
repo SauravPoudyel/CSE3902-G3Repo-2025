@@ -1,0 +1,18 @@
+Author of the code review: Payton
+Date of the code review: April 6, 2024
+Sprint number: 5
+Name of the .cs file(s) being reviewed: LevelCommands.cs
+Author of the .cs file(s) being reviewed: Leo
+Specific comments on code quality:
+
+The command structure is fine, and sticking each command in its own nested class is a cool way to organize them. IncreaseLevelCommand and DecreaseLevelCommand are basic but work. 
+Could reduce redundancy by combining them into a single command with a delta param.
+
+SetLevelCommand does a conditional dialogue trigger which is cool, but it's hardcoded and mixed in with the level update. Consider extracting that into a dialogue manager hook for 
+better separation.
+
+PlayerDeathCommand is doing a lot—fade, delay, audio, health reset, reposition, and dialogue. It's functionally correct but kind of bloated. Break this into smaller private methods or 
+move pieces of logic to appropriate systems (like player reset or screen transitions). Also, using Thread.Sleep in async code is sketchy—it blocks the thread. Replace with await Task.Delay.
+
+GenerateProceduralLevelCommand is the cleanest one. The fallback to gameManager.GetContent() is a nice touch. Could improve by moving the procedural screen setup to a helper inside the 
+handler instead of inline.

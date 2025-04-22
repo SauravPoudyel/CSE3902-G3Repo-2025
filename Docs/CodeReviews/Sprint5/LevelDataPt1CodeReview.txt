@@ -1,0 +1,16 @@
+Author of the code review: Saurav Poudyel
+Date of the code review: April 6, 2024
+Sprint number: 5
+Name of the .cs file(s) being reviewed: LevelConnections.cs, LevelPerimeter.cs
+Author of the .cs file(s) being reviewed: Harry
+Specific comments on code quality:
+
+LevelConnections.cs is simple and mostly fine. The NextLevelDirection method is a cool shortcut for linear level progression but assumes a strict numeric sequence; if 
+level numbers skip or branch, this breaks. GetDirectionOf could be more efficient with a reverse dictionary or caching, though not a big deal unless used in tight loops. 
+SetAll is fine but does a full clear and repopulate—if some connections are unchanged, you’re doing extra work, but again, minor.
+
+LevelPerimeter.cs is more interesting. The logic for placing and unlocking perimeter blocks is clean, but the hardcoded dimensions (16x9, -1 border) are a 
+bit rigid—would be cool to parameterize this from level settings. Unlock method does a fine job using direction-based bounds, but that min/max logic is repeated and 
+could be pulled out into a helper. You're doing in-place list mutation during iteration (via .ToList() copy), which is correct—just worth calling out as easy to miss. 
+Block removal also only touches the level entity dictionary if entities.ContainsKey, but not sure why the block isn’t always guaranteed to exist there if added earlier—could 
+use a comment or check for consistency.

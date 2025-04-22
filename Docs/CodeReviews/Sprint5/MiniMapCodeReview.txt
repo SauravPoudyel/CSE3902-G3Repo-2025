@@ -1,0 +1,17 @@
+Author of the code review: Saurav Poudyel
+Date of the code review: April 6, 2024
+Sprint number: 5
+Name of the .cs file(s) being reviewed: MiniMap.cs
+Author of the .cs file(s) being reviewed: Leo
+Specific comments on code quality:
+
+The initLevelRectangles method hardcodes a huge list inline. Would be cleaner to load this from a config file or data asset for easier maintenance.
+
+mapRectangle is recalculated every frame in Update, but its size never changes—should cache it unless level layout or camera view changes dynamically.
+
+DrawEntityOnMap uses screen resolution to normalize positions, which works, but assumes all maps scale the same way. If the playable area ever differs from screen size, entity positions on 
+the map will be off. Might want to track world bounds per level.
+
+The entity blip size is fixed (10x10), but could be a constant or vary by entity type (e.g. player larger than mob).
+
+Cool idea to tint the map icon and texture at 70% opacity for a layered look. Overall layout logic is fine, just needs some clean-up around data handling and scaling assumptions.

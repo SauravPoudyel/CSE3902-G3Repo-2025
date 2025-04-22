@@ -1,0 +1,16 @@
+Author of the code review: Payton
+Date of the code review: April 6, 2024
+Sprint number: 5
+Name of the .cs file(s) being reviewed: PlayerBoost.cs
+Author of the .cs file(s) being reviewed: Saurav & Harry
+Specific comments on code quality:
+
+Boost timing logic works, but the percent calculation is confusing—boostPercent += cooldownTimer / boostDuration during cooldown doesn’t make sense and inflates the value 
+incorrectly. Just recalculate it from boostTimer or split boost/cooldown progress visually if needed.
+
+Trail effect spawn uses trailEffectKey to avoid duplicate effects, but trailEffectKey is never actually assigned a key, so DestroyEntity likely fails or has no effect. You probably
+ meant to assign a unique key when spawning the effect.
+
+CanBoost() just mirrors IsBoosting, so the name is misleading. Rename it or clarify the intended difference.
+
+The offset rotation logic is cool and makes the effect follow correctly. Overall, the system works but needs a couple quick fixes to avoid buggy boost bar behavior and broken trail cleanup.

@@ -1,0 +1,23 @@
+Author of the code review: Harry
+Date of the code review: April 15, 2024
+Sprint number: 5
+Name of the .cs file(s) being reviewed: ProceduralGenerator.cs, ProceduralHandler.cs, ProceduralLevel.cs
+Author of the .cs file(s) being reviewed: Saurav
+Specific comments on code quality:
+
+The repetitive logic in the mob and item placement loops could be reduced by abstracting into a shared helper method. Additionally, the candidateItems array contains duplicate entries 
+which may unintentionally bias generation frequency. Consider deduplicating or commenting if intentional.
+
+The tile type parsing logic currently uses chained conditionals. Switching to Enum.TryParse with validation would simplify and scale better with additional tile types. There’s also a lack of 
+error handling for file I/O in LoadTemplates, which may lead to runtime exceptions if the CSV is malformed or missing.
+
+The GenerateProceduralLevel method is fairly long and could benefit from splitting into smaller private methods to handle entity-specific cases. The spiral search algorithm in 
+AddPortal is an efficient way to find a spawn location and is well-implemented using a HashSet for occupied grid checks. It’s a nice touch to include a fallback coordinate to ensure robustness.
+
+The Update method is minimal but important for integrating the new level post-load. One potential improvement is logging or status feedback for procedural loading, especially for debugging 
+complex generation cases.
+
+ProceduralLevel.cs currently serves as a placeholder extending the base Level class. While it doesn’t add new logic yet, having it set up as a specialized type prepares the codebase for 
+future procedural-specific behaviors, such as custom triggers or adaptive difficulty mechanisms. Adding XML documentation or comments indicating its role could assist future maintainers.
+
+Overall, the procedural system is thoughtfully organized and extensible. With a few improvements around helper extraction and error handling, it would be even more robust and maintainable.

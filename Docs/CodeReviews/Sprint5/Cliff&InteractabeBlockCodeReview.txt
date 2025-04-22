@@ -1,0 +1,15 @@
+Author of the code review: Leo
+Date of the code review: April 6, 2024
+Sprint number: 5
+Name of the .cs file(s) being reviewed: CliffBlock.cs, InteractableBlock.cs
+Author of the .cs file(s) being reviewed: Daoping & Saurav
+Specific comments on code quality:
+
+CliffBlock.cs is straightforward. GetSpriteCoords is doing all the real work. It’s fine for now, but the hardcoded sprite sheet values feel very temp. A centralized sprite map would 
+be better long term. Also, both horizontal cliff types return the same coordinates—probably placeholder, but worth flagging to avoid confusion if someone assumes they're different.
+
+InteractableBlock.cs is more complex. IsInRange uses a magic number for distance (300f); cool for testing, but should be a const. Interact is a nice example of decoupled behavior by 
+block type, but you're throwing on unhandled block types—which might make sense now, but could be fragile if new block types slip in without handlers. Maybe log a warning instead.
+
+The field blockType is redundant with the constructor param and could just be stored in the base class if needed later. Also, the CanInteract property could be simplified—no need for 
+the private setter if you’re only modifying it internally.
