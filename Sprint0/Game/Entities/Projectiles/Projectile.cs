@@ -18,10 +18,10 @@ namespace Sprint0
         protected Color[] colors;
         protected float maxDistance;
         protected float baseSpeed;
-        public int damage = 20;
-        public IEntity Owner { get; private set; }
-        public bool canReflect;
-        public float ReflectCooldown = 0f;
+        public int damage { get; protected set; } = 20 ;
+        public IEntity Owner { get; set; }
+        public bool canReflect { get; protected set; }
+        public float ReflectCooldown { get; set; } = 0f;
 
         public Projectile(ContentManager content, string entityKey, Character owner)
         {
