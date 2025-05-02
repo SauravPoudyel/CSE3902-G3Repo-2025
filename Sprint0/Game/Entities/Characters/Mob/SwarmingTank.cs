@@ -25,27 +25,6 @@ namespace Sprint0
             defaultMovementSpeed = 120f; // Runs much faster towards the player.
             firingInterval = 0f; // Doesn't shoot.
             inExplosionState = false;
-
-            var bodySprite = new Sprite(0.3f);
-            bodySprite.LoadContent(content, "TDTanksAllSprites", 1126, 275, 53, 56, 2);
-            SetSprite(bodySprite);
-
-            cannon = new Cannon(content, Globals.NULLSPRITE_A, this, new Vector2(14, 10), 30f, new Vector2(0, 0),
-                    0f, 0f, 0f, 0f);
-        }
-
-        protected override void UpdateMobBehavior()
-        {
-            if (inExplosionState) return;
-
-            FollowPlayer(aggressionLevel); 
-
-            float distanceToPlayer = Vector2.Distance(GetPosition(), lastKnownPlayerPosition);
-            if (distanceToPlayer < explosionRadius)
-            {
-                inExplosionState = true;
-                Explode();
-            }
         }
 
         private void Explode()
