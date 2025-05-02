@@ -15,7 +15,6 @@ namespace Sprint0
             responseMap = new Dictionary<Tuple<Type, Type>, string>()
             {
                 // Stop Interactions
-                { new Tuple<Type, Type>(typeof(Player), typeof(Blocks)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(Player), typeof(IRigid)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(Player), typeof(Mob)), "CollisionStop" },
                 { new Tuple<Type, Type>(typeof(IPushable), typeof(IRigid)), "CollisionStop" },
@@ -35,7 +34,6 @@ namespace Sprint0
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(ICliff)), "NoAction" },
 
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(IRigid)), "CollisionProjectileReflect" },
-                { new Tuple<Type, Type>(typeof(Projectile), typeof(Blocks)), "CollisionProjectileReflect" },
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(Mob)), "CollisionProjectileDestroy"},
                 { new Tuple<Type, Type>(typeof(Projectile), typeof(Player)), "CollisionProjectileDestroy"},
 

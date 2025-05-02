@@ -13,13 +13,15 @@ namespace Sprint0
         protected ContentManager content;
         protected Dictionary<string, object> currentProjectileVariables;
         public float bodyRotation { get; set; }
-        protected float speedMultiplier = 1f;
+        protected float speedMultiplier { get; set; } = 1f;
         protected List<TrackTrail> trackTrailList;
         protected float trackTrailSpawnTimer, trackTrailSpawnInterval = 0.4f;
         public bool TrackTrailsEnabled { get; set; } = true;
         protected ISprite trackTrailSprite = new Sprite(0.4f);
-        public float health = 100f;
-        public bool isDead = false, isDamaged = false, isHealed = false;
+        public float health { protected get; set; } = 100f;
+        public bool isDead { protected get; set; } = false; 
+        public bool isDamaged { get; set; } = false; 
+        public bool isHealed { get; set; } = false;
         protected Color? changeIndicator = null;
 
         public Character(ContentManager content) : base()
@@ -89,7 +91,7 @@ namespace Sprint0
             if (sprite != null)
             {
                 sprite.Update();
-                CalculateBounds(spriteWidth, spriteHeight);
+                bounds = CollisionBoundCalculator.Calculate(position, bodyRotation, spriteWidth, spriteHeight);
             }
             if (health <= 0 && !isDead)
             {
@@ -98,34 +100,6 @@ namespace Sprint0
             }
             prevPosition = position;
             cannon.Update();
-        }
-
-        protected void CalculateBounds(float spriteWidth, float spriteHeight)
-        {
-            float halfW = spriteWidth * 0.5f, halfH = spriteHeight * 0.5f;
-            float cosA = (float)Math.Cos(bodyRotation), sinA = (float)Math.Sin(bodyRotation);
-            Vector2[] corners = new Vector2[4]
-            {
-                new Vector2(-halfW, -halfH),
-                new Vector2(halfW, -halfH),
-                new Vector2(halfW, halfH),
-                new Vector2(-halfW, halfH)
-            };
-            for (int i = 0; i < 4; i++)
-            {
-                float x = corners[i].X, y = corners[i].Y;
-                corners[i].X = x * cosA - y * sinA + position.X;
-                corners[i].Y = x * sinA + y * cosA + position.Y;
-            }
-            float minX = corners[0].X, maxX = corners[0].X, minY = corners[0].Y, maxY = corners[0].Y;
-            for (int i = 1; i < 4; i++)
-            {
-                if (corners[i].X < minX) minX = corners[i].X;
-                if (corners[i].X > maxX) maxX = corners[i].X;
-                if (corners[i].Y < minY) minY = corners[i].Y;
-                if (corners[i].Y > maxY) maxY = corners[i].Y;
-            }
-            bounds = new Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
         }
 
         public virtual void OnDeath()

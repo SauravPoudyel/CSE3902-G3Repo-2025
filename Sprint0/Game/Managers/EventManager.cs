@@ -35,8 +35,6 @@ namespace Sprint0
                 {"Static", new GraphicCommands.DisplayStaticGameCommand()},
                 {"Animated", new GraphicCommands.DisplayAnimatedGameCommand()},
                 {"SetSprite", new GraphicCommands.SetSpriteCommand()},
-                {"CycleBlockPrev", new GraphicCommands.CycleBlockPrevCommand()},
-                {"CycleBlockNext", new GraphicCommands.CycleBlockNextCommand()},
                 {"CycleItemPrev", new GraphicCommands.CycleItemPrevCommand()},
                 {"CycleItemNext", new GraphicCommands.CycleItemNextCommand()},
                 {"CycleEnemyPrev", new GraphicCommands.CycleEnemyPrevCommand()},

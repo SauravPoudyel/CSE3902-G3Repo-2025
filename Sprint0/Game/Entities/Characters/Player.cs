@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace Sprint0
 {
+    // Player is the main player entity that the user controls. Character is the base abstract class for all characters in the game which includes the player and enemies.
     public class Player : Character
     {
         // effect fields
@@ -14,20 +15,20 @@ namespace Sprint0
             => playerBoost.UpdateBoostState(tryingToBoost, this);
         public bool CanBoost() 
             => playerBoost.CanBoost();
-        public float speedMultiplier = 1f;   
-        public bool shieldActive = false, 
-                    isInvis = false, 
-                    isFly = false;
-        public float baseShootInterval = 1.2f;
-        public float currentShootInterval;   
+        public float speedMultiplier { get; set; } = 1f;   
+        public bool shieldActive { get; set; } = false;
+        public bool isInvis { get; set; } = false;
+        public bool isFly { get; set; } = false;
+        public float baseShootInterval { get; set; } = 1.2f;
+        public float currentShootInterval { get; set; }  
         ISprite effectSprite = new Sprite(0.4f); 
-        public float rotationInput = 0f;
+        public float rotationInput { get; set; } = 0f;
         private float timeSinceLastShot = 0f;
         public static Player Instance { get; private set; }
         public bool CanFire { get { return timeSinceLastShot >= currentShootInterval; }}
         public bool IsImmortal { get; set; } = false;
 
-        public List<Effect> activeFireEffects = new List<Effect>();
+        public List<Effect> activeFireEffects { get; set; } = new List<Effect>();
         private float fireDamageCooldown;
         private const float FIRE_DAMAGE_INTERVAL = 1.0f; //Fire damage gap
         private const int FIRE_DAMAGE_PER_TICK = 10; //Fire damage
@@ -124,7 +125,7 @@ namespace Sprint0
             };
             commandQueue.Enqueue(new CommandRequest("AudioDrive", driveParams));
 
-            CalculateBounds(spriteWidth, spriteHeight);
+            bounds = CollisionBoundCalculator.Calculate(position, bodyRotation, spriteWidth, spriteHeight);
 
             if (TrackTrailsEnabled)
                 TrackTrail.UpdateTrackTrails(trackTrailList, Globals.PLAYERFRAMETIME, position, bodyRotation, trackTrailSprite, ref trackTrailSpawnTimer, trackTrailSpawnInterval);
