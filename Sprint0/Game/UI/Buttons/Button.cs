@@ -8,13 +8,13 @@ namespace Sprint0;
 
 public abstract class Button
 {
-    public Rectangle bounds;
-    public Texture2D texture;
-    public Texture2D backgroundTexture;
-    public Vector2 position;
-    public Dictionary<string, object> parameters;
-    public MouseState previousMouseState;
-    public MouseState mouseState;
+    public Rectangle bounds {get; protected set; }
+    public Texture2D texture {get; protected set; }
+    public Texture2D backgroundTexture {get; protected set; }
+    public Vector2 position {get; protected set; }
+    public Dictionary<string, object> parameters {get; protected set; }
+    public MouseState previousMouseState {get; protected set; }    
+    public MouseState mouseState {get; protected set; }
     public bool IsHovered()
     {
         return bounds.Contains(mouseState.Position);
