@@ -8,177 +8,84 @@ namespace Sprint0
 {
     public class DialogueHandler
     {
-        private ContentManager content;
-        private Game1 game;
+        private readonly ContentManager content;
+        private readonly GraphicsDevice graphicsDevice;
         private Dictionary<string, DialogueData> dialogueDictionary;
-        private bool dialoguesLoaded = false;
-        private Texture2D characterCircleSheet;
-        private enum CharacterPortrait
-        {
-            Player = 0,
-            Commander = 1
-        }
-        private Dictionary<string, DialogueToScreenAdapter> activeDialogueAdapters;
+        private readonly Dictionary<string, DialogueToScreenAdapter> activeDialogueAdapters;
+        private bool dialoguesLoaded;
 
-        public DialogueHandler(ContentManager content, Game1 game)
+        public DialogueHandler(ContentManager content, GraphicsDevice graphicsDevice)
         {
             this.content = content;
-            this.game = game;
+            this.graphicsDevice = graphicsDevice;
+            dialogueDictionary = new Dictionary<string, DialogueData>();
             activeDialogueAdapters = new Dictionary<string, DialogueToScreenAdapter>();
+            dialoguesLoaded = false;
         }
 
-        private void LoadDialogues(string csvPath)
-        {
-            dialogueDictionary = CSVDialogueParser.ParseDialogueCSV(csvPath);
-            dialoguesLoaded = true;
-        }
-
-        private Sprite CreatePortraitSprite(string characterName)
-        {
-            if (characterCircleSheet == null)
-                characterCircleSheet = content.Load<Texture2D>("CharacterCircle");
-
-            Sprite sprite = new Sprite(0.4f);
-            int spriteSize = 150;
-
-            CharacterPortrait portraitEnum = CharacterPortrait.Player;
-            if (characterName.ToLower().Contains("commander"))
-                portraitEnum = CharacterPortrait.Commander;
-
-            int startX = (int)portraitEnum * spriteSize;
-            int startY = 0;
-
-            sprite.spriteSheet = characterCircleSheet;
-            sprite.LoadContent(content, "CharacterCircle", startX, startY, spriteSize, spriteSize, 1);
-
-            return sprite;
-        }
-
-        private void ShowDialogue(ScreenManager screenManager, DialogueData data)
-        {
-            // Remove any quotation marks and format the dialogue text.
-            string finalText = data.Text.Replace("\"", "");
-            finalText = finalText.Replace("{playerName}", Globals.PlayerData.GetString("Name"));
-            finalText = $"{data.Character}:\n\n" + finalText;
-
-            Sprite circleSprite = CreatePortraitSprite(data.Character);
-            Texture2D rectangleTexture = new Texture2D(game.GraphicsDevice, 1, 1);
-            rectangleTexture.SetData(new Color[] { Color.White });
-            SpriteFont font = Globals.FONT;
-
-            Dialogue dialogue = new Dialogue(circleSprite, rectangleTexture, font, finalText);
-            DialogueToScreenAdapter adapter = new DialogueToScreenAdapter(dialogue);
-
-            screenManager.AddScreen(adapter, true);
-            activeDialogueAdapters[data.Key] = adapter;
-        }
-
+        // Called by your commands:
         public void AddDialogueByKey(string key, ScreenManager screenManager)
         {
-            if (!dialoguesLoaded)
-            {
-                string dialogueCSVPath = Path.Combine(Globals.projectDirectory, "Data", "DialogueData.csv");
-                LoadDialogues(dialogueCSVPath);
-            }
+            EnsureDialoguesLoaded();
+            if (!dialogueDictionary.TryGetValue(key, out var data)) return;
+            if (activeDialogueAdapters.ContainsKey(key)) return;
 
-            if (dialogueDictionary.TryGetValue(key, out DialogueData value))
-            {
-                DialogueData data = value;
-                /* even if automatic trigger check would normally skip this dialogue, manual addition 
-                will force it. */
-                if (!activeDialogueAdapters.ContainsKey(key))
-                {
-                    ShowDialogue(screenManager, data);
-                }
-            }
-            else
-            {
-                System.Console.WriteLine($"[DialogueHandler] Dialogue key '{key}' not found.");
-            }
+            ShowDialogue(screenManager, data);
         }
 
-        private bool ShouldTriggerDialogue(DialogueData data)
-        {
-            // For automatic triggers we skip dialogues meant to be externally triggered.
-            string key = data.Key.Trim().ToUpper();
-            string trigger = data.Trigger?.Trim().ToUpper();
-            if (key == "DEATH" || trigger == "N/A" || string.IsNullOrEmpty(trigger))
-                return false;
-
-            // For tutorial dialogues, compare against TutorialDialogueCount.
-            if (data.Key.StartsWith("Tutorial"))
-            {
-                if (int.TryParse(data.Key.Substring("Tutorial".Length), out int tutorialNumber))
-                {
-                    int currentCount = Globals.PlayerData.GetInt("TutorialDialogueCount");
-                    return (currentCount == tutorialNumber);
-                }
-                return false;
-            }
-            // For other dialogues, trigger if the associated trigger variable equals 0.
-            return (Globals.PlayerData.GetInt(data.Trigger) == 0);
-        }
-
+        // Optional: if you still use Update() to auto-trigger elsewhere
         public void Update(ScreenManager screenManager, int levelNumber, bool isPaused, bool gameStarted)
         {
-            if (!gameStarted || isPaused)
-                return;
-
-            if (!dialoguesLoaded)
-            {
-                string dialogueCSVPath = Path.Combine(Globals.projectDirectory, "Data", "DialogueData.csv");
-                LoadDialogues(dialogueCSVPath);
-            }
+            if (!gameStarted || isPaused) return;
+            EnsureDialoguesLoaded();
 
             if (activeDialogueAdapters.Count > 0)
             {
                 foreach (var pair in activeDialogueAdapters)
                 {
-                    DialogueToScreenAdapter adapter = pair.Value;
-                    if (adapter.IsFinished)
-                    {
-                        screenManager.RemoveScreen(adapter);
-                        // Update trigger values when a dialogue is completed.
-                        if (pair.Key.StartsWith("Tutorial"))
-                        {
-                            if (int.TryParse(pair.Key.Substring("Tutorial".Length), out int tutorialNumber))
-                            {
-                                int currentCount = Globals.PlayerData.GetInt("TutorialDialogueCount");
-                                if (currentCount == tutorialNumber)
-                                {
-                                    int newValue = tutorialNumber - 1;
-                                    Globals.PlayerData.SetInt("TutorialDialogueCount", newValue);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (dialogueDictionary.TryGetValue(pair.Key, out DialogueData data))
-                            {
-                                Globals.PlayerData.SetInt(data.Trigger, 1);
-                            }
-                        }
-                        activeDialogueAdapters.Clear();
-                        return; 
-                    }
-                    else
-                    {
-                        return;
-                    }
-                    break; 
+                    if (!pair.Value.IsFinished) return;
+                    screenManager.RemoveScreen(pair.Value);
+                    activeDialogueAdapters.Clear();
+                    return;
                 }
             }
+        }
 
-            // scan through dialogues and add the first that should trigger.
-            foreach (var kvp in dialogueDictionary)
-            {
-                DialogueData data = kvp.Value;
-                if (ShouldTriggerDialogue(data) && !activeDialogueAdapters.ContainsKey(data.Key))
-                {
-                    ShowDialogue(screenManager, data);
-                    break; 
-                }
-            }
+        private void EnsureDialoguesLoaded()
+        {
+            if (dialoguesLoaded) return;
+            string path = Path.Combine(Globals.projectDirectory, "Data", "DialogueData.csv");
+            dialogueDictionary = CSVDialogueParser.ParseDialogueCSV(path);
+            dialoguesLoaded = true;
+        }
+
+        private void ShowDialogue(ScreenManager screenManager, DialogueData data)
+        {
+            Sprite circle = CreatePortraitSprite(data.Character);
+
+            var rectTex = new Texture2D(graphicsDevice, 1, 1);
+            rectTex.SetData(new[] { Color.White });
+
+            SpriteFont font = Globals.FONT;
+            string fullText = $"{data.Character}:\n\n{data.Text}";
+
+            // create and show dialoguie
+            var dialogue = new Dialogue(circle, rectTex, font, fullText);
+            var adapter  = new DialogueToScreenAdapter(dialogue);
+            screenManager.AddScreen(adapter, true);
+            activeDialogueAdapters[data.Key] = adapter;
+        }
+
+        private Sprite CreatePortraitSprite(string characterName)
+        {
+            Texture2D sheet = content.Load<Texture2D>("CharacterCircle");
+            const int size = 150;
+            int index = characterName.ToLower().Contains("commander") ? 1 : 0;
+
+            var sprite = new Sprite(0.4f);
+            sprite.spriteSheet = sheet;
+            sprite.LoadContent(content, "CharacterCircle", index * size, 0, size, size, 1);
+            return sprite;
         }
     }
 }
