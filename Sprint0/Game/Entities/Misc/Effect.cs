@@ -20,8 +20,8 @@ namespace Sprint0
         private bool hasSentDestroyCommand = false;
         private ContentManager content;
         public bool IsFinished { get; private set; } = false;
-        public EffectType effectType;
-        public bool didDamage = false;     
+        public EffectType effectType { get; private set; }
+        public bool didDamage { get; set; } = false ;     
         private bool damagesPlayer = true;  
 
         private int _totalLoops;
