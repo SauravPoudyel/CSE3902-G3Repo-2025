@@ -125,7 +125,7 @@ namespace Sprint0
             };
             commandQueue.Enqueue(new CommandRequest("AudioDrive", driveParams));
 
-            CalculateBounds(spriteWidth, spriteHeight);
+            bounds = CollisionBoundCalculator.Calculate(position, bodyRotation, spriteWidth, spriteHeight);
 
             if (TrackTrailsEnabled)
                 TrackTrail.UpdateTrackTrails(trackTrailList, Globals.PLAYERFRAMETIME, position, bodyRotation, trackTrailSprite, ref trackTrailSpawnTimer, trackTrailSpawnInterval);

@@ -58,28 +58,6 @@ namespace Sprint0
             }
         }
 
-        public class CycleBlockPrevCommand : ICommand
-        {
-            public void Execute(Dictionary<string, object> parameters)
-            {
-                if (parameters.TryGetValue("blocks", out object blockObj) && blockObj is Blocks blocks)
-                {
-                    blocks.CycleBlockPrev();
-                }
-            }
-        }
-
-        public class CycleBlockNextCommand : ICommand
-        {
-            public void Execute(Dictionary<string, object> parameters)
-            {
-                if (parameters.TryGetValue("blocks", out object blockObj) && blockObj is Blocks blocks)
-                {
-                    blocks.CycleBlockNext();
-                }
-            }
-        }
-
         public class CycleItemPrevCommand : ICommand
         {
             public void Execute(Dictionary<string, object> parameters)
