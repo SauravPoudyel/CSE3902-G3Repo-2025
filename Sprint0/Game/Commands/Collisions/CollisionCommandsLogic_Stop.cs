@@ -28,7 +28,7 @@ namespace Sprint0
 
         public static void HandleMobCollision(Mob mobActor, Entity target)
         {
-            if (mobActor is Plane || (!IsRigidOrGroundBasedMob(target) && !(target is Blocks)))
+            if (mobActor is Plane || (!IsRigidOrGroundBasedMob(target) && !(target is BaseBlock)))
                 return;
 
             CollisionHandler.ResolveCollision(mobActor, target);

@@ -138,7 +138,7 @@ namespace Sprint0
                 OnDeath();
             }
 
-            PowerUpFactory.UpdateEffects(this);
+            PowerUpManager.UpdateEffects(this);
             cannon.Update();
 
             //Fire damage logic process
