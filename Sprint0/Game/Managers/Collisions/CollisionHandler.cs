@@ -34,12 +34,12 @@ namespace Sprint0
         {
             if (target is PickupItem pickupItem)
             {
-                PowerUpFactory.ApplyPickupEffect(player, pickupItem.GetItemType());
+                PowerUpManager.ApplyPickupEffect(player, pickupItem.GetItemType());
                 gameManager.RemoveEntity(pickupItem.EntityKey);
             }
             else if (target is Item item)
             {
-                PowerUpFactory.ApplyPickupEffect(player, item.GetItemType());
+                PowerUpManager.ApplyPickupEffect(player, item.GetItemType());
                 gameManager.RemoveEntity(item.EntityKey);
             }
             AudioManager.PlaySound(AudioManager.SoundKey.PowerUp);

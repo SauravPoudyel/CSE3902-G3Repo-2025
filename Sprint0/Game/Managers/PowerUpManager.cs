@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Sprint0
 {
-    public static class PowerUpFactory
+    public static class PowerUpManager
     {
         public static Dictionary<EntityKeys.ItemType, float> EffectTimers = new Dictionary<EntityKeys.ItemType, float>();
         public static float NormalPickUpRadius = 150f;
