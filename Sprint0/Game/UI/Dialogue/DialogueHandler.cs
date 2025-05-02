@@ -22,8 +22,7 @@ namespace Sprint0
             activeDialogueAdapters = new Dictionary<string, DialogueToScreenAdapter>();
             dialoguesLoaded = false;
         }
-
-        // Called by your commands:
+        
         public void AddDialogueByKey(string key, ScreenManager screenManager)
         {
             EnsureDialoguesLoaded();
@@ -33,7 +32,6 @@ namespace Sprint0
             ShowDialogue(screenManager, data);
         }
 
-        // Optional: if you still use Update() to auto-trigger elsewhere
         public void Update(ScreenManager screenManager, int levelNumber, bool isPaused, bool gameStarted)
         {
             if (!gameStarted || isPaused) return;
