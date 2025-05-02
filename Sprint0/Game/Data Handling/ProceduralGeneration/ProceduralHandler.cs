@@ -13,13 +13,13 @@ namespace Sprint0
         public float proceduralLoadTimer { get; set; } = 0f;
         public LoadingScreen proceduralLoadingScreen { get; set; } = null;
 
-        public ProceduralLevel GenerateProceduralLevel(ContentManager content)
+        public Level GenerateProceduralLevel(ContentManager content)
         {
             // Create generator for a 16x9 grid.
             ProceduralGenerator generator = new ProceduralGenerator(16, 9, maxMobs: 6, maxItems: 4);
             generator.Generate();
 
-            ProceduralLevel procLevel = new ProceduralLevel();
+            Level procLevel = new Level();
 
             // Loop over the grid dimensions (using generator.Height and generator.Width)
             for (int r = 0; r < generator.Height; r++)

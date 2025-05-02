@@ -39,7 +39,7 @@ namespace Sprint0
             playerInventory = new PlayerInventory(game);
             shop = new Shop(game);   // Shop now implements IScreen
             shop.LoadContent();
-            dialogueHandler = new DialogueHandler(content, game);
+            dialogueHandler = new DialogueHandler(content, game.GraphicsDevice);
             statsScreen = new StatsScreen(game);
             achievements = new Achievements(game);
             miniMap = new MiniMap(content, game.GameManager);
