@@ -7,15 +7,15 @@ namespace Sprint0
     {
         public void Update(Mob mob)
         {
-            var pos = mob.GetPosition();
-            var target = mob.LastKnownPlayerPosition;
-            float delta = target.X - pos.X;
-            if (Math.Abs(delta) > 5f)
+            Vector2 position = mob.GetPosition();
+            Vector2 playerPosition = mob.GetLastKnownPlayerPosition();
+            float deltaX = playerPosition.X - position.X;
+
+            if (Math.Abs(deltaX) > 5f)
             {
-                // move along X only
-                mob.SetVelocity(new Vector2(
-                    Math.Sign(delta) * mob.DefaultMovementSpeed * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.MovementSpeed),
-                    0));
+                float speed = mob.GetDefaultMovementSpeed()
+                            * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.MovementSpeed);
+                mob.SetVelocity(new Vector2(Math.Sign(deltaX) * speed, 0f));
             }
             else
             {

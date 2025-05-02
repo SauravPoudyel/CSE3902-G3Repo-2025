@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using static Sprint0.EntityKeys;
+using System;
 
 namespace Sprint0
 {
     public abstract class Mob : Character
     {
-        protected MobType currentMobType;
+        public MobType currentMobType;
         protected float defaultMovementSpeed;
         protected float firingTimer;
         protected float firingInterval;
@@ -17,11 +18,21 @@ namespace Sprint0
         protected Vector2 lastKnownPlayerPosition;
         protected float aggressionRange;
         protected string aggressionLevel = "Aggressive";
-        private bool neutralToggle = true;
-        private bool isNeutralTaskRunning = false; // for thread task management
+        private bool neutralToggle = true; // for thread task management
+        private bool isNeutralTaskRunning = false;
         public int MobXP;
 
         private IMobBehaviorState behaviorState;
+        // Exposed methods for states to use
+        public Vector2 GetLastKnownPlayerPosition() => lastKnownPlayerPosition;
+        public string GetAggressionLevel() => aggressionLevel;
+        public bool GetNeutralToggle() => neutralToggle;
+        public bool GetIsNeutralTaskRunning() => isNeutralTaskRunning;
+        public float GetDefaultMovementSpeed() => defaultMovementSpeed;
+        public Vector2 GetVelocity() => velocity;
+        public void SetVelocity(Vector2 v) => velocity = v;
+        public float GetBodyRotation() => bodyRotation;
+        public void SetBodyRotation(float r) => bodyRotation = r;
 
         public Mob(ContentManager content) : base(content)
         {
@@ -37,6 +48,11 @@ namespace Sprint0
         protected abstract void ChangeMobType(MobType type);
         protected abstract void ResetMobPosition();
 
+        protected virtual void UpdateMobBehavior() {
+            behaviorState.Update(this);
+            PointCannonPlayer(); 
+        }
+
         public override void Update()
         {
             firingTimer += Globals.FRAMETIME;
@@ -48,7 +64,7 @@ namespace Sprint0
                 requestPlayerTimer = 0.5f;
             }
 
-            behaviorState.Update(this);
+            UpdateMobBehavior();
             base.Update();
         }
 

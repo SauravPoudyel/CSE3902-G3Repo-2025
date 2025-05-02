@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 
 namespace Sprint0
@@ -6,14 +7,15 @@ namespace Sprint0
     {
         public void Update(Mob mob)
         {
-            var pos = mob.GetPosition();
-            var target = mob.LastKnownPlayerPosition;
-            float delta = target.Y - pos.Y;
-            if (Math.Abs(delta) > 5f)
+            Vector2 position = mob.GetPosition();
+            Vector2 playerPosition = mob.GetLastKnownPlayerPosition();
+            float deltaY = playerPosition.Y - position.Y;
+
+            if (Math.Abs(deltaY) > 5f)
             {
-                mob.SetVelocity(new Vector2(
-                    0,
-                    Math.Sign(delta) * mob.DefaultMovementSpeed * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.MovementSpeed)));
+                float speed = mob.GetDefaultMovementSpeed()
+                            * Globals.GlobalMobData.GetModifier(MobData.MobModifiers.MovementSpeed);
+                mob.SetVelocity(new Vector2(0f, Math.Sign(deltaY) * speed));
             }
             else
             {

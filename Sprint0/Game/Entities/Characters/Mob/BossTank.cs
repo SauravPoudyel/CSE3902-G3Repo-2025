@@ -25,25 +25,10 @@ namespace Sprint0
             firingInterval = 4f;
             currentProjectileVariables["projectileType"] = "Shotgun";
 
-            var bodySprite = new Sprite(0.3f);
-            bodySprite.LoadContent(content, "TDTanksAllSprites", 641, 661, 123, 144, 1);
-            SetSprite(bodySprite);
-
-            var cannonSprite = new Sprite(0.3f);
-            cannonSprite.LoadContent(content, "TDTanksAllSprites", 832, 186, 28, 64, 1);
-            cannon = new Cannon(content, cannonSprite, this, new Vector2(14, 10), 50f, new Vector2(12, 70),
-                                0f, MathHelper.ToRadians(20), MathHelper.PiOver2, MathHelper.Pi + MathHelper.PiOver2);
-
             position = new Vector2(Globals.SCREENWIDTH / 2, 200);
             bodyRotation = 0f;
             movementDirection = new Vector2(0f, -1f); // Initially moving UP
             velocity = movementDirection * defaultMovementSpeed;
-        }
-
-        protected override void UpdateMobBehavior()
-        {
-            FollowPlayer(aggressionLevel); 
-            PointCannonPlayer();
         }
 
         protected override void ChangeMobType(EntityKeys.MobType type)

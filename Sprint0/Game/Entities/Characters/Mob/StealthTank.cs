@@ -10,8 +10,8 @@ namespace Sprint0
         private bool isInvisible = false;
         private float normalSpeed;
         private float aggressiveSpeed;
-        private ISprite originalTankSprite;
-        private ISprite originalCannonSprite;
+        public ISprite originalTankSprite;
+        public ISprite originalCannonSprite;
         private bool isInvisibilityTaskRunning = false;
 
         public StealthTank(ContentManager content) : base(content)
@@ -30,34 +30,7 @@ namespace Sprint0
             normalSpeed = defaultMovementSpeed;
             aggressiveSpeed = normalSpeed * 1.7f;
             firingInterval = 2f; // fire slow when not in invisible state
-
-            var tankSprite = new Sprite(0.3f);
-            tankSprite.LoadContent(content, "TDTanksAllSprites", 876, 783, 84, 80, 1);
-            SetSprite(tankSprite);
-
-            originalTankSprite = tankSprite;
-
-            var cannonSprite = new Sprite(0.3f);
-            cannonSprite.LoadContent(content, "TDTanksAllSprites", 1104, 152, 16, 52, 1);
-            cannon = new Cannon(content, cannonSprite, this, new Vector2(8, 5), 50f, new Vector2(8, 60), 0f, MathHelper.ToRadians(20));
-
-            originalCannonSprite = cannon.GetSprite();
-
             StartInvisibilityCycle();
-        }
-
-        protected override void UpdateMobBehavior()
-        {
-            if (isInvisible)
-            {
-                FollowPlayer("Aggressive");
-                PointCannonPlayer();
-            }
-            else
-            {
-                FollowPlayer("Passive");
-                PointCannonPlayer();
-            }
         }
 
         protected override void ChangeMobType(EntityKeys.MobType type)

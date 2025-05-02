@@ -30,13 +30,6 @@ namespace Sprint0
             orbitCenter = new Vector2(Globals.SCREENWIDTH / 2, Globals.SCREENHEIGHT / 2);
             orbitRadius = 150f;
             orbitAngle = 0f;
-            
-            var planeBodySprite = new Sprite(0.3f);
-            planeBodySprite.LoadContent(content, "TDTowerDefenseSprites", 2183, 1411, 135, 134, 1);
-            SetSprite(planeBodySprite);
-
-            cannon = new Cannon(content, Globals.NULLSPRITE_A, this, new Vector2(14, 10), 30f, new Vector2(0, 0),
-                    0f, MathHelper.ToRadians(20), 0f, 0f);
             velocity = Vector2.Zero;
             bodyRotation = 0f;
         }

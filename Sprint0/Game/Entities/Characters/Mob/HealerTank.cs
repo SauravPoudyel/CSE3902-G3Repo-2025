@@ -8,8 +8,8 @@ namespace Sprint0
 {
     public class HealerTank : Mob
     {
-        private ISprite normalSprite;
-        private ISprite healSprite;
+        public ISprite normalSprite;
+        public ISprite healSprite;
         private float healRadius = 400;
         private int healAmount = 20;
 
@@ -27,24 +27,9 @@ namespace Sprint0
             currentMobType = EntityKeys.MobType.ShieldTank; 
             defaultMovementSpeed = 30f; 
             firingInterval = 0f; 
-            
-            normalSprite = new Sprite(0.3f);
-            normalSprite.LoadContent(content, "TDTanksAllSprites", 1126, 334, 76, 72, 1);
-
-            healSprite = new Sprite(0.3f);
-            healSprite.LoadContent(content, "TDTanksAllSprites", 1202, 334, 76, 72, 1);
-            SetSprite(normalSprite);
-
-            cannon = new Cannon(content, Globals.NULLSPRITE_A, this, new Vector2(14, 10), 30f, new Vector2(0, 0),
-                    0f, 0f, 0f, 0f);
 
             position = new Vector2(Globals.SCREENWIDTH / 2 + 100, 400);
             StartHealingCycle();
-        }
-
-        protected override void UpdateMobBehavior()
-        {
-            FollowPlayer(aggressionLevel);
         }
 
         protected override void ChangeMobType(EntityKeys.MobType type)

@@ -1,6 +1,7 @@
 using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-
+using static Sprint0.EntityKeys;
 
 namespace Sprint0
 {
@@ -8,47 +9,49 @@ namespace Sprint0
     {
         private static int currentIndex = 0;
 
-        public static Mob CreateMob(EntityKeys.MobType type, ContentManager content)
+        public static Mob CreateMob(MobType type, ContentManager content)
         {
-            switch (type)
+            Mob mob = type switch
             {
+                MobType.BossTank      => new BossTank(content),
+                MobType.SmallEnemy    => new SmallEnemy(content),
+                MobType.Turret        => new Turret(content),
+                MobType.Plane         => new Plane(content),
+                MobType.ShieldTank    => new ShieldTank(content),
+                MobType.SwarmingTank  => new SwarmingTank(content),
+                MobType.HoveringTank  => new HoveringTank(content),
+                MobType.HealerTank    => new HealerTank(content),
+                MobType.StealthTank   => new StealthTank(content),
+                MobType.ShipVertical   => new Ship(content, true),
+                MobType.ShipHorizontal => new Ship(content, false),
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
 
-                case EntityKeys.MobType.BossTank: return new BossTank(content);
-                case EntityKeys.MobType.SmallEnemy: return new SmallEnemy(content);
-                case EntityKeys.MobType.Turret: return new Turret(content);
-                case EntityKeys.MobType.Plane: return new Plane(content);
-                case EntityKeys.MobType.ShieldTank: return new ShieldTank(content);
-                case EntityKeys.MobType.SwarmingTank: return new SwarmingTank(content);
-                case EntityKeys.MobType.HoveringTank: return new HoveringTank(content);
-                case EntityKeys.MobType.HealerTank: return new HealerTank(content);
-                case EntityKeys.MobType.StealthTank: return new StealthTank(content);
-                case EntityKeys.MobType.ShipVertical: return new Ship(content, true);
-                case EntityKeys.MobType.ShipHorizontal: return new Ship(content, false);
-                default: return new BossTank(content);
-            }
+            MobSpriteFactory.Initialize(mob, content);
+            return mob;
         }
 
         public static void CycleNextMob(GameManager gameManager)
         {
-            currentIndex = (currentIndex + 1) % Enum.GetNames(typeof(EntityKeys.MobType)).Length;
-            ReplaceMob(gameManager);
+            var types = (MobType[])Enum.GetValues(typeof(MobType));
+            currentIndex = (currentIndex + 1) % types.Length;
+            ReplaceMob(gameManager, types);
         }
 
         public static void CyclePreviousMob(GameManager gameManager)
         {
-            currentIndex = (currentIndex - 1 + Enum.GetNames(typeof(EntityKeys.MobType)).Length) % Enum.GetNames(typeof(EntityKeys.MobType)).Length;
-            ReplaceMob(gameManager);
+            var types = (MobType[])Enum.GetValues(typeof(MobType));
+            currentIndex = (currentIndex - 1 + types.Length) % types.Length;
+            ReplaceMob(gameManager, types);
         }
 
-        private static void ReplaceMob(GameManager gameManager)
+        private static void ReplaceMob(GameManager gameManager, MobType[] types)
         {
             if (gameManager.GetEntity("mob") != null)
                 gameManager.RemoveEntity("mob");
 
-            var mobTypes = (EntityKeys.MobType[])Enum.GetValues(typeof(EntityKeys.MobType));
-            var newMob = CreateMob(mobTypes[currentIndex], gameManager.GetContent());
-
-            newMob.SetPosition(new Microsoft.Xna.Framework.Vector2(Globals.SCREENWIDTH / 2 + 100, 400));
+            Mob newMob = CreateMob(types[currentIndex], gameManager.GetContent());
+            newMob.SetPosition(new Vector2(Globals.SCREENWIDTH / 2 + 100, 400));
             gameManager.SetEntity("mob", newMob);
         }
     }

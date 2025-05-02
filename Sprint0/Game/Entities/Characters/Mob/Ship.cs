@@ -27,31 +27,9 @@ namespace Sprint0
             currentMobType = vertical ? EntityKeys.MobType.ShipVertical : EntityKeys.MobType.ShipHorizontal;
             defaultMovementSpeed = 80f;
             firingInterval = 2f;
-            currentProjectileVariables["projectileType"] = "Default";
-
-            Sprite shipSprite = new Sprite(0.3f);
-            // For this example we use the same sprite for both; adjust if needed.
-            shipSprite.LoadContent(content, "TDTanksAllSprites", 1135, 840, 68, 116, 1);
-            // Set the initial rotation.
             bodyRotation = vertical ? 0f : -MathHelper.PiOver2;
-            SetSprite(shipSprite);
-
-            Vector2 cannonOffset = vertical ? new Vector2(25, 60) : new Vector2(60, 25);
-            cannon = new Cannon(content, Globals.NULLSPRITE_A, this, cannonOffset, 30f, new Vector2(0, 0),
-                                0f, MathHelper.ToRadians(20), 0f, 0f);
 
             ResetMobPosition();
-        }
-
-        protected override void UpdateMobBehavior()
-        {
-            FollowPlayer("Follow-Axis");
-            // For horizontal ships, re-lock the Y coordinate.
-            if (currentMobType == EntityKeys.MobType.ShipHorizontal)
-            {
-                position.Y = fixedY;
-            }
-            PointCannonPlayer(); 
         }
 
         protected override void ChangeMobType(EntityKeys.MobType type)

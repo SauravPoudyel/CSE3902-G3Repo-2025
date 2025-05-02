@@ -26,19 +26,8 @@ namespace Sprint0
             defaultMovementSpeed = 30f;
             firingInterval = 0f;
             currentProjectileVariables["projectileType"] = "Default";
-
-            var bodySprite = new Sprite(0.3f);
-            bodySprite.LoadContent(content, "TDTanksAllSprites", 768, 0, 94, 97, 1);
-            SetSprite(bodySprite);
-
-            cannon = new Cannon(content, Globals.NULLSPRITE_A, this, new Vector2(14, 10), 30f, new Vector2(0, 0),
-                    0f, 0f, 0f, 0f);
         }
 
-        protected override void UpdateMobBehavior()
-        {
-            FollowPlayer(aggressionLevel);
-        }
 
         protected override void ChangeMobType(EntityKeys.MobType type)
         {
